@@ -194,12 +194,33 @@ Fetch feed metadata (S3 key + bucket)
   ↓
 Read CSV from S3
   ↓
-Clean and transform data
+Clean and normalize data
   ↓
-Insert into products table
+Compare against existing products (partner + SKU)
   ↓
-Update job status and message
+Insert new products
+Update changed products
+Skip unchanged products
+  ↓
+Update job status and message (ETL summary)
 ```
+---
+
+### ETL Processing Behavior
+
+The ETL pipeline uses change detection to ensure efficient and accurate data loading:
+```text
+Inserted   → New product (partner + SKU not previously seen)  
+Updated    → Existing product with changed data (e.g., price, availability)  
+Unchanged  → Existing product with identical data  
+Skipped    → Invalid row (missing required fields)
+```
+
+This design ensures:
+
+* Idempotent reprocessing (safe to run multiple times)
+* No unnecessary database updates
+* Improved performance at scale
 
 ---
 

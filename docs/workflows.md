@@ -90,8 +90,11 @@ curl -X POST "http://127.0.0.1:8000/jobs/JV00001/run" \
 
 * Raw CSV is read from S3
 * Data is cleaned and normalized
-* Products are inserted into PostgreSQL
-* Job status and message are updated
+* Products are compared against existing records
+* Only changed products are updated
+* New products are inserted
+* Unchanged products are skipped
+* Job status and message are updated with ETL results
 
 ---
 
@@ -116,7 +119,7 @@ curl -H "x-api-key: demo-secret-key" \
   "uploaded_at": "2026-04-06T14:17:27+00:00",
   "validation_job_id": "JV00001",
   "validation_status": "completed",
-  "validation_message": "ETL processing completed. Products ingested: 10.",
+  "validation_message": "ETL processing completed. Products processed: 13. Inserted: 1. Updated: 0. Unchanged: 12. Skipped: 0.",
   "raw_file_s3_key": "raw/partners/acme/feeds/FD00001/sample_catalog.csv",
   "raw_file_bucket": "partner-catalog-raw-rayj"
 }
@@ -157,6 +160,32 @@ curl -H "x-api-key: demo-secret-key" \
 
 ---
 
+## Reprocessing Example (Idempotency)
+
+Re-running ETL on the same feed demonstrates how the system avoids duplicate updates.
+
+### First run
+
+```text
+Products processed: 13. Inserted: 13. Updated: 0. Unchanged: 0. Skipped: 0.
+```
+
+### Second run (same data)
+
+```text
+Products processed: 13. Inserted: 0. Updated: 0. Unchanged: 13. Skipped: 0.
+```
+
+### After modifying one product (e.g., price)
+
+```text
+Products processed: 13. Inserted: 0. Updated: 1. Unchanged: 12. Skipped: 0.
+```
+
+> This behavior ensures efficient processing and avoids unnecessary database writes.
+
+---
+
 ## Workflow Summary
 
 ```text
@@ -168,8 +197,8 @@ Upload Feed
 Run ETL
   → POST /jobs/{job_id}/run
   → Read CSV from S3
-  → Transform data
-  → Load into PostgreSQL
+  → Transform + compare data
+  → Insert / update only when needed
 
 Query
   → Products become available via /products
@@ -183,6 +212,8 @@ Query
 * Raw data is stored in S3 for reprocessing and auditability
 * ETL is triggered explicitly via API
 * Jobs provide full pipeline visibility
+* Product updates are **change-detected (no blind updates)**
+* Reprocessing is **idempotent**
 * Product data is only available after ETL completes
 * IDs follow structured formats:
 

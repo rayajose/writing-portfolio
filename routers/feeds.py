@@ -4,27 +4,36 @@ import csv
 import io
 import re
 
-from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException, status
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    File,
+    Form,
+    HTTPException,
+    UploadFile,
+    status,
+)
 
-from schemas.common import ErrorResponse
-from schemas.feeds import FeedResponse, FeedCreateResponse
 from db import (
-    get_connection,
-    q,
     DB_TYPE,
+    get_connection,
     next_feed_id,
     next_submission_job_id,
     next_validation_job_id,
+    q,
 )
-from security import require_api_key
-from utils import utc_now_iso
-from services.s3_service import upload_raw_feed, S3_RAW_BUCKET
 from etl.process_feed import process_feed
+from schemas.common import ErrorResponse
+from schemas.feeds import FeedCreateResponse, FeedResponse
+from security import require_api_key
+from services.s3_service import S3_RAW_BUCKET, upload_raw_feed
+from utils import utc_now_iso
 
 router = APIRouter(
     prefix="/feeds",
     tags=["Feeds"],
-    dependencies=[Depends(require_api_key)]
+    dependencies=[Depends(require_api_key)],
 )
 
 FEED_COLUMNS = [
@@ -61,18 +70,42 @@ def feed_row_to_dict(row):
     return dict(zip(FEED_COLUMNS, row))
 
 
+def update_feed_status(feed_id_value: str, status_value: str) -> None:
+    with get_connection() as conn:
+        conn.execute(
+            q("""
+                UPDATE feeds
+                SET status = ?
+                WHERE feed_id = ?
+            """),
+            (status_value, feed_id_value),
+        )
+
+        if DB_TYPE == "postgres":
+            conn.commit()
+
+
+def run_feed_etl(feed_id_value: str) -> None:
+    try:
+        process_feed(feed_id_value)
+        update_feed_status(feed_id_value, "processed")
+    except Exception:
+        update_feed_status(feed_id_value, "failed")
+        raise
+
+
 @router.post(
     "/upload",
     response_model=FeedCreateResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Upload a product feed",
     description=(
-        "Uploads a CSV product feed for a partner. The file is stored in S3 and "
-        "processed immediately through the ETL pipeline.\n\n"
+        "Uploads a CSV product feed for a partner. The file is stored in S3, "
+        "feed and job records are created, and ETL processing is started in the background.\n\n"
         "This operation triggers:\n"
         "- A submission job (JSxxxxx)\n"
         "- A validation job (JVxxxxx)\n"
-        "- ETL processing (transform + load)\n\n"
+        "- Background ETL processing\n\n"
         "Product ingestion uses idempotent upsert logic to prevent duplicate records."
     ),
     responses={
@@ -81,15 +114,16 @@ def feed_row_to_dict(row):
     },
 )
 async def upload_feed(
+    background_tasks: BackgroundTasks,
     partner_name: str = Form(...),
-    file: UploadFile = File(...)
+    file: UploadFile = File(...),
 ):
     allowed_types = {"text/csv", "text/plain", "application/vnd.ms-excel"}
 
     if file.content_type not in allowed_types:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Only CSV uploads are supported at this time."
+            detail="Only CSV uploads are supported at this time.",
         )
 
     content = await file.read()
@@ -97,7 +131,7 @@ async def upload_feed(
     if not content:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Uploaded file is empty."
+            detail="Uploaded file is empty.",
         )
 
     try:
@@ -105,7 +139,7 @@ async def upload_feed(
     except UnicodeDecodeError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="CSV file must be UTF-8 encoded."
+            detail="CSV file must be UTF-8 encoded.",
         )
 
     try:
@@ -129,7 +163,7 @@ async def upload_feed(
     except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid CSV file: {exc}"
+            detail=f"Invalid CSV file: {exc}",
         )
 
     feed_id = next_feed_id()
@@ -177,12 +211,12 @@ async def upload_feed(
                 partner_name,
                 original_filename,
                 file.content_type or "text/csv",
-                "uploaded",
+                "processing",
                 now,
                 validation_job_id,
                 raw_file_s3_key,
                 S3_RAW_BUCKET,
-            )
+            ),
         )
 
         conn.execute(
@@ -203,8 +237,8 @@ async def upload_feed(
                 "completed",
                 now,
                 feed_id,
-                "Feed upload accepted."
-            )
+                "Feed upload accepted.",
+            ),
         )
 
         conn.execute(
@@ -225,55 +259,19 @@ async def upload_feed(
                 "queued",
                 now,
                 feed_id,
-                "ETL processing pending."
-            )
+                "ETL processing queued.",
+            ),
         )
 
         if DB_TYPE == "postgres":
             conn.commit()
 
-    # ✅ Run ETL immediately
-    try:
-        process_feed(feed_id)
-
-        # Update feed status after successful processing
-        with get_connection() as conn:
-            conn.execute(
-                q("""
-                    UPDATE feeds
-                    SET status = ?
-                    WHERE feed_id = ?
-                """),
-                ("processed", feed_id),
-            )
-
-            if DB_TYPE == "postgres":
-                conn.commit()
-
-    except Exception as exc:
-        # If ETL fails, mark feed accordingly
-        with get_connection() as conn:
-            conn.execute(
-                q("""
-                    UPDATE feeds
-                    SET status = ?
-                    WHERE feed_id = ?
-                """),
-                ("failed", feed_id),
-            )
-
-            if DB_TYPE == "postgres":
-                conn.commit()
-
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Feed uploaded but ETL failed: {exc}"
-        )
+    background_tasks.add_task(run_feed_etl, feed_id)
 
     return {
         "feed_id": feed_id,
         "job_id": submission_job_id,
-        "status": "processed"
+        "status": "processing",
     }
 
 
@@ -282,6 +280,10 @@ async def upload_feed(
     response_model=FeedResponse,
     responses={404: {"model": ErrorResponse, "description": "Feed not found"}},
     summary="Retrieve feed details",
+    description=(
+        "Retrieves metadata for a specific feed, including upload status, "
+        "associated validation job details, and raw file storage metadata."
+    ),
 )
 async def read_feed(feed_id: str):
     with get_connection() as conn:
@@ -304,13 +306,13 @@ async def read_feed(feed_id: str):
                     ON f.validation_job_id = j.job_id
                 WHERE f.feed_id = ?
             """),
-            (feed_id,)
+            (feed_id,),
         ).fetchone()
 
     if not feed:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Feed {feed_id} not found."
+            detail=f"Feed {feed_id} not found.",
         )
 
     return feed_row_to_dict(feed)

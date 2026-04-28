@@ -10,4 +10,6 @@ EL-3008,PlayStation 5,Sony next-gen gaming console with ultra-high-speed SSD,Son
 EL-3009,Xbox Series X,Microsoft gaming console with 4K performance and Game Pass support,Microsoft,Gaming,499.99,USD,in_stock
 EL-3010,Kindle Paperwhite,Amazon e-reader with 6.8-inch display and adjustable warm light,Amazon,E-readers,139.99,USD,in_stock
 EL-3010,Kindle Paperwhite,Amazon e-reader with 6.8-inch display and adjustable warm light,Amazon,E-readers,139.99,USD,in_stock
-EL-3011,TEST, TEST PRODUCT, Amazon,E-readers,139.99,USD,in_stock
+EL-3011,TEST00, TEST PRODUCT00, Amazon,E-readers,139.99,USD,out_of_stock
+EL-3012,TEST01, TEST PRODUCT01, Amazon,E-readers,139.99,USD,in_stock
+EL-3013,TEST02, TEST PRODUCT02, Amazon,E-readers,139.99,USD,in_stock

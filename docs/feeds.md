@@ -1,6 +1,6 @@
 # Feeds API
 
-The Feeds API allows clients to upload product feeds, store raw data, and track processing through a validation and ETL pipeline.
+The Feeds API allows clients to upload product feeds, store raw data, and process them through a validation and ETL pipeline.
 
 ---
 
@@ -128,7 +128,7 @@ GET /feeds/FD00001
   "uploaded_at": "2026-04-06T14:17:27+00:00",
   "validation_job_id": "JV00001",
   "validation_status": "completed",
-  "validation_message": "ETL processing completed. Products ingested: 10.",
+  "validation_message": "ETL processing completed. Products processed: 13. Inserted: 1. Updated: 0. Unchanged: 12. Skipped: 0.",
   "raw_file_s3_key": "raw/partners/acme/feeds/FD00001/sample_catalog.csv",
   "raw_file_bucket": "partner-catalog-raw-rayj"
 }
@@ -148,9 +148,24 @@ GET /feeds/FD00001
 | uploaded_at        | UTC timestamp of upload                                 |
 | validation_job_id  | Validation job ID (JVxxxxx)                             |
 | validation_status  | Job status (`queued`, `running`, `completed`, `failed`) |
-| validation_message | Human-readable ETL result                               |
+| validation_message | Human-readable ETL result summary                       |
 | raw_file_s3_key    | S3 object key for raw feed                              |
 | raw_file_bucket    | S3 bucket storing raw file                              |
+
+---
+
+## ETL Result Definitions
+
+The ETL pipeline processes each product row and categorizes the result:
+
+| Result    | Description                                                                   |
+| --------- | ----------------------------------------------------------------------------- |
+| Inserted  | New product (partner + SKU not previously seen)                               |
+| Updated   | Existing product where one or more fields changed (e.g., price, availability) |
+| Unchanged | Existing product where incoming data matches existing data                    |
+| Skipped   | Invalid row (missing required fields such as `sku` or `product_name`)         |
+
+> Note: Updates only occur when actual data changes are detected. This avoids unnecessary database writes.
 
 ---
 

@@ -1,9 +1,15 @@
 # Partner Catalog API
-> Includes REST API, AWS deployment, and SDK-style client with developer documentation
+
+> Production-style REST API with change-detected ETL, AWS deployment, and developer-focused documentation
 
 A production-style REST API that simulates how multi-partner e-commerce platforms ingest, validate, and serve product catalog data.
 
-This project demonstrates API design, backend data modeling, cloud deployment on AWS, and developer-focused documentation, including a Python SDK-style client.
+This project models a real-world ingestion pipeline with **idempotent ETL processing**, where product data is:
+
+* Inserted when new
+* Updated only when data changes
+* Skipped when unchanged
+* Reprocessed safely without duplication
 
 ---
 
@@ -13,9 +19,11 @@ This project demonstrates:
 
 * REST API design
 * Data ingestion workflows
+* **Change-detected, idempotent ETL pipeline design**
 * Cloud deployment (AWS ECS, RDS, ALB)
 * Developer-focused documentation
 * Backend system modeling
+
 
 ---
 
@@ -41,6 +49,25 @@ The Partner Catalog API simulates a real-world e-commerce ingestion pipeline whe
 
 Designed to reflect multi-partner catalog ingestion systems used by platforms like Amazon Marketplace and enterprise e-commerce solutions.
 
+
+## ETL Behavior (Key Design Feature)
+
+The ETL pipeline includes change detection to ensure efficient and accurate data processing:
+
+* **Inserted** → New product (partner + SKU not previously seen)
+* **Updated** → Existing product with changed data (e.g., price, availability)
+* **Unchanged** → Existing product with identical data
+* **Skipped** → Invalid rows (missing required fields)
+
+This design ensures:
+
+* Idempotent reprocessing (safe to run multiple times)
+* No unnecessary database writes
+* Efficient handling of large or repeated feeds
+
+This reflects real-world ingestion systems where data consistency and performance are critical.
+
+
 ### Key capabilities
 
 * Feed ingestion via CSV upload
@@ -48,6 +75,7 @@ Designed to reflect multi-partner catalog ingestion systems used by platforms li
 * Product storage and retrieval
 * Filtering, sorting, and pagination
 * API key-based authentication
+* Change-detected ETL processing (no blind updates)
 
 ---
 
@@ -126,9 +154,63 @@ app/
 
 1. Partner uploads a product feed (`/feeds/upload`)
 2. A submission job is created
-3. Feed is validated via a validation job
-4. Products are stored in the database
-5. Products are retrieved via `/products`
+3. A validation job is created
+4. ETL processing is executed (`POST /jobs/{job_id}/run`)
+5. Data is compared against existing products
+6. New products are inserted, changed products are updated, unchanged products are skipped
+7. Products are retrieved via `/products`
+
+---
+
+## ETL Reprocessing Example (Idempotency)
+
+The ETL pipeline is designed to be **idempotent**, meaning the same feed can be processed multiple times without creating duplicate updates or unnecessary database writes.
+
+### First Run (Initial Ingestion)
+
+```text
+Products processed: 13. Inserted: 13. Updated: 0. Unchanged: 0. Skipped: 0.
+```
+
+All products are new, so they are inserted.
+
+---
+
+### Second Run (Same Data)
+
+```text
+Products processed: 13. Inserted: 0. Updated: 0. Unchanged: 13. Skipped: 0.
+```
+
+No data has changed, so:
+
+* No inserts
+* No updates
+* All records are correctly identified as unchanged
+
+---
+
+### After Data Change (e.g., price update)
+
+```text
+Products processed: 13. Inserted: 0. Updated: 1. Unchanged: 12. Skipped: 0.
+```
+
+Only the modified product is updated.
+
+---
+
+### Why This Matters
+
+This behavior ensures:
+
+* Efficient processing of large or repeated data feeds
+* No unnecessary database writes (avoids write amplification)
+* Accurate tracking of real data changes
+* Safe reprocessing for audit, recovery, and replay scenarios
+
+This reflects real-world ingestion systems where data pipelines must handle frequent reprocessing without degrading performance or data integrity.
+
 
 ---
 
@@ -371,6 +453,7 @@ It reflects the types of backend services used in e-commerce platforms, data pip
 * Cloud deployment using AWS ECS Fargate and RDS
 * Secure service-to-database connectivity
 * Developer-focused documentation and usability
+* Change-detected, idempotent ETL pipeline design
 
 This project reflects production-style backend system design rather than a simple CRUD application.
 

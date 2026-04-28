@@ -8,7 +8,7 @@ The Jobs API provides visibility into and control over processing operations suc
 
 All requests must include:
 
-```id="n4m6pf"
+```
 x-api-key: <your-api-key>
 ```
 
@@ -24,7 +24,7 @@ Returns status and metadata for a job.
 
 ### Example Request
 
-```http id="3r9q3n"
+```http
 GET /jobs/JS00001
 ```
 
@@ -32,7 +32,7 @@ GET /jobs/JS00001
 
 ### Response (200 OK)
 
-```json id="qz9f9n"
+```json
 {
   "job_id": "JS00001",
   "job_type": "submission",
@@ -47,14 +47,14 @@ GET /jobs/JS00001
 
 ### Field Definitions
 
-| Field      | Description                                             |
-|------------|---------------------------------------------------------|
-| job_id     | Unique job identifier (JSxxxxx or JVxxxxx)              |
-| job_type   | Type of job (`submission`, `validation`)                |
-| status     | Job status (`queued`, `running`, `completed`, `failed`) |
-| created_at | UTC timestamp when job was created                      |
-| feed_id    | Associated feed ID                                      |
-| message    | Optional status message                                 |
+| Field      | Description                                                        |
+|------------|--------------------------------------------------------------------|
+| job_id     | Unique job identifier (JSxxxxx or JVxxxxx)                         |
+| job_type   | Type of job (`submission`, `validation`)                           |
+| status     | Job status (`queued`, `running`, `completed`, `failed`)            |
+| created_at | UTC timestamp when job was created                                 |
+| feed_id    | Associated feed ID                                                 |
+| message    | Optional status message (includes ETL results for validation jobs) |
 
 ---
 
@@ -68,7 +68,7 @@ Executes a validation job and triggers ETL processing.
 
 ### Example Request
 
-```bash id="8qg4rm"
+```bash
 curl -X POST http://127.0.0.1:8000/jobs/JV00001/run \
   -H "x-api-key: demo-secret-key"
 ```
@@ -77,7 +77,7 @@ curl -X POST http://127.0.0.1:8000/jobs/JV00001/run \
 
 ### Response (200 OK)
 
-```json id="rm2b6s"
+```json
 {
   "job_id": "JV00001",
   "status": "completed"
@@ -89,12 +89,38 @@ curl -X POST http://127.0.0.1:8000/jobs/JV00001/run \
 ### Behavior
 
 * Only **validation jobs (JVxxxxx)** can be executed
+
 * Triggers ETL pipeline:
 
   * Reads raw CSV from S3
   * Cleans and validates data
   * Loads products into PostgreSQL
-* Updates job status and message with ingestion results
+  * Detects changes and avoids unnecessary updates
+
+* Updates job status and message with ETL results summary
+
+---
+
+## ETL Result Summary (Validation Jobs)
+
+When a validation job completes, the `message` field contains a detailed summary of ETL processing results.
+
+### Example
+
+```text
+ETL processing completed. Products processed: 13. Inserted: 1. Updated: 0. Unchanged: 12. Skipped: 0.
+```
+
+### Result Definitions
+
+| Result    | Description                                                                   |
+|-----------|-------------------------------------------------------------------------------|
+| Inserted  | New product (partner + SKU not previously seen)                               |
+| Updated   | Existing product where one or more fields changed (e.g., price, availability) |
+| Unchanged | Existing product where incoming data matches existing data                    |
+| Skipped   | Invalid row (missing required fields such as `sku` or `product_name`)         |
+
+> Note: Updates only occur when actual data changes are detected. This improves performance and reduces unnecessary database writes.
 
 ---
 
@@ -111,7 +137,7 @@ curl -X POST http://127.0.0.1:8000/jobs/JV00001/run \
 
 Jobs transition through the following states:
 
-```text id="bn6g3r"
+```text
 queued → running → completed
                 ↘ failed
 ```
@@ -129,7 +155,7 @@ queued → running → completed
 
 Jobs are part of the ingestion pipeline:
 
-```text id="k6bz0c"
+```text
 Upload → Submission Job → Validation Job → ETL Processing → Products Loaded
 ```
 
@@ -139,7 +165,7 @@ Upload → Submission Job → Validation Job → ETL Processing → Products Loa
 
 #### 404 Not Found
 
-```json id="y7lqxb"
+```json
 {
   "detail": "Job JS99999 not found."
 }
@@ -147,7 +173,7 @@ Upload → Submission Job → Validation Job → ETL Processing → Products Loa
 
 #### 400 Bad Request
 
-```json id="6j2x2p"
+```json
 {
   "detail": "Only validation jobs can be run"
 }

@@ -13,12 +13,14 @@ from utils import utc_now_iso
 def clean_value(value: str | None) -> str | None:
     if value is None:
         return None
-    value = value.strip()
+
+    value = str(value).strip()
     return value if value else None
 
 
 def parse_price(value: str | None) -> float | None:
     cleaned = clean_value(value)
+
     if cleaned is None:
         return None
 
@@ -28,6 +30,19 @@ def parse_price(value: str | None) -> float | None:
         return float(cleaned)
     except ValueError:
         return None
+
+
+def values_match(existing_value, incoming_value) -> bool:
+    if existing_value is None and incoming_value is None:
+        return True
+
+    if isinstance(existing_value, float) or isinstance(incoming_value, float):
+        try:
+            return float(existing_value) == float(incoming_value)
+        except (TypeError, ValueError):
+            return False
+
+    return clean_value(existing_value) == clean_value(incoming_value)
 
 
 def update_validation_job(feed_id_value: str, status: str, message: str) -> None:
@@ -94,12 +109,42 @@ def read_csv_from_s3(bucket: str, object_key: str) -> list[dict]:
     return list(reader)
 
 
+def row_has_changed(existing_product: dict | tuple, incoming_product: dict) -> bool:
+    if DB_TYPE == "sqlite":
+        existing_values = {
+            "product_name": existing_product["product_name"],
+            "description": existing_product["description"],
+            "brand": existing_product["brand"],
+            "category": existing_product["category"],
+            "price": existing_product["price"],
+            "currency": existing_product["currency"],
+            "availability": existing_product["availability"],
+        }
+    else:
+        existing_values = {
+            "product_name": existing_product[1],
+            "description": existing_product[2],
+            "brand": existing_product[3],
+            "category": existing_product[4],
+            "price": existing_product[5],
+            "currency": existing_product[6],
+            "availability": existing_product[7],
+        }
+
+    for field_name, incoming_value in incoming_product.items():
+        if not values_match(existing_values[field_name], incoming_value):
+            return True
+
+    return False
+
+
 def load_products(feed: dict, rows: list[dict]) -> dict:
     now = utc_now_iso()
 
     summary = {
         "inserted": 0,
         "updated": 0,
+        "unchanged": 0,
         "skipped": 0,
     }
 
@@ -112,9 +157,27 @@ def load_products(feed: dict, rows: list[dict]) -> dict:
                 summary["skipped"] += 1
                 continue
 
+            incoming_product = {
+                "product_name": product_name,
+                "description": clean_value(row.get("description")),
+                "brand": clean_value(row.get("brand")),
+                "category": clean_value(row.get("category")),
+                "price": parse_price(row.get("price")),
+                "currency": clean_value(row.get("currency")),
+                "availability": clean_value(row.get("availability")),
+            }
+
             existing_product = conn.execute(
                 q("""
-                    SELECT product_id
+                    SELECT
+                        product_id,
+                        product_name,
+                        description,
+                        brand,
+                        category,
+                        price,
+                        currency,
+                        availability
                     FROM products
                     WHERE partner_name = ?
                       AND sku = ?
@@ -131,54 +194,78 @@ def load_products(feed: dict, rows: list[dict]) -> dict:
                     if DB_TYPE == "sqlite"
                     else existing_product[0]
                 )
+
+                if not row_has_changed(existing_product, incoming_product):
+                    summary["unchanged"] += 1
+                    continue
+
+                conn.execute(
+                    q("""
+                        UPDATE products
+                        SET
+                            feed_id = ?,
+                            product_name = ?,
+                            description = ?,
+                            brand = ?,
+                            category = ?,
+                            price = ?,
+                            currency = ?,
+                            availability = ?
+                        WHERE product_id = ?
+                    """),
+                    (
+                        feed["feed_id"],
+                        incoming_product["product_name"],
+                        incoming_product["description"],
+                        incoming_product["brand"],
+                        incoming_product["category"],
+                        incoming_product["price"],
+                        incoming_product["currency"],
+                        incoming_product["availability"],
+                        product_id,
+                    ),
+                )
+
                 summary["updated"] += 1
+
             else:
                 product_id = next_product_id_with_conn(conn)
-                summary["inserted"] += 1
 
-            conn.execute(
-                q("""
-                    INSERT INTO products (
+                conn.execute(
+                    q("""
+                        INSERT INTO products (
+                            product_id,
+                            feed_id,
+                            partner_name,
+                            sku,
+                            product_name,
+                            description,
+                            brand,
+                            category,
+                            price,
+                            currency,
+                            availability,
+                            created_at
+                        )
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """),
+                    (
                         product_id,
-                        feed_id,
-                        partner_name,
+                        feed["feed_id"],
+                        feed["partner_name"],
                         sku,
-                        product_name,
-                        description,
-                        brand,
-                        category,
-                        price,
-                        currency,
-                        availability,
-                        created_at
-                    )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    ON CONFLICT (partner_name, sku)
-                    DO UPDATE SET
-                        feed_id = EXCLUDED.feed_id,
-                        product_name = EXCLUDED.product_name,
-                        description = EXCLUDED.description,
-                        brand = EXCLUDED.brand,
-                        category = EXCLUDED.category,
-                        price = EXCLUDED.price,
-                        currency = EXCLUDED.currency,
-                        availability = EXCLUDED.availability
-                """),
-                (
-                    product_id,
-                    feed["feed_id"],
-                    feed["partner_name"],
-                    sku,
-                    product_name,
-                    clean_value(row.get("description")),
-                    clean_value(row.get("brand")),
-                    clean_value(row.get("category")),
-                    parse_price(row.get("price")),
-                    clean_value(row.get("currency")),
-                    clean_value(row.get("availability")),
-                    now,
-                ),
-            )
+                        incoming_product["product_name"],
+                        incoming_product["description"],
+                        incoming_product["brand"],
+                        incoming_product["category"],
+                        incoming_product["price"],
+                        incoming_product["currency"],
+                        incoming_product["availability"],
+                        now,
+                    ),
+                )
+
+                summary["inserted"] += 1
 
         if DB_TYPE == "postgres":
             conn.commit()
@@ -203,24 +290,33 @@ def process_feed(feed_id_value: str) -> None:
         )
 
         summary = load_products(feed, rows)
-        products_processed = summary["inserted"] + summary["updated"]
+
+        products_processed = (
+            summary["inserted"]
+            + summary["updated"]
+            + summary["unchanged"]
+        )
+
+        message = (
+            "ETL processing completed. "
+            f"Products processed: {products_processed}. "
+            f"Inserted: {summary['inserted']}. "
+            f"Updated: {summary['updated']}. "
+            f"Unchanged: {summary['unchanged']}. "
+            f"Skipped: {summary['skipped']}."
+        )
 
         update_validation_job(
             feed_id_value=feed_id_value,
             status="completed",
-            message=(
-                "ETL processing completed. "
-                f"Products processed: {products_processed}. "
-                f"Inserted: {summary['inserted']}. "
-                f"Updated: {summary['updated']}. "
-                f"Skipped: {summary['skipped']}."
-            ),
+            message=message,
         )
 
         print(f"Processed feed {feed_id_value}")
         print(f"Products processed: {products_processed}")
         print(f"Products inserted: {summary['inserted']}")
         print(f"Products updated: {summary['updated']}")
+        print(f"Products unchanged: {summary['unchanged']}")
         print(f"Products skipped: {summary['skipped']}")
 
     except Exception as exc:

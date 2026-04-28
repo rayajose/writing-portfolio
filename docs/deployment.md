@@ -81,7 +81,7 @@ http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
 
 * Protocol: HTTP
 * Port: 8000
-* Health check path: `/docs`
+* Health check path: `/health`
 
 ---
 
@@ -152,6 +152,7 @@ S3_RAW_BUCKET=partner-catalog-raw-rayj
 * Raw feed files are stored in Amazon S3
 * The application uses AWS SDK (`boto3`) to read files during ETL processing
 * ETL is triggered via API (`POST /jobs/{job_id}/run`)
+* ETL compares incoming data against existing records to avoid unnecessary updates
 * The ECS task must have network access to S3
 
 > Note: IAM permissions for S3 access are required in a production setup (not fully configured in this demo).
@@ -300,7 +301,14 @@ To reduce cost:
 * ETL processing is executed on-demand via the Jobs API
 * Product data is loaded into PostgreSQL only after ETL completes
 * Raw data remains stored in S3 for reprocessing and auditability
+* ETL processing includes change detection:
+  - New products are inserted
+  - Existing products are only updated when data changes
+  - Unchanged products are skipped
 
+* ETL processing is idempotent:
+  - Re-running the same feed does not create duplicate updates
+  - Ensures efficient reprocessing and consistency
 
 ---
 
