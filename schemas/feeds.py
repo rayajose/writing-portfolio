@@ -34,7 +34,7 @@ class FeedCreateResponse(BaseModel):
                     "feed_id": "FD00001",
                     "job_id": "JS00001",
                     "status": "uploaded",
-                    "products_ingested": 3
+                    # "products_ingested": 3
                 }
             ]
         }

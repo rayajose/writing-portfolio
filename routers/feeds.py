@@ -19,6 +19,7 @@ from db import (
 from security import require_api_key
 from utils import utc_now_iso
 from services.s3_service import upload_raw_feed, S3_RAW_BUCKET
+from etl.process_feed import process_feed
 
 router = APIRouter(
     prefix="/feeds",
@@ -66,12 +67,13 @@ def feed_row_to_dict(row):
     status_code=status.HTTP_201_CREATED,
     summary="Upload a product feed",
     description=(
-        "Uploads a CSV product feed for a partner. The feed is stored, "
-        "processed, and validated.\n\n"
+        "Uploads a CSV product feed for a partner. The file is stored in S3 and "
+        "processed immediately through the ETL pipeline.\n\n"
         "This operation triggers:\n"
         "- A submission job (JSxxxxx)\n"
-        "- A validation job (JVxxxxx)\n\n"
-        "The uploaded data is validated and queued for ETL processing before being ingested into the product catalog."
+        "- A validation job (JVxxxxx)\n"
+        "- ETL processing (transform + load)\n\n"
+        "Product ingestion uses idempotent upsert logic to prevent duplicate records."
     ),
     responses={
         400: {"model": ErrorResponse, "description": "Invalid CSV file"},
@@ -223,17 +225,55 @@ async def upload_feed(
                 "queued",
                 now,
                 feed_id,
-                "CSV structure validation pending ETL processing."
+                "ETL processing pending."
             )
         )
 
         if DB_TYPE == "postgres":
             conn.commit()
 
+    # ✅ Run ETL immediately
+    try:
+        process_feed(feed_id)
+
+        # Update feed status after successful processing
+        with get_connection() as conn:
+            conn.execute(
+                q("""
+                    UPDATE feeds
+                    SET status = ?
+                    WHERE feed_id = ?
+                """),
+                ("processed", feed_id),
+            )
+
+            if DB_TYPE == "postgres":
+                conn.commit()
+
+    except Exception as exc:
+        # If ETL fails, mark feed accordingly
+        with get_connection() as conn:
+            conn.execute(
+                q("""
+                    UPDATE feeds
+                    SET status = ?
+                    WHERE feed_id = ?
+                """),
+                ("failed", feed_id),
+            )
+
+            if DB_TYPE == "postgres":
+                conn.commit()
+
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Feed uploaded but ETL failed: {exc}"
+        )
+
     return {
         "feed_id": feed_id,
         "job_id": submission_job_id,
-        "status": "uploaded"
+        "status": "processed"
     }
 
 
@@ -242,10 +282,6 @@ async def upload_feed(
     response_model=FeedResponse,
     responses={404: {"model": ErrorResponse, "description": "Feed not found"}},
     summary="Retrieve feed details",
-    description=(
-        "Retrieves metadata for a specific feed, including upload status, "
-        "associated validation job details, and raw file storage metadata."
-    ),
 )
 async def read_feed(feed_id: str):
     with get_connection() as conn:

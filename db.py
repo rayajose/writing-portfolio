@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -32,20 +33,12 @@ def q(sql: str) -> str:
 
 def get_connection():
     if DB_TYPE == "sqlite":
-        # print("USING SQLITE")
         import sqlite3
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
         return conn
 
     if DB_TYPE == "postgres":
-        """
-        print("USING POSTGRES")
-        print("POSTGRES HOST =", DB_HOST)
-        print("POSTGRES PORT =", DB_PORT)
-        print("POSTGRES DB =", DB_NAME)
-        print("POSTGRES USER =", DB_USER)
-        """
         import psycopg
         return psycopg.connect(
             host=DB_HOST,
@@ -60,7 +53,9 @@ def get_connection():
 
 def init_db() -> None:
     with get_connection() as conn:
+
         if DB_TYPE == "sqlite":
+
             conn.execute(q("""
                 CREATE TABLE IF NOT EXISTS id_counters (
                     prefix TEXT PRIMARY KEY,
@@ -110,8 +105,16 @@ def init_db() -> None:
                 )
             """))
 
+            # ✅ Duplicate prevention
+            conn.execute(q("""
+                CREATE UNIQUE INDEX IF NOT EXISTS idx_products_partner_sku
+                ON products (partner_name, sku)
+            """))
+
         elif DB_TYPE == "postgres":
-            with conn.cursor() as cur:
+
+            cur = conn.cursor()
+            try:
                 cur.execute(q("""
                     CREATE TABLE IF NOT EXISTS id_counters (
                         prefix TEXT PRIMARY KEY,
@@ -161,6 +164,15 @@ def init_db() -> None:
                     )
                 """))
 
+                # ✅ Duplicate prevention
+                cur.execute(q("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS idx_products_partner_sku
+                    ON products (partner_name, sku)
+                """))
+
+            finally:
+                cur.close()
+
             conn.commit()
 
         else:
@@ -169,7 +181,8 @@ def init_db() -> None:
 
 def _next_id_with_conn(conn, prefix: str) -> str:
     if DB_TYPE == "postgres":
-        with conn.cursor() as cur:
+        cur = conn.cursor()
+        try:
             cur.execute(
                 q("SELECT last_value FROM id_counters WHERE prefix = ?"),
                 (prefix,)
@@ -188,6 +201,8 @@ def _next_id_with_conn(conn, prefix: str) -> str:
                     q("UPDATE id_counters SET last_value = ? WHERE prefix = ?"),
                     (next_value, prefix)
                 )
+        finally:
+            cur.close()
     else:
         row = conn.execute(
             q("SELECT last_value FROM id_counters WHERE prefix = ?"),

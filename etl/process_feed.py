@@ -5,7 +5,7 @@ import io
 
 import boto3
 
-from db import get_connection, q, DB_TYPE, next_product_id_with_conn
+from db import DB_TYPE, get_connection, next_product_id_with_conn, q
 from services.s3_service import S3_RAW_BUCKET
 from utils import utc_now_iso
 
@@ -30,7 +30,7 @@ def parse_price(value: str | None) -> float | None:
         return None
 
 
-def update_validation_job(feed_id: str, status: str, message: str) -> None:
+def update_validation_job(feed_id_value: str, status: str, message: str) -> None:
     with get_connection() as conn:
         conn.execute(
             q("""
@@ -39,14 +39,14 @@ def update_validation_job(feed_id: str, status: str, message: str) -> None:
                 WHERE feed_id = ?
                   AND job_type = 'validation'
             """),
-            (status, message, feed_id),
+            (status, message, feed_id_value),
         )
 
         if DB_TYPE == "postgres":
             conn.commit()
 
 
-def get_feed(feed_id: str) -> dict:
+def get_feed(feed_id_value: str) -> dict:
     with get_connection() as conn:
         feed = conn.execute(
             q("""
@@ -58,11 +58,11 @@ def get_feed(feed_id: str) -> dict:
                 FROM feeds
                 WHERE feed_id = ?
             """),
-            (feed_id,),
+            (feed_id_value,),
         ).fetchone()
 
     if not feed:
-        raise ValueError(f"Feed {feed_id} not found.")
+        raise ValueError(f"Feed {feed_id_value} not found.")
 
     if DB_TYPE == "sqlite":
         feed = dict(feed)
@@ -75,7 +75,7 @@ def get_feed(feed_id: str) -> dict:
         }
 
     if not feed["raw_file_s3_key"]:
-        raise ValueError(f"Feed {feed_id} does not have an S3 raw file key.")
+        raise ValueError(f"Feed {feed_id_value} does not have an S3 raw file key.")
 
     return feed
 
@@ -94,9 +94,14 @@ def read_csv_from_s3(bucket: str, object_key: str) -> list[dict]:
     return list(reader)
 
 
-def load_products(feed: dict, rows: list[dict]) -> int:
+def load_products(feed: dict, rows: list[dict]) -> dict:
     now = utc_now_iso()
-    products_ingested = 0
+
+    summary = {
+        "inserted": 0,
+        "updated": 0,
+        "skipped": 0,
+    }
 
     with get_connection() as conn:
         for row in rows:
@@ -104,9 +109,32 @@ def load_products(feed: dict, rows: list[dict]) -> int:
             product_name = clean_value(row.get("product_name"))
 
             if not sku or not product_name:
+                summary["skipped"] += 1
                 continue
 
-            product_id = next_product_id_with_conn(conn)
+            existing_product = conn.execute(
+                q("""
+                    SELECT product_id
+                    FROM products
+                    WHERE partner_name = ?
+                      AND sku = ?
+                """),
+                (
+                    feed["partner_name"],
+                    sku,
+                ),
+            ).fetchone()
+
+            if existing_product:
+                product_id = (
+                    existing_product["product_id"]
+                    if DB_TYPE == "sqlite"
+                    else existing_product[0]
+                )
+                summary["updated"] += 1
+            else:
+                product_id = next_product_id_with_conn(conn)
+                summary["inserted"] += 1
 
             conn.execute(
                 q("""
@@ -125,6 +153,16 @@ def load_products(feed: dict, rows: list[dict]) -> int:
                         created_at
                     )
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ON CONFLICT (partner_name, sku)
+                    DO UPDATE SET
+                        feed_id = EXCLUDED.feed_id,
+                        product_name = EXCLUDED.product_name,
+                        description = EXCLUDED.description,
+                        brand = EXCLUDED.brand,
+                        category = EXCLUDED.category,
+                        price = EXCLUDED.price,
+                        currency = EXCLUDED.currency,
+                        availability = EXCLUDED.availability
                 """),
                 (
                     product_id,
@@ -142,23 +180,21 @@ def load_products(feed: dict, rows: list[dict]) -> int:
                 ),
             )
 
-            products_ingested += 1
-
         if DB_TYPE == "postgres":
             conn.commit()
 
-    return products_ingested
+    return summary
 
 
-def process_feed(feed_id: str) -> None:
+def process_feed(feed_id_value: str) -> None:
     try:
         update_validation_job(
-            feed_id=feed_id,
+            feed_id_value=feed_id_value,
             status="running",
             message="ETL processing started.",
         )
 
-        feed = get_feed(feed_id)
+        feed = get_feed(feed_id_value)
         bucket = feed["raw_file_bucket"] or S3_RAW_BUCKET
 
         rows = read_csv_from_s3(
@@ -166,20 +202,30 @@ def process_feed(feed_id: str) -> None:
             object_key=feed["raw_file_s3_key"],
         )
 
-        products_ingested = load_products(feed, rows)
+        summary = load_products(feed, rows)
+        products_processed = summary["inserted"] + summary["updated"]
 
         update_validation_job(
-            feed_id=feed_id,
+            feed_id_value=feed_id_value,
             status="completed",
-            message=f"ETL processing completed. Products ingested: {products_ingested}.",
+            message=(
+                "ETL processing completed. "
+                f"Products processed: {products_processed}. "
+                f"Inserted: {summary['inserted']}. "
+                f"Updated: {summary['updated']}. "
+                f"Skipped: {summary['skipped']}."
+            ),
         )
 
-        print(f"Processed feed {feed_id}")
-        print(f"Products ingested: {products_ingested}")
+        print(f"Processed feed {feed_id_value}")
+        print(f"Products processed: {products_processed}")
+        print(f"Products inserted: {summary['inserted']}")
+        print(f"Products updated: {summary['updated']}")
+        print(f"Products skipped: {summary['skipped']}")
 
     except Exception as exc:
         update_validation_job(
-            feed_id=feed_id,
+            feed_id_value=feed_id_value,
             status="failed",
             message=f"ETL processing failed: {exc}",
         )
@@ -187,5 +233,5 @@ def process_feed(feed_id: str) -> None:
 
 
 if __name__ == "__main__":
-    feed_id = input("Enter feed ID to process: ").strip()
-    process_feed(feed_id)
+    requested_feed_id = input("Enter feed ID to process: ").strip()
+    process_feed(requested_feed_id)
