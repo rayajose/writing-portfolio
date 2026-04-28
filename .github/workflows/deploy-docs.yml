@@ -36,10 +36,17 @@ jobs:
       - name: Install Pandoc
         uses: pandoc/actions/setup@v1
 
+      - name: Install PDF dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-xetex texlive-fonts-recommended texlive-plain-generic
+
       - name: Generate resume PDF
         run: |
           mkdir -p docs/assets
-          pandoc docs/resume.md -o docs/assets/resume.pdf
+          pandoc docs/resume.md \
+            --pdf-engine=xelatex \
+            -o docs/assets/resume.pdf
 
       - name: Build site
         run: python -m mkdocs build
