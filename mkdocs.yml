@@ -48,6 +48,7 @@ repo_url: https://github.com/rayajose/partner-catalog-api
 nav:
   - Home: index.md
   - About: about.md
+  - Resume: resume.md
   - Getting Started: getting_started.md
   - Architecture: architecture.md
   - Deployment: deployment.md
