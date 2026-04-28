@@ -1,0 +1,2167 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://rayajose.github.io/partner-catalog-api/architecture/">
+      
+      
+        <link rel="prev" href="../getting_started/">
+      
+      
+        <link rel="next" href="../deployment/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Architecture - Partner Catalog API Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  <meta property="og:title" content="Partner Catalog API — Cloud Ingestion & ETL Platform">
+  <meta property="og:description" content="API-driven ingestion pipeline using S3, ETL processing, and PostgreSQL">
+  <meta property="og:image" content="https://rayajose.github.io/partner-catalog-api/assets/preview.png">
+  <meta property="og:type" content="website">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Partner Catalog API Docs" class="md-header__button md-logo" aria-label="Partner Catalog API Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Partner Catalog API Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/rayajose/partner-catalog-api" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting_started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../deployment/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Deployment
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../screenshots/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Screenshots
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../feeds/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Feeds API
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../products/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Products API
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../jobs/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Jobs API
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../workflows/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Workflows
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../errors/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Errors
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../sdk-python/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Python SDK Guide
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Partner Catalog API Docs" class="md-nav__button md-logo" aria-label="Partner Catalog API Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Partner Catalog API Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/rayajose/partner-catalog-api" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#system-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Diagram
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#router-layer-routers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Router Layer (routers/)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-service-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application / Service Layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-access-layer-dbpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Access Layer (db.py)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Layer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage Layer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#amazon-s3-raw-data-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amazon S3 (Raw Data Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-processed-data-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PostgreSQL (Processed Data Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#feed-ingestion-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feed Ingestion Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etl-processing-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ETL Processing Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#product-query-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Product Query Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identifier-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identifier Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#job-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Job Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#submission-job-jsxxxxx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Submission Job (JSxxxxx)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-job-jvxxxxx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation Job (JVxxxxx)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#job-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-mapping-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Mapping Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-architecture-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment Architecture (AWS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reliability-and-health-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reliability and Health Monitoring
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-and-developer-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation and Developer Experience
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#separation-of-concerns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Separation of Concerns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raw-vs-processed-data-separation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw vs Processed Data Separation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controlled-job-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controlled Job Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cursor-based-pagination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cursor-Based Pagination
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-native-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud-Native Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Enhancements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Documentation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../screenshots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshots
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feeds/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feeds API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../products/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Products API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jobs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Jobs API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workflows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdk-python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python SDK Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#system-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Diagram
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#router-layer-routers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Router Layer (routers/)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-service-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application / Service Layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-access-layer-dbpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Access Layer (db.py)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Layer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage Layer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#amazon-s3-raw-data-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amazon S3 (Raw Data Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-processed-data-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PostgreSQL (Processed Data Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#feed-ingestion-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feed Ingestion Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etl-processing-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ETL Processing Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#product-query-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Product Query Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identifier-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identifier Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#job-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Job Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#submission-job-jsxxxxx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Submission Job (JSxxxxx)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-job-jvxxxxx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation Job (JVxxxxx)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#job-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-mapping-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Mapping Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-architecture-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment Architecture (AWS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reliability-and-health-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reliability and Health Monitoring
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-and-developer-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation and Developer Experience
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#separation-of-concerns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Separation of Concerns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raw-vs-processed-data-separation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw vs Processed Data Separation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controlled-job-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controlled Job Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cursor-based-pagination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cursor-Based Pagination
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-native-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud-Native Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Enhancements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Documentation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="architecture">Architecture</h1>
+<p>This document describes the high-level architecture of the Partner Catalog API, including its components, data flow, and key design decisions.</p>
+<hr />
+<h2 id="system-overview">System Overview</h2>
+<p>The Partner Catalog API is a layered REST application designed to:</p>
+<ul>
+<li>Ingest partner product feeds (CSV)</li>
+<li>Store raw feed data in Amazon S3</li>
+<li>Track processing using job resources</li>
+<li>Execute ETL processing to transform and load data</li>
+<li>Persist structured product data in a relational database</li>
+<li>Expose product data through queryable endpoints</li>
+</ul>
+<p>The system models a real-world ingestion pipeline with clear separation between raw data storage, processing, and serving layers.</p>
+<hr />
+<h2 id="architecture-diagram">Architecture Diagram</h2>
+<p>The following diagram illustrates the high-level system architecture and request flow:</p>
+<pre class="mermaid"><code>flowchart TD
+
+    Client["Client&lt;br&gt;(curl / Postman / Swagger UI)"]
+
+    ALB["Application Load Balancer&lt;br&gt;(Public Endpoint)"]
+
+    ECS["Amazon ECS Fargate&lt;br&gt;FastAPI Container"]
+
+    S3["Amazon S3&lt;br&gt;Raw Data Layer"]
+
+    ETL["ETL Processing&lt;br&gt;(process_feed)"]
+
+    DB["Amazon RDS&lt;br&gt;PostgreSQL Database"]
+
+    ECR["Amazon ECR&lt;br&gt;Container Registry"]
+
+    Docs["MkDocs&lt;br&gt;GitHub Pages"]
+
+    Client --&gt;|HTTP Request| ALB
+    ALB --&gt;|Route Traffic| ECS
+
+    ECS --&gt;|Store Raw Feed| S3
+    ECS --&gt;|Trigger ETL| ETL
+
+    ETL --&gt;|Load Products| DB
+
+    ECS --&gt;|Read/Write| DB
+    ECS --&gt;|Pull Image| ECR
+
+    Client --&gt;|View Docs| Docs</code></pre>
+<p>This architecture separates compute, storage, and networking concerns while introducing a dedicated raw data layer and processing pipeline.</p>
+<hr />
+<h2 id="architecture-layers">Architecture Layers</h2>
+<div class="highlight"><pre><span></span><code>Client (curl / Postman / Swagger UI)
+        ↓
+Router Layer (FastAPI endpoints)
+        ↓
+Application / Service Layer (ETL, S3 integration)
+        ↓
+Data Access Layer (db.py)
+        ↓
+Storage Layer:
+  - Amazon S3 (raw data)
+  - PostgreSQL (processed data)
+</code></pre></div>
+<hr />
+<h2 id="router-layer-routers">Router Layer (<code>routers/</code>)</h2>
+<p>The router layer handles HTTP interactions and orchestrates application behavior.</p>
+<p>Responsibilities:</p>
+<ul>
+<li>Request/response handling</li>
+<li>Input validation using FastAPI and Pydantic</li>
+<li>API key authentication</li>
+<li>Triggering job execution and ETL processing</li>
+<li>Routing requests to the data and service layers</li>
+</ul>
+<p>Example endpoints:</p>
+<ul>
+<li><code>POST /feeds/upload</code></li>
+<li><code>GET /feeds/{feed_id}</code></li>
+<li><code>GET /jobs/{job_id}</code></li>
+<li><code>POST /jobs/{job_id}/run</code></li>
+<li><code>GET /products</code></li>
+</ul>
+<hr />
+<h2 id="application-service-layer">Application / Service Layer</h2>
+<p>This layer contains processing logic and integrations.</p>
+<p>Responsibilities:</p>
+<ul>
+<li>
+<p>ETL processing (<code>etl/process_feed.py</code>)</p>
+</li>
+<li>
+<p>Extract data from S3</p>
+</li>
+<li>Transform and clean CSV data</li>
+<li>Load into PostgreSQL</li>
+<li>S3 integration for raw file storage</li>
+<li>Job status updates and pipeline coordination</li>
+</ul>
+<p>This layer separates processing logic from HTTP and persistence concerns.</p>
+<hr />
+<h2 id="data-access-layer-dbpy">Data Access Layer (<code>db.py</code>)</h2>
+<p>This layer encapsulates all database interactions.</p>
+<p>Responsibilities:</p>
+<ul>
+<li>Managing database connections (SQLite for local, PostgreSQL in production)</li>
+<li>Performing CRUD operations</li>
+<li>Generating structured identifiers</li>
+<li>Supporting filtering, sorting, and pagination</li>
+<li>Mapping database records to API response schemas</li>
+</ul>
+<hr />
+<h2 id="storage-layer">Storage Layer</h2>
+<h3 id="amazon-s3-raw-data-layer">Amazon S3 (Raw Data Layer)</h3>
+<ul>
+<li>Stores uploaded CSV files</li>
+<li>Acts as the system of record for raw partner data</li>
+<li>Enables reprocessing and auditability</li>
+</ul>
+<p>Example object key:</p>
+<div class="highlight"><pre><span></span><code>raw/partners/{partner_name}/feeds/{feed_id}/{filename}.csv
+</code></pre></div>
+<hr />
+<h3 id="postgresql-processed-data-layer">PostgreSQL (Processed Data Layer)</h3>
+<p>Stores normalized and queryable data.</p>
+<p>Core tables:</p>
+<ul>
+<li><code>feeds</code></li>
+<li><code>jobs</code></li>
+<li><code>products</code></li>
+<li><code>id_counters</code></li>
+</ul>
+<hr />
+<h2 id="data-flow">Data Flow</h2>
+<h3 id="feed-ingestion-workflow">Feed Ingestion Workflow</h3>
+<div class="highlight"><pre><span></span><code>Client
+  ↓
+POST /feeds/upload
+  ↓
+Validate CSV structure
+  ↓
+Store raw file in S3
+  ↓
+Generate IDs (FDxxxxx, JSxxxxx, JVxxxxx)
+  ↓
+Persist feed metadata
+  ↓
+Create submission + validation jobs
+  ↓
+Return response (no ingestion yet)
+</code></pre></div>
+<hr />
+<h3 id="etl-processing-workflow">ETL Processing Workflow</h3>
+<div class="highlight"><pre><span></span><code>POST /jobs/{job_id}/run
+  ↓
+Fetch feed metadata (S3 key + bucket)
+  ↓
+Read CSV from S3
+  ↓
+Clean and transform data
+  ↓
+Insert into products table
+  ↓
+Update job status and message
+</code></pre></div>
+<hr />
+<h3 id="product-query-workflow">Product Query Workflow</h3>
+<div class="highlight"><pre><span></span><code>Client
+  ↓
+GET /products
+  ↓
+Apply filters, sorting, pagination
+  ↓
+Query database
+  ↓
+Map DB fields → API response schema
+  ↓
+Return response (items + next_cursor)
+</code></pre></div>
+<hr />
+<h2 id="identifier-strategy">Identifier Strategy</h2>
+<p>The API uses structured identifiers to ensure traceability.</p>
+<table>
+<thead>
+<tr>
+<th>Prefix</th>
+<th>Resource</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FD</td>
+<td>Feed</td>
+<td>FD00001</td>
+</tr>
+<tr>
+<td>JS</td>
+<td>Submission Job</td>
+<td>JS00001</td>
+</tr>
+<tr>
+<td>JV</td>
+<td>Validation Job</td>
+<td>JV00001</td>
+</tr>
+<tr>
+<td>PR</td>
+<td>Product</td>
+<td>PR00001</td>
+</tr>
+</tbody>
+</table>
+<p>Identifiers are generated using a database-backed counter.</p>
+<hr />
+<h2 id="job-model">Job Model</h2>
+<p>Each feed submission generates two job resources:</p>
+<h3 id="submission-job-jsxxxxx">Submission Job (<code>JSxxxxx</code>)</h3>
+<ul>
+<li>Tracks feed upload processing</li>
+<li>Typically completes immediately</li>
+</ul>
+<h3 id="validation-job-jvxxxxx">Validation Job (<code>JVxxxxx</code>)</h3>
+<ul>
+<li>Executes ETL processing</li>
+<li>Reads raw data from S3</li>
+<li>Transforms and loads product data into PostgreSQL</li>
+<li>Updates job status and ingestion results</li>
+</ul>
+<p>Jobs are executed via:</p>
+<div class="highlight"><pre><span></span><code>POST /jobs/{job_id}/run
+</code></pre></div>
+<hr />
+<h2 id="job-lifecycle">Job Lifecycle</h2>
+<div class="highlight"><pre><span></span><code>queued → running → completed
+                ↘ failed
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>queued</td>
+<td>Job created and awaiting execution</td>
+</tr>
+<tr>
+<td>running</td>
+<td>ETL processing in progress</td>
+</tr>
+<tr>
+<td>completed</td>
+<td>Job finished successfully</td>
+</tr>
+<tr>
+<td>failed</td>
+<td>Job encountered an error</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="data-mapping-strategy">Data Mapping Strategy</h2>
+<p>The system separates internal storage models from API representations.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Field Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Database</td>
+<td><code>filename</code></td>
+</tr>
+<tr>
+<td>API Response</td>
+<td><code>file_name</code></td>
+</tr>
+</tbody>
+</table>
+<p>This approach:</p>
+<ul>
+<li>Maintains consistent API naming conventions</li>
+<li>Allows internal schema flexibility</li>
+<li>Decouples storage from presentation</li>
+</ul>
+<hr />
+<h2 id="deployment-architecture-aws">Deployment Architecture (AWS)</h2>
+<p>The application is deployed using a container-based architecture:</p>
+<ul>
+<li><strong>Amazon ECS Fargate</strong> runs the FastAPI application</li>
+<li><strong>Amazon RDS (PostgreSQL)</strong> provides persistent storage</li>
+<li><strong>Amazon S3</strong> stores raw feed data</li>
+<li><strong>Application Load Balancer (ALB)</strong> exposes a public endpoint</li>
+<li><strong>Amazon ECR</strong> stores container images</li>
+</ul>
+<hr />
+<h2 id="reliability-and-health-monitoring">Reliability and Health Monitoring</h2>
+<ul>
+<li>ECS maintains desired task count</li>
+<li>ALB performs health checks</li>
+<li>Failed containers are automatically replaced</li>
+<li>Database availability is managed by RDS</li>
+</ul>
+<hr />
+<h2 id="documentation-and-developer-experience">Documentation and Developer Experience</h2>
+<ul>
+<li>Swagger UI (<code>/docs</code>) for interactive API exploration</li>
+<li>MkDocs static documentation hosted on GitHub Pages</li>
+<li>Consistent request/response formats for ease of use</li>
+</ul>
+<hr />
+<h2 id="design-decisions">Design Decisions</h2>
+<h3 id="separation-of-concerns">Separation of Concerns</h3>
+<ul>
+<li>Router layer handles HTTP</li>
+<li>Service layer handles ETL and integrations</li>
+<li>Data layer handles persistence</li>
+<li>Storage layers separate raw and processed data</li>
+</ul>
+<hr />
+<h3 id="raw-vs-processed-data-separation">Raw vs Processed Data Separation</h3>
+<ul>
+<li>S3 stores immutable raw data</li>
+<li>PostgreSQL stores normalized queryable data</li>
+</ul>
+<p>This enables reprocessing, auditing, and scalability.</p>
+<hr />
+<h3 id="controlled-job-execution">Controlled Job Execution</h3>
+<ul>
+<li>Jobs are triggered via API</li>
+<li>Execution is synchronous (current state)</li>
+<li>Designed for future async processing</li>
+</ul>
+<hr />
+<h3 id="cursor-based-pagination">Cursor-Based Pagination</h3>
+<ul>
+<li>Uses <code>product_id</code> as cursor</li>
+<li>Avoids offset performance issues</li>
+<li>Scales efficiently with large datasets</li>
+</ul>
+<hr />
+<h3 id="cloud-native-deployment">Cloud-Native Deployment</h3>
+<ul>
+<li>Containerized application (Docker)</li>
+<li>Serverless compute (ECS Fargate)</li>
+<li>Managed storage (S3 + RDS)</li>
+<li>Load-balanced public access (ALB)</li>
+</ul>
+<hr />
+<h2 id="future-enhancements">Future Enhancements</h2>
+<ul>
+<li>Asynchronous job processing (queues/workers)</li>
+<li>Event-driven ingestion pipelines</li>
+<li>Advanced validation rules</li>
+<li>Horizontal scaling with multiple workers</li>
+<li>Read replicas for database scaling</li>
+<li>Infrastructure as Code (Terraform / CloudFormation)</li>
+</ul>
+<hr />
+<h2 id="project-structure">Project Structure</h2>
+<div class="highlight"><pre><span></span><code>app/
+  main.py
+  db.py
+  security.py
+  settings.py
+  routers/
+    feeds.py
+    jobs.py
+    products.py
+  schemas/
+    feeds.py
+    jobs.py
+    products.py
+    common.py
+  etl/
+    process_feed.py
+  services/
+    s3_service.py
+  docs/
+    *.md
+</code></pre></div>
+<hr />
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="../">Index</a></li>
+<li><a href="../feeds/">Feeds API</a></li>
+<li><a href="../jobs/">Jobs API</a></li>
+<li><a href="../products/">Products API</a></li>
+<li><a href="../workflows/">Workflows</a></li>
+<li><a href="../errors/">Errors</a></li>
+</ul>
+<p>For deployment evidence, see <a href="../screenshots/">Screenshots</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/rayajose/partner-catalog-api" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
