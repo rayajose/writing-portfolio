@@ -52,10 +52,15 @@ Deployed on AWS using ECS Fargate, RDS (PostgreSQL), and S3 for raw data storage
 
 Interactive API (Swagger UI):
 
-[http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs](http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs)
+<p>
+<a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com" target="_blank">http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com</a>
+</p>
+
 
 ---
 
 ## Source Code
 
-[https://github.com/rayajose/partner-catalog-api](https://github.com/rayajose/partner-catalog-api)
+<p>
+<a href="https://github.com/rayajose/partner-catalog-api" target="_blank">https://github.com/rayajose/partner-catalog-api</a>
+</p>
