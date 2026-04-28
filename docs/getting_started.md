@@ -8,13 +8,19 @@ This guide helps you quickly begin using the Partner Catalog API, including auth
 
 Local:
 
-```
+```text id="w2z0yo"
 http://localhost:8000
 ```
 
 Production:
 
+```text id="n8g2k7"
+http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
 ```
+
+Interactive API (Swagger UI):
+
+```text id="t6b5hj"
 http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
 ```
 
@@ -24,17 +30,17 @@ http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
 
 All requests require an API key passed in the request header:
 
-```
+```text id="q4l7cx"
 x-api-key: demo-secret-key
 ```
 
 ---
 
-## Example Request
+## Quick Example
 
 Retrieve a list of products:
 
-```bash
+```bash id="2jfq0r"
 curl -X GET "http://localhost:8000/products?limit=5" \
   -H "x-api-key: demo-secret-key"
 ```
@@ -43,9 +49,9 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 
 ## Example Response
 
-```json
+```json id="7e5mxl"
 {
-  "count": 10,
+  "count": 1,
   "items": [
     {
       "product_id": "PR00001",
@@ -67,6 +73,20 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 
 ---
 
+## Important Note
+
+Product data is only available **after ETL processing completes**.
+
+Typical workflow:
+
+```text id="gqf3al"
+Upload feed → Run ETL job → Query products
+```
+
+See [Workflows](workflows.md) for the full ingestion process.
+
+---
+
 ## Common Query Parameters
 
 ### Pagination
@@ -75,6 +95,8 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 |-----------|-----------------------------------------------------|
 | `limit`   | Number of results to return (default: 10, max: 100) |
 | `cursor`  | Cursor for retrieving the next page of results      |
+
+---
 
 ### Filtering
 
@@ -86,11 +108,13 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 | `category`     | Filter by category     |
 | `availability` | Filter by availability |
 
+---
+
 ### Sorting
 
 | Parameter | Description                                                    |
 |-----------|----------------------------------------------------------------|
-| `sort_by` | Field to sort by (e.g., `price`, `created_at`, `product_name`) |
+| `sort_by` | Field to sort by (`price`, `created_at`, `product_name`, etc.) |
 | `order`   | Sort order: `asc` or `desc`                                    |
 
 ---
@@ -99,19 +123,20 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 
 The API uses standard HTTP status codes:
 
-| Status Code | Meaning                                   |
-|-------------|-------------------------------------------|
-| 200         | Request successful                        |
-| 400         | Bad request (invalid input)               |
-| 401         | Unauthorized (missing or invalid API key) |
-| 404         | Resource not found                        |
-| 500         | Internal server error                     |
+| Status Code | Meaning                                                |
+|-------------|--------------------------------------------------------|
+| 200         | Request successful                                     |
+| 400         | Bad request (invalid input or business rule violation) |
+| 401         | Unauthorized (missing API key)                         |
+| 403         | Forbidden (invalid API key)                            |
+| 404         | Resource not found                                     |
+| 500         | Internal server error                                  |
 
 ### Example Error Response
 
-```json
+```json id="r3k0t8"
 {
-  "detail": "Invalid API key"
+  "detail": "Invalid or missing API key"
 }
 ```
 
@@ -119,9 +144,9 @@ The API uses standard HTTP status codes:
 
 ## Next Steps
 
-* Review the [Feeds](feeds.md) endpoint for uploading product feeds
-* Explore [Products](products.md) for querying catalog data
-* Check [Jobs](jobs.md) for tracking background processing
-* Follow [Workflows](workflows.md) for end-to-end usage examples
+* Start with [Workflows](workflows.md) to understand the full ingestion pipeline
+* Review [Feeds](feeds.md) for uploading product feeds
+* Explore [Jobs](jobs.md) for ETL execution and status tracking
+* Use [Products](products.md) for querying catalog data
 
 ---

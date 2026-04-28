@@ -12,9 +12,11 @@ The application is deployed using the following AWS services:
 
 * **FastAPI** — application runtime (Docker container)
 * **Amazon ECS (Fargate)** — serverless container orchestration
-* **Amazon RDS (PostgreSQL)** — relational database
+* **Amazon RDS (PostgreSQL)** — relational database (processed data)
+* **Amazon S3** — raw data layer for uploaded feed files
 * **Application Load Balancer (ALB)** — public HTTP endpoint and traffic routing
 * **Amazon ECR** — container image registry
+
 
 ---
 
@@ -89,6 +91,13 @@ http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
 * Port: 5432
 * Database name: `partner_catalog`
 
+## Raw Data Storage (S3)
+
+* Stores uploaded CSV feed files
+* Acts as the system of record for raw partner data
+* Used by the ETL process to extract and transform data
+* Enables reprocessing and auditability
+
 ### Security Group
 
 ```text
@@ -124,6 +133,29 @@ DB_NAME=partner_catalog
 DB_USER=postgres
 DB_PASSWORD=<secured>
 ```
+
+### Optional (S3 Configuration)
+
+```text
+S3_RAW_BUCKET=partner-catalog-raw-rayj
+```
+
+* Defines the S3 bucket used to store raw feed files
+* Used by the ETL process to locate and read uploaded data
+* Can be externalized for different environments (dev, staging, prod)
+
+
+---
+
+## S3 and ETL Integration
+
+* Raw feed files are stored in Amazon S3
+* The application uses AWS SDK (`boto3`) to read files during ETL processing
+* ETL is triggered via API (`POST /jobs/{job_id}/run`)
+* The ECS task must have network access to S3
+
+> Note: IAM permissions for S3 access are required in a production setup (not fully configured in this demo).
+
 
 ---
 
@@ -265,6 +297,10 @@ To reduce cost:
 * Database schema is initialized at application startup (`init_db()`)
 * The database must be reachable for the container to start successfully
 * Single-task deployments may experience brief downtime during updates
+* ETL processing is executed on-demand via the Jobs API
+* Product data is loaded into PostgreSQL only after ETL completes
+* Raw data remains stored in S3 for reprocessing and auditability
+
 
 ---
 

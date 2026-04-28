@@ -9,12 +9,13 @@ This document describes the high-level architecture of the Partner Catalog API, 
 The Partner Catalog API is a layered REST application designed to:
 
 * Ingest partner product feeds (CSV)
-* Validate feed structure and content
+* Store raw feed data in Amazon S3
 * Track processing using job resources
-* Persist data in a relational database
+* Execute ETL processing to transform and load data
+* Persist structured product data in a relational database
 * Expose product data through queryable endpoints
 
-The system is designed to simulate real-world ingestion pipelines while maintaining a clean separation between API, data access, and persistence layers.
+The system models a real-world ingestion pipeline with clear separation between raw data storage, processing, and serving layers.
 
 ---
 
@@ -31,6 +32,10 @@ flowchart TD
 
     ECS["Amazon ECS Fargate<br>FastAPI Container"]
 
+    S3["Amazon S3<br>Raw Data Layer"]
+
+    ETL["ETL Processing<br>(process_feed)"]
+
     DB["Amazon RDS<br>PostgreSQL Database"]
 
     ECR["Amazon ECR<br>Container Registry"]
@@ -39,13 +44,21 @@ flowchart TD
 
     Client -->|HTTP Request| ALB
     ALB -->|Route Traffic| ECS
-    ECS -->|Read/Write| DB
 
+    ECS -->|Store Raw Feed| S3
+    ECS -->|Trigger ETL| ETL
+
+    ETL -->|Load Products| DB
+
+    ECS -->|Read/Write| DB
     ECS -->|Pull Image| ECR
 
     Client -->|View Docs| Docs
 ```
-This architecture separates compute, storage, and networking concerns, enabling scalable and fault-tolerant API deployment.
+
+This architecture separates compute, storage, and networking concerns while introducing a dedicated raw data layer and processing pipeline.
+
+---
 
 ## Architecture Layers
 
@@ -54,59 +67,90 @@ Client (curl / Postman / Swagger UI)
         ↓
 Router Layer (FastAPI endpoints)
         ↓
-Application / Data Access Layer (db.py)
+Application / Service Layer (ETL, S3 integration)
         ↓
-Database (PostgreSQL / SQLite for local)
+Data Access Layer (db.py)
+        ↓
+Storage Layer:
+  - Amazon S3 (raw data)
+  - PostgreSQL (processed data)
 ```
 
 ---
 
 ## Router Layer (`routers/`)
 
-The router layer is responsible for handling HTTP interactions and orchestrating application behavior.
+The router layer handles HTTP interactions and orchestrates application behavior.
 
 Responsibilities:
 
 * Request/response handling
 * Input validation using FastAPI and Pydantic
 * API key authentication
-* Routing requests to the data access layer
+* Triggering job execution and ETL processing
+* Routing requests to the data and service layers
 
 Example endpoints:
 
 * `POST /feeds/upload`
 * `GET /feeds/{feed_id}`
 * `GET /jobs/{job_id}`
+* `POST /jobs/{job_id}/run`
 * `GET /products`
 
 ---
 
-## Application / Data Access Layer (`db.py`)
+## Application / Service Layer
 
-This layer encapsulates all persistence and data transformation logic.
+This layer contains processing logic and integrations.
 
 Responsibilities:
 
-* Managing database connections (SQLite for local development, PostgreSQL in production)
-* Performing CRUD operations
-* Generating structured identifiers
-* Implementing filtering, sorting, and pagination
-* Mapping database records to API response schemas
+* ETL processing (`etl/process_feed.py`)
 
-This separation isolates business and persistence logic from HTTP concerns, improving maintainability and testability.
+  * Extract data from S3
+  * Transform and clean CSV data
+  * Load into PostgreSQL
+* S3 integration for raw file storage
+* Job status updates and pipeline coordination
+
+This layer separates processing logic from HTTP and persistence concerns.
 
 ---
 
-## Database Layer (PostgreSQL / SQLite)
+## Data Access Layer (`db.py`)
 
-The database layer provides persistent storage for all system data.
+This layer encapsulates all database interactions.
 
-Stored entities include:
+Responsibilities:
 
-* Feed metadata
-* Job metadata
-* Product records
-* Identifier counters
+* Managing database connections (SQLite for local, PostgreSQL in production)
+* Performing CRUD operations
+* Generating structured identifiers
+* Supporting filtering, sorting, and pagination
+* Mapping database records to API response schemas
+
+---
+
+## Storage Layer
+
+### Amazon S3 (Raw Data Layer)
+
+* Stores uploaded CSV files
+* Acts as the system of record for raw partner data
+* Enables reprocessing and auditability
+
+Example object key:
+
+```text
+raw/partners/{partner_name}/feeds/{feed_id}/{filename}.csv
+```
+
+---
+
+### PostgreSQL (Processed Data Layer)
+
+Stores normalized and queryable data.
 
 Core tables:
 
@@ -114,8 +158,6 @@ Core tables:
 * `jobs`
 * `products`
 * `id_counters`
-
-PostgreSQL is used in production (Amazon RDS), while SQLite is used for local development.
 
 ---
 
@@ -128,19 +170,35 @@ Client
   ↓
 POST /feeds/upload
   ↓
-Validate file (CSV structure + content)
+Validate CSV structure
+  ↓
+Store raw file in S3
   ↓
 Generate IDs (FDxxxxx, JSxxxxx, JVxxxxx)
   ↓
-Persist feed (feeds table)
+Persist feed metadata
   ↓
-Persist submission job (jobs table)
+Create submission + validation jobs
   ↓
-Persist validation job (jobs table)
+Return response (no ingestion yet)
+```
+
+---
+
+### ETL Processing Workflow
+
+```text
+POST /jobs/{job_id}/run
   ↓
-Parse and store products (products table)
+Fetch feed metadata (S3 key + bucket)
   ↓
-Return response to client
+Read CSV from S3
+  ↓
+Clean and transform data
+  ↓
+Insert into products table
+  ↓
+Update job status and message
 ```
 
 ---
@@ -165,35 +223,16 @@ Return response (items + next_cursor)
 
 ## Identifier Strategy
 
-The API uses structured identifiers to ensure traceability and consistency across resources.
+The API uses structured identifiers to ensure traceability.
 
 | Prefix | Resource       | Example |
-| ------ | -------------- | ------- |
+|--------|----------------|---------|
 | FD     | Feed           | FD00001 |
 | JS     | Submission Job | JS00001 |
 | JV     | Validation Job | JV00001 |
 | PR     | Product        | PR00001 |
 
-Identifiers are generated using a database-backed counter to ensure uniqueness and persistence across restarts.
-
----
-
-## Data Mapping Strategy
-
-The system separates internal storage models from external API representations.
-
-### Example
-
-| Layer        | Field Name  |
-| ------------ | ----------- |
-| Database     | `filename`  |
-| API Response | `file_name` |
-
-This mapping approach:
-
-* Maintains consistent API naming conventions (`snake_case`)
-* Allows internal schema flexibility
-* Decouples storage from presentation
+Identifiers are generated using a database-backed counter.
 
 ---
 
@@ -203,45 +242,83 @@ Each feed submission generates two job resources:
 
 ### Submission Job (`JSxxxxx`)
 
-* Tracks ingestion processing
+* Tracks feed upload processing
 * Typically completes immediately
 
 ### Validation Job (`JVxxxxx`)
 
-* Validates CSV structure and content
-* Determines feed readiness
+* Executes ETL processing
+* Reads raw data from S3
+* Transforms and loads product data into PostgreSQL
+* Updates job status and ingestion results
 
-Although jobs execute synchronously, they are modeled as asynchronous processes to support future extensibility.
+Jobs are executed via:
+
+```text
+POST /jobs/{job_id}/run
+```
+
+---
+
+## Job Lifecycle
+
+```text
+queued → running → completed
+                ↘ failed
+```
+
+| Status    | Description                        |
+|-----------|------------------------------------|
+| queued    | Job created and awaiting execution |
+| running   | ETL processing in progress         |
+| completed | Job finished successfully          |
+| failed    | Job encountered an error           |
+
+---
+
+## Data Mapping Strategy
+
+The system separates internal storage models from API representations.
+
+| Layer        | Field Name  |
+|--------------|-------------|
+| Database     | `filename`  |
+| API Response | `file_name` |
+
+This approach:
+
+* Maintains consistent API naming conventions
+* Allows internal schema flexibility
+* Decouples storage from presentation
 
 ---
 
 ## Deployment Architecture (AWS)
 
-The application is deployed using a container-based architecture on AWS:
+The application is deployed using a container-based architecture:
 
-* **Amazon ECS Fargate** runs the containerized FastAPI application
-* **Amazon RDS (PostgreSQL)** provides persistent relational storage
-* **Application Load Balancer (ALB)** exposes a public endpoint and routes traffic
-* **Amazon ECR** stores and versions container images
-
-This architecture enables scalable, fault-tolerant operation without managing underlying infrastructure.
+* **Amazon ECS Fargate** runs the FastAPI application
+* **Amazon RDS (PostgreSQL)** provides persistent storage
+* **Amazon S3** stores raw feed data
+* **Application Load Balancer (ALB)** exposes a public endpoint
+* **Amazon ECR** stores container images
 
 ---
 
 ## Reliability and Health Monitoring
 
-* ECS maintains the desired number of running tasks
-* The load balancer performs health checks to route traffic only to healthy instances
+* ECS maintains desired task count
+* ALB performs health checks
 * Failed containers are automatically replaced
-* Database availability is managed by Amazon RDS
+* Database availability is managed by RDS
 
 ---
 
 ## Documentation and Developer Experience
 
-* Interactive API documentation is available via Swagger UI (`/docs`)
-* Static documentation is generated with MkDocs and hosted on GitHub Pages
-* Consistent request and response formats improve usability for API consumers
+* Swagger UI (`/docs`) for interactive API exploration
+* MkDocs static documentation hosted on GitHub Pages
+* Consistent request/response formats for ease of use
 
 ---
 
@@ -249,65 +326,55 @@ This architecture enables scalable, fault-tolerant operation without managing un
 
 ### Separation of Concerns
 
-* Router layer handles HTTP interactions
-* Data layer handles persistence and transformation
-* Database layer manages storage
-
-This separation improves maintainability, scalability, and testability.
+* Router layer handles HTTP
+* Service layer handles ETL and integrations
+* Data layer handles persistence
+* Storage layers separate raw and processed data
 
 ---
 
-### Relational Persistence
+### Raw vs Processed Data Separation
 
-* SQLite for local development
-* PostgreSQL (RDS) for production
+* S3 stores immutable raw data
+* PostgreSQL stores normalized queryable data
 
-This approach provides a lightweight local setup while maintaining production realism.
+This enables reprocessing, auditing, and scalability.
+
+---
+
+### Controlled Job Execution
+
+* Jobs are triggered via API
+* Execution is synchronous (current state)
+* Designed for future async processing
 
 ---
 
 ### Cursor-Based Pagination
 
-* Uses `product_id` as a cursor
-* Avoids performance limitations of offset-based pagination
-* Supports efficient traversal of large datasets
-
----
-
-### Synchronous Execution with Asynchronous Modeling
-
-* Jobs execute immediately
-* Modeled as asynchronous to support future background processing
-
----
-
-### Consistent API Design
-
-* `snake_case` field naming
-* Predictable resource structures
-* Structured identifiers for traceability
+* Uses `product_id` as cursor
+* Avoids offset performance issues
+* Scales efficiently with large datasets
 
 ---
 
 ### Cloud-Native Deployment
 
 * Containerized application (Docker)
-* Serverless compute via ECS Fargate
-* Managed database (RDS)
-* Public access via ALB
+* Serverless compute (ECS Fargate)
+* Managed storage (S3 + RDS)
+* Load-balanced public access (ALB)
 
 ---
 
 ## Future Enhancements
 
-The architecture supports future evolution, including:
-
-* True asynchronous job processing (queues and workers)
-* Advanced filtering (ranges, full-text search)
+* Asynchronous job processing (queues/workers)
 * Event-driven ingestion pipelines
-* Horizontal scaling with multiple ECS tasks
+* Advanced validation rules
+* Horizontal scaling with multiple workers
 * Read replicas for database scaling
-* Infrastructure as Code (CloudFormation or Terraform)
+* Infrastructure as Code (Terraform / CloudFormation)
 
 ---
 
@@ -328,6 +395,10 @@ app/
     jobs.py
     products.py
     common.py
+  etl/
+    process_feed.py
+  services/
+    s3_service.py
   docs/
     *.md
 ```

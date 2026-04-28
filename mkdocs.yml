@@ -1,8 +1,15 @@
 site_name: Partner Catalog API Docs
 site_url: https://rayajose.github.io/partner-catalog-api/
 
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/rayajose/partner-catalog-api
+  social_image: assets/preview.png
+
 theme:
   name: material
+  custom_dir: docs/overrides
   features:
     - navigation.tabs
     - navigation.tabs.sticky
