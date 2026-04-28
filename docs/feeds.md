@@ -34,7 +34,7 @@ Content-Type: multipart/form-data
 **Form Data**
 
 | Field        | Type   | Required | Description                  |
-| ------------ | ------ | -------- | ---------------------------- |
+|--------------|--------|----------|------------------------------|
 | partner_name | string | yes      | Name of the partner          |
 | file         | file   | yes      | CSV file containing products |
 
@@ -139,7 +139,7 @@ GET /feeds/FD00001
 ### Field Definitions
 
 | Field              | Description                                             |
-| ------------------ | ------------------------------------------------------- |
+|--------------------|---------------------------------------------------------|
 | feed_id            | Unique feed identifier (FDxxxxx)                        |
 | partner_name       | Partner that submitted the feed                         |
 | file_name          | Original uploaded file name                             |
@@ -159,7 +159,7 @@ GET /feeds/FD00001
 The ETL pipeline processes each product row and categorizes the result:
 
 | Result    | Description                                                                   |
-| --------- | ----------------------------------------------------------------------------- |
+|-----------|-------------------------------------------------------------------------------|
 | Inserted  | New product (partner + SKU not previously seen)                               |
 | Updated   | Existing product where one or more fields changed (e.g., price, availability) |
 | Unchanged | Existing product where incoming data matches existing data                    |
