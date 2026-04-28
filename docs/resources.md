@@ -114,7 +114,7 @@ Returns the operational status of the API.
 
 **Response**
 
-```json id="h3g0l8"
+```json
 {
   "status": "ok",
   "database": "connected"

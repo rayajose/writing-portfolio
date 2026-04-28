@@ -8,19 +8,19 @@ This guide helps you quickly begin using the Partner Catalog API, including auth
 
 Local:
 
-```text id="w2z0yo"
+```text
 http://localhost:8000
 ```
 
 Production:
 
-```text id="n8g2k7"
+```text
 http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
 ```
 
 Interactive API (Swagger UI):
 
-```text id="t6b5hj"
+```text
 http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
 ```
 
@@ -30,7 +30,7 @@ http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
 
 All requests require an API key passed in the request header:
 
-```text id="q4l7cx"
+```text
 x-api-key: demo-secret-key
 ```
 
@@ -40,7 +40,7 @@ x-api-key: demo-secret-key
 
 Retrieve a list of products:
 
-```bash id="2jfq0r"
+```bash
 curl -X GET "http://localhost:8000/products?limit=5" \
   -H "x-api-key: demo-secret-key"
 ```
@@ -49,7 +49,7 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 
 ## Example Response
 
-```json id="7e5mxl"
+```json
 {
   "count": 1,
   "items": [
@@ -79,7 +79,7 @@ Product data is only available **after ETL processing completes**.
 
 Typical workflow:
 
-```text id="gqf3al"
+```text
 Upload feed → Run ETL job → Query products
 ```
 
@@ -134,7 +134,7 @@ The API uses standard HTTP status codes:
 
 ### Example Error Response
 
-```json id="r3k0t8"
+```json
 {
   "detail": "Invalid or missing API key"
 }
