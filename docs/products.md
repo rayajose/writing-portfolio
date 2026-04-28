@@ -10,6 +10,9 @@ The Products API allows clients to:
 * Paginate results using `limit` and `cursor`
 * Retrieve a single product by ID
 
+> Product data becomes available only after ETL processing completes for a feed.
+> See [Workflows](workflows.md) for the full ingestion process.
+
 ---
 
 ## GET /products
@@ -243,7 +246,9 @@ x-api-key: demo-secret-key
 ## Notes
 
 * All endpoints require a valid `x-api-key` header
-* Product data is sourced from uploaded partner CSV feeds
+* Product data is sourced from partner CSV feeds processed through the ETL pipeline
+* Products are **not available until ETL processing completes**
+* Raw feed data is stored in Amazon S3 and transformed before loading into PostgreSQL
 * Not all fields are guaranteed to be populated for every product
-* Results are ordered by `created_at` in descending order by default
-* Cursor-based pagination is used for efficient data retrieval at scale
+* Results are ordered by `created_at` in descending order by default unless overridden
+* Cursor-based pagination uses `product_id` for efficient traversal of large datasets

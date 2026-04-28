@@ -31,22 +31,23 @@ Errors may occur in the following situations:
 * Missing or invalid API key
 * Invalid request data (e.g., malformed CSV)
 * Resource not found (feed, job, or product does not exist)
+* ETL processing failure
 * Database or infrastructure issues
 
 ---
 
 ## Status Codes
 
-| Status | Meaning                             |
-|--------|-------------------------------------|
-| 200    | Request completed successfully      |
-| 201    | Resource created successfully       |
-| 400    | Bad request (invalid input or file) |
-| 401    | Missing API key                     |
-| 403    | Invalid API key                     |
-| 404    | Requested resource not found        |
-| 422    | Request validation failed           |
-| 500    | Internal server error               |
+| Status | Meaning                                                |
+|--------|--------------------------------------------------------|
+| 200    | Request completed successfully                         |
+| 201    | Resource created successfully                          |
+| 400    | Bad request (invalid input or business rule violation) |
+| 401    | Missing authentication                                 |
+| 403    | Invalid API key                                        |
+| 404    | Requested resource not found                           |
+| 422    | Request validation failed                              |
+| 500    | Internal server error                                  |
 
 ---
 
@@ -164,6 +165,36 @@ Returned when request data fails validation (handled by FastAPI).
 
 ---
 
+## Job Execution Errors
+
+### 400 Bad Request
+
+Returned when attempting to execute an unsupported job type.
+
+#### Example
+
+```json
+{
+  "detail": "Only validation jobs can be run"
+}
+```
+
+---
+
+### 500 Internal Server Error (ETL Failure)
+
+Returned when ETL processing fails during job execution.
+
+#### Example
+
+```json
+{
+  "detail": "ETL processing failed: <error message>"
+}
+```
+
+---
+
 ## Infrastructure Errors
 
 ### 500 Internal Server Error
@@ -173,6 +204,7 @@ Returned when an unexpected server-side error occurs.
 #### Example scenarios
 
 * Database connection failure
+* S3 access or object retrieval failure
 * Unhandled application exception
 * Misconfigured environment variables
 
@@ -193,6 +225,8 @@ Returned when an unexpected server-side error occurs.
 * Most error responses use the `detail` field
 
 * Validation errors (`422`) use a structured list format defined by FastAPI
+
+* ETL-related errors are surfaced through job status messages and API responses
 
 * Resource identifiers follow structured formats:
 

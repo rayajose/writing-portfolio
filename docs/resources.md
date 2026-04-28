@@ -14,28 +14,28 @@ A Feed represents a product data file submitted by a partner for ingestion.
 * `partner_name` — name of the submitting partner
 * `file_name` — name of the uploaded file
 * `content_type` — MIME type of the uploaded file
-* `status` — current state of the feed
+* `status` — feed upload status (`uploaded`)
 * `uploaded_at` — timestamp when the feed was uploaded
 * `validation_job_id` — associated validation job ID (JVxxxxx)
+* `validation_status` — current ETL job status (`queued`, `running`, `completed`, `failed`)
+* `validation_message` — result of ETL processing
+* `raw_file_s3_key` — S3 object key for the raw feed file
+* `raw_file_bucket` — S3 bucket storing the raw feed
 
 ---
 
-### Status Values
+### Notes
 
-| Status     | Description                   |
-|------------|-------------------------------|
-| uploaded   | Feed successfully received    |
-| validating | Feed is undergoing validation |
-| validated  | Feed passed validation        |
-| failed     | Feed failed validation        |
+* Feed status reflects upload state only
+* Processing state is tracked via the associated validation job
 
 ---
 
 ## Job
 
-A Job represents a processing task such as feed submission or validation.
+A Job represents a processing task such as feed submission or ETL execution.
 
-Jobs provide visibility into the ingestion workflow and simulate asynchronous processing.
+Jobs provide visibility into and control over the ingestion pipeline.
 
 ### Fields
 
@@ -44,27 +44,27 @@ Jobs provide visibility into the ingestion workflow and simulate asynchronous pr
 * `job_type` — type of job
 * `status` — current job status
 * `created_at` — timestamp when the job was created
-* `message` — optional status or result message
+* `message` — status or result message
 
 ---
 
 ### Job Types
 
-| Type       | Description                          |
-|------------|--------------------------------------|
-| submission | Feed upload processing               |
-| validation | CSV structure and content validation |
+| Type       | Description                                       |
+|------------|---------------------------------------------------|
+| submission | Feed upload processing                            |
+| validation | ETL processing (S3 → transform → PostgreSQL load) |
 
 ---
 
 ### Status Values
 
-| Status    | Description                         |
-|-----------|-------------------------------------|
-| queued    | Job created and awaiting processing |
-| running   | Job currently in progress           |
-| completed | Job completed successfully          |
-| failed    | Job encountered an error            |
+| Status    | Description                        |
+|-----------|------------------------------------|
+| queued    | Job created and awaiting execution |
+| running   | ETL processing in progress         |
+| completed | Job completed successfully         |
+| failed    | Job encountered an error           |
 
 ---
 
@@ -72,7 +72,7 @@ Jobs provide visibility into the ingestion workflow and simulate asynchronous pr
 
 A Product represents a normalized item derived from a partner feed.
 
-Products are parsed from uploaded CSV files and stored for querying.
+Products are created during ETL processing and stored for querying.
 
 ### Fields
 
@@ -114,17 +114,18 @@ Returns the operational status of the API.
 
 **Response**
 
-```json
+```json id="h3g0l8"
 {
   "status": "ok",
   "database": "connected"
 }
 ```
+
 ---
 
 ## Notes
 
 * All resources use `snake_case` field naming in API responses
 * Identifiers are generated using database-backed counters
-* Resources are designed to support scalable ingestion and querying workflows
+* Raw data is stored in S3 and processed via ETL before becoming queryable
 * Products are derived from feeds but can be queried independently

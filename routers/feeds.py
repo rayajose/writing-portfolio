@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import io
+import re
 
 from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException, status
 
@@ -14,10 +15,10 @@ from db import (
     next_feed_id,
     next_submission_job_id,
     next_validation_job_id,
-    next_product_id_with_conn,
 )
 from security import require_api_key
 from utils import utc_now_iso
+from services.s3_service import upload_raw_feed, S3_RAW_BUCKET
 
 router = APIRouter(
     prefix="/feeds",
@@ -33,6 +34,10 @@ FEED_COLUMNS = [
     "status",
     "uploaded_at",
     "validation_job_id",
+    "validation_status",
+    "validation_message",
+    "raw_file_s3_key",
+    "raw_file_bucket",
 ]
 
 
@@ -43,17 +48,10 @@ def clean_value(value: str | None) -> str | None:
     return value if value else None
 
 
-def parse_price(value: str | None) -> float | None:
-    cleaned = clean_value(value)
-    if cleaned is None:
-        return None
-
-    cleaned = cleaned.replace("$", "").replace(",", "")
-
-    try:
-        return float(cleaned)
-    except ValueError:
-        return None
+def slugify(value: str) -> str:
+    value = value.lower().strip()
+    value = re.sub(r"[^a-z0-9]+", "-", value)
+    return value.strip("-")
 
 
 def feed_row_to_dict(row):
@@ -68,26 +66,24 @@ def feed_row_to_dict(row):
     status_code=status.HTTP_201_CREATED,
     summary="Upload a product feed",
     description=(
-            "Uploads a CSV product feed for a partner. The feed is stored and "
-            "processed and validated.\n\n"
-
-            "This operation triggers:\n"
-            "- A submission job (JSxxxxx)\n"
-            "- A validation job (JVxxxxx)\n\n"
-
-            "The uploaded data is validated and, if successful, ingested into the "
-            "product catalog for querying via the products endpoints."
+        "Uploads a CSV product feed for a partner. The feed is stored, "
+        "processed, and validated.\n\n"
+        "This operation triggers:\n"
+        "- A submission job (JSxxxxx)\n"
+        "- A validation job (JVxxxxx)\n\n"
+        "The uploaded data is validated and queued for ETL processing before being ingested into the product catalog."
     ),
     responses={
         400: {"model": ErrorResponse, "description": "Invalid CSV file"},
         401: {"description": "Unauthorized"},
-}
+    },
 )
 async def upload_feed(
-        partner_name: str = Form(...),
-        file: UploadFile = File(...)
+    partner_name: str = Form(...),
+    file: UploadFile = File(...)
 ):
     allowed_types = {"text/csv", "text/plain", "application/vnd.ms-excel"}
+
     if file.content_type not in allowed_types:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -95,6 +91,7 @@ async def upload_feed(
         )
 
     content = await file.read()
+
     if not content:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -127,8 +124,6 @@ async def upload_feed(
                 f"Missing required CSV headers: {', '.join(sorted(missing_headers))}"
             )
 
-        rows = list(reader)
-
     except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -139,7 +134,25 @@ async def upload_feed(
     submission_job_id = next_submission_job_id()
     validation_job_id = next_validation_job_id()
     now = utc_now_iso()
-    products_ingested = 0
+
+    original_filename = file.filename or "uploaded.csv"
+    safe_partner_name = slugify(partner_name)
+
+    raw_file_s3_key = (
+        f"raw/partners/{safe_partner_name}/feeds/{feed_id}/{original_filename}"
+    )
+
+    try:
+        upload_raw_feed(
+            file_bytes=content,
+            object_key=raw_file_s3_key,
+            content_type=file.content_type or "text/csv",
+        )
+    except RuntimeError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(exc),
+        )
 
     with get_connection() as conn:
         conn.execute(
@@ -151,18 +164,22 @@ async def upload_feed(
                     content_type,
                     status,
                     uploaded_at,
-                    validation_job_id
+                    validation_job_id,
+                    raw_file_s3_key,
+                    raw_file_bucket
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """),
             (
                 feed_id,
                 partner_name,
-                file.filename or "uploaded.csv",
+                original_filename,
                 file.content_type or "text/csv",
                 "uploaded",
                 now,
                 validation_job_id,
+                raw_file_s3_key,
+                S3_RAW_BUCKET,
             )
         )
 
@@ -203,57 +220,12 @@ async def upload_feed(
             (
                 validation_job_id,
                 "validation",
-                "completed",
+                "queued",
                 now,
                 feed_id,
-                "CSV structure validation completed."
+                "CSV structure validation pending ETL processing."
             )
         )
-
-        for row in rows:
-            sku = clean_value(row.get("sku"))
-            product_name = clean_value(row.get("product_name"))
-
-            if not sku or not product_name:
-                continue
-
-            product_id = next_product_id_with_conn(conn)
-
-            conn.execute(
-                q("""
-                    INSERT INTO products (
-                        product_id,
-                        feed_id,
-                        partner_name,
-                        sku,
-                        product_name,
-                        description,
-                        brand,
-                        category,
-                        price,
-                        currency,
-                        availability,
-                        created_at
-                    )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """),
-                (
-                    product_id,
-                    feed_id,
-                    partner_name,
-                    sku,
-                    product_name,
-                    clean_value(row.get("description")),
-                    clean_value(row.get("brand")),
-                    clean_value(row.get("category")),
-                    parse_price(row.get("price")),
-                    clean_value(row.get("currency")),
-                    clean_value(row.get("availability")),
-                    now,
-                )
-            )
-
-            products_ingested += 1
 
         if DB_TYPE == "postgres":
             conn.commit()
@@ -261,8 +233,7 @@ async def upload_feed(
     return {
         "feed_id": feed_id,
         "job_id": submission_job_id,
-        "status": "uploaded",
-        "products_ingested": products_ingested
+        "status": "uploaded"
     }
 
 
@@ -271,23 +242,31 @@ async def upload_feed(
     response_model=FeedResponse,
     responses={404: {"model": ErrorResponse, "description": "Feed not found"}},
     summary="Retrieve feed details",
-    description="Retrieves metadata for a specific feed, including upload status and "
-    "associated validation job."
+    description=(
+        "Retrieves metadata for a specific feed, including upload status, "
+        "associated validation job details, and raw file storage metadata."
+    ),
 )
 async def read_feed(feed_id: str):
     with get_connection() as conn:
         feed = conn.execute(
             q("""
                 SELECT
-                    feed_id,
-                    partner_name,
-                    file_name,
-                    content_type,
-                    status,
-                    uploaded_at,
-                    validation_job_id
-                FROM feeds
-                WHERE feed_id = ?
+                    f.feed_id,
+                    f.partner_name,
+                    f.file_name,
+                    f.content_type,
+                    f.status,
+                    f.uploaded_at,
+                    f.validation_job_id,
+                    j.status AS validation_status,
+                    j.message AS validation_message,
+                    f.raw_file_s3_key,
+                    f.raw_file_bucket
+                FROM feeds f
+                LEFT JOIN jobs j
+                    ON f.validation_job_id = j.job_id
+                WHERE f.feed_id = ?
             """),
             (feed_id,)
         ).fetchone()

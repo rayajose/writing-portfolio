@@ -1,12 +1,12 @@
 # Workflows
 
-This section demonstrates how to use the API to upload a partner feed, track processing jobs, and retrieve product data.
+This section demonstrates how to upload a partner feed, execute ETL processing, and retrieve product data.
 
 ---
 
 ## Submit and Process a Feed
 
-This workflow shows the typical sequence for ingesting a partner product feed and making the data available for querying.
+This workflow shows the full ingestion pipeline from raw upload to queryable product data.
 
 ---
 
@@ -35,11 +35,13 @@ curl -X POST "http://127.0.0.1:8000/feeds/upload" \
 
 ### What happens
 
-* The feed is stored in the system
+* CSV structure is validated
+* Raw file is stored in **Amazon S3**
 * A **submission job (JSxxxxx)** is created
 * A **validation job (JVxxxxx)** is created
-* CSV data is parsed and product records are stored
-* Feed metadata is persisted in the database
+* Feed metadata is persisted
+
+> Product data is **not ingested at this stage**
 
 ---
 
@@ -52,22 +54,7 @@ curl -H "x-api-key: demo-secret-key" \
 
 ---
 
-### Example Response
-
-```json
-{
-  "job_id": "JS00001",
-  "job_type": "submission",
-  "status": "completed",
-  "created_at": "2026-04-06T14:17:27+00:00",
-  "feed_id": "FD00001",
-  "message": "Feed upload accepted."
-}
-```
-
----
-
-### Step 3 — Check validation job
+### Step 3 — Check validation job (queued)
 
 ```bash
 curl -H "x-api-key: demo-secret-key" \
@@ -82,16 +69,33 @@ curl -H "x-api-key: demo-secret-key" \
 {
   "job_id": "JV00001",
   "job_type": "validation",
-  "status": "completed",
-  "created_at": "2026-04-06T14:17:27+00:00",
+  "status": "queued",
   "feed_id": "FD00001",
-  "message": "CSV validation completed."
+  "message": "CSV structure validation queued for ETL processing."
 }
 ```
 
 ---
 
-### Step 4 — Retrieve feed metadata
+### Step 4 — Run ETL processing
+
+```bash
+curl -X POST "http://127.0.0.1:8000/jobs/JV00001/run" \
+  -H "x-api-key: demo-secret-key"
+```
+
+---
+
+### What happens
+
+* Raw CSV is read from S3
+* Data is cleaned and normalized
+* Products are inserted into PostgreSQL
+* Job status and message are updated
+
+---
+
+### Step 5 — Verify feed processing
 
 ```bash
 curl -H "x-api-key: demo-secret-key" \
@@ -110,13 +114,17 @@ curl -H "x-api-key: demo-secret-key" \
   "content_type": "text/csv",
   "status": "uploaded",
   "uploaded_at": "2026-04-06T14:17:27+00:00",
-  "validation_job_id": "JV00001"
+  "validation_job_id": "JV00001",
+  "validation_status": "completed",
+  "validation_message": "ETL processing completed. Products ingested: 10.",
+  "raw_file_s3_key": "raw/partners/acme/feeds/FD00001/sample_catalog.csv",
+  "raw_file_bucket": "partner-catalog-raw-rayj"
 }
 ```
 
 ---
 
-### Step 5 — Query products
+### Step 6 — Query products
 
 ```bash
 curl -H "x-api-key: demo-secret-key" \
@@ -152,25 +160,30 @@ curl -H "x-api-key: demo-secret-key" \
 ## Workflow Summary
 
 ```text
-Upload Feed → Create Feed (FDxxxxx)
-            → Create Submission Job (JSxxxxx)
-            → Create Validation Job (JVxxxxx)
-            → Parse and store products (PRxxxxx)
+Upload Feed
+  → Store raw file in S3
+  → Create submission job (JSxxxxx)
+  → Create validation job (JVxxxxx)
 
-Jobs → Track processing status
-Feed → Retrieve metadata
-Products → Query catalog data
+Run ETL
+  → POST /jobs/{job_id}/run
+  → Read CSV from S3
+  → Transform data
+  → Load into PostgreSQL
+
+Query
+  → Products become available via /products
 ```
 
 ---
 
 ## Key Points
 
-* Feed upload is handled via a single endpoint: `/feeds/upload`
-* Validation is automatically triggered (no separate endpoint required)
-* Jobs provide traceability for processing steps
-* Product data is parsed and stored during ingestion
-* All data is persisted in a relational database
+* Upload and ingestion are **separate steps**
+* Raw data is stored in S3 for reprocessing and auditability
+* ETL is triggered explicitly via API
+* Jobs provide full pipeline visibility
+* Product data is only available after ETL completes
 * IDs follow structured formats:
 
   * `FDxxxxx` → Feed
@@ -182,9 +195,9 @@ Products → Query catalog data
 
 ## Notes
 
-* Validation checks CSV structure and basic data integrity
-* Jobs are executed synchronously but modeled as asynchronous processes
-* Product data becomes immediately queryable after ingestion
+* ETL processing is currently synchronous
+* Designed to support asynchronous execution in the future
+* Validation includes both structure and transformation readiness
 
 ---
 
