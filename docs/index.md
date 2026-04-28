@@ -53,7 +53,7 @@ Deployed on AWS using ECS Fargate, RDS (PostgreSQL), and S3 for raw data storage
 Interactive API (Swagger UI):
 
 <p>
-<a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com" target="_blank">http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com</a>
+<a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank">http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs</a>
 </p>
 
 
