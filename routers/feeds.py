@@ -191,13 +191,6 @@ async def upload_feed(
         )
 
     with get_connection() as conn:
-
-        debug_result = conn.execute(
-            "SELECT current_database(), current_user, current_schema();"
-        )
-
-        print("DB DEBUG:", debug_result.fetchone())
-
         conn.execute(
             q("""
                 INSERT INTO feeds (
