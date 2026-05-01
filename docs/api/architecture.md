@@ -165,22 +165,15 @@ Core tables:
 
 ### Feed Ingestion Workflow
 
-```text
-Client
-  ↓
-POST /feeds/upload
-  ↓
-Validate CSV structure
-  ↓
-Store raw file in S3
-  ↓
-Generate IDs (FDxxxxx, JSxxxxx, JVxxxxx)
-  ↓
-Persist feed metadata
-  ↓
-Create submission + validation jobs
-  ↓
-Return response (no ingestion yet)
+```mermaid
+flowchart TD
+    A["Client"] --> B["POST /feeds/upload"]
+    B --> C["Validate CSV structure"]
+    C --> D["Store raw file in S3"]
+    D --> E["Generate IDs<br>FDxxxxx, JSxxxxx, JVxxxxx"]
+    E --> F["Persist feed metadata"]
+    F --> G["Create submission and validation jobs"]
+    G --> H["Return upload response"]
 ```
 
 ---
@@ -277,11 +270,16 @@ POST /jobs/{job_id}/run
 
 ---
 
-## Job Lifecycle
+## Job Lifecycle Workflow
 
 ```mermaid
-queued → running → completed
-                ↘ failed
+stateDiagram-v2
+    [*] --> queued
+    queued --> running
+    running --> completed
+    running --> failed
+    failed --> [*]
+    completed --> [*]
 ```
 
 | Status    | Description                        |
