@@ -11,25 +11,21 @@ theme:
 nav:
   - "Home": "index.md"
 
-"API & Developer Docs":
-  - "Overview": "api/index.md"
+  - "API & Developer Docs":
+      - "Overview": "api/index.md"
+      - "Getting Started": "api/getting_started.md"
+      - "Workflows": "api/workflows.md"
+      - "Python SDK Guide": "api/sdk-python.md"
+      - "Architecture": "api/architecture.md"
+      - "Feeds API": "api/feeds.md"
+      - "Products API": "api/products.md"
+      - "Jobs API": "api/jobs.md"
+      - "Analytics API": "api/analytics.md"
+      - "Errors": "api/errors.md"
+      - "Deployment": "api/deployment.md"
+      - "Resources": "api/resources.md"
+      - "Screenshots": "api/screenshots.md"
 
-  - "Getting Started": "api/getting_started.md"
-  - "Workflows": "api/workflows.md"
-  - "Python SDK Guide": "api/sdk-python.md"
-
-  - "Architecture": "api/architecture.md"
-
-  - "Feeds API": "api/feeds.md"
-  - "Products API": "api/products.md"
-  - "Jobs API": "api/jobs.md"
-  - "Analytics API": "api/analytics.md"
-  - "Errors": "api/errors.md"
-
-  - "Deployment": "api/deployment.md"
-  - "Resources": "api/resources.md"
-  - "Screenshots": "api/screenshots.md"
-  
   - "SOPs & Operations":
       - "Partner Feed Onboarding": "sop/onboarding.md"
       - "CSV Feed File Specification": "spec/csv-feed-file-spec.md"
