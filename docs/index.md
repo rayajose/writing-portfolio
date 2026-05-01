@@ -1,66 +1,91 @@
-# Partner Catalog API
+# Writing Portfolio
 
-A cloud-based REST API for ingesting, processing, and querying partner product catalogs through a structured data pipeline.
+## Principal Technical Writer — APIs, Integrations, and Enterprise Systems
 
-Deployed on AWS using ECS Fargate, RDS (PostgreSQL), and S3 for raw data storage.
+I design and build documentation that enables partners, scales platforms, and reduces engineering dependency.
 
----
-
-## What This Project Demonstrates
-
-* API design for data ingestion pipelines
-* End-to-end ETL workflow (extract, transform, load)
-* Job-based processing and pipeline orchestration
-* Separation of raw and processed data layers
-* Developer-focused documentation (reference + workflows)
-* Cloud-native deployment architecture (AWS ECS, RDS, S3)
+With over 15 years of experience across API documentation, enterprise integrations, and security/compliance environments, I focus on creating documentation systems—not just documents—that support real-world implementation and operational success.
 
 ---
 
-## Key Features
+## Featured Work
 
-* Upload partner product feeds (CSV)
-* Store raw data in Amazon S3
-* Execute ETL processing via job-based API
-* Track processing status through job resources
-* Query product catalog with filtering, sorting, and pagination
+### API & Developer Documentation
 
----
+End-to-end documentation for a partner product ingestion platform, including API reference, workflows, data ingestion, analytics, and SDK usage.
 
-## Explore the API
+- REST API design and documentation
+- ETL workflow documentation
+- Async job processing and workflow modeling
+- Pagination, filtering, and data access patterns
+- Developer onboarding and self-service enablement
 
-* [Getting Started](getting_started.md)
-* [Feeds](feeds.md)
-* [Products](products.md)
-* [Jobs](jobs.md)
-* [Workflows](workflows.md)
-* [About This Project](about.md)
+[View API Documentation](api/index.md)
 
 ---
 
-## Architecture
+### SOPs & Operational Documentation
 
-* FastAPI (Python)
-* Amazon ECS (Fargate)
-* Amazon RDS (PostgreSQL)
-* Amazon S3 (raw data layer)
-* Docker
+Process-driven documentation designed to support repeatable operations and reduce failure points in production workflows.
 
----
+- Step-by-step operational procedures
+- Decision points and failure handling
+- ETL pipeline runbooks and recovery workflows
+- Partner onboarding processes
 
-## Live API
-
-Interactive API (Swagger UI):
-
-<p>
-<a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank">http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs</a>
-</p>
-
+[View SOP Documentation](sop/onboarding.md)
 
 ---
 
-## Source Code
+### Security & Compliance Documentation
 
-<p>
-<a href="https://github.com/rayajose/partner-catalog-api" target="_blank">https://github.com/rayajose/partner-catalog-api</a>
-</p>
+Documentation aligned to regulated enterprise environments, with a focus on clarity, auditability, and risk reduction.
+
+- Incident response planning
+- Data handling and access control policies
+- PCI DSS–aligned documentation practices
+- Security-focused system documentation
+
+[View Security Documentation](security/incident-response.md)
+
+---
+
+### Integration & Architecture Documentation
+
+System-level documentation that explains how services interact, how data flows, and how platforms scale.
+
+- Data flow and ETL architecture
+- Integration patterns for external partners
+- System interaction and service boundaries
+- Platform-level documentation strategy
+
+[View Architecture Documentation](architecture/index.md)
+
+---
+
+## How I Approach Documentation
+
+I focus on building documentation that works in real environments—not just theoretical ones.
+
+**Clarity over completeness**  
+Documentation should enable action, not overwhelm users.
+
+**Systems thinking**  
+I document how components interact, not just how they function in isolation.
+
+**Self-service enablement**  
+The goal is to reduce dependency on engineering teams.
+
+**Operational awareness**  
+Documentation should support real workflows, failure scenarios, and recovery paths.
+
+---
+
+## Portfolio Scope
+
+This portfolio includes representative samples across multiple documentation domains:
+
+- API & Developer Documentation
+- Standard Operating Procedures (SOPs)
+- Security & Compliance Documentation
+- Integration & Architecture Documentation
