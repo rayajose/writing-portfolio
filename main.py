@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import feeds, jobs, products, health
+from routers import feeds, jobs, products, health, analytics
 from db import init_db
 
 tags_metadata = [
@@ -50,3 +50,4 @@ app.include_router(feeds.router, tags=["Feeds"])
 app.include_router(jobs.router, tags=["Jobs"])
 app.include_router(products.router, tags=["Products"])
 app.include_router(health.router, tags=["Health"])
+app.include_router(analytics.router, tags=["Analytics"])

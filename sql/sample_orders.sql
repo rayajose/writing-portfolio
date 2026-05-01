@@ -1,0 +1,50 @@
+INSERT INTO orders (order_id, product_id, partner_name, order_date, quantity, unit_price)
+VALUES
+('OR00001', 'PR00001', 'Microbrews Brothers', '2026-04-01', 8, 10.99),
+('OR00002', 'PR00002', 'Microbrews Brothers', '2026-04-01', 5, 11.99),
+('OR00003', 'PR00003', 'Microbrews Brothers', '2026-04-02', 6, 12.49),
+('OR00004', 'PR00004', 'Microbrews Brothers', '2026-04-03', 4, 11.49),
+('OR00005', 'PR00005', 'Microbrews Brothers', '2026-04-03', 7, 13.99),
+('OR00006', 'PR00008', 'Microbrews Brothers', '2026-04-04', 10, 9.99),
+('OR00007', 'PR00010', 'Microbrews Brothers', '2026-04-05', 9, 9.49),
+
+('OR00008', 'PR00011', 'RayTech Corp.', '2026-04-01', 2, 999.00),
+('OR00009', 'PR00012', 'RayTech Corp.', '2026-04-02', 1, 1199.99),
+('OR00010', 'PR00013', 'RayTech Corp.', '2026-04-03', 2, 1099.00),
+('OR00011', 'PR00014', 'RayTech Corp.', '2026-04-04', 3, 999.99),
+('OR00012', 'PR00015', 'RayTech Corp.', '2026-04-05', 5, 349.99),
+('OR00013', 'PR00016', 'RayTech Corp.', '2026-04-06', 6, 249.00),
+('OR00014', 'PR00018', 'RayTech Corp.', '2026-04-07', 4, 499.99),
+('OR00015', 'PR00020', 'RayTech Corp.', '2026-04-08', 8, 139.99),
+
+('OR00050', 'PR00021', 'Cid''s Vintage Records', '2026-04-19', 3, 29.99),
+('OR00051', 'PR00022', 'Cid''s Vintage Records', '2026-04-20', 4, 27.99),
+('OR00052', 'PR00023', 'Cid''s Vintage Records', '2026-04-21', 5, 25.99),
+('OR00053', 'PR00024', 'Cid''s Vintage Records', '2026-04-22', 2, 32.50),
+('OR00054', 'PR00026', 'Cid''s Vintage Records', '2026-04-23', 6, 26.99),
+('OR00055', 'PR00027', 'Cid''s Vintage Records', '2026-04-24', 4, 24.99),
+('OR00056', 'PR00028', 'Cid''s Vintage Records', '2026-04-25', 5, 23.99),
+('OR00057', 'PR00029', 'Cid''s Vintage Records', '2026-04-26', 3, 31.99),
+('OR00058', 'PR00030', 'Cid''s Vintage Records', '2026-04-27', 2, 35.99),
+
+('OR00059', 'PR00031', 'Joyeria Reina', '2026-04-19', 1, 899.99),
+('OR00060', 'PR00032', 'Joyeria Reina', '2026-04-20', 2, 249.99),
+('OR00061', 'PR00033', 'Joyeria Reina', '2026-04-21', 1, 349.50),
+('OR00062', 'PR00034', 'Joyeria Reina', '2026-04-22', 1, 5200.00),
+('OR00063', 'PR00036', 'Joyeria Reina', '2026-04-23', 2, 199.99),
+('OR00064', 'PR00037', 'Joyeria Reina', '2026-04-24', 3, 179.00),
+('OR00065', 'PR00038', 'Joyeria Reina', '2026-04-25', 1, 2750.00),
+('OR00066', 'PR00039', 'Joyeria Reina', '2026-04-26', 2, 149.99),
+('OR00067', 'PR00040', 'Joyeria Reina', '2026-04-27', 4, 89.99),
+
+('OR00068', 'PR00041', 'Tronics', '2026-04-19', 2, 999.00),
+('OR00069', 'PR00042', 'Tronics', '2026-04-20', 1, 1199.99),
+('OR00070', 'PR00043', 'Tronics', '2026-04-21', 2, 1099.00),
+('OR00071', 'PR00044', 'Tronics', '2026-04-22', 1, 999.99),
+('OR00072', 'PR00045', 'Tronics', '2026-04-23', 3, 349.99),
+('OR00073', 'PR00046', 'Tronics', '2026-04-24', 5, 249.00),
+('OR00074', 'PR00048', 'Tronics', '2026-04-25', 2, 499.99),
+('OR00075', 'PR00049', 'Tronics', '2026-04-26', 3, 499.99),
+('OR00076', 'PR00050', 'Tronics', '2026-04-27', 4, 139.99)
+
+ON CONFLICT (order_id) DO NOTHING;
