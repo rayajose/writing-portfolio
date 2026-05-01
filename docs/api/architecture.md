@@ -185,24 +185,20 @@ Return response (no ingestion yet)
 
 ---
 
-### ETL Processing Workflow
+### Replace ETL Processing Workflow with:
 
-```text
-POST /jobs/{job_id}/run
-  ↓
-Fetch feed metadata (S3 key + bucket)
-  ↓
-Read CSV from S3
-  ↓
-Clean and normalize data
-  ↓
-Compare against existing products (partner + SKU)
-  ↓
-Insert new products
-Update changed products
-Skip unchanged products
-  ↓
-Update job status and message (ETL summary)
+```mermaid
+flowchart TD
+    A["POST /jobs/{job_id}/run"] --> B["Fetch feed metadata (S3 key + bucket)"]
+    B --> C["Read CSV from S3"]
+    C --> D["Clean and normalize data"]
+    D --> E["Compare against existing products (partner + SKU)"]
+    E --> F["Insert new products"]
+    E --> G["Update changed products"]
+    E --> H["Skip unchanged products"]
+    F --> I["Update job status and ETL summary"]
+    G --> I
+    H --> I
 ```
 ---
 
@@ -283,7 +279,7 @@ POST /jobs/{job_id}/run
 
 ## Job Lifecycle
 
-```text
+```mermaid
 queued → running → completed
                 ↘ failed
 ```
