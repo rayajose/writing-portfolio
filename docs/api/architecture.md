@@ -165,7 +165,7 @@ Core tables:
 
 ### Feed Ingestion Workflow
 
-```text
+```mermaid
 Client
   ↓
 POST /feeds/upload
