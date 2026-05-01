@@ -13,9 +13,18 @@ nav:
 
   - "API & Developer Docs":
       - "Overview": "api/index.md"
+      - "About": "about.md"
       - "Getting Started": "getting_started.md"
+      - "Architecture": "architecture.md"
+      - "Deployment": "deployment.md"
       - "Workflows": "workflows.md"
-      - "Products Endpoint": "products.md"
+      - "Resources": "resources.md"
+      - - "Feeds Endpoint": "feeds.md"
+      - -  "Products Endpoint": "products.md"
+      - -  "Jobs Endpoint": "jobs.md"
+      - -  "Analytics": "analytics.md"
+      - "Errors": "errors.md"
+      - "Screenshots": "screenshots"
       - "SDK Python": "sdk-python.md"
 
   - "SOPs & Operations":
