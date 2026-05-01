@@ -6,7 +6,7 @@ A production-style REST API that simulates how multi-partner e-commerce platform
 
 This project models a real-world ingestion pipeline with **idempotent ETL processing**, where product data is:
 
-* Inserted when new
+* Inserted when new 
 * Updated only when data changes
 * Skipped when unchanged
 * Reprocessed safely without duplication
