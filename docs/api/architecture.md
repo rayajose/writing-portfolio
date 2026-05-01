@@ -428,7 +428,7 @@ app/
 
 ## Related Documentation
 
-* [Index](index.md)
+* [Index](../index.md)
 * [Feeds API](feeds.md)
 * [Jobs API](jobs.md)
 * [Products API](products.md)

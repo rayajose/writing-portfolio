@@ -68,7 +68,7 @@ Highlights include:
 * Job tracking and status monitoring
 * Product retrieval with filtering, sorting, and pagination
 
-→ [View API Reference](../products.md)
+→ [View API Reference](products.md)
 
 ---
 
@@ -82,7 +82,7 @@ Examples:
 * Tracking validation jobs
 * Retrieving processed data
 
-→ [View Workflows](../workflows.md)
+→ [View Workflows](workflows.md)
 
 ---
 
@@ -94,7 +94,7 @@ Example client implementation demonstrating how developers can integrate with th
 * Authentication handling
 * Example data retrieval
 
-→ [View SDK Guide](../sdk-python.md)
+→ [View SDK Guide](sdk-python.md)
 
 ---
 

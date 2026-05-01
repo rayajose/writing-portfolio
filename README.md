@@ -225,7 +225,7 @@ This API is deployed using a containerized cloud architecture:
 * Amazon ECR
 
 Full deployment details:
-[docs/deployment.md](docs/deployment.md)
+[docs/deployment.md](docs/api/deployment.md)
 
 ---
 
