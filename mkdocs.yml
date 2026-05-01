@@ -25,6 +25,7 @@ nav:
 
   - "SOPs & Operations":
       - "Partner Feed Onboarding": "sop/onboarding.md"
+      - "CSV Feed File Specification": "spec/csv-feed-file-spec.md"
 
   - "Security & Compliance":
       - "Incident Response Plan": "security/incident-response.md"
