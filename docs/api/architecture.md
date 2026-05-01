@@ -165,7 +165,7 @@ Core tables:
 
 ### Feed Ingestion Workflow
 
-```mermaid
+```text
 Client
   ↓
 POST /feeds/upload
@@ -185,7 +185,7 @@ Return response (no ingestion yet)
 
 ---
 
-### Replace ETL Processing Workflow with:
+### ETL Processing Workflow
 
 ```mermaid
 flowchart TD
