@@ -14,6 +14,7 @@ The Partner Catalog API is a layered REST application designed to:
 * Execute ETL processing to transform and load data
 * Persist structured product data in a relational database
 * Expose product data through queryable endpoints
+* Provide aggregated analytics on processed data
 
 The system models a real-world ingestion pipeline with clear separation between raw data storage, processing, and serving layers.
 
@@ -38,6 +39,8 @@ flowchart TD
 
     DB["Amazon RDS<br>PostgreSQL Database"]
 
+    Analytics["Analytics Layer<br>(Aggregations & Reporting)"]
+
     ECR["Amazon ECR<br>Container Registry"]
 
     Docs["MkDocs<br>GitHub Pages"]
@@ -51,12 +54,15 @@ flowchart TD
     ETL -->|Load Products| DB
 
     ECS -->|Read/Write| DB
+    ECS -->|Query Analytics| Analytics
+    Analytics -->|Read Data| DB
+
     ECS -->|Pull Image| ECR
 
     Client -->|View Docs| Docs
 ```
 
-This architecture separates compute, storage, and networking concerns while introducing a dedicated raw data layer and processing pipeline.
+This architecture separates compute, storage, and networking concerns while introducing a dedicated raw data layer, processing pipeline, and analytics layer.
 
 ---
 
@@ -67,7 +73,7 @@ Client (curl / Postman / Swagger UI)
         ↓
 Router Layer (FastAPI endpoints)
         ↓
-Application / Service Layer (ETL, S3 integration)
+Application / Service Layer (ETL, S3 integration, analytics)
         ↓
 Data Access Layer (db.py)
         ↓
@@ -97,6 +103,7 @@ Example endpoints:
 * `GET /jobs/{job_id}`
 * `POST /jobs/{job_id}/run`
 * `GET /products`
+* `GET /analytics/*`
 
 ---
 
@@ -111,10 +118,36 @@ Responsibilities:
   * Extract data from S3
   * Transform and clean CSV data
   * Load into PostgreSQL
+
 * S3 integration for raw file storage
+
 * Job status updates and pipeline coordination
 
+* Analytics query handling and aggregation logic
+
 This layer separates processing logic from HTTP and persistence concerns.
+
+---
+
+## Analytics Layer
+
+The analytics layer provides aggregated insights derived from product data.
+
+Responsibilities:
+
+* Execute read-heavy queries on product data
+
+* Aggregate metrics such as:
+
+  * Product counts by partner
+  * Inventory availability
+  * Category distribution
+
+* Support reporting endpoints via `/analytics/*`
+
+This layer is read-only and operates on processed data stored in PostgreSQL.
+
+It is optimized for query performance and does not participate in ingestion or ETL workflows.
 
 ---
 
@@ -182,22 +215,28 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A["POST /jobs/{job_id}/run"] --> B["Fetch feed metadata (S3 key + bucket)"]
+    A["POST /jobs/{job_id}/run"] --> B["Fetch feed metadata<br>S3 key + bucket"]
     B --> C["Read CSV from S3"]
     C --> D["Clean and normalize data"]
-    D --> E["Compare against existing products (partner + SKU)"]
+    D --> E["Compare against existing products<br>partner + SKU"]
+
     E --> F["Insert new products"]
     E --> G["Update changed products"]
-    E --> H["Skip unchanged products"]
-    F --> I["Update job status and ETL summary"]
-    G --> I
-    H --> I
+    E --> H["Unchanged products"]
+    E --> I["Skip invalid rows"]
+
+    F --> J["Update job status and ETL summary"]
+    G --> J
+    H --> J
+    I --> J
 ```
+
 ---
 
 ### ETL Processing Behavior
 
 The ETL pipeline uses change detection to ensure efficient and accurate data loading:
+
 ```text
 Inserted   → New product (partner + SKU not previously seen)  
 Updated    → Existing product with changed data (e.g., price, availability)  
@@ -215,19 +254,34 @@ This design ensures:
 
 ### Product Query Workflow
 
-```text
-Client
-  ↓
-GET /products
-  ↓
-Apply filters, sorting, pagination
-  ↓
-Query database
-  ↓
-Map DB fields → API response schema
-  ↓
-Return response (items + next_cursor)
+```mermaid
+flowchart TD
+    A["Client"] --> B["GET /products"]
+    B --> C["Apply filters, sorting, pagination"]
+    C --> D["Query PostgreSQL"]
+    D --> E["Map DB fields to API schema"]
+    E --> F["Return response<br>items + next_cursor"]
 ```
+
+---
+
+## Read vs Write Paths
+
+The system separates ingestion (write path) from data access (read path).
+
+### Write Path (Ingestion)
+
+* Feed upload via `/feeds/upload`
+* Raw data stored in S3
+* ETL processing transforms and loads data into PostgreSQL
+
+### Read Path (Query & Analytics)
+
+* Product data retrieved via `/products`
+* Aggregated insights retrieved via `/analytics/*`
+* All read operations operate on processed data in PostgreSQL
+
+This separation improves scalability, maintainability, and performance.
 
 ---
 
@@ -236,7 +290,7 @@ Return response (items + next_cursor)
 The API uses structured identifiers to ensure traceability.
 
 | Prefix | Resource       | Example |
-|--------|----------------|---------|
+| ------ | -------------- | ------- |
 | FD     | Feed           | FD00001 |
 | JS     | Submission Job | JS00001 |
 | JV     | Validation Job | JV00001 |
@@ -275,19 +329,19 @@ POST /jobs/{job_id}/run
 ```mermaid
 stateDiagram-v2
     [*] --> queued
-    queued --> running
-    running --> completed
-    running --> failed
+    queued --> in_progress
+    in_progress --> completed
+    in_progress --> failed
     failed --> [*]
     completed --> [*]
 ```
 
-| Status    | Description                        |
-|-----------|------------------------------------|
-| queued    | Job created and awaiting execution |
-| running   | ETL processing in progress         |
-| completed | Job finished successfully          |
-| failed    | Job encountered an error           |
+| Status      | Description                        |
+| ----------- | ---------------------------------- |
+| queued      | Job created and awaiting execution |
+| in_progress | ETL processing in progress         |
+| completed   | Job finished successfully          |
+| failed      | Job encountered an error           |
 
 ---
 
@@ -296,7 +350,7 @@ stateDiagram-v2
 The system separates internal storage models from API representations.
 
 | Layer        | Field Name  |
-|--------------|-------------|
+| ------------ | ----------- |
 | Database     | `filename`  |
 | API Response | `file_name` |
 
@@ -402,10 +456,13 @@ app/
   security.py
   settings.py
   routers/
+    analytics.py
     feeds.py
+    health.py
     jobs.py
     products.py
   schemas/
+    analytics.py
     feeds.py
     jobs.py
     products.py
