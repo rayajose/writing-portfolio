@@ -59,3 +59,4 @@ nav:
   - Workflows: workflows.md
   - Errors: errors.md
   - Python SDK Guide: sdk-python.md
+  - Analytics: analytics.md

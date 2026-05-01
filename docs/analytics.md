@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS orders (
 This phase uses a simplified dimensional model:
 
 | Type      | Table / Field  | Purpose                   |
-| --------- | -------------- | ------------------------- |
+|-----------|----------------|---------------------------|
 | Fact      | `orders`       | Stores sales transactions |
 | Dimension | `products`     | Product attributes        |
 | Dimension | `partner_name` | Partner grouping          |
