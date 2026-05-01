@@ -483,6 +483,7 @@ app/
 * [Feeds API](feeds.md)
 * [Jobs API](jobs.md)
 * [Products API](products.md)
+* [Analytics API](analytics.md)
 * [Workflows](workflows.md)
 * [Errors](errors.md)
 
