@@ -1,62 +1,38 @@
-site_name: Partner Catalog API Docs
-site_url: https://rayajose.github.io/partner-catalog-api/
-
-extra:
-  social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/rayajose/partner-catalog-api
-  social_image: assets/preview.png
+site_name: "Writing Portfolio"
+site_url: "https://rayajose.github.io/writing-portfolio/"
 
 theme:
-  name: material
-  custom_dir: docs/overrides
+  name: "material"
   features:
     - navigation.tabs
-    - navigation.tabs.sticky
     - navigation.top
-    - navigation.sections
     - content.code.copy
-  extra_css:
-    - stylesheets/extra.css
-  extra_javascript:
-    - https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js
-    - javascripts/glightbox-init.js
-  palette:
-    - scheme: default
-      toggle:
-        icon: material/weather-night
-        name: Switch to dark mode
-    - scheme: slate
-      toggle:
-        icon: material/weather-sunny
-        name: Switch to light mode
-
-markdown_extensions:
-  - pymdownx.superfences
-  - pymdownx.highlight
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.tabbed
-  - pymdownx.details
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-
-repo_url: https://github.com/rayajose/partner-catalog-api
 
 nav:
-  - Home: index.md
-  - About: about.md
-  - Getting Started: getting_started.md
-  - Architecture: architecture.md
-  - Deployment: deployment.md
-  - Screenshots: screenshots.md
-  - API Overview: resources.md
-  - Feeds API: feeds.md
-  - Products API: products.md
-  - Jobs API: jobs.md
-  - Workflows: workflows.md
-  - Errors: errors.md
-  - Python SDK Guide: sdk-python.md
-  - Analytics: analytics.md
+  - "Home": "index.md"
+
+  - "API & Developer Docs":
+      - "Overview": "api/index.md"
+      - "Getting Started": "getting_started.md"
+      - "Workflows": "workflows.md"
+      - "Products Endpoint": "products.md"
+      - "SDK Python": "sdk-python.md"
+
+  - "SOPs & Operations":
+      - "Partner Feed Onboarding": "sop/onboarding.md"
+
+  - "Security & Compliance":
+      - "Incident Response Plan": "security/incident-response.md"
+
+  - "Integration & Architecture":
+      - "System Overview": "architecture/index.md"
+
+  - "About": "about.md"
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+
+plugins:
+  - search
