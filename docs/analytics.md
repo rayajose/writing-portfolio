@@ -1,29 +1,32 @@
 # Analytics Layer
 
-The analytics layer extends the Partner Catalog API project beyond product ingestion and retrieval by adding business intelligence use cases based on product and order data.
+The analytics layer extends the Partner Catalog API beyond data ingestion by enabling business intelligence use cases across products, partners, and time.
 
-This phase demonstrates how catalog data can support reporting, trend analysis, and partner performance insights.
+This phase demonstrates how operational data can be transformed into meaningful insights through aggregation, dimensional modeling, and API-driven analytics.
 
 ---
 
 ## Objective
 
-Enable analytical querying across product, partner, and time dimensions.
+Enable analytical querying across:
 
-The analytics layer supports questions such as:
+* Product performance
+* Partner performance
+* Revenue distribution
+* Time-based trends
 
-* Which products generate the most sales?
+The system answers questions such as:
+
 * Which partners generate the most revenue?
-* How do sales trend over time?
-* What are daily and monthly sales totals?
+* Which products drive the highest sales?
+* How does revenue vary over time?
+* What percentage of revenue does each partner contribute?
 
 ---
 
 ## Data Model
 
-Phase 4 introduces an `orders` table that functions as a simple fact table.
-
-The `orders` table connects sales activity to existing catalog products.
+Phase 4 introduces an `orders` table that acts as a **fact table**.
 
 ```text
 orders
@@ -59,38 +62,37 @@ CREATE TABLE IF NOT EXISTS orders (
 
 ## Dimensional Model
 
-This phase uses a lightweight dimensional model:
+This phase uses a simplified dimensional model:
 
-| Type      | Table / Field  | Purpose                                         |
-| --------- | -------------- | ----------------------------------------------- |
-| Fact      | `orders`       | Stores measurable sales events                  |
-| Dimension | `products`     | Describes the products being sold               |
-| Dimension | `partner_name` | Identifies the partner associated with the sale |
-| Dimension | `order_date`   | Enables time-based reporting                    |
+| Type      | Table / Field  | Purpose                   |
+| --------- | -------------- | ------------------------- |
+| Fact      | `orders`       | Stores sales transactions |
+| Dimension | `products`     | Product attributes        |
+| Dimension | `partner_name` | Partner grouping          |
+| Dimension | `order_date`   | Time-based analysis       |
+
+---
+
+## Dataset Characteristics
+
+The sample dataset includes multiple partner types:
+
+* **High-volume / low-price** — Microbrews Brothers
+* **High-value electronics** — RayTech Corp., Tronics
+* **Media retail** — Cid's Vintage Records
+* **Luxury goods** — Joyeria Reina
+
+This enables realistic comparisons across:
+
+* Revenue vs volume
+* Product categories
+* Partner business models
 
 ---
 
 ## Analytics Scenarios
 
-### Sales by Product
-
-This query shows which products generate the most revenue.
-
-```sql
-SELECT
-    p.product_id,
-    p.product_name,
-    SUM(o.quantity) AS units_sold,
-    SUM(o.total_amount) AS total_sales
-FROM orders o
-JOIN products p ON o.product_id = p.product_id
-GROUP BY p.product_id, p.product_name
-ORDER BY total_sales DESC;
-```
-
 ### Sales by Partner
-
-This query compares revenue by partner.
 
 ```sql
 SELECT
@@ -102,9 +104,9 @@ GROUP BY partner_name
 ORDER BY total_sales DESC;
 ```
 
-### Daily Sales
+---
 
-This query aggregates sales by day.
+### Sales Over Time
 
 ```sql
 SELECT
@@ -116,45 +118,47 @@ GROUP BY order_date
 ORDER BY order_date;
 ```
 
-### Monthly Sales
+---
 
-This query aggregates sales by month.
+### Monthly Aggregation
 
 ```sql
 SELECT
     DATE_TRUNC('month', order_date)::date AS sales_month,
-    SUM(quantity) AS units_sold,
-    SUM(total_amount) AS total_sales
+    SUM(quantity),
+    SUM(total_amount)
 FROM orders
-GROUP BY sales_month
-ORDER BY sales_month;
+GROUP BY sales_month;
 ```
 
-### Top Selling Products
+---
 
-This query identifies the products with the highest unit volume.
+### Top Products
 
 ```sql
 SELECT
     p.product_name,
-    SUM(o.quantity) AS units_sold
+    SUM(o.quantity) AS units_sold,
+    SUM(o.total_amount) AS total_sales
 FROM orders o
 JOIN products p ON o.product_id = p.product_id
 GROUP BY p.product_name
-ORDER BY units_sold DESC
+ORDER BY total_sales DESC
 LIMIT 5;
 ```
 
-### Partner Performance
+---
 
-This query compares partner order volume, average order value, and total revenue.
+### Revenue Share (Window Function)
 
 ```sql
 SELECT
     partner_name,
-    COUNT(*) AS total_orders,
-    AVG(total_amount) AS avg_order_value,
-    SUM(total_amount) AS total_revenue
+    SUM(total_amount) AS total_revenue,
+    ROUND(
+        100.0 * SUM(total_amount) / SUM(SUM(total_amount)) OVER (),
+        2
+    ) AS revenue_pct
 FROM orders
 GROUP BY partner_name
 ORDER BY total_revenue DESC;
@@ -162,16 +166,52 @@ ORDER BY total_revenue DESC;
 
 ---
 
+## Analytics API Endpoints
+
+The analytics layer exposes read-only endpoints for aggregated insights.
+
+---
+
+### GET /analytics/sales-by-partner
+
+Returns total units and revenue by partner.
+
+---
+
+### GET /analytics/sales-over-time
+
+Returns time-based sales metrics.
+
+Supports:
+
+* `daily`
+* `monthly`
+
+---
+
+### GET /analytics/top-products
+
+Returns top-performing products ranked by revenue.
+
+---
+
+### GET /analytics/revenue-share
+
+Returns each partner’s percentage contribution to total revenue.
+
+Demonstrates use of SQL window functions.
+
+---
+
 ## Key Insights
 
-Using the sample dataset, several patterns emerge:
+Using the dataset, several patterns emerge:
 
-- **RayTech Corp. generates significantly higher revenue** despite lower unit volume, driven by high-value electronics products.
-- **Microbrews Brothers drives higher unit sales volume**, but at lower price points, resulting in lower overall revenue.
-- Sales activity shows consistent distribution across multiple days, enabling time-based trend analysis.
-- Product-level aggregation highlights which SKUs contribute most to total revenue versus unit volume.
-
-These insights demonstrate how the same dataset can support different analytical perspectives, such as revenue optimization, product performance, and partner comparisons.
+* **Joyeria Reina and RayTech Corp. generate high revenue** with lower unit volume (high-value items)
+* **Microbrews Brothers drives high unit volume** but lower total revenue
+* **Tronics introduces competitive overlap** in electronics
+* Revenue distribution is **heavily concentrated among high-ticket partners**
+* Time-series data enables trend analysis and future forecasting
 
 ---
 
@@ -179,17 +219,23 @@ These insights demonstrate how the same dataset can support different analytical
 
 This phase demonstrates:
 
-* Dimensional modeling
-* Fact and dimension relationships
+* Dimensional modeling (fact + dimensions)
 * Analytical SQL querying
-* Aggregation by product, partner, and time
-* Daily and monthly reporting
-* Business intelligence use cases based on operational data
+* Aggregations (SUM, GROUP BY)
+* Time-based analysis (daily, monthly)
+* Window functions (revenue share)
+* API-driven analytics delivery
+* Schema validation with Pydantic
 
 ---
 
 ## Portfolio Value
 
-The analytics layer shows how product catalog data can be extended into reporting and business intelligence workflows.
+The analytics layer shows how an operational API system can evolve into a data platform that supports:
 
-This demonstrates the ability to document not only API behavior, but also the data relationships and analytical use cases that support business decision-making.
+* Business intelligence
+* Partner performance analysis
+* Revenue reporting
+* Data-driven decision-making
+
+This demonstrates the ability to design, implement, and document both application logic and analytical systems.
