@@ -13,19 +13,15 @@ nav:
 
   - "API & Developer Docs":
       - "Overview": "api/index.md"
-      - "About": "about.md"
       - "Getting Started": "getting_started.md"
-      - "Architecture": "architecture.md"
-      - "Deployment": "deployment.md"
-      - "Workflows": "workflows.md"
-      - "Resources": "resources.md"
-      - - "Feeds Endpoint": "feeds.md"
-      - -  "Products Endpoint": "products.md"
-      - -  "Jobs Endpoint": "jobs.md"
-      - -  "Analytics": "analytics.md"
+      - "Feeds API": "feeds.md"
+      - "Products API": "products.md"
+      - "Jobs API": "jobs.md"
+      - "Analytics API": "analytics.md"
       - "Errors": "errors.md"
-      - "Screenshots": "screenshots"
-      - "SDK Python": "sdk-python.md"
+      - "Workflows": "workflows.md"
+      - "Python SDK Guide": "sdk-python.md"
+      - "Screenshots": "screenshots.md"
 
   - "SOPs & Operations":
       - "Partner Feed Onboarding": "sop/onboarding.md"
@@ -35,6 +31,8 @@ nav:
 
   - "Integration & Architecture":
       - "System Overview": "architecture/index.md"
+      - "Deployment": "deployment.md"
+      - "Resources": "resources.md"
 
   - "About": "about.md"
 
