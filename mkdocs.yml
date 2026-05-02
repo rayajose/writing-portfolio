@@ -1,5 +1,6 @@
 site_name: "Writing Portfolio"
 site_url: "https://rayajose.github.io/writing-portfolio/"
+use_directory_urls: true
 
 theme:
   name: "material"

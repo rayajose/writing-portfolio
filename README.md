@@ -97,19 +97,19 @@ The API is deployed to AWS and accessible via Swagger UI.
 
 ### Swagger Overview
 
-![Swagger Overview](docs/screenshots/swagger-overview.png)
+![Swagger Overview](docs/api/screenshots/swagger-overview.png)
 
 ---
 
 ### Products Endpoint
 
-![Products Endpoint](docs/screenshots/swagger-products-endpoint.png)
+![Products Endpoint](docs/api/screenshots/swagger-products-endpoint.png)
 
 ---
 
 ### Live API Response
 
-![Live Response](docs/screenshots/swagger-products-response.png)
+![Live Response](docs/api/screenshots/swagger-products-response.png)
 
 Example of a successful request returning product data from the PostgreSQL database hosted on Amazon RDS.
 
