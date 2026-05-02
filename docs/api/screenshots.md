@@ -4,8 +4,8 @@ This section provides visual evidence of the Partner Catalog API running in a pr
 
 ## Live API Documentation
 <p>
-<a href="swagger-overview.png" class="glightbox" target="_blank">
-  <img src="swagger-overview.png" alt="Swagger Overview" width="100%">
+<a href="../screenshots/swagger-overview.png" class="glightbox" target="_blank">
+  <img src="../screenshots/swagger-overview.png" alt="Swagger Overview" width="100%">
 </a>
 </p>
 
@@ -15,15 +15,15 @@ The `/health` endpoint verifies API availability and database connectivity. The 
 
 ### Path
 <p>
-<a href="swagger-health-check-path.png" class="glightbox" target="_blank">
-  <img src="swagger-health-check-path.png" alt="Health Check Path" width="100%">
+<a href="../screenshots/swagger-health-check-path.png" class="glightbox" target="_blank">
+  <img src="../screenshots/swagger-health-check-path.png" alt="Health Check Path" width="100%">
 </a>
 </p>
 
 ### Endpoint
 <p>
-<a href="swagger-health-check-endpoint.png" class="glightbox" target="_blank">
-  <img src="swagger-health-check-endpoint.png" alt="Health Check Endpoint" width="100%">
+<a href="../screenshots/swagger-health-check-endpoint.png" class="glightbox" target="_blank">
+  <img src="../screenshots/swagger-health-check-endpoint.png" alt="Health Check Endpoint" width="100%">
 </a>
 </p>
 
@@ -32,44 +32,44 @@ The task definition specifies the container image from Amazon ECR and runtime co
 
 ### Deployment
 <p>
-<a href="pcapi-ecs-service-deployment-overview.png" class="glightbox" target="_blank">
-  <img src="pcapi-ecs-service-deployment-overview.png" alt="Deployment" width="100%">
+<a href="../screenshots/pcapi-ecs-service-deployment-overview.png" class="glightbox" target="_blank">
+  <img src="../screenshots/pcapi-ecs-service-deployment-overview.png" alt="Deployment" width="100%">
 </a>
 </p>
 
 ### Performance Monitoring
 <p>
-<a href="pcapi-ecs-service-performance-monitoring.png" class="glightbox" target="_blank">
-  <img src="pcapi-ecs-service-performance-monitoring.png" alt="Performance Monitoring" width="100%">
+<a href="../screenshots/pcapi-ecs-service-performance-monitoring.png" class="glightbox" target="_blank">
+  <img src="../screenshots/pcapi-ecs-service-performance-monitoring.png" alt="Performance Monitoring" width="100%">
 </a>
 </p>
 
 ### Tasks
 <p>
-<a href="pcapi-ecs-service-tasks.png" class="glightbox" target="_blank">
-  <img src="pcapi-ecs-service-tasks.png" alt="Tasks" width="100%">
+<a href="../screenshots/pcapi-ecs-service-tasks.png" class="glightbox" target="_blank">
+  <img src="../screenshots/pcapi-ecs-service-tasks.png" alt="Tasks" width="100%">
 </a>
 </p>
 
 ## ECS Task Definition
 <p>
-<a href="pcapi-ecs-service-task-definition.png" class="glightbox" target="_blank">
-  <img src="pcapi-ecs-service-task-definition.png" alt="Task Definition" width="100%">
+<a href="../screenshots/pcapi-ecs-service-task-definition.png" class="glightbox" target="_blank">
+  <img src="../screenshots/pcapi-ecs-service-task-definition.png" alt="Task Definition" width="100%">
 </a>
 </p>
 
 ## Container Details
 <p>
-<a href="pcapi-ecs-service-container-details.png" class="glightbox" target="_blank">
-  <img src="pcapi-ecs-service-container-details.png" alt="Container Details" width="100%">
+<a href="../screenshots/pcapi-ecs-service-container-details.png" class="glightbox" target="_blank">
+  <img src="../screenshots/pcapi-ecs-service-container-details.png" alt="Container Details" width="100%">
 </a>
 </p>
 
 ## Amazon ECR Repository
 The container image for the API is stored in Amazon Elastic Container Registry and used by ECS during deployment.
 <p>
-<a href="pcapi-ecr-repo.png" class="glightbox" target="_blank">
-  <img src="pcapi-ecr-repo.png" alt="ECR Repo" width="100%">
+<a href="../screenshots/pcapi-ecr-repo.png" class="glightbox" target="_blank">
+  <img src="../screenshots/pcapi-ecr-repo.png" alt="ECR Repo" width="100%">
 </a>
 </p>
 
@@ -77,31 +77,31 @@ The container image for the API is stored in Amazon Elastic Container Registry a
 
 ### Rules and Listeners
 <p>
-<a href="pcapi-ec2-alb-listeners.png" class="glightbox" target="_blank">
-  <img src="pcapi-ec2-alb-listeners.png" alt="ALB Listeners" width="100%">
+<a href="../screenshots/pcapi-ec2-alb-listeners.png" class="glightbox" target="_blank">
+  <img src="../screenshots/pcapi-ec2-alb-listeners.png" alt="ALB Listeners" width="100%">
 </a>
 </p>
 
 ### Network Mapping
 <p>
-<a href="pcapi-ec2-alb-network-mapping.png" class="glightbox" target="_blank">
-  <img src="pcapi-ec2-alb-network-mapping.png" alt="ALB Network Map" width="100%">
+<a href="../screenshots/pcapi-ec2-alb-network-mapping.png" class="glightbox" target="_blank">
+  <img src="../screenshots/pcapi-ec2-alb-network-mapping.png" alt="ALB Network Map" width="100%">
 </a>
 </p>
 
 ## Target Group Health Checks
 The target group monitors the health of running tasks using an HTTP health check endpoint to ensure traffic is only routed to healthy containers.
 <p>
-<a href="pcapi-ec2-target-group-health-check.png" class="glightbox" target="_blank">
-  <img src="pcapi-ec2-target-group-health-check.png" alt="Target Group Health Checks" width="100%">
+<a href="../screenshots/pcapi-ec2-target-group-health-check.png" class="glightbox" target="_blank">
+  <img src="../screenshots/pcapi-ec2-target-group-health-check.png" alt="Target Group Health Checks" width="100%">
 </a>
 </p>
 
 ## Amazon RDS PostgreSQL Database
 The API persists data in a PostgreSQL database hosted on Amazon RDS, providing managed storage and availability.
 <p>
-    <a href="pcapi-rds.png" class="glightbox" target="_blank">
-        <img src="pcapi-rds.png" alt="RDS" width="100%">
+    <a href="../screenshots/pcapi-rds.png" class="glightbox" target="_blank">
+        <img src="../screenshots/pcapi-rds.png" alt="RDS" width="100%">
     </a>
 </p>
 
