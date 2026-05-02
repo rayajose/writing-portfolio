@@ -85,6 +85,11 @@ Documentation should support real workflows, including failure scenarios and rec
 
 ## Links
 
-- GitHub: https://github.com/rayajose/partner-catalog-api  
-- Documentation Site: https://rayajose.github.io/writing-portfolio/  
-- LinkedIn: https://www.linkedin.com/in/rayjose/
+<ul>
+<li>
+<a href="https://github.com/rayajose" target="_blank">GitHub</a>
+</li>
+<li>
+<a href="https://www.linkedin.com/in/rayjose/" target="_blank">LinkedIn</a>
+</li>
+</ul>
