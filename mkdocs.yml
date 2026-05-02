@@ -90,6 +90,6 @@ extra:
     - property: og:description
       content: API, integration, and data platform documentation portfolio.
     - property: og:image
-      content: https://rayajose.github.io/writing-portfolio/docs/assets/preview.png
+      content: https://rayajose.github.io/writing-portfolio/assets/preview.png
     - property: og:type
       content: website
