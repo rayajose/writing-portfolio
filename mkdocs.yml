@@ -14,7 +14,7 @@ theme:
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: blue
+      primary: blue gey
       accent: blue
       toggle:
         icon: material/weather-night
@@ -22,11 +22,14 @@ theme:
 
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: blue
+      primary: blue grey
       accent: blue
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
+
+extra_css:
+  - stylesheets/extra.css
 
 nav:
   - "Home": "index.md"
@@ -81,3 +84,12 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/rayajose
+  meta:
+    - property: og:title
+      content: Ray Jose – Developer Documentation Portfolio
+    - property: og:description
+      content: API, integration, and data platform documentation portfolio.
+    - property: og:image
+      content: https://rayajose.github.io/writing-portfolio/assets/preview.png
+    - property: og:type
+      content: website

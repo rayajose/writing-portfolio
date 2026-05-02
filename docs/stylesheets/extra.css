@@ -8,3 +8,24 @@
   display: block;
   margin: 1.5rem auto;
 }
+
+/* H1 = lighter, more subtle */
+.md-typeset h1 {
+  color: var(--md-default-fg-color--light);
+  font-weight: 575;
+}
+
+/* H2 = primary strong heading */
+.md-typeset h2 {
+  color: var(--md-default-fg-color);
+  font-weight: 500;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+  padding-bottom: 0.25rem;
+  margin-top: 2rem;
+}
+
+/* H3 = still strong, slightly less emphasis */
+.md-typeset h3 {
+  color: var(--md-default-fg-color);
+  font-weight: 475;
+}
