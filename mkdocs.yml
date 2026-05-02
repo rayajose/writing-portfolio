@@ -5,6 +5,7 @@ use_directory_urls: true
 
 theme:
   name: "material"
+  custom_dir: overrides
   features:
     - navigation.tabs
     - navigation.tabs.sticky
