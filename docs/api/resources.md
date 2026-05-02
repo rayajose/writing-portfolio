@@ -1,6 +1,6 @@
 # Resources
 
-This section defines the core resources used by the Partner Catalog API.
+This section provides additional reference materials and links supporting the Partner Catalog API. 
 
 ---
 

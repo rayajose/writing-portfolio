@@ -1,10 +1,10 @@
-# Writing Portfolio
+# Ray Jose – Developer Documentation Portfolio
 
 ## Principal Technical Writer — APIs, Integrations, and Enterprise Systems
 
-I design and build documentation that enables partners, scales platforms, and reduces engineering dependency.
+I design and build documentation systems that enable partners, scale platforms, and reduce engineering dependency.
 
-With over 15 years of experience across API documentation, enterprise integrations, and security/compliance environments, I focus on creating documentation systems—not just documents—that support real-world implementation and operational success.
+With over 15 years of experience across API documentation, enterprise integrations, and security/compliance environments, I focus on creating documentation that supports real-world implementation—not just reference material.
 
 ---
 
@@ -14,11 +14,11 @@ With over 15 years of experience across API documentation, enterprise integratio
 
 End-to-end documentation for a partner product ingestion platform, including API reference, workflows, data ingestion, analytics, and SDK usage.
 
-- REST API design and documentation
-- ETL workflow documentation
-- Async job processing and workflow modeling
-- Pagination, filtering, and data access patterns
-- Developer onboarding and self-service enablement
+- REST API design and documentation  
+- ETL workflow documentation  
+- Async job processing and workflow modeling  
+- Pagination, filtering, and data access patterns  
+- Developer onboarding and self-service enablement  
 
 [View API Documentation](api/index.md)
 
@@ -26,12 +26,12 @@ End-to-end documentation for a partner product ingestion platform, including API
 
 ### SOPs & Operational Documentation
 
-Process-driven documentation designed to support repeatable operations and reduce failure points in production workflows.
+Process-driven content designed to support repeatable operations and reduce failure points in production workflows.
 
-- Step-by-step operational procedures
-- Decision points and failure handling
-- ETL pipeline runbooks and recovery workflows
-- Partner onboarding processes
+- Step-by-step operational procedures  
+- Decision points and failure handling  
+- ETL pipeline runbooks and recovery workflows  
+- Partner onboarding processes  
 
 [View SOP Documentation](sop/onboarding.md)
 
@@ -39,12 +39,12 @@ Process-driven documentation designed to support repeatable operations and reduc
 
 ### Security & Compliance Documentation
 
-Documentation aligned to regulated enterprise environments, with a focus on clarity, auditability, and risk reduction.
+Content aligned to regulated enterprise environments, with a focus on clarity, auditability, and risk reduction.
 
-- Incident response planning
-- Data handling and access control policies
-- PCI DSS–aligned documentation practices
-- Security-focused system documentation
+- Incident response planning  
+- Data handling and access control policies  
+- PCI DSS–aligned documentation practices  
+- Security-focused system documentation  
 
 [View Security Documentation](security/incident-response.md)
 
@@ -54,10 +54,10 @@ Documentation aligned to regulated enterprise environments, with a focus on clar
 
 System-level documentation that explains how services interact, how data flows, and how platforms scale.
 
-- Data flow and ETL architecture
-- Integration patterns for external partners
-- System interaction and service boundaries
-- Platform-level documentation strategy
+- Data flow and ETL architecture  
+- Integration patterns for external partners  
+- System interaction and service boundaries  
+- Platform-level documentation strategy  
 
 [View Architecture Documentation](architecture/index.md)
 
@@ -83,9 +83,9 @@ Documentation should support real workflows, failure scenarios, and recovery pat
 
 ## Portfolio Scope
 
-This portfolio includes representative samples across multiple documentation domains:
+This portfolio includes representative work across multiple documentation domains:
 
-- API & Developer Documentation
-- Standard Operating Procedures (SOPs)
-- Security & Compliance Documentation
-- Integration & Architecture Documentation
+- API & Developer Documentation  
+- Standard Operating Procedures (SOPs)  
+- Security & Compliance Documentation  
+- Integration & Architecture Documentation  

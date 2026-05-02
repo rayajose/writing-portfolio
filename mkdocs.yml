@@ -1,4 +1,5 @@
-site_name: "Writing Portfolio"
+site_name: "Ray Jose – Technical Writing Portfolio"
+site_description: ""
 site_url: "https://rayajose.github.io/writing-portfolio/"
 use_directory_urls: true
 
@@ -30,20 +31,29 @@ theme:
 nav:
   - "Home": "index.md"
 
-  - "API & Developer Docs":
-      - "Overview": "api/index.md"
-      - "Getting Started": "api/getting_started.md"
-      - "Workflows": "api/workflows.md"
-      - "Python SDK Guide": "api/sdk-python.md"
-      - "Architecture": "api/architecture.md"
-      - "Feeds API": "api/feeds.md"
-      - "Products API": "api/products.md"
-      - "Jobs API": "api/jobs.md"
-      - "Analytics API": "api/analytics.md"
-      - "Errors": "api/errors.md"
-      - "Deployment": "api/deployment.md"
-      - "Resources": "api/resources.md"
-      - "Screenshots": "api/screenshots.md"
+  - API & Developer Docs:
+      - Overview: api/index.md
+      - Getting Started: api/getting_started.md
+      - Workflows: api/workflows.md
+
+      - Architecture:
+          - Overview: api/architecture.md
+          - Deployment: api/deployment.md
+
+      - SDKs:
+          - Python SDK Guide: api/sdk-python.md
+
+      - API Reference:
+          - Overview: api/api-reference.md
+          - Feeds API: api/feeds.md
+          - Products API: api/products.md
+          - Jobs API: api/jobs.md
+          - Analytics API: api/analytics.md
+          - Errors: api/errors.md
+
+      - Supporting Materials:
+          - Resources: api/resources.md
+          - Screenshots: api/screenshots.md
 
   - "SOPs & Operations":
       - "Partner Feed Onboarding": "sop/onboarding.md"
