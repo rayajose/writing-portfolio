@@ -40,8 +40,8 @@ nav:
       - Getting Started: api/getting_started.md
 
       - How-To Guides:
-          - Ingest a Product Feed: api/ingest-product-feed.md
-          - Debug a Product Feed: api/debug-product-feed.md
+          - Ingesting a Product Feed End-to-End: api/ingest-product-feed.md
+          - Debugging a Failed Feed: api/debug-product-feed.md
 
       - Workflows: api/workflows.md
 

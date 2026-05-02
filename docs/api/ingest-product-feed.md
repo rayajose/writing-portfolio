@@ -1,4 +1,4 @@
-# How to Ingest a Product Feed End-to-End
+# Ingesting a Product Feed End-to-End
 
 This guide walks through the complete process of ingesting a partner product feed into the Partner Catalog API—from upload through validation, ETL processing, and final verification.
 

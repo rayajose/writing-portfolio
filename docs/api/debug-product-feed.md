@@ -1,4 +1,4 @@
-# How to Debug a Failed Feed
+# Debugging a Failed Feed
 
 This guide walks through how to investigate and resolve issues when a product feed fails during validation or ETL processing.
 
