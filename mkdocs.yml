@@ -38,6 +38,11 @@ nav:
   - API & Developer Docs:
       - Overview: api/index.md
       - Getting Started: api/getting_started.md
+
+      - How-To Guides:
+          - Ingest a Product Feed: api/how-to/ingest-product-feed.md
+          - Debug a Product Feed: api/how-to/debug-product-feed.md
+
       - Workflows: api/workflows.md
 
       - Architecture:
@@ -58,10 +63,10 @@ nav:
       - Supporting Materials:
           - Resources: api/resources.md
           - Screenshots: api/screenshots.md
+          - "CSV Feed File Specification": "sop/csv-feed-file-spec.md"
 
   - "SOPs & Operations":
       - "Partner Feed Onboarding": "sop/onboarding.md"
-      - "CSV Feed File Specification": "sop/csv-feed-file-spec.md"
 
   - "Security & Compliance":
       - "Incident Response Plan": "security/incident-response.md"
