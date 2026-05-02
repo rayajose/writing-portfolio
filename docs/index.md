@@ -22,8 +22,8 @@ End-to-end documentation for a partner product ingestion platform, including API
 
 **Start here (recommended):**
 
-* [How to Ingest a Product Feed End-to-End](how-to/how-to-ingest-feed.md)
-* [How to Debug a Product](how-to/how-to-ingest-feed.md)
+* [How to Ingest a Product Feed End-to-End](api/ingest-product-feed.md)
+* [How to Debug a Product](api/debug-product-feed.md)
 
 Full documentation:
 

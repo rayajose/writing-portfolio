@@ -5,7 +5,7 @@ use_directory_urls: true
 
 theme:
   name: "material"
-  custom_dir: overrides
+  #custom_dir: overrides
   features:
     - navigation.tabs
     - navigation.tabs.sticky
@@ -40,8 +40,8 @@ nav:
       - Getting Started: api/getting_started.md
 
       - How-To Guides:
-          - Ingest a Product Feed: api/how-to/ingest-product-feed.md
-          - Debug a Product Feed: api/how-to/debug-product-feed.md
+          - Ingest a Product Feed: api/ingest-product-feed.md
+          - Debug a Product Feed: api/debug-product-feed.md
 
       - Workflows: api/workflows.md
 
