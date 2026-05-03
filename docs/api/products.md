@@ -269,6 +269,15 @@ curl -X 'GET' \
   ]
 }
 ```
+If invalid feed_id, the response will simply return product count = 0 and no item details.
+
+```json
+{
+  "count": 0,
+  "items": []
+}
+```
+
 
 ### Response fields
 
@@ -277,17 +286,6 @@ curl -X 'GET' \
 | count       | int    | Number of items returned in the current page |
 | items       | array  | List of product objects                      |
 | next_cursor | string | Cursor for next page (if more results exist) |
-
-
-### Error responses
-
-#### 404 Not Found
-
-```json
-{
-  "detail": "Feed FD00002 not found."
-}
-```
 
 ---
 
