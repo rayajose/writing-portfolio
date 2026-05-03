@@ -1,29 +1,26 @@
 # Partner Catalog API
 
-> Production-style REST API with change-detected ETL, AWS deployment, and developer-focused documentation
+> Production-style API, data platform, and documentation portfolio demonstrating ETL, analytics, and developer enablement
 
-A production-style REST API that simulates how multi-partner e-commerce platforms ingest, validate, and serve product catalog data.
+A production-style system that simulates how multi-partner platforms ingest, process, analyze, and serve product catalog data.
 
-This project models a real-world ingestion pipeline with **idempotent ETL processing**, where product data is:
+This project goes beyond a typical API implementation by combining:
 
-* Inserted when new 
-* Updated only when data changes
-* Skipped when unchanged
-* Reprocessed safely without duplication
+* Backend system design
+* Data pipeline modeling (ETL + analytics)
+* Real-world documentation use cases (SOPs, how-to guides, security docs)
 
 ---
 
 ## Purpose
 
-This project demonstrates:
+This project demonstrates how technical documentation supports real systems, including:
 
-* REST API design
-* Data ingestion workflows
-* **Change-detected, idempotent ETL pipeline design**
-* Cloud deployment (AWS ECS, RDS, ALB)
-* Developer-focused documentation
-* Backend system modeling
-
+* REST API design and developer documentation
+* Data ingestion and ETL workflows
+* Analytical querying and reporting
+* Operational procedures and troubleshooting
+* Security and incident response documentation
 
 ---
 
@@ -32,50 +29,178 @@ This project demonstrates:
 Swagger UI:
 http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
 
-> Note: The API may be temporarily offline outside of demonstration periods to control cloud costs. In production environments, HTTPS would be enabled via AWS Certificate Manager and a custom domain.
+> Note: The API may be temporarily offline outside of demonstration periods to control cloud costs.
 
-### Example Request
+---
 
-```bash
-curl -H "x-api-key: demo-secret-key" \
-  "http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/products?limit=5"
+## Documentation (Docs-as-Code)
+
+All documentation is managed using a **docs-as-code approach**:
+
+* Written in Markdown
+* Version-controlled alongside code
+* Structured for developer and operational use
+* Published via MkDocs
+
+### Live Documentation
+
+https://rayajose.github.io/writing-portfolio/
+
+---
+
+## Documentation Scope
+
+This repository is supported by a broader documentation set that reflects real-world use cases:
+
+### API & Developer Documentation
+
+* REST API reference
+* SDK usage examples
+* Request/response patterns
+
+### SOP (Operational Documentation)
+
+* Partner feed onboarding process
+* System initialization and validation workflows
+* Repeatable operational procedures
+
+### How-To Guides
+
+* End-to-end feed ingestion workflow
+* Debugging failed feeds
+* ETL execution and validation
+
+### Security Documentation
+
+* Incident response plan
+* System recovery considerations
+* Operational risk awareness
+
+All documentation is tied to the same system and data model, demonstrating consistency across content types.
+
+---
+
+## System Overview
+
+The Partner Catalog API simulates a real-world ingestion platform where external partners submit product data feeds that are processed and made available for querying and analytics.
+
+---
+
+## Project Evolution
+
+### Phase 1–2 — API + Ingestion
+
+* Feed upload and processing
+* Job-based workflows
+* Product retrieval
+
+### Phase 3 — ETL Pipeline
+
+* Change detection (insert/update/unchanged/skip)
+* Idempotent processing
+* Data validation and transformation
+
+### Phase 4 — Analytics Layer
+
+* Orders fact table
+* Aggregated queries (product, partner, time)
+* Revenue distribution analysis
+* API endpoints for analytics delivery
+
+---
+
+## Analytics Layer
+
+The system includes a business intelligence layer built on top of operational data.
+
+### Data Model
+
+* `products` (dimension)
+* `orders` (fact table)
+* `partner_name` (dimension)
+* `order_date` (time dimension)
+
+### Analytics Use Cases
+
+* Sales by partner
+* Sales over time (daily / monthly)
+* Top-performing products
+* Revenue share by partner
+
+### Example Query (Revenue Share)
+
+```sql
+SELECT
+    partner_name,
+    SUM(total_amount) AS total_revenue,
+    ROUND(
+        100.0 * SUM(total_amount) / SUM(SUM(total_amount)) OVER (),
+        2
+    ) AS revenue_pct
+FROM orders
+GROUP BY partner_name;
+```
+
+### Analytics API Endpoints
+
+* `GET /analytics/sales-by-partner`
+* `GET /analytics/sales-over-time`
+* `GET /analytics/top-products`
+* `GET /analytics/revenue-share`
+
+---
+
+## ETL Behavior (Core Design Feature)
+
+The ETL pipeline uses change detection:
+
+* Inserted → New product
+* Updated → Data changed
+* Unchanged → No change
+* Skipped → Invalid rows
+
+This ensures:
+
+* Idempotent reprocessing
+* No unnecessary database writes
+* Accurate change tracking
+
+---
+
+## Architecture
+
+```
+app/
+├── main.py
+├── routers/
+│   ├── feeds.py
+│   ├── jobs.py
+│   ├── products.py
+│   └── analytics.py
+├── schemas/
+│   ├── feeds.py
+│   ├── jobs.py
+│   ├── products.py
+│   └── analytics.py
+├── db.py
 ```
 
 ---
 
-## Overview
+## Data Domains
 
-The Partner Catalog API simulates a real-world e-commerce ingestion pipeline where external partners submit product data feeds that are processed and made available for querying.
+The dataset spans multiple partner types:
 
-Designed to reflect multi-partner catalog ingestion systems used by platforms like Amazon Marketplace and enterprise e-commerce solutions.
+* Craft beer (Microbrews Brothers)
+* Consumer electronics (RayTech, Tronics)
+* Vinyl records (Cid's Vintage Records)
+* Jewelry (Joyeria Reina)
 
+This enables realistic analytics scenarios such as:
 
-## ETL Behavior (Key Design Feature)
-
-The ETL pipeline includes change detection to ensure efficient and accurate data processing:
-
-* **Inserted** → New product (partner + SKU not previously seen)
-* **Updated** → Existing product with changed data (e.g., price, availability)
-* **Unchanged** → Existing product with identical data
-* **Skipped** → Invalid rows (missing required fields)
-
-This design ensures:
-
-* Idempotent reprocessing (safe to run multiple times)
-* No unnecessary database writes
-* Efficient handling of large or repeated feeds
-
-This reflects real-world ingestion systems where data consistency and performance are critical.
-
-
-### Key capabilities
-
-* Feed ingestion via CSV upload
-* Job-based processing and validation tracking
-* Product storage and retrieval
-* Filtering, sorting, and pagination
-* API key-based authentication
-* Change-detected ETL processing (no blind updates)
+* High-volume vs high-value comparisons
+* Revenue concentration
+* Product mix analysis
 
 ---
 
@@ -85,268 +210,19 @@ This reflects real-world ingestion systems where data consistency and performanc
 * PostgreSQL (Amazon RDS)
 * Docker
 * Amazon ECS (Fargate)
-* Application Load Balancer (ALB)
+* Application Load Balancer
 * Amazon ECR
-* MkDocs (documentation)
-
----
-
-## API Documentation (Live)
-
-The API is deployed to AWS and accessible via Swagger UI.
-
-### Swagger Overview
-
-![Swagger Overview](docs/api/screenshots/swagger-overview.png)
-
----
-
-### Products Endpoint
-
-![Products Endpoint](docs/api/screenshots/swagger-products-endpoint.png)
-
----
-
-### Live API Response
-
-![Live Response](docs/api/screenshots/swagger-products-response.png)
-
-Example of a successful request returning product data from the PostgreSQL database hosted on Amazon RDS.
-
----
-
-## Python SDK Example
-
-This project includes a lightweight Python SDK-style client demonstrating how developers can interact with the API.
-
-- Docs: https://rayajose.github.io/partner-catalog-api/sdk-python/
-- Example code: `examples/sdk/`
-
-Run locally:
-
-```bash
-cd examples/sdk
-python example_usage.py
-```
-
-
----
-
-## Architecture
-
-The API is built using FastAPI and follows a modular structure:
-
-```
-app/
-├── main.py
-├── routers/
-│   ├── feeds.py
-│   ├── jobs.py
-│   └── products.py
-├── schemas/
-│   ├── feeds.py
-│   ├── jobs.py
-│   └── products.py
-├── db.py
-```
-
-### Ingestion Flow
-
-1. Partner uploads a product feed (`/feeds/upload`)
-2. A submission job is created
-3. A validation job is created
-4. ETL processing is executed (`POST /jobs/{job_id}/run`)
-5. Data is compared against existing products
-6. New products are inserted, changed products are updated, unchanged products are skipped
-7. Products are retrieved via `/products`
-
----
-
-## ETL Reprocessing Example (Idempotency)
-
-The ETL pipeline is designed to be **idempotent**, meaning the same feed can be processed multiple times without creating duplicate updates or unnecessary database writes.
-
-### First Run (Initial Ingestion)
-
-```text
-Products processed: 13. Inserted: 13. Updated: 0. Unchanged: 0. Skipped: 0.
-```
-
-All products are new, so they are inserted.
-
----
-
-### Second Run (Same Data)
-
-```text
-Products processed: 13. Inserted: 0. Updated: 0. Unchanged: 13. Skipped: 0.
-```
-
-No data has changed, so:
-
-* No inserts
-* No updates
-* All records are correctly identified as unchanged
-
----
-
-### After Data Change (e.g., price update)
-
-```text
-Products processed: 13. Inserted: 0. Updated: 1. Unchanged: 12. Skipped: 0.
-```
-
-Only the modified product is updated.
-
----
-
-### Why This Matters
-
-This behavior ensures:
-
-* Efficient processing of large or repeated data feeds
-* No unnecessary database writes (avoids write amplification)
-* Accurate tracking of real data changes
-* Safe reprocessing for audit, recovery, and replay scenarios
-
-This reflects real-world ingestion systems where data pipelines must handle frequent reprocessing without degrading performance or data integrity.
-
-
----
-
-## Deployment (AWS)
-
-This API is deployed using a containerized cloud architecture:
-
-* FastAPI (Docker)
-* Amazon ECS (Fargate)
-* Amazon RDS (PostgreSQL)
-* Application Load Balancer (ALB)
-* Amazon ECR
-
-Full deployment details:
-[docs/deployment.md](docs/api/deployment.md)
-
----
-
-## Authentication
-
-All endpoints require an API key passed in the request header:
-
-```
-x-api-key: demo-secret-key
-```
-
-Requests without a valid API key will return:
-
-```json
-{
-  "detail": "Unauthorized"
-}
-```
-
----
-
-## Endpoints
-
-### Feeds
-
-* `POST /feeds/upload` — Upload a product feed
-* `GET /feeds` — List feeds
-* `GET /feeds/{feed_id}` — Retrieve a feed
-
-### Jobs
-
-* `GET /jobs/{job_id}` — Retrieve job status
-
-### Products
-
-* `GET /products` — List and filter products
-* `GET /products/{product_id}` — Retrieve a single product
-* `GET /products/by-feed/{feed_id}` — Retrieve products by feed
-
----
-
-## Pagination
-
-The `/products` endpoint uses cursor-based pagination.
-
-* `limit` — number of records to return
-* `cursor` — last seen `product_id`
-
-Example:
-
-```
-GET /products?limit=10&cursor=PR00010
-```
-
-Response includes:
-
-* `count` — number of items returned
-* `items` — current page of results
-* `next_cursor` — pointer for next page (if more data exists)
-
----
-
-## Filtering and Sorting
-
-Supported filters:
-
-* `partner_name`
-* `feed_id`
-* `sku`
-* `brand`
-* `category`
-* `availability`
-
-Sorting:
-
-* `sort_by`: `created_at`, `price`, `product_name`, `brand`, `category`
-* `order`: `asc`, `desc`
-
----
-
-## Sample Data
-
-Example product categories supported:
-
-* Jewelry
-* Vinyl records
-* Consumer electronics
-* Craft beer
-* Running shoes
-
-These demonstrate support for multiple partner domains within a unified data model.
+* MkDocs
 
 ---
 
 ## Run Locally
 
-Follow these steps to run the API locally using Docker and PostgreSQL.
-
-### Prerequisites
-
-* Python 3.11+
-* Docker Desktop
-* Git
-
----
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/rayajose/partner-catalog-api.git
-cd partner-catalog-api
-```
-
----
-
-### 2. Run with Python (optional)
+### Python
 
 ```bash
 python -m venv .venv
 .\.venv\Scripts\activate
-
 pip install -r requirements.txt
 uvicorn main:app --reload
 ```
@@ -359,17 +235,11 @@ http://127.0.0.1:8000/docs
 
 ---
 
-### 3. Run with Docker (recommended)
-
-Build the image:
+### Docker
 
 ```bash
 docker build -t partner-catalog-api .
-```
 
-Run the container:
-
-```bash
 docker run -p 8000:8000 ^
   -e DB_TYPE=postgres ^
   -e DB_HOST=host.docker.internal ^
@@ -380,30 +250,11 @@ docker run -p 8000:8000 ^
   partner-catalog-api
 ```
 
-Open:
-
-```
-http://127.0.0.1:8000/docs
-```
-
 ---
 
-### 4. Required Environment Variables
+## Authentication
 
-| Variable    | Description              |
-|-------------|--------------------------|
-| DB_TYPE     | Database type (postgres) |
-| DB_HOST     | Database host            |
-| DB_PORT     | Database port            |
-| DB_NAME     | Database name            |
-| DB_USER     | Database user            |
-| DB_PASSWORD | Database password        |
-
----
-
-### 5. API Authentication
-
-All requests require an API key passed in the header:
+All endpoints require:
 
 ```
 x-api-key: demo-secret-key
@@ -411,51 +262,16 @@ x-api-key: demo-secret-key
 
 ---
 
-### Notes
-
-* For local Docker runs, `host.docker.internal` is used to connect to a database running on your host machine
-* For AWS deployment, `DB_HOST` is set to the RDS endpoint
-* Swagger UI is available at `/docs`
-
----
-
-## Troubleshooting (Real Issues Resolved)
-
-**Container image not found**
-
-* Cause: Image not pushed to ECR
-* Fix: Built, tagged, and pushed image with `latest`
-
-**Database connection timeout**
-
-* Cause: RDS security group blocked ECS traffic
-* Fix: Allowed ECS security group inbound on port 5432
-
----
-
-## Why This Project
-
-Modern platforms rely on ingesting and normalizing data from multiple external partners. This project simulates that pattern by modeling:
-
-- Partner-submitted product feeds
-- Asynchronous validation workflows
-- Centralized product storage
-- Queryable APIs for downstream systems
-
-It reflects the types of backend services used in e-commerce platforms, data pipelines, and integration ecosystems.
-
----
-
 ## What This Project Demonstrates
 
-* End-to-end API design and implementation
-* Real-world data ingestion and validation workflows
-* Cloud deployment using AWS ECS Fargate and RDS
-* Secure service-to-database connectivity
-* Developer-focused documentation and usability
-* Change-detected, idempotent ETL pipeline design
+* API and backend system design
+* ETL pipeline architecture with change detection
+* Analytical querying and data modeling
+* API-driven analytics delivery
+* Documentation across multiple content types
+* Docs-as-code workflows using Markdown and MkDocs
 
-This project reflects production-style backend system design rather than a simple CRUD application.
+This project reflects a **production-style system with supporting documentation**, not just a standalone API.
 
 ---
 
@@ -463,12 +279,5 @@ This project reflects production-style backend system design rather than a simpl
 
 Ray Jose
 
-- Portfolio: https://rayajose.github.io/partner-catalog-api/
-- Resume: [Download PDF](resume/rayjose-resume.pdf)
-- GitHub: https://github.com/rayajose
-
-## Additional Writing Samples
-
-For additional technical writing examples, including structured content, XML/DITA work, technical specifications, and compliance documentation, see:
-
-- https://github.com/rayajose/writing-samples
+* Portfolio: https://rayajose.github.io/writing-portfolio/
+* GitHub: https://github.com/rayajose
