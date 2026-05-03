@@ -1,14 +1,14 @@
-# Get Started
+# Get started
 
 Use the Partner Catalog API to upload product feeds, process them through an ETL pipeline, and query normalized product data.
 
-This guide shows how to authenticate, make your first request, and understand the core workflow.
+Use this guide to authenticate requests, make your first API call, and understand the core workflow.
 
 ---
 
 ## Base URLs
 
-Use one of the following environments:
+Use one of the following base URLs:
 
 **Local**
 
@@ -75,17 +75,6 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 
 ---
 
-## Make your first request
-
-Retrieve a list of products:
-
-```bash
-curl -X GET "http://localhost:8000/products?limit=5" \
-  -H "x-api-key: demo-secret-key"
-```
-
----
-
 ## Understand the response
 
 ```json
@@ -110,8 +99,8 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 }
 ```
 
-* `count`: Total number of results returned
-* `items`: List of product records
+- `count`: Total number of results returned
+- `items`: List of product records
 
 ---
 
@@ -122,12 +111,12 @@ Product data is only available **after ingestion completes**.
 Typical workflow:
 
 ```
-Upload feed → Run ETL job → Query products
+Upload feed → Validate → Transform → Load → Query products
 ```
 
 ---
 
-## Architecture overview
+## Ingestion flow
 
 ```mermaid
 flowchart LR
@@ -181,7 +170,7 @@ The API uses standard HTTP status codes:
 
 | Status | Meaning            |
 |--------|--------------------|
-| 200    | Success            |
+| 200    | Request successful |
 | 400    | Invalid request    |
 | 401    | Missing API key    |
 | 403    | Invalid API key    |
@@ -200,10 +189,10 @@ The API uses standard HTTP status codes:
 
 ## Next steps
 
-* Follow [Ingest a Product Feed End-to-End](feeds.md)
-* Use [Feeds](feeds.md) to manage uploads
-* Use [Jobs](jobs.md) to track processing
-* Use [Products](products.md) to query catalog data
-* See [Debug a Failed Feed](debug-product-feed.md) to troubleshoot failures
+- Follow [Ingest a Product Feed End-to-End](feeds.md)
+- Use [Feeds](feeds.md) to manage uploads
+- Use [Jobs](jobs.md) to track processing
+- Use [Products](products.md) to query catalog data
+- See [Debug a Failed Feed](debug-product-feed.md) to troubleshoot failures
 
 ---

@@ -1,7 +1,6 @@
 # Partner Catalog API
 
-Use the Partner Catalog API to upload product feeds, process them through an ETL pipeline, and query normalized product data.
-
+Use this API to upload product feeds, process them through an ETL pipeline, and query normalized product data.
 This documentation supports both initial onboarding and ongoing integration workflows.
 
 ---
@@ -14,7 +13,7 @@ Choose a path based on what you want to do:
 
 Set up authentication and make your first request:
 
-* [Get Started](getting_started.md)
+- [Get started](getting_started.md)
 
 ---
 
@@ -22,7 +21,7 @@ Set up authentication and make your first request:
 
 Follow a guided walkthrough of the ingestion workflow:
 
-* [Your First Feed Ingestion](../tutorials/first-feed.md)
+- [Your first feed ingestion](../tutorials/first-feed.md)
 
 ---
 
@@ -30,8 +29,8 @@ Follow a guided walkthrough of the ingestion workflow:
 
 Use step-by-step guides for common workflows:
 
-* [Ingest a Product Feed End-to-End](ingest-product-feed.md)
-* [Debug a Failed Feed](debug-product-feed.md)
+- [Ingest a product feed end-to-End](ingest-product-feed.md)
+- [Debug a failed feed](debug-product-feed.md)
 
 ---
 
@@ -39,10 +38,10 @@ Use step-by-step guides for common workflows:
 
 Look up endpoints, parameters, and response models:
 
-* [API Reference](api-reference.md)
-* [Feeds API](feeds.md)
-* [Products API](products.md)
-* [Jobs API](jobs.md)
+- [API Reference](api-reference.md)
+- [Feeds API](feeds.md)
+- [Products API](products.md)
+- [Jobs API](jobs.md)
 
 ---
 
@@ -50,8 +49,8 @@ Look up endpoints, parameters, and response models:
 
 Learn how the platform is designed and how data flows:
 
-* [Architecture Overview](architecture.md)
-* [Workflows](workflows.md)
+- [Architecture](architecture.md)
+- [Workflows](workflows.md)
 
 ---
 
@@ -63,11 +62,11 @@ The ingestion workflow follows a structured pipeline:
 Upload feed → Validate → Transform → Load → Query products
 ```
 
-* **Upload**: Partner submits a CSV product feed
-* **Validate**: Structure and required fields are checked
-* **Transform**: Data is normalized into product records
-* **Load**: Records are inserted or updated in the database
-* **Query**: Products are accessed through the API
+- **Upload**: Partner submits a CSV product feed
+- **Validate**: Structure and required fields are checked
+- **Transform**: Data is normalized into product records
+- **Load**: Records are inserted or updated in the database
+- **Query**: Products are accessed through the API
 
 ---
 
@@ -75,51 +74,47 @@ Upload feed → Validate → Transform → Load → Query products
 
 ### Feed ingestion
 
-* CSV upload via `multipart/form-data`
-* Raw file storage in Amazon S3
-* Feed metadata and job tracking
+- CSV upload via `multipart/form-data`
+- Raw file storage in Amazon S3
+- Feed metadata and job tracking
 
 ---
 
 ### ETL processing
 
-* Extract data from uploaded files
-
-* Transform and validate product data
-
-* Load structured records into the database
-
-* Triggered via job execution (`POST /jobs/{job_id}/run`)
-
-* Results available through job status and summaries
+- Extract data from uploaded files
+- Transform and validate product data
+- Load structured records into the database
+- Triggered via job execution (`POST /jobs/{job_id}/run`)
+- Results available through job status and summaries
 
 ---
 
 ### Job-based processing
 
-* Jobs track validation and ingestion workflows
-* Explicit execution model
-* Status lifecycle: `queued → in_progress → completed / failed`
+- Jobs track validation and ingestion workflows
+- Explicit execution model
+- Status lifecycle: `queued → in_progress → completed / failed`
 
 ---
 
 ### API design
 
-* Resource-based REST endpoints
-* Cursor-based pagination
-* Filtering and sorting
-* Consistent JSON response models
+- Resource-based REST endpoints
+- Cursor-based pagination
+- Filtering and sorting
+- Consistent JSON response models
 
 ---
 
 ## Documentation overview
 
-This documentation includes:
+This documentation includes the following:
 
-* **Tutorials** for learning system workflows
-* **How-to guides** for task-based execution
-* **API reference** for endpoint details
-* **Concepts** for architecture and system behavior
+- **Tutorials** for learning system workflows
+- **How-to guides** for task-based execution
+- **API reference** for endpoint details
+- **Concepts** for architecture and system behavior
 
 ---
 
@@ -129,16 +124,16 @@ This project demonstrates how to design and document a partner-driven data platf
 
 It includes:
 
-* API design and ingestion workflows
-* ETL pipeline implementation
-* Job-based processing and status tracking
-* Cloud deployment (AWS, Docker)
-* Documentation architecture using MkDocs
+- API design and ingestion workflows
+- ETL pipeline implementation
+- Job-based processing and status tracking
+- Cloud deployment (AWS, Docker)
+- Documentation architecture using MkDocs
 
 ---
 
 ## Additional resources
-* <a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank">Swagger UI</a>
-* <a href="https://github.com/rayajose/writing-portfolio" target="_blank">Documentation source (docs-as-code)</a>
+- <a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank">Swagger UI</a>
+- <a href="https://github.com/rayajose/writing-portfolio" target="_blank">Documentation source (docs-as-code)</a>
 
 ---

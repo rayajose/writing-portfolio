@@ -1,15 +1,15 @@
-## API Reference & Resources
+# API reference
 
-This section provides detailed documentation for all API resources, including request formats, parameters, and response models.
+Use this section to explore API endpoints, request formats, and response models.
 
 ---
 
 ## Feeds
 
-Manage partner feed uploads and metadata.
+Use this resource to manage partner feed uploads and metadata.
 
 - Upload product feeds
-- Retrieve feed details and status
+- Retrieve feed status and metadata
 
 → [Feeds API](feeds.md)
 
@@ -17,7 +17,7 @@ Manage partner feed uploads and metadata.
 
 ## Jobs
 
-Track and manage background processing jobs.
+Use this resource to track and manage background processing jobs.
 
 - Monitor validation and processing status
 - Trigger job execution
@@ -28,9 +28,11 @@ Track and manage background processing jobs.
 
 ## Products
 
-Query processed product data.
+Use this resource to query processed product data.
 
-- Filtering, sorting, and pagination
-- Access normalized product records
+- Filter, sort, and paginate results
+- Retrieve normalized product records
 
 → [Products API](products.md)
+
+---

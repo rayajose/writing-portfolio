@@ -88,16 +88,16 @@ curl -X POST http://127.0.0.1:8000/jobs/JV00001/run \
 
 ### Behavior
 
-* Only **validation jobs (JVxxxxx)** can be executed
+- Only **validation jobs (JVxxxxx)** can be executed
 
-* Triggers ETL pipeline:
+- Triggers ETL pipeline:
 
-  * Reads raw CSV from S3
-  * Cleans and validates data
-  * Loads products into PostgreSQL
-  * Detects changes and avoids unnecessary updates
+  - Reads raw CSV from S3
+  - Cleans and validates data
+  - Loads products into PostgreSQL
+  - Detects changes and avoids unnecessary updates
 
-* Updates job status and message with ETL results summary
+- Updates job status and message with ETL results summary
 
 ---
 
@@ -183,6 +183,6 @@ Upload → Submission Job → Validation Job → ETL Processing → Products Loa
 
 ## Related Endpoints
 
-* `POST /feeds/upload` — creates submission and validation jobs
-* `GET /feeds/{feed_id}` — retrieve feed and pipeline status
-* `GET /products/by-feed/{feed_id}` — retrieve ingested products
+- `POST /feeds/upload` — creates submission and validation jobs
+- `GET /feeds/{feed_id}` — retrieve feed and pipeline status
+- `GET /products/by-feed/{feed_id}` — retrieve ingested products

@@ -1,14 +1,12 @@
 # Errors
 
-This section describes how errors are returned by the Partner Catalog API.
+Use this page to understand how the Partner Catalog API returns errors.
 
 ---
 
-## Error Format
+## Error format
 
 The API primarily uses FastAPI’s standard error response format.
-
-### Format
 
 ```json
 {
@@ -18,32 +16,32 @@ The API primarily uses FastAPI’s standard error response format.
 
 ### Fields
 
-| Field  | Type   | Description                        |
-|--------|--------|------------------------------------|
-| detail | string | Description of the error condition |
+| Field  | Type   | Description              |
+|--------|--------|--------------------------|
+| detail | string | Description of the error |
 
 ---
 
-## Common Error Scenarios
+## Common error scenarios
 
 Errors may occur in the following situations:
 
-* Missing or invalid API key
-* Invalid request data (e.g., malformed CSV)
-* Resource not found (feed, job, or product does not exist)
-* ETL processing failure
-* Database or infrastructure issues
+- Missing or invalid API key
+- Invalid request data (e.g., malformed CSV)
+- Resource not found (feed, job, or product does not exist)
+- ETL processing failure
+- Database or infrastructure issues
 
 ---
 
-## Status Codes
+## Status codes
 
 | Status | Meaning                                                |
 |--------|--------------------------------------------------------|
 | 200    | Request completed successfully                         |
 | 201    | Resource created successfully                          |
 | 400    | Bad request (invalid input or business rule violation) |
-| 401    | Missing authentication                                 |
+| 401    | Missing API key                                        |
 | 403    | Invalid API key                                        |
 | 404    | Requested resource not found                           |
 | 422    | Request validation failed                              |
@@ -51,7 +49,7 @@ Errors may occur in the following situations:
 
 ---
 
-## Authentication Errors
+## Authentication errors
 
 ### 401 Unauthorized
 
@@ -81,7 +79,7 @@ Returned when the API key is invalid.
 
 ---
 
-## Resource Errors
+## Resource errors
 
 ### 404 Not Found
 
@@ -113,7 +111,7 @@ Returned when a requested resource does not exist.
 
 ---
 
-## Validation Errors
+## Validation errors
 
 ### 400 Bad Request
 
@@ -165,7 +163,7 @@ Returned when request data fails validation (handled by FastAPI).
 
 ---
 
-## Job Execution Errors
+## Job execution errors
 
 ### 400 Bad Request
 
@@ -195,7 +193,7 @@ Returned when ETL processing fails during job execution.
 
 ---
 
-## Infrastructure Errors
+## Infrastructure errors
 
 ### 500 Internal Server Error
 
@@ -203,10 +201,10 @@ Returned when an unexpected server-side error occurs.
 
 #### Example scenarios
 
-* Database connection failure
-* S3 access or object retrieval failure
-* Unhandled application exception
-* Misconfigured environment variables
+- Database connection failure
+- S3 access or object retrieval failure
+- Unhandled application exception
+- Misconfigured environment variables
 
 #### Example
 
@@ -218,29 +216,25 @@ Returned when an unexpected server-side error occurs.
 
 ---
 
-## Design Notes
+## Error design
 
-* The API uses FastAPI’s built-in error handling for consistency and simplicity
+- The API uses FastAPI’s built-in error handling for consistency and simplicity
+- Most error responses use the `detail` field
+- Validation errors (`422`) use a structured list format defined by FastAPI
+- ETL-related errors are surfaced through job status messages and API responses
+- Resource identifiers follow structured formats:
 
-* Most error responses use the `detail` field
+  - `FDxxxxx` → Feed
+  - `JSxxxxx` → Submission Job
+  - `JVxxxxx` → Validation Job
+  - `PRxxxxx` → Product
 
-* Validation errors (`422`) use a structured list format defined by FastAPI
-
-* ETL-related errors are surfaced through job status messages and API responses
-
-* Resource identifiers follow structured formats:
-
-  * `FDxxxxx` → Feed
-  * `JSxxxxx` → Submission Job
-  * `JVxxxxx` → Validation Job
-  * `PRxxxxx` → Product
-
-* Errors are designed to be predictable and human-readable for easier debugging
+- Errors are predictable and human-readable to support debugging
 
 ---
 
-## Related Documentation
+## Related documentation
 
-* [Feeds API](feeds.md)
-* [Jobs API](jobs.md)
-* [Products API](products.md)
+- [Feeds API](feeds.md)
+- [Jobs API](jobs.md)
+- [Products API](products.md)

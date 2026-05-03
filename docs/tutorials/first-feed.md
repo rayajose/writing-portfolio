@@ -1,4 +1,4 @@
-# Your First Feed Ingestion
+# Your first feed ingestion
 
 In this tutorial, you will upload a product feed, process it through the system, and retrieve product data.
 

@@ -1,4 +1,4 @@
-# Ingest a Product Feed End-to-End
+# Ingest a product feed end-to-End
 
 This guide shows how to upload, process, and verify a partner product feed using the Partner Catalog API.
 
@@ -19,7 +19,7 @@ In this guide, you will:
 
 ## Prerequisites
 
-* Base URL:
+- Base URL:
 
   ```
   http://localhost:8000
@@ -31,16 +31,16 @@ In this guide, you will:
   http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
   ```
 
-* API key:
+- API key:
 
   ```
   x-api-key: demo-secret-key
   ```
 
-* A CSV file that includes:
+- A CSV file that includes:
 
-  * `sku`
-  * `product_name`
+  - `sku`
+  - `product_name`
 
 ---
 
@@ -77,10 +77,10 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 
 ### What happens
 
-* The file is stored in S3 (raw layer)
-* A validation job is created
-* Feed status is set to `uploaded`
-* ETL processing is queued
+- The file is stored in S3 (raw layer)
+- A validation job is created
+- Feed status is set to `uploaded`
+- ETL processing is queued
 
 ---
 
@@ -109,11 +109,11 @@ curl -X POST "http://localhost:8000/jobs/JV00009/run" \
 
 During processing:
 
-* CSV structure is validated
-* Required fields are checked
-* Data is transformed into product records
-* Records are inserted or updated
-* Invalid rows are skipped
+- CSV structure is validated
+- Required fields are checked
+- Data is transformed into product records
+- Records are inserted or updated
+- Invalid rows are skipped
 
 ---
 
@@ -140,11 +140,11 @@ curl -X GET "http://localhost:8000/jobs/JV00009" \
 
 ### Interpret the result
 
-* **Processed**: Total rows evaluated
-* **Inserted**: New products created
-* **Updated**: Existing products with changed data (for example, price or availability)
-* **Unchanged**: Existing products with no changes
-* **Skipped**: Invalid rows or rows missing required fields
+- **Processed**: Total rows evaluated
+- **Inserted**: New products created
+- **Updated**: Existing products with changed data (for example, price or availability)
+- **Unchanged**: Existing products with no changes
+- **Skipped**: Invalid rows or rows missing required fields
 
 ---
 
@@ -184,11 +184,11 @@ curl -X GET "http://localhost:8000/products?feed_id=FD00009" \
 
 Use query parameters to refine results:
 
-* `partner_name`
-* `sku`
-* `brand`
-* `category`
-* `availability`
+- `partner_name`
+- `sku`
+- `brand`
+- `category`
+- `availability`
 
 ---
 
@@ -198,15 +198,15 @@ Use query parameters to refine results:
 
 **Symptom**
 
-* Rows are skipped
+- Rows are skipped
 
 **Cause**
 
-* Missing `sku` or `product_name`
+- Missing `sku` or `product_name`
 
 **Fix**
 
-* Ensure all required fields are present
+- Ensure all required fields are present
 
 ---
 
@@ -214,11 +214,11 @@ Use query parameters to refine results:
 
 **Symptom**
 
-* Products are updated instead of inserted
+- Products are updated instead of inserted
 
 **Cause**
 
-* Deduplication uses:
+- Deduplication uses:
 
 ```
 (partner_name, sku)
@@ -226,8 +226,8 @@ Use query parameters to refine results:
 
 **Fix**
 
-* Use unique SKUs for new products
-* Confirm whether updates are expected
+- Use unique SKUs for new products
+- Confirm whether updates are expected
 
 ---
 
@@ -235,13 +235,13 @@ Use query parameters to refine results:
 
 **Symptom**
 
-* Query returns no results
+- Query returns no results
 
 **Possible causes**
 
-* Job has not completed
-* Incorrect `feed_id`
-* Filters exclude results
+- Job has not completed
+- Incorrect `feed_id`
+- Filters exclude results
 
 ---
 
@@ -251,21 +251,21 @@ The ingestion process includes four stages:
 
 1. **Raw**
 
-   * Stores the original CSV in S3
+   - Stores the original CSV in S3
 
 2. **Validation**
 
-   * Verifies structure and required fields
+   - Verifies structure and required fields
 
 3. **Transformation**
 
-   * Maps CSV rows to the product schema
-   * Normalizes data
+   - Maps CSV rows to the product schema
+   - Normalizes data
 
 4. **Load**
 
-   * Inserts or updates products
-   * Applies deduplication
+   - Inserts or updates products
+   - Applies deduplication
 
 ---
 
@@ -273,9 +273,9 @@ The ingestion process includes four stages:
 
 You:
 
-* Uploaded a product feed
-* Ran validation and ETL processing
-* Reviewed ingestion results
-* Verified products in the catalog
+- Uploaded a product feed
+- Ran validation and ETL processing
+- Reviewed ingestion results
+- Verified products in the catalog
 
 This workflow reflects a typical partner onboarding and feed ingestion process.

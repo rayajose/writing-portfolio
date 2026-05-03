@@ -1,7 +1,6 @@
-# Debug a Failed Feed
+# Debug a failed feed
 
-This guide explains how to investigate and fix a failed product feed during validation or ETL processing.
-
+Use this guide to investigate and fix a failed product feed during validation or ETL processing.
 Use this workflow during partner onboarding or when troubleshooting production ingestion issues.
 
 ---
@@ -11,7 +10,7 @@ Use this workflow during partner onboarding or when troubleshooting production i
 In this guide, you will:
 
 1. Identify the failed feed or job
-2. Retrieve validation and processing details
+2. Retrieve validation and ETL processing details
 3. Interpret error messages
 4. Fix data issues
 5. Re-run processing and verify results
@@ -20,7 +19,7 @@ In this guide, you will:
 
 ## Prerequisites
 
-* Base URL:
+- Base URL:
 
   ```
   http://localhost:8000
@@ -32,17 +31,17 @@ In this guide, you will:
   http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
   ```
 
-* API key:
+- API key:
 
   ```
   x-api-key: demo-secret-key
   ```
 
-* A previously uploaded feed (`feed_id`) or job (`job_id`)
+- A previously uploaded feed (`feed_id`) or job (`job_id`)
 
 ---
 
-## 1. Identify the Failed Feed
+## 1. Identify the failed feed
 
 Retrieve the feed to confirm its status.
 
@@ -67,19 +66,17 @@ curl -X GET "http://localhost:8000/feeds/FD00009" \
 }
 ```
 
-### Check
+### What to look for
 
-Look for:
-
-* `status: failed`
-* `validation_status: failed`
-* `validation_message` describing the issue
+- `status: failed`
+- `validation_status: failed`
+- `validation_message` describing the issue
 
 ---
 
-## 2. Retrieve Job Details
+## 2. Retrieve job details
 
-Get processing results for the associated job.
+Get ETL processing results for the associated job.
 
 ### Request
 
@@ -98,15 +95,15 @@ curl -X GET "http://localhost:8000/jobs/JV00009" \
 }
 ```
 
-### Interpret the Result
+### Interpret the result
 
-* All rows were skipped
-* No records were inserted or updated
-* The issue likely affects the entire file (schema or required fields)
+- All rows were skipped
+- No records were inserted or updated
+- The issue likely affects the entire file (schema or required fields)
 
 ---
 
-## 3. Diagnose the Failure
+## 3. Diagnose the failure
 
 Use the patterns below to identify common issues.
 
@@ -114,8 +111,8 @@ Use the patterns below to identify common issues.
 
 **Symptoms**
 
-* High `Skipped` count
-* Validation message references missing fields
+- High `Skipped` count
+- Validation message references missing fields
 
 **Example**
 
@@ -127,8 +124,8 @@ Missing required field: sku
 
 Ensure every row includes:
 
-* `sku`
-* `product_name`
+- `sku`
+- `product_name`
 
 ---
 
@@ -136,13 +133,13 @@ Ensure every row includes:
 
 **Symptoms**
 
-* Rows skipped or partially processed
-* Unexpected values in results
+- Rows skipped or partially processed
+- Unexpected values in results
 
 **Examples**
 
-* Non-numeric `price`
-* Invalid `availability` values
+- Non-numeric `price`
+- Invalid `availability` values
 
 **Fix**
 
@@ -154,8 +151,8 @@ Validate data types and normalize values before upload.
 
 **Symptoms**
 
-* No new inserts
-* High `Updated` or `Unchanged` counts
+- No new inserts
+- High `Updated` or `Unchanged` counts
 
 **Cause**
 
@@ -167,8 +164,8 @@ Deduplication uses:
 
 **Fix**
 
-* Use unique SKUs for new products
-* Confirm whether updates are expected
+- Use unique SKUs for new products
+- Confirm whether updates are expected
 
 ---
 
@@ -176,21 +173,21 @@ Deduplication uses:
 
 **Symptoms**
 
-* Mix of `Inserted`, `Updated`, and `Skipped`
+- Mix of `Inserted`, `Updated`, and `Skipped`
 
 **Interpretation**
 
-* Some rows are valid
-* Some rows failed validation
+- Some rows are valid
+- Some rows failed validation
 
 **Fix**
 
-* Review skipped rows
-* Correct only invalid records
+- Review skipped rows
+- Correct only invalid records
 
 ---
 
-## 4. Fix the Source File
+## 4. Fix the source file
 
 Update the CSV file based on the identified issue.
 
@@ -212,7 +209,7 @@ TV-002,LED TV,599.99
 
 ---
 
-## 5. Re-run Processing
+## 5. Re-run ETL processing
 
 After fixing the data, reprocess the feed.
 
@@ -234,9 +231,9 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 
 ---
 
-## 6. Verify Success
+## 6. Verify success
 
-Retrieve the job again to confirm successful processing.
+Retrieve the job again to confirm successful ETL processing.
 
 ```bash
 curl -X GET "http://localhost:8000/jobs/JV00009" \
@@ -255,51 +252,51 @@ curl -X GET "http://localhost:8000/jobs/JV00009" \
 
 ---
 
-## Debugging Checklist
+## Debugging checklist
 
 Use this checklist when troubleshooting:
 
-* Confirm required fields (`sku`, `product_name`)
-* Validate data types (`price`, `availability`)
-* Check for duplicate SKUs
-* Review `validation_message`
-* Compare processed vs skipped counts
-* Re-run the job after fixes
+- Confirm required fields (`sku`, `product_name`)
+- Validate data types (`price`, `availability`)
+- Check for duplicate SKUs
+- Review `validation_message`
+- Compare processed vs skipped counts
+- Re-run the job after fixes
 
 ---
 
-## How Processing Works
+## How the system processes a feed
 
 When a feed is processed:
 
 1. **Validation**
 
-   * Checks CSV structure and required fields
-   * Generates validation errors
+   - Checks CSV structure and required fields
+   - Generates validation errors
 
 2. **ETL processing**
 
-   * Transforms valid rows
-   * Skips invalid rows
+   - Transforms valid rows
+   - Skips invalid rows
 
 3. **Result aggregation**
 
-   * Counts inserted, updated, unchanged, and skipped records
+   - Counts inserted, updated, unchanged, and skipped records
 
 4. **Status update**
 
-   * Sets job and feed status to `failed` or `completed`
+   - Sets job and feed status to `failed` or `completed`
 
 ---
 
 ## Summary
 
-You:
+In this workflow, you:
 
-* Identified the failed feed
-* Retrieved validation and job details
-* Diagnosed the issue
-* Fixed the data
-* Reprocessed and verified the results
+- Identified the failed feed
+- Retrieved validation and job details
+- Diagnosed the issue
+- Fixed the data
+- Reprocessed and verified the results
 
 This workflow reflects a typical troubleshooting process for feed ingestion failures.

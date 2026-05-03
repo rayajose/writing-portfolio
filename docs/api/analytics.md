@@ -1,32 +1,32 @@
 # Analytics Layer
 
-The analytics layer extends the Partner Catalog API beyond data ingestion by enabling business intelligence use cases across products, partners, and time.
+This page explains how the Partner Catalog API supports analytical queries across products, partners, and time.
 
-This phase demonstrates how operational data can be transformed into meaningful insights through aggregation, dimensional modeling, and API-driven analytics.
-
----
-
-## Objective
-
-Enable analytical querying across:
-
-* Product performance
-* Partner performance
-* Revenue distribution
-* Time-based trends
-
-The system answers questions such as:
-
-* Which partners generate the most revenue?
-* Which products drive the highest sales?
-* How does revenue vary over time?
-* What percentage of revenue does each partner contribute?
+The analytics layer extends the platform beyond ingestion by enabling aggregated insights through SQL queries and API endpoints.
 
 ---
 
-## Data Model
+## Overview
 
-Phase 4 introduces an `orders` table that acts as a **fact table**.
+The analytics layer enables:
+
+- Product performance analysis
+- Partner performance analysis
+- Revenue distribution insights
+- Time-based trend analysis
+
+Example questions:
+
+- Which partners generate the most revenue?
+- Which products drive the highest sales?
+- How does revenue vary over time?
+- What percentage of revenue does each partner contribute?
+
+---
+
+## Data model
+
+The analytics layer introduces an `orders` table that acts as a fact table.
 
 ```text
 orders
@@ -40,7 +40,7 @@ orders
 
 ---
 
-## Orders Table
+## Orders table
 
 ```sql
 CREATE TABLE IF NOT EXISTS orders (
@@ -60,9 +60,9 @@ CREATE TABLE IF NOT EXISTS orders (
 
 ---
 
-## Dimensional Model
+## Dimensional model
 
-This phase uses a simplified dimensional model:
+The analytics layer uses a simplified dimensional model:
 
 | Type      | Table / Field  | Purpose                   |
 |-----------|----------------|---------------------------|
@@ -73,26 +73,26 @@ This phase uses a simplified dimensional model:
 
 ---
 
-## Dataset Characteristics
+## Dataset characteristics
 
 The sample dataset includes multiple partner types:
 
-* **High-volume / low-price** — Microbrews Brothers
-* **High-value electronics** — RayTech Corp., Tronics
-* **Media retail** — Cid's Vintage Records
-* **Luxury goods** — Joyeria Reina
+- High-volume / low-price — Microbrews Brothers
+- High-value electronics — RayTech Corp., Tronics
+- Media retail — Cid's Vintage Records
+- Luxury goods — Joyeria Reina
 
-This enables realistic comparisons across:
+This enables comparison across:
 
-* Revenue vs volume
-* Product categories
-* Partner business models
+- Revenue vs volume
+- Product categories
+- Partner business models
 
 ---
 
-## Analytics Scenarios
+## Example queries
 
-### Sales by Partner
+### Sales by partner
 
 ```sql
 SELECT
@@ -106,7 +106,7 @@ ORDER BY total_sales DESC;
 
 ---
 
-### Sales Over Time
+### Sales over time
 
 ```sql
 SELECT
@@ -120,7 +120,7 @@ ORDER BY order_date;
 
 ---
 
-### Monthly Aggregation
+### Monthly aggregation
 
 ```sql
 SELECT
@@ -133,7 +133,7 @@ GROUP BY sales_month;
 
 ---
 
-### Top Products
+### Top products
 
 ```sql
 SELECT
@@ -149,7 +149,7 @@ LIMIT 5;
 
 ---
 
-### Revenue Share (Window Function)
+### Revenue share
 
 ```sql
 SELECT
@@ -166,76 +166,67 @@ ORDER BY total_revenue DESC;
 
 ---
 
-## Analytics API Endpoints
+## Analytics API
 
 The analytics layer exposes read-only endpoints for aggregated insights.
 
----
-
 ### GET /analytics/sales-by-partner
 
-Returns total units and revenue by partner.
+Use this endpoint to retrieve total units and revenue by partner.
 
 ---
 
 ### GET /analytics/sales-over-time
 
-Returns time-based sales metrics.
+Use this endpoint to retrieve time-based sales metrics.
 
 Supports:
 
-* `daily`
-* `monthly`
+- `daily`
+- `monthly`
 
 ---
 
 ### GET /analytics/top-products
 
-Returns top-performing products ranked by revenue.
+Use this endpoint to retrieve top-performing products ranked by revenue.
 
 ---
 
 ### GET /analytics/revenue-share
 
-Returns each partner’s percentage contribution to total revenue.
-
-Demonstrates use of SQL window functions.
+Use this endpoint to retrieve each partner’s percentage contribution to total revenue.
 
 ---
 
-## Key Insights
+## Key insights
 
-Using the dataset, several patterns emerge:
+The dataset demonstrates:
 
-* **Joyeria Reina and RayTech Corp. generate high revenue** with lower unit volume (high-value items)
-* **Microbrews Brothers drives high unit volume** but lower total revenue
-* **Tronics introduces competitive overlap** in electronics
-* Revenue distribution is **heavily concentrated among high-ticket partners**
-* Time-series data enables trend analysis and future forecasting
-
----
-
-## Concepts Demonstrated
-
-This phase demonstrates:
-
-* Dimensional modeling (fact + dimensions)
-* Analytical SQL querying
-* Aggregations (SUM, GROUP BY)
-* Time-based analysis (daily, monthly)
-* Window functions (revenue share)
-* API-driven analytics delivery
-* Schema validation with Pydantic
+- High-value partners generate more revenue with lower unit volume
+- High-volume partners drive unit sales but lower total revenue
+- Revenue distribution is concentrated among high-value partners
+- Time-based aggregation enables trend analysis
 
 ---
 
-## Portfolio Value
+## Concepts demonstrated
 
-The analytics layer shows how an operational API system can evolve into a data platform that supports:
+- Dimensional modeling (fact and dimensions)
+- Analytical SQL queries (aggregation, grouping)
+- Time-based analysis
+- Window functions (revenue share)
+- API-driven analytics delivery
 
-* Business intelligence
-* Partner performance analysis
-* Revenue reporting
-* Data-driven decision-making
+---
 
-This demonstrates the ability to design, implement, and document both application logic and analytical systems.
+## Portfolio value
+
+This layer demonstrates how an operational API system can evolve into a data platform that supports:
+
+- Business intelligence
+- Partner performance analysis
+- Revenue reporting
+- Data-driven decision-making
+
+---

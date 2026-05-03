@@ -1,12 +1,12 @@
 # Feeds API
 
-The Feeds API allows clients to upload product feeds, store raw data, and process them through a validation and ETL pipeline.
+Use this API to upload product feeds, store raw data, and process them through the validation and ETL pipeline.
 
 ---
 
 ## Authentication
 
-All requests must include an API key:
+Include an API key in all requests:
 
 ```
 x-api-key: <your-api-key>
@@ -14,9 +14,9 @@ x-api-key: <your-api-key>
 
 ---
 
-## Upload Feed
+## Upload feed
 
-**POST** `/feeds/upload`
+POST `/feeds/upload`
 
 Uploads a CSV product feed, stores the raw file in S3, and creates associated job records for processing.
 
@@ -40,7 +40,7 @@ Content-Type: multipart/form-data
 
 ---
 
-### Example Request
+### Example request
 
 ```bash
 curl -X POST http://127.0.0.1:8000/feeds/upload \
@@ -63,26 +63,23 @@ curl -X POST http://127.0.0.1:8000/feeds/upload \
 
 ---
 
-### Behavior
+### What happens
 
-* Validates file type (CSV only)
+- Validates file type (CSV only)
+- Validates CSV structure (header row required)
+- Stores raw file in **Amazon S3**
+- Creates:
 
-* Validates CSV structure (header row required)
+  - **Submission job (JSxxxxx)** → tracks upload processing
+  - **Validation job (JVxxxxx)** → tracks ETL processing
 
-* Stores raw file in **Amazon S3**
-
-* Creates:
-
-  * **Submission Job (JSxxxxx)** → tracks upload processing
-  * **Validation Job (JVxxxxx)** → tracks ETL processing
-
-* Persists feed metadata for later retrieval
+- Persists feed metadata for later retrieval
 
 > Note: Product data is **not ingested during upload**. Ingestion occurs during ETL processing.
 
 ---
 
-### Error Responses
+### Error responses
 
 #### 400 Bad Request
 
@@ -100,15 +97,15 @@ curl -X POST http://127.0.0.1:8000/feeds/upload \
 
 ---
 
-## Get Feed
+## Get feed
 
-**GET** `/feeds/{feed_id}`
+GET `/feeds/{feed_id}`
 
 Returns metadata for a specific feed, including pipeline status and raw file location.
 
 ---
 
-### Example Request
+### Example request
 
 ```http
 GET /feeds/FD00001
@@ -136,14 +133,14 @@ GET /feeds/FD00001
 
 ---
 
-### Field Definitions
+### Field definitions
 
 | Field              | Description                                             |
 |--------------------|---------------------------------------------------------|
 | feed_id            | Unique feed identifier (FDxxxxx)                        |
 | partner_name       | Partner that submitted the feed                         |
 | file_name          | Original uploaded file name                             |
-| content_type       | MIME type of uploaded file                              |
+| content_type       | MIME type of the uploaded file                          |
 | status             | Feed upload status (`uploaded`)                         |
 | uploaded_at        | UTC timestamp of upload                                 |
 | validation_job_id  | Validation job ID (JVxxxxx)                             |
@@ -154,7 +151,7 @@ GET /feeds/FD00001
 
 ---
 
-## ETL Result Definitions
+## ETL result definitions
 
 The ETL pipeline processes each product row and categorizes the result:
 
@@ -169,17 +166,17 @@ The ETL pipeline processes each product row and categorizes the result:
 
 ---
 
-## Pipeline Flow
+## Pipeline flow
 
 ```text
-Upload → Stored in S3 → Validation Job Created → ETL Processing → Products Loaded into PostgreSQL
+Upload feed → Validate → Transform → Load → Query products
 ```
 
 ---
 
-## Related Endpoints
+## Related endpoints
 
-* `GET /feeds` — List all feeds
-* `GET /jobs/{job_id}` — Retrieve job status
-* `POST /jobs/{job_id}/run` — Execute ETL processing
-* `GET /products/by-feed/{feed_id}` — Retrieve products for a feed
+- `GET /feeds` — List all feeds
+- `GET /jobs/{job_id}` — Retrieve job status
+- `POST /jobs/{job_id}/run` — Run ETL processing
+- `GET /products/by-feed/{feed_id}` — Retrieve products for a feed
