@@ -1,12 +1,12 @@
-# CSV Feed File Specification
+# CSV feed file specification
 
 ## Purpose
 
-The `/feeds/upload` endpoint accepts partner product data as a CSV file. The file is stored as raw input and processed by the ETL pipeline to create or update product records.
+Uploaded files are stored as raw input and processed by the ETL pipeline to create or update product records.
 
 ---
 
-## File Requirements
+## File requirements
 
 CSV files must meet the following requirements:
 
@@ -22,7 +22,7 @@ CSV files must meet the following requirements:
 
 ---
 
-## Required Columns
+## Required columns
 
 The following columns are required for each product record:
 
@@ -31,22 +31,22 @@ The following columns are required for each product record:
 | `sku`          | string | Yes      | Partner-provided unique product identifier |
 | `product_name` | string | Yes      | Display name of the product                |
 
-Rows missing either `sku` or `product_name` are skipped during ETL processing.
+Rows missing `sku` or `product_name` are skipped during ETL processing.
 
 ---
 
-## Recommended Columns
+## Recommended columns
 
 The following columns are recommended for complete product records:
 
-| Column         | Type    | Required | Description                                 |
-|----------------|---------|----------|---------------------------------------------|
-| `brand`        | string  | No       | Product brand or manufacturer               |
-| `category`     | string  | No       | Product category                            |
-| `price`        | decimal | No       | Product price (numeric, no currency symbol) |
-| `currency`     | string  | No       | Three-letter currency code, such as `USD`   |
-| `availability` | string  | No       | Product availability status                 |
-| `description`  | string  | No       | Product description                         |
+| Column         | Type    | Required | Description                                     |
+|----------------|---------|----------|-------------------------------------------------|
+| `brand`        | string  | No       | Product brand or manufacturer                   |
+| `category`     | string  | No       | Product category                                |
+| `price`        | decimal | No       | Product price (numeric, no currency symbol)     |
+| `currency`     | string  | No       | Three-letter currency code (for example, `USD`) |
+| `availability` | string  | No       | Product availability status                     |
+| `description`  | string  | No       | Product description                             |
 
 ---
 
@@ -61,7 +61,17 @@ SKU-1003,Laptop Stand,Generic,Office Accessories,39.99,USD,out_of_stock,Adjustab
 
 ---
 
-## Validation Behavior
+## What happens
+
+- Validate CSV structure  
+- Store the raw file in Amazon S3  
+- Create submission and validation jobs  
+- Process data during ETL  
+- Insert, update, or skip product records  
+
+---
+
+## Validation
 
 During ETL processing, the system validates each row.
 
@@ -76,19 +86,19 @@ During ETL processing, the system validates each row.
 
 ---
 
-## Product Uniqueness
+## Product uniqueness
 
 Products are uniquely identified by the combination of:
 
 ```
 partner_name + sku
 ```
-
-This means two different partners may use the same SKU without conflict.
+This constraint prevents duplicate product ingestion for the same partner.
+This also means two different partners may use the same SKU without conflict.
 
 ---
 
-## Formatting Guidelines
+## Formatting guidelines
 
 Follow these guidelines when preparing a CSV file:
 
@@ -102,7 +112,7 @@ Follow these guidelines when preparing a CSV file:
 
 ---
 
-## Upload Example
+## Upload example
 
 ```bash
 curl -X POST "http://<host>/feeds/upload" \
@@ -113,7 +123,7 @@ curl -X POST "http://<host>/feeds/upload" \
 
 ---
 
-## Successful Upload Response
+## Successful upload response
 
 ```json
 {

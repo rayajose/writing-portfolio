@@ -1,16 +1,24 @@
 # Workflows
 
-This section demonstrates how to upload a partner feed, execute ETL processing, and retrieve product data.
+Use this guide to upload a partner feed, run ETL processing, and retrieve product data.
+
+## What happens
+
+- Upload a feed  
+- Create submission and validation jobs  
+- Run ETL processing  
+- Store products in the database  
+- Retrieve products through the API  
 
 ---
 
-## Submit and Process a Feed
+## Upload and process a feed
 
 This workflow shows the full ingestion pipeline from raw upload to queryable product data.
 
 ---
 
-### Step 1 — Upload a feed
+### Step 1: Upload a feed
 
 ```bash
 curl -X POST "http://127.0.0.1:8000/feeds/upload" \
@@ -21,7 +29,7 @@ curl -X POST "http://127.0.0.1:8000/feeds/upload" \
 
 ---
 
-### Example Response
+### Example response
 
 ```json
 {
@@ -35,17 +43,17 @@ curl -X POST "http://127.0.0.1:8000/feeds/upload" \
 
 ### What happens
 
-* CSV structure is validated
-* Raw file is stored in **Amazon S3**
-* A **submission job (JSxxxxx)** is created
-* A **validation job (JVxxxxx)** is created
-* Feed metadata is persisted
+- CSV structure is validated
+- Raw file is stored in Amazon S3
+- A **submission job (JSxxxxx)** is created
+- A **validation job (JVxxxxx)** is created
+- Feed metadata is persisted
 
 > Product data is **not ingested at this stage**
 
 ---
 
-### Step 2 — Check submission job
+### Step 2: Check submission job
 
 ```bash
 curl -H "x-api-key: demo-secret-key" \
@@ -54,7 +62,7 @@ curl -H "x-api-key: demo-secret-key" \
 
 ---
 
-### Step 3 — Check validation job (queued)
+### Step 3: Check validation job (queued)
 
 ```bash
 curl -H "x-api-key: demo-secret-key" \
@@ -63,7 +71,7 @@ curl -H "x-api-key: demo-secret-key" \
 
 ---
 
-### Example Response
+### Example response
 
 ```json
 {
@@ -77,7 +85,7 @@ curl -H "x-api-key: demo-secret-key" \
 
 ---
 
-### Step 4 — Run ETL processing
+### Step 4: Run ETL processing
 
 ```bash
 curl -X POST "http://127.0.0.1:8000/jobs/JV00001/run" \
@@ -88,17 +96,17 @@ curl -X POST "http://127.0.0.1:8000/jobs/JV00001/run" \
 
 ### What happens
 
-* Raw CSV is read from S3
-* Data is cleaned and normalized
-* Products are compared against existing records
-* Only changed products are updated
-* New products are inserted
-* Unchanged products are skipped
-* Job status and message are updated with ETL results
+- Raw CSV is read from S3
+- Data is cleaned and normalized
+- Products are compared against existing records
+- Only changed products are updated
+- New products are inserted
+- Unchanged products are skipped
+- Job status and message are updated with ETL results
 
 ---
 
-### Step 5 — Verify feed processing
+### Step 5: Verify feed processing
 
 ```bash
 curl -H "x-api-key: demo-secret-key" \
@@ -107,7 +115,7 @@ curl -H "x-api-key: demo-secret-key" \
 
 ---
 
-### Example Response
+### Example response
 
 ```json
 {
@@ -127,7 +135,7 @@ curl -H "x-api-key: demo-secret-key" \
 
 ---
 
-### Step 6 — Query products
+### Step 6: Query products
 
 ```bash
 curl -H "x-api-key: demo-secret-key" \
@@ -136,7 +144,7 @@ curl -H "x-api-key: demo-secret-key" \
 
 ---
 
-### Example Response
+### Response
 
 ```json
 {
@@ -160,7 +168,7 @@ curl -H "x-api-key: demo-secret-key" \
 
 ---
 
-## Reprocessing Example (Idempotency)
+## Reprocessing example (idempotency)
 
 Re-running ETL on the same feed demonstrates how the system avoids duplicate updates.
 
@@ -186,7 +194,7 @@ Products processed: 13. Inserted: 0. Updated: 1. Unchanged: 12. Skipped: 0.
 
 ---
 
-## Workflow Summary
+## Workflow summary
 
 ```text
 Upload Feed
@@ -206,35 +214,35 @@ Query
 
 ---
 
-## Key Points
+## Key points
 
-* Upload and ingestion are **separate steps**
-* Raw data is stored in S3 for reprocessing and auditability
-* ETL is triggered explicitly via API
-* Jobs provide full pipeline visibility
-* Product updates are **change-detected (no blind updates)**
-* Reprocessing is **idempotent**
-* Product data is only available after ETL completes
-* IDs follow structured formats:
+- Upload and ingestion are **separate steps**
+- Raw data is stored in S3 for reprocessing and auditability
+- ETL is triggered explicitly via API
+- Jobs provide full pipeline visibility
+- Product updates are **change-detected (no blind updates)**
+- Reprocessing is **idempotent**
+- Product data is only available after ETL completes
+- IDs follow structured formats:
 
-  * `FDxxxxx` → Feed
-  * `JSxxxxx` → Submission Job
-  * `JVxxxxx` → Validation Job
-  * `PRxxxxx` → Product
-
----
-
-## Notes
-
-* ETL processing is currently synchronous
-* Designed to support asynchronous execution in the future
-* Validation includes both structure and transformation readiness
+  - `FDxxxxx` → Feed
+  - `JSxxxxx` → Submission Job
+  - `JVxxxxx` → Validation Job
+  - `PRxxxxx` → Product
 
 ---
 
-## Related Documentation
+## Additional details
 
-* [Feeds API](feeds.md)
-* [Jobs API](jobs.md)
-* [Products API](products.md)
-* [Errors](errors.md)
+- ETL processing is currently synchronous
+- Designed to support asynchronous execution in the future
+- Validation includes both structure and transformation readiness
+
+---
+
+## Related documentation
+
+- [Feeds API](feeds.md)
+- [Jobs API](jobs.md)
+- [Products API](products.md)
+- [Errors](errors.md)

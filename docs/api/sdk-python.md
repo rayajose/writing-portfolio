@@ -1,27 +1,20 @@
-# Python SDK Guide
+# Python SDK guide
 
-This guide shows how developers can interact with the Partner Catalog API using a lightweight Python client.
+Use this guide to interact with the Partner Catalog API using a lightweight Python client.
+This client provides reusable methods for uploading feeds, checking jobs, and retrieving product data without writing raw HTTP requests.
 
-The example client demonstrates an SDK-style approach to working with the API. Instead of writing raw HTTP requests for each operation, developers can use reusable Python methods to upload catalog feeds, check processing jobs, and retrieve product data.
+## What the client does
 
-This guide is intended for local development, testing, and portfolio demonstration purposes.
-
----
-
-## Overview
-
-The Python client provides methods for:
-
-* Uploading partner product feeds
-* Checking job status
-* Retrieving product data
-* Filtering, sorting, and paginating results
+- Wrap API endpoints in reusable methods  
+- Handle authentication headers  
+- Support filtering, sorting, and pagination  
+- Raise exceptions for failed requests  
 
 ---
 
-## Example Files
+## Example files
 
-The Python client and runnable example are available in the repository:
+The client and example scripts are available in the repository:
 
 - `examples/sdk/client.py`
 - `examples/sdk/example_usage.py`
@@ -32,7 +25,7 @@ These files demonstrate how to interact with the API using an SDK-style approach
 
 ## Authentication
 
-All requests require an API key passed in the `x-api-key` header.
+Include an API key in all requests using the `x-api-key` header.
 
 ```python
 headers = {
@@ -42,7 +35,7 @@ headers = {
 
 ---
 
-## Install Dependencies
+## Install dependencies
 
 ```bash
 pip install requests
@@ -50,7 +43,7 @@ pip install requests
 
 ---
 
-## Example Client
+## Example client
 
 ```python
 import requests
@@ -128,7 +121,7 @@ class PartnerCatalogClient:
 
 ---
 
-## Usage Example
+## Usage example
 
 ```python
 client = PartnerCatalogClient(
@@ -146,7 +139,7 @@ print(response)
 
 ---
 
-## Check Job Status
+## Check job status
 
 ```python
 job = client.get_job("JS00001")
@@ -155,7 +148,7 @@ print(job)
 
 ---
 
-## Retrieve Products
+## Retrieve products
 
 ```python
 products = client.get_products(limit=5)
@@ -164,7 +157,7 @@ print(products)
 
 ---
 
-## Filter and Sort Products
+## Filter and sort products
 
 ```python
 products = client.get_products(
@@ -180,7 +173,8 @@ print(products)
 
 ---
 
-## Cursor-Based Pagination
+## Cursor-based pagination
+Use cursor-based pagination to retrieve large result sets.
 
 ```python
 first_page = client.get_products(limit=5)
@@ -198,7 +192,7 @@ if next_cursor:
 
 ---
 
-## Error Handling
+## Error handling
 
 The client uses `response.raise_for_status()` to raise exceptions for HTTP errors.
 
@@ -212,18 +206,20 @@ except requests.exceptions.HTTPError as error:
 ```
 
 ---
-## Run the Example Locally
+## Run the example locally
 
 Start the API:
 
 ```bash
 uvicorn main:app --reload
 ```
+
 Navigate to the SDK example directory:
 
 ```bash
 cd examples/sdk
 ```
+
 Run the example:
 
 ```bash
@@ -233,8 +229,6 @@ The script will retrieve product data from the API and print the response.
 
 ---
 
-## Notes
+## Additional details
 
-This example demonstrates a simple SDK-style client for interacting with the Partner Catalog API.
-
-It is intentionally lightweight and is not distributed as a standalone Python package. Developers can extend this client with additional features such as retries, logging, or custom exception handling.
+This client is intentionally lightweight and not distributed as a standalone package. You can extend it with retries, logging, or custom error handling.

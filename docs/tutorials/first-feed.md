@@ -10,9 +10,9 @@ This tutorial is designed for first-time users. It introduces the core workflow 
 
 By the end of this tutorial, you will understand:
 
-* What a product feed is
-* How the ingestion pipeline works
-* How product data becomes available in the API
+- What a product feed is
+- How the ingestion pipeline works
+- How product data becomes available in the API
 
 ---
 
@@ -20,7 +20,7 @@ By the end of this tutorial, you will understand:
 
 You need:
 
-* Base URL:
+- Base URL:
 
   ```
   http://localhost:8000
@@ -32,16 +32,16 @@ You need:
   http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
   ```
 
-* API key:
+- API key:
 
   ```
   x-api-key: demo-secret-key
   ```
 
-* A CSV file with at least:
+- A CSV file with at least:
 
-  * `sku`
-  * `product_name`
+  - `sku`
+  - `product_name`
 
 ---
 
@@ -51,8 +51,8 @@ A **product feed** is a CSV file that contains product data from a partner.
 
 Each row represents a product. At minimum, the system requires:
 
-* `sku` (unique identifier per partner)
-* `product_name`
+- `sku` (unique identifier per partner)
+- `product_name`
 
 When you upload a feed, the system does not immediately make products available. Instead, it stores the raw file and prepares it for processing.
 
@@ -84,9 +84,9 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 
 ### What happens
 
-* The file is stored in the raw data layer (S3)
-* A validation job is created
-* The system queues the feed for processing
+- The file is stored in the raw data layer (S3)
+- A validation job is created
+- The system queues the feed for processing
 
 At this point, the data is not yet available for querying.
 
@@ -116,10 +116,10 @@ curl -X POST "http://localhost:8000/jobs/JV00009/run" \
 
 During this step, the system:
 
-* Validates the CSV structure
-* Checks required fields
-* Transforms rows into product records
-* Inserts or updates products in the database
+- Validates the CSV structure
+- Checks required fields
+- Transforms rows into product records
+- Inserts or updates products in the database
 
 Only after this step completes can you query product data.
 
@@ -153,8 +153,8 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 
 ### What this means
 
-* Products are now available in the catalog
-* The ingestion pipeline completed successfully
+- Products are now available in the catalog
+- The ingestion pipeline completed successfully
 
 ---
 
@@ -164,19 +164,19 @@ The ingestion workflow follows four stages:
 
 1. **Raw**
 
-   * Stores the original CSV file
+   - Stores the original CSV file
 
 2. **Validation**
 
-   * Checks structure and required fields
+   - Checks structure and required fields
 
 3. **Transformation**
 
-   * Converts CSV rows into product records
+   - Converts CSV rows into product records
 
 4. **Load**
 
-   * Inserts or updates products in the database
+   - Inserts or updates products in the database
 
 ---
 
@@ -184,16 +184,16 @@ The ingestion workflow follows four stages:
 
 Now that you’ve completed your first ingestion:
 
-* Use filters to query specific products
-* Upload a larger or more complex feed
-* Introduce invalid data to see how validation behaves
+- Use filters to query specific products
+- Upload a larger or more complex feed
+- Introduce invalid data to see how validation behaves
 
 ---
 
 ## Next steps
 
-* See [Ingest a Product Feed End-to-End](../api/ingest-product-feed.md) for a task-focused workflow
-* See [Debug a Failed Feed](../api/debug-product-feed.md) to troubleshoot issues
-* Explore [Products API](../api/products.md) for advanced queries
+- See [Ingest a Product Feed End-to-End](../api/ingest-product-feed.md) for a task-focused workflow
+- See [Debug a Failed Feed](../api/debug-product-feed.md) to troubleshoot issues
+- Explore [Products API](../api/products.md) for advanced queries
 
 ---

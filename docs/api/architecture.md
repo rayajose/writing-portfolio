@@ -299,7 +299,7 @@ This separation improves scalability, maintainability, and performance.
 The API uses structured identifiers to ensure traceability.
 
 | Prefix | Resource       | Example |
-| ------ | -------------- | ------- |
+|--------|----------------|---------|
 | FD     | Feed           | FD00001 |
 | JS     | Submission Job | JS00001 |
 | JV     | Validation Job | JV00001 |
@@ -338,19 +338,19 @@ POST /jobs/{job_id}/run
 ```mermaid
 stateDiagram-v2
     [*] --> queued
-    queued --> in_progress
-    in_progress --> completed
-    in_progress --> failed
+    queued --> running
+    running --> completed
+    running --> failed
     failed --> [*]
     completed --> [*]
 ```
 
-| Status      | Description                        |
-| ----------- | ---------------------------------- |
-| queued      | Job created and awaiting execution |
-| in_progress | ETL processing in progress         |
-| completed   | Job finished successfully          |
-| failed      | Job encountered an error           |
+| Status    | Description                        |
+|-----------|------------------------------------|
+| queued    | Job created and awaiting execution |
+| running   | ETL processing in progress         |
+| completed | Job finished successfully          |
+| failed    | Job encountered an error           |
 
 ---
 
@@ -359,7 +359,7 @@ stateDiagram-v2
 The system separates internal storage models from API representations.
 
 | Layer        | Field Name  |
-| ------------ | ----------- |
+|--------------|-------------|
 | Database     | `filename`  |
 | API Response | `file_name` |
 

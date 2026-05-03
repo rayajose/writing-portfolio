@@ -1,63 +1,63 @@
 # Resources
 
-This section provides additional reference materials and links supporting the Partner Catalog API. 
+Use this page to understand core resources and supporting concepts in the Partner Catalog API.
 
 ---
 
 ## Feed
 
-A Feed represents a product data file submitted by a partner for ingestion.
+A feed represents a product data file submitted by a partner for ingestion.
 
 ### Fields
 
-* `feed_id` — unique identifier for the feed (FDxxxxx)
-* `partner_name` — name of the submitting partner
-* `file_name` — name of the uploaded file
-* `content_type` — MIME type of the uploaded file
-* `status` — feed upload status (`uploaded`)
-* `uploaded_at` — timestamp when the feed was uploaded
-* `validation_job_id` — associated validation job ID (JVxxxxx)
-* `validation_status` — current ETL job status (`queued`, `running`, `completed`, `failed`)
-* `validation_message` — result of ETL processing
-* `raw_file_s3_key` — S3 object key for the raw feed file
-* `raw_file_bucket` — S3 bucket storing the raw feed
+- `feed_id` — unique identifier for the feed (FDxxxxx)
+- `partner_name` — name of the submitting partner
+- `file_name` — name of the uploaded file
+- `content_type` — MIME type of the uploaded file
+- `status` — feed upload status (`uploaded`)
+- `uploaded_at` — timestamp when the feed was uploaded
+- `validation_job_id` — associated validation job ID (JVxxxxx)
+- `validation_status` — current ETL job status (`queued`, `running`, `completed`, `failed`)
+- `validation_message` — result of ETL processing
+- `raw_file_s3_key` — S3 object key for the raw feed file
+- `raw_file_bucket` — S3 bucket storing the raw feed
 
 ---
 
-### Notes
+### Additional details
 
-* Feed status reflects upload state only
-* Processing state is tracked via the associated validation job
+- Feed status reflects upload state only
+- Processing state is tracked via the associated validation job
 
 ---
 
 ## Job
 
-A Job represents a processing task such as feed submission or ETL execution.
+A job represents a processing task such as feed submission or ETL execution.
 
 Jobs provide visibility into and control over the ingestion pipeline.
 
 ### Fields
 
-* `job_id` — unique identifier for the job (JSxxxxx or JVxxxxx)
-* `feed_id` — associated feed
-* `job_type` — type of job
-* `status` — current job status
-* `created_at` — timestamp when the job was created
-* `message` — status or result message
+- `job_id` — unique identifier for the job (JSxxxxx or JVxxxxx)
+- `feed_id` — associated feed
+- `job_type` — type of job
+- `status` — current job status
+- `created_at` — timestamp when the job was created
+- `message` — status or result message
 
 ---
 
-### Job Types
+### Job types
 
-| Type       | Description                                       |
-|------------|---------------------------------------------------|
-| submission | Feed upload processing                            |
-| validation | ETL processing (S3 → transform → PostgreSQL load) |
+| Type       | Description                                   |
+|------------|-----------------------------------------------|
+| submission | Feed upload processing                        |
+| validation | ETL processing (Validate → Transform → Load)  |
 
 ---
 
-### Status Values
+### Status values
 
 | Status    | Description                        |
 |-----------|------------------------------------|
@@ -70,28 +70,28 @@ Jobs provide visibility into and control over the ingestion pipeline.
 
 ## Product
 
-A Product represents a normalized item derived from a partner feed.
+A product represents a normalized item derived from a partner feed.
 
 Products are created during ETL processing and stored for querying.
 
 ### Fields
 
-* `product_id` — unique identifier for the product (PRxxxxx)
-* `feed_id` — associated feed
-* `partner_name` — originating partner
-* `sku` — partner-defined stock keeping unit
-* `product_name` — display name of the product
-* `description` — product description
-* `brand` — product brand
-* `category` — product category
-* `price` — product price (numeric)
-* `currency` — currency code (e.g., USD)
-* `availability` — availability status (e.g., in_stock)
-* `created_at` — timestamp when product was ingested
+- `product_id` — unique identifier for the product (PRxxxxx)
+- `feed_id` — associated feed
+- `partner_name` — originating partner
+- `sku` — partner-defined stock keeping unit
+- `product_name` — display name of the product
+- `description` — product description
+- `brand` — product brand
+- `category` — product category
+- `price` — product price (numeric)
+- `currency` — currency code (e.g., USD)
+- `availability` — availability status (e.g., in_stock)
+- `created_at` — timestamp when product was ingested
 
 ---
 
-## Identifier Format
+## Identifier format
 
 All resources use structured identifiers for consistency and traceability:
 
@@ -104,7 +104,7 @@ All resources use structured identifiers for consistency and traceability:
 
 ---
 
-## Health Endpoint
+## Health endpoint
 
 Used to verify API and database availability.
 
@@ -120,12 +120,16 @@ Returns the operational status of the API.
   "database": "connected"
 }
 ```
+### What happens
+
+- Check API availability  
+- Verify database connectivity  
 
 ---
 
-## Notes
+## Additional details
 
-* All resources use `snake_case` field naming in API responses
-* Identifiers are generated using database-backed counters
-* Raw data is stored in S3 and processed via ETL before becoming queryable
-* Products are derived from feeds but can be queried independently
+- All resources use `snake_case` field names  
+- Identifiers are generated using database-backed counters  
+- Raw data is stored in Amazon S3 and processed via ETL  
+- Products are derived from feeds but can be queried independently  

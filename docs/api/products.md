@@ -1,35 +1,37 @@
 # Products API
 
-This section describes endpoints for retrieving product data ingested from partner catalog feeds.
+Use this API to retrieve product data from partner catalog feeds.
 
-The Products API allows clients to:
+- Retrieve all products across partners
+- Filter products by multiple attributes
+- Sort results by supported fields
+- Paginate results using `limit` and `cursor`
+- Retrieve a single product by ID
 
-* Retrieve all products across partners
-* Filter products by multiple attributes
-* Sort results by supported fields
-* Paginate results using `limit` and `cursor`
-* Retrieve a single product by ID
-
-> Product data becomes available only after ETL processing completes for a feed.
+> Product data becomes available only after ETL processing completes.
 > See [Workflows](workflows.md) for the full ingestion process.
 
 ---
 
 ## GET /products
 
-### Description
-
-Returns product records stored from uploaded partner feeds.
+Use this endpoint to retrieve product records from uploaded partner feeds.
 
 Supports filtering, sorting, and cursor-based pagination.
 
+### What happens
+
+- Retrieve product records from the database  
+- Apply filters, sorting, and pagination  
+- Return results with an optional `next_cursor`  
+
 ---
 
-### Query Parameters
+### Query parameters
 
 | Name         | Type   | Required | Description                                                                   |
 |--------------|--------|----------|-------------------------------------------------------------------------------|
-| partner_name | string | No       | Filter by partner name                                                        |
+| partner_name | string | No       | Partner name filter                                                           |
 | feed_id      | string | No       | Filter by feed ID                                                             |
 | sku          | string | No       | Filter by SKU                                                                 |
 | brand        | string | No       | Filter by brand                                                               |
@@ -48,19 +50,19 @@ Results can be sorted using `sort_by` and `order`.
 
 Supported fields:
 
-* `created_at`
-* `price`
-* `product_name`
-* `brand`
-* `category`
+- `created_at`
+- `price`
+- `product_name`
+- `brand`
+- `category`
 
 Examples:
 
-```http
+```bash
 GET /products?sort_by=price&order=asc
 ```
 
-```http
+```bash
 GET /products?sort_by=product_name&order=asc
 ```
 
@@ -70,30 +72,30 @@ GET /products?sort_by=product_name&order=asc
 
 Results are paginated using `limit` and `cursor`.
 
-* The cursor is based on `product_id`
-* The API returns a `next_cursor` when more results are available
-* To retrieve the next page, pass the returned cursor in the next request
+- The cursor is based on `product_id`
+- The API returns a `next_cursor` when more results are available
+- To retrieve the next page, pass the returned cursor in the next request
 
 Examples:
 
-```http
+```bash
 GET /products?limit=5
 ```
 
-```http
+```bash
 GET /products?limit=5&cursor=PR00010
 ```
 
 Response behavior:
 
-* `count` = number of items returned in the current page
-* `next_cursor` = present only when more results exist
+- `count` = number of items returned in the current page
+- `next_cursor` = present only when more results exist
 
 ---
 
-### Example Request
+### Example request
 
-```http
+```bash
 GET /products?partner_name=Tech Haven&limit=5
 x-api-key: demo-secret-key
 ```
@@ -127,7 +129,7 @@ x-api-key: demo-secret-key
 
 ---
 
-### Response Fields
+### Response fields
 
 | Field       | Type   | Description                                  |
 |-------------|--------|----------------------------------------------|
@@ -139,13 +141,11 @@ x-api-key: demo-secret-key
 
 ## GET /products/{product_id}
 
-### Description
-
 Returns a single product by its unique product ID.
 
 ---
 
-### Path Parameters
+### Path parameters
 
 | Name       | Type   | Required | Description                       |
 |------------|--------|----------|-----------------------------------|
@@ -153,16 +153,16 @@ Returns a single product by its unique product ID.
 
 ---
 
-### Example Request
+### Example request
 
-```http
+```bash
 GET /products/PR00001
 x-api-key: demo-secret-key
 ```
 
 ---
 
-### Example Response
+### Example response
 
 ```json
 {
@@ -183,7 +183,7 @@ x-api-key: demo-secret-key
 
 ---
 
-### Error Responses
+### Error responses
 
 #### 404 Not Found
 
@@ -197,13 +197,11 @@ x-api-key: demo-secret-key
 
 ## GET /products/by-feed/{feed_id}
 
-### Description
-
 Returns all products associated with a specific feed.
 
 ---
 
-### Path Parameters
+### Path parameters
 
 | Name    | Type   | Required | Description                    |
 |---------|--------|----------|--------------------------------|
@@ -211,16 +209,16 @@ Returns all products associated with a specific feed.
 
 ---
 
-### Example Request
+### Example request
 
-```http
+```bash
 GET /products/by-feed/FD00001
 x-api-key: demo-secret-key
 ```
 
 ---
 
-### Example Response
+### Example response
 
 ```json
 {
@@ -243,12 +241,12 @@ x-api-key: demo-secret-key
 
 ---
 
-## Notes
+## Additional details
 
-* All endpoints require a valid `x-api-key` header
-* Product data is sourced from partner CSV feeds processed through the ETL pipeline
-* Products are **not available until ETL processing completes**
-* Raw feed data is stored in Amazon S3 and transformed before loading into PostgreSQL
-* Not all fields are guaranteed to be populated for every product
-* Results are ordered by `created_at` in descending order by default unless overridden
-* Cursor-based pagination uses `product_id` for efficient traversal of large datasets
+- All endpoints require a valid `x-api-key` header
+- Product data is sourced from partner CSV feeds processed through the ETL pipeline
+- Products are **not available until ETL processing completes**
+- Raw feed data is stored in Amazon S3 and transformed before loading into PostgreSQL
+- Not all fields are guaranteed to be populated for every product
+- Results are ordered by `created_at` in descending order by default unless overridden
+- Cursor-based pagination uses `product_id` for efficient traversal of large datasets

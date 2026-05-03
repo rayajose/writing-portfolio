@@ -1,18 +1,18 @@
-# Partner Feed Onboarding SOP
+# Partner feed onboarding
 
 ## Purpose
 
-This document defines the standard process for onboarding a new partner product feed into the platform. It ensures consistent ingestion, validation, and availability of partner data while minimizing errors and operational risk.
+This page defines the process for onboarding a new partner product feed into the platform.
 
 ---
 
 ## Scope
 
-This procedure applies to:
+This process applies to the following scenarios:
 
-* New partner integrations
-* Initial product feed ingestion
-* Validation and activation of partner data
+- New partner integrations
+- Initial product feed ingestion
+- Validation and activation of partner data
 
 It is intended for use by operations teams, integration engineers, and support personnel.
 
@@ -22,16 +22,26 @@ It is intended for use by operations teams, integration engineers, and support p
 
 Before starting, confirm the following:
 
-* Partner has provided a valid CSV product feed
-* Required fields are present (minimum: `sku`, `product_name`)
-* API access is available (API key configured)
-* Target environment is identified (test or production)
+- Partner has provided a valid CSV product feed
+- Required fields are present (minimum: `sku`, `product_name`)
+- API access is available (API key configured)
+- Target environment is identified (test or production)
+
+---
+
+## What happens
+
+- Upload a partner feed  
+- Create submission and validation jobs  
+- Validate and process data through ETL  
+- Store products in the database  
+- Make products available via the API  
 
 ---
 
 ## Procedure
 
-### Step 1 — Upload Partner Feed
+### Step 1: Upload partner feed
 
 Submit the product feed using the upload endpoint.
 
@@ -44,11 +54,11 @@ curl -X POST "http://<host>/feeds/upload" \
 
 ---
 
-### Expected Result
+### What happens
 
-* A `feed_id` is generated
-* A submission job (`JSxxxxx`) is created
-* A validation job (`JVxxxxx`) is queued
+- A `feed_id` is generated
+- A submission job (`JSxxxxx`) is created
+- A validation job (`JVxxxxx`) is queued
 
 Example response:
 
@@ -62,7 +72,7 @@ Example response:
 
 ---
 
-### Step 2 — Verify Feed Registration
+### Step 2: Verify feed registration
 
 Retrieve the feed to confirm it was successfully registered.
 
@@ -73,15 +83,15 @@ curl -H "x-api-key: <api-key>" \
 
 ---
 
-### Validation Checks
+### Validation checks
 
-* `status` should be `uploaded` or `validating`
-* `validation_job_id` should be present
-* `partner_name` and `file_name` should match input
+- `status` is `uploaded` or `validating`
+- `validation_job_id` is present
+- `partner_name` and `file_name` should match input
 
 ---
 
-### Step 3 — Monitor Validation Job
+### Step 3: Monitor validation job
 
 Check the status of the validation job.
 
@@ -92,14 +102,14 @@ curl -H "x-api-key: <api-key>" \
 
 ---
 
-### Expected Status Flow
+### Expected status flow
 
-* `queued` → `in_progress` → `completed`
-* If errors occur: `failed`
+- `queued` → `running` → `completed`
+- If errors occur: `failed`
 
 ---
 
-### Step 4 — Review Validation Results
+### Step 4: Review validation results
 
 Once the job is `completed`, review the ETL summary.
 
@@ -114,16 +124,16 @@ Example:
 
 ---
 
-### Interpretation
+### What the results mean
 
-* **Inserted** — New products added
-* **Updated** — Existing products modified (data changes detected)
-* **Unchanged** — No changes from existing records
-* **Skipped** — Invalid rows (missing required fields or malformed data)
+- **Inserted**: New products added
+- **Updated**: Existing products modified (data changes detected)
+- **Unchanged**: No changes from existing records
+- **Skipped**: Invalid rows (missing required fields or malformed data)
 
 ---
 
-### Step 5 — Validate Product Availability
+### Step 5: Validate product availability
 
 Confirm that products are accessible via the API.
 
@@ -134,75 +144,62 @@ curl -H "x-api-key: <api-key>" \
 
 ---
 
-### Validation Checks
+### Validation checks
 
-* Products are returned for the correct partner
-* Key fields (SKU, name, price, availability) are populated
-* Record counts align with ETL summary
-
----
-
-## Decision Points
-
-### If Validation Fails
-
-* Review error message from job response
-* Check CSV format and required fields
-* Correct issues and re-upload feed
+- Products are returned for the correct partner
+- Key fields (SKU, name, price, availability) are populated
+- Record counts align with ETL summary
 
 ---
 
-### If High Skip Count
+## Decision points
 
-* Inspect skipped rows for missing or invalid data
-* Confirm required fields (`sku`, `product_name`) are present
-* Coordinate with partner to correct source data
+### If validation fails
 
----
-
-### If Products Not Returned
-
-* Confirm ETL job completed successfully
-* Verify filters in product query
-* Check database connectivity or ingestion logs
+- Review the error message from the job response
+- Check CSV format and required fields
+- Correct issues and re-upload feed
 
 ---
 
-## Post-Conditions
+### If high skip count
+
+- Inspect skipped rows for missing or invalid data
+- Confirm required fields (`sku`, `product_name`) are present
+- Coordinate with partner to correct source data
+
+---
+
+### If products not returned
+
+- Confirm ETL job completed successfully
+- Verify filters in product query
+- Check database connectivity or ingestion logs
+
+---
+
+## Results
 
 After successful onboarding:
 
-* Partner products are available via `/products` endpoint
-* Feed status is `validated`
-* Data is persisted in the system
-* Partner can perform subsequent updates via feed re-submission
+- Partner products are available via `/products` endpoint
+- Feed status is `validated`
+- Data is persisted in the system
+- Partner can perform subsequent updates via feed re-submission
 
 ---
 
-## Operational Notes
+## Additional details
 
-* Re-running validation on the same feed should not create duplicates
-* Product uniqueness is enforced by `(partner_name, sku)`
-* Updates are only counted when actual data changes occur
-* Raw files are stored for traceability and reprocessing
-
----
-
-## Related Documentation
-
-* API Overview: `/api/index.md`
-* Workflows: `/workflows.md`
-* Products Endpoint: `/products.md`
+- Re-running validation on the same feed should not create duplicates
+- Product uniqueness is enforced by `(partner_name, sku)`
+- Updates are only counted when actual data changes occur
+- Raw files are stored for traceability and reprocessing
 
 ---
 
-## What This Demonstrates
+## Related documentation
 
-This SOP reflects:
-
-* Ability to document repeatable operational processes
-* Understanding of ETL workflows and data validation
-* Clear handling of success and failure scenarios
-* Alignment between API behavior and operational procedures
-
-It is designed to reduce onboarding friction, standardize execution, and support scalable partner integrations.
+- [API Overview](../api/index.md)
+- [Workflows](../api/workflows.md)
+- [Products Endpoint](../api/products.md)

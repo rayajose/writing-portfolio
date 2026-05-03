@@ -1,12 +1,12 @@
 # Jobs API
 
-The Jobs API provides visibility into and control over processing operations such as feed submission and ETL execution.
+Use this API to retrieve job status and run validation jobs for ETL processing.
 
 ---
 
 ## Authentication
 
-All requests must include:
+Include an API key in all requests:
 
 ```
 x-api-key: <your-api-key>
@@ -14,15 +14,15 @@ x-api-key: <your-api-key>
 
 ---
 
-## Get Job
+## Get job
 
-**GET** `/jobs/{job_id}`
+GET `/jobs/{job_id}`
 
 Returns status and metadata for a job.
 
 ---
 
-### Example Request
+### Example request
 
 ```http
 GET /jobs/JS00001
@@ -45,7 +45,7 @@ GET /jobs/JS00001
 
 ---
 
-### Field Definitions
+### Field definitions
 
 | Field      | Description                                                        |
 |------------|--------------------------------------------------------------------|
@@ -58,15 +58,15 @@ GET /jobs/JS00001
 
 ---
 
-## Run Job
+## Run job
 
-**POST** `/jobs/{job_id}/run`
+POST `/jobs/{job_id}/run`
 
 Executes a validation job and triggers ETL processing.
 
 ---
 
-### Example Request
+### Example request
 
 ```bash
 curl -X POST http://127.0.0.1:8000/jobs/JV00001/run \
@@ -86,7 +86,7 @@ curl -X POST http://127.0.0.1:8000/jobs/JV00001/run \
 
 ---
 
-### Behavior
+### What happens
 
 - Only **validation jobs (JVxxxxx)** can be executed
 
@@ -101,7 +101,7 @@ curl -X POST http://127.0.0.1:8000/jobs/JV00001/run \
 
 ---
 
-## ETL Result Summary (Validation Jobs)
+## ETL result summary (Validation jobs)
 
 When a validation job completes, the `message` field contains a detailed summary of ETL processing results.
 
@@ -111,7 +111,7 @@ When a validation job completes, the `message` field contains a detailed summary
 ETL processing completed. Products processed: 13. Inserted: 1. Updated: 0. Unchanged: 12. Skipped: 0.
 ```
 
-### Result Definitions
+### Result definitions
 
 | Result    | Description                                                                   |
 |-----------|-------------------------------------------------------------------------------|
@@ -124,16 +124,16 @@ ETL processing completed. Products processed: 13. Inserted: 1. Updated: 0. Uncha
 
 ---
 
-## Job Types
+## Job types
 
-| Type       | Description                                     |
-|------------|-------------------------------------------------|
-| submission | Feed upload processing                          |
-| validation | ETL processing (S3 → transform → database load) |
+| Type       | Description                                    |
+|------------|------------------------------------------------|
+| submission | Feed upload processing                         |
+| validation | ETL processing (Validate → Transform → Load)   |
 
 ---
 
-## Job Lifecycle
+## Job lifecycle
 
 Jobs transition through the following states:
 
@@ -151,17 +151,17 @@ queued → running → completed
 
 ---
 
-## Pipeline Context
+## Pipeline context
 
 Jobs are part of the ingestion pipeline:
 
 ```text
-Upload → Submission Job → Validation Job → ETL Processing → Products Loaded
+Upload feed → Validate → Transform → Load → Query products
 ```
 
 ---
 
-## Error Responses
+## Error responses
 
 #### 404 Not Found
 
@@ -181,7 +181,7 @@ Upload → Submission Job → Validation Job → ETL Processing → Products Loa
 
 ---
 
-## Related Endpoints
+## Related endpoints
 
 - `POST /feeds/upload` — creates submission and validation jobs
 - `GET /feeds/{feed_id}` — retrieve feed and pipeline status
