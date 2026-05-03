@@ -185,6 +185,7 @@ x-api-key: demo-secret-key
   "created_at": "2026-04-08T12:00:00Z"
 }
 ```
+
 ---
 
 ### Response fields
