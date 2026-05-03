@@ -1,4 +1,6 @@
 # Deployment Guide
+> The Partner Catalog API application and its documentation are maintained in a single repository as part of this writing portfolio.
+ The API is deployed separately using Docker and AWS (ECS, RDS, S3), while documentation is published via GitHub Pages.
 
 This document describes the deployment of the Partner Catalog API to AWS using a containerized, managed infrastructure.
 
@@ -8,15 +10,16 @@ For visual confirmation of the deployed environment, see [Screenshots](screensho
 
 ## Architecture Overview
 
-The application is deployed using the following AWS services:
+The Partner Catalog API is deployed using the following AWS services:
 
-* **FastAPI** — application runtime (Docker container)
+* **FastAPI** — application runtime packaged as a Docker container
+* **Amazon ECR** — container image registry (`partner-catalog-api`)
 * **Amazon ECS (Fargate)** — serverless container orchestration
-* **Amazon RDS (PostgreSQL)** — relational database (processed data)
-* **Amazon S3** — raw data layer for uploaded feed files
 * **Application Load Balancer (ALB)** — public HTTP endpoint and traffic routing
-* **Amazon ECR** — container image registry
+* **Amazon RDS (PostgreSQL)** — relational database for processed product data
+* **Amazon S3** — raw data layer for uploaded feed files
 
+The source code and documentation are maintained in the `writing-portfolio` repository. The deployed API continues to use AWS resource names based on the application name, `partner-catalog-api`.
 
 ---
 

@@ -1,8 +1,8 @@
-# Debugging a Failed Feed
+# Debug a Failed Feed
 
-This guide walks through how to investigate and resolve issues when a product feed fails during validation or ETL processing.
+This guide explains how to investigate and fix a failed product feed during validation or ETL processing.
 
-This reflects a real-world troubleshooting scenario during partner onboarding or production ingestion.
+Use this workflow during partner onboarding or when troubleshooting production ingestion issues.
 
 ---
 
@@ -10,17 +10,17 @@ This reflects a real-world troubleshooting scenario during partner onboarding or
 
 In this guide, you will:
 
-1. Identify a failed feed or job
+1. Identify the failed feed or job
 2. Retrieve validation and processing details
-3. Interpret error messages and results
-4. Fix common issues
-5. Re-run processing and verify success
+3. Interpret error messages
+4. Fix data issues
+5. Re-run processing and verify results
 
 ---
 
 ## Prerequisites
 
-* API base URL:
+* Base URL:
 
   ```
   http://localhost:8000
@@ -38,22 +38,22 @@ In this guide, you will:
   x-api-key: demo-secret-key
   ```
 
-* A previously uploaded feed with a known `feed_id` or `job_id`
+* A previously uploaded feed (`feed_id`) or job (`job_id`)
 
 ---
 
-## Step 1: Identify the Failed Feed
+## 1. Identify the Failed Feed
 
-Start by retrieving the feed details.
+Retrieve the feed to confirm its status.
 
-### Example Request
+### Request
 
 ```bash
 curl -X GET "http://localhost:8000/feeds/FD00009" \
   -H "x-api-key: demo-secret-key"
 ```
 
-### Example Response
+### Response
 
 ```json
 {
@@ -67,26 +67,28 @@ curl -X GET "http://localhost:8000/feeds/FD00009" \
 }
 ```
 
-### What to Look For
+### Check
 
-* `status = failed`
-* `validation_status = failed`
-* `validation_message` contains the root cause
+Look for:
+
+* `status: failed`
+* `validation_status: failed`
+* `validation_message` describing the issue
 
 ---
 
-## Step 2: Retrieve Job Details
+## 2. Retrieve Job Details
 
-Get more detailed processing results from the associated job.
+Get processing results for the associated job.
 
-### Example Request
+### Request
 
 ```bash
 curl -X GET "http://localhost:8000/jobs/JV00009" \
   -H "x-api-key: demo-secret-key"
 ```
 
-### Example Response
+### Response
 
 ```json
 {
@@ -96,98 +98,103 @@ curl -X GET "http://localhost:8000/jobs/JV00009" \
 }
 ```
 
-### What This Tells You
+### Interpret the Result
 
 * All rows were skipped
-* No valid records were processed
+* No records were inserted or updated
 * The issue likely affects the entire file (schema or required fields)
 
 ---
 
-## Step 3: Interpret Common Failure Scenarios
+## 3. Diagnose the Failure
 
-### Missing Required Fields
+Use the patterns below to identify common issues.
 
-**Symptoms:**
+### Missing required fields
+
+**Symptoms**
 
 * High `Skipped` count
 * Validation message references missing fields
 
-**Example:**
+**Example**
 
 ```
 Missing required field: sku
 ```
 
-**Fix:**
-Ensure all rows include:
+**Fix**
+
+Ensure every row includes:
 
 * `sku`
 * `product_name`
 
 ---
 
-### Invalid Data Format
+### Invalid data format
 
-**Symptoms:**
+**Symptoms**
 
 * Rows skipped or partially processed
-* Unexpected values in output
+* Unexpected values in results
 
-**Examples:**
+**Examples**
 
-* Non-numeric price values
-* Invalid availability values
+* Non-numeric `price`
+* Invalid `availability` values
 
-**Fix:**
+**Fix**
+
 Validate data types and normalize values before upload.
 
 ---
 
-### Duplicate Records
+### Duplicate records
 
-**Symptoms:**
+**Symptoms**
 
 * No new inserts
 * High `Updated` or `Unchanged` counts
 
-**Cause:**
-Deduplication is based on:
+**Cause**
+
+Deduplication uses:
 
 ```
 (partner_name, sku)
 ```
 
-**Fix:**
+**Fix**
 
 * Use unique SKUs for new products
 * Confirm whether updates are expected
 
 ---
 
-### Partial Success
+### Partial success
 
-**Symptoms:**
+**Symptoms**
 
 * Mix of `Inserted`, `Updated`, and `Skipped`
 
-**Interpretation:**
+**Interpretation**
 
 * Some rows are valid
 * Some rows failed validation
 
-**Fix:**
+**Fix**
 
 * Review skipped rows
-* Correct only the invalid records
+* Correct only invalid records
 
 ---
 
-## Step 4: Fix the Source File
+## 4. Fix the Source File
 
-Update the CSV file based on findings.
+Update the CSV file based on the identified issue.
 
-### Example Before (Invalid)
+### Invalid example
 
 ```csv
 sku,product_name,price
@@ -195,7 +202,7 @@ sku,product_name,price
 TV-002,,599.99
 ```
 
-### Example After (Corrected)
+### Corrected example
 
 ```csv
 sku,product_name,price
@@ -205,18 +212,18 @@ TV-002,LED TV,599.99
 
 ---
 
-## Step 5: Re-run Processing
+## 5. Re-run Processing
 
 After fixing the data, reprocess the feed.
 
-### Option A: Re-run Existing Job
+### Re-run the existing job
 
 ```bash
 curl -X POST "http://localhost:8000/jobs/JV00009/run" \
   -H "x-api-key: demo-secret-key"
 ```
 
-### Option B: Upload a New Feed
+### Upload a new feed
 
 ```bash
 curl -X POST "http://localhost:8000/feeds/upload" \
@@ -227,16 +234,16 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 
 ---
 
-## Step 6: Verify Success
+## 6. Verify Success
 
-Check job results again.
+Retrieve the job again to confirm successful processing.
 
 ```bash
 curl -X GET "http://localhost:8000/jobs/JV00009" \
   -H "x-api-key: demo-secret-key"
 ```
 
-### Example Successful Result
+### Successful response
 
 ```json
 {
@@ -250,49 +257,49 @@ curl -X GET "http://localhost:8000/jobs/JV00009" \
 
 ## Debugging Checklist
 
-Use this quick checklist when troubleshooting:
+Use this checklist when troubleshooting:
 
 * Confirm required fields (`sku`, `product_name`)
-* Validate data types (price, availability)
+* Validate data types (`price`, `availability`)
 * Check for duplicate SKUs
 * Review `validation_message`
 * Compare processed vs skipped counts
-* Re-run job after fixes
+* Re-run the job after fixes
 
 ---
 
-## What Happens Behind the Scenes
+## How Processing Works
 
-When a feed fails:
+When a feed is processed:
 
-1. **Validation Layer**
+1. **Validation**
 
    * Checks CSV structure and required fields
    * Generates validation errors
 
-2. **ETL Processing**
+2. **ETL processing**
 
-   * Attempts to transform valid rows
+   * Transforms valid rows
    * Skips invalid rows
 
-3. **Result Aggregation**
+3. **Result aggregation**
 
-   * Summarizes inserted, updated, unchanged, skipped
+   * Counts inserted, updated, unchanged, and skipped records
 
-4. **Status Update**
+4. **Status update**
 
-   * Marks job and feed as `failed` or `completed`
+   * Sets job and feed status to `failed` or `completed`
 
 ---
 
 ## Summary
 
-You have successfully:
+You:
 
-* Identified a failed feed
+* Identified the failed feed
 * Retrieved validation and job details
-* Diagnosed the root cause
-* Fixed data issues
-* Reprocessed and verified results
+* Diagnosed the issue
+* Fixed the data
+* Reprocessed and verified the results
 
-This workflow represents a typical troubleshooting process for feed ingestion failures in the Partner Catalog API.
+This workflow reflects a typical troubleshooting process for feed ingestion failures.

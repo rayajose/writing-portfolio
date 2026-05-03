@@ -1,42 +1,81 @@
-# Getting Started
+# Get Started
 
-This guide helps you quickly begin using the Partner Catalog API, including authentication, making requests, and understanding responses.
+Use the Partner Catalog API to upload product feeds, process them through an ETL pipeline, and query normalized product data.
+
+This guide shows how to authenticate, make your first request, and understand the core workflow.
 
 ---
 
-## Base URL
+## Base URLs
 
-Local:
+Use one of the following environments:
 
-```text
+**Local**
+
+```
 http://localhost:8000
 ```
 
-Production:
+**Production**
 
-```text
+```
 http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
 ```
 
-Interactive API (Swagger UI):
+**API explorer (Swagger UI)**
 
-```text
+```
 http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
 ```
 
 ---
 
-## Authentication
+## Authenticate requests
 
-All requests require an API key passed in the request header:
+Include your API key in every request:
 
-```text
+```
 x-api-key: demo-secret-key
+```
+
+Requests without a valid API key return `401` or `403`.
+
+---
+
+## Quickstart
+
+Use this minimal workflow to ingest and query product data:
+
+### 1. Upload a feed
+
+```bash
+curl -X POST "http://localhost:8000/feeds/upload" \
+  -H "x-api-key: demo-secret-key" \
+  -F "file=@electronics_catalog.csv" \
+  -F "partner_name=Tronics"
 ```
 
 ---
 
-## Quick Example
+### 2. Run ETL processing
+
+```bash
+curl -X POST "http://localhost:8000/jobs/JV00009/run" \
+  -H "x-api-key: demo-secret-key"
+```
+
+---
+
+### 3. Query products
+
+```bash
+curl -X GET "http://localhost:8000/products?limit=5" \
+  -H "x-api-key: demo-secret-key"
+```
+
+---
+
+## Make your first request
 
 Retrieve a list of products:
 
@@ -47,7 +86,7 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 
 ---
 
-## Example Response
+## Understand the response
 
 ```json
 {
@@ -71,30 +110,47 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 }
 ```
 
+* `count`: Total number of results returned
+* `items`: List of product records
+
 ---
 
-## Important Note
+## Understand the workflow
 
-Product data is only available **after ETL processing completes**.
+Product data is only available **after ingestion completes**.
 
 Typical workflow:
 
-```text
+```
 Upload feed → Run ETL job → Query products
 ```
 
-See [Workflows](workflows.md) for the full ingestion process.
+---
+
+## Architecture overview
+
+```mermaid
+flowchart LR
+    A["Partner CSV upload"] --> B["Raw layer: S3"]
+    B --> C["Validation layer"]
+    C --> D["ETL processing"]
+    D --> E["Product database"]
+    E --> F["Products API"]
+
+    C -->|Validation errors| G["Failed feed or job"]
+    G --> H["Debug workflow"]
+```
 
 ---
 
-## Common Query Parameters
+## Use query parameters
 
 ### Pagination
 
-| Parameter | Description                                         |
-|-----------|-----------------------------------------------------|
-| `limit`   | Number of results to return (default: 10, max: 100) |
-| `cursor`  | Cursor for retrieving the next page of results      |
+| Parameter | Description                               |
+|-----------|-------------------------------------------|
+| `limit`   | Number of results (default: 10, max: 100) |
+| `cursor`  | Cursor for the next page                  |
 
 ---
 
@@ -102,8 +158,8 @@ See [Workflows](workflows.md) for the full ingestion process.
 
 | Parameter      | Description            |
 |----------------|------------------------|
-| `partner_name` | Filter by partner name |
-| `feed_id`      | Filter by feed ID      |
+| `partner_name` | Filter by partner      |
+| `feed_id`      | Filter by feed         |
 | `brand`        | Filter by brand        |
 | `category`     | Filter by category     |
 | `availability` | Filter by availability |
@@ -112,27 +168,27 @@ See [Workflows](workflows.md) for the full ingestion process.
 
 ### Sorting
 
-| Parameter | Description                                                    |
-|-----------|----------------------------------------------------------------|
-| `sort_by` | Field to sort by (`price`, `created_at`, `product_name`, etc.) |
-| `order`   | Sort order: `asc` or `desc`                                    |
+| Parameter | Description                                              |
+|-----------|----------------------------------------------------------|
+| `sort_by` | Field to sort by (`price`, `created_at`, `product_name`) |
+| `order`   | `asc` or `desc`                                          |
 
 ---
 
-## Error Handling
+## Handle errors
 
 The API uses standard HTTP status codes:
 
-| Status Code | Meaning                                                |
-|-------------|--------------------------------------------------------|
-| 200         | Request successful                                     |
-| 400         | Bad request (invalid input or business rule violation) |
-| 401         | Unauthorized (missing API key)                         |
-| 403         | Forbidden (invalid API key)                            |
-| 404         | Resource not found                                     |
-| 500         | Internal server error                                  |
+| Status | Meaning            |
+|--------|--------------------|
+| 200    | Success            |
+| 400    | Invalid request    |
+| 401    | Missing API key    |
+| 403    | Invalid API key    |
+| 404    | Resource not found |
+| 500    | Server error       |
 
-### Example Error Response
+### Example error
 
 ```json
 {
@@ -142,11 +198,12 @@ The API uses standard HTTP status codes:
 
 ---
 
-## Next Steps
+## Next steps
 
-* Start with [Workflows](workflows.md) to understand the full ingestion pipeline
-* Review [Feeds](feeds.md) for uploading product feeds
-* Explore [Jobs](jobs.md) for ETL execution and status tracking
-* Use [Products](products.md) for querying catalog data
+* Follow [Ingest a Product Feed End-to-End](feeds.md)
+* Use [Feeds](feeds.md) to manage uploads
+* Use [Jobs](jobs.md) to track processing
+* Use [Products](products.md) to query catalog data
+* See [Debug a Failed Feed](debug-product-feed.md) to troubleshoot failures
 
 ---

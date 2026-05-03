@@ -1,8 +1,8 @@
-# Ingesting a Product Feed End-to-End
+# Ingest a Product Feed End-to-End
 
-This guide walks through the complete process of ingesting a partner product feed into the Partner Catalog API—from upload through validation, ETL processing, and final verification.
+This guide shows how to upload, process, and verify a partner product feed using the Partner Catalog API.
 
-This represents a typical partner onboarding workflow.
+Use this workflow during partner onboarding or when testing feed ingestion.
 
 ---
 
@@ -10,16 +10,16 @@ This represents a typical partner onboarding workflow.
 
 In this guide, you will:
 
-1. Upload a product feed (CSV)
-2. Trigger validation and ETL processing
-3. Review processing results
-4. Verify products were successfully ingested
+1. Upload a product feed
+2. Run validation and ETL processing
+3. Review ingestion results
+4. Verify products in the catalog
 
 ---
 
 ## Prerequisites
 
-* API base URL:
+* Base URL:
 
   ```
   http://localhost:8000
@@ -37,18 +37,18 @@ In this guide, you will:
   x-api-key: demo-secret-key
   ```
 
-* A valid CSV file with required fields:
+* A CSV file that includes:
 
   * `sku`
   * `product_name`
 
 ---
 
-## Step 1: Upload a Product Feed
+## 1. Upload a Product Feed
 
-Upload a CSV file using the `/feeds/upload` endpoint.
+Upload a CSV file to create a new feed.
 
-### Example Request
+### Request
 
 ```bash
 curl -X POST "http://localhost:8000/feeds/upload" \
@@ -57,7 +57,7 @@ curl -X POST "http://localhost:8000/feeds/upload" \
   -F "partner_name=Tronics"
 ```
 
-### Example Response
+### Response
 
 ```json
 {
@@ -75,7 +75,7 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 }
 ```
 
-### What Happens
+### What happens
 
 * The file is stored in S3 (raw layer)
 * A validation job is created
@@ -84,18 +84,18 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 
 ---
 
-## Step 2: Run ETL Processing
+## 2. Run ETL Processing
 
-If ETL is not automatically triggered, run the validation job manually.
+If processing does not run automatically, trigger the job.
 
-### Example Request
+### Request
 
 ```bash
 curl -X POST "http://localhost:8000/jobs/JV00009/run" \
   -H "x-api-key: demo-secret-key"
 ```
 
-### Example Response
+### Response
 
 ```json
 {
@@ -105,30 +105,30 @@ curl -X POST "http://localhost:8000/jobs/JV00009/run" \
 }
 ```
 
-### What Happens
+### What happens
 
-During ETL:
+During processing:
 
 * CSV structure is validated
 * Required fields are checked
 * Data is transformed into product records
-* Records are inserted or updated in the database
+* Records are inserted or updated
 * Invalid rows are skipped
 
 ---
 
-## Step 3: Review Processing Results
+## 3. Review Processing Results
 
-Retrieve job details to understand what happened during ingestion.
+Retrieve the job to understand the ingestion outcome.
 
-### Example Request
+### Request
 
 ```bash
 curl -X GET "http://localhost:8000/jobs/JV00009" \
   -H "x-api-key: demo-secret-key"
 ```
 
-### Example Response
+### Response
 
 ```json
 {
@@ -138,28 +138,28 @@ curl -X GET "http://localhost:8000/jobs/JV00009" \
 }
 ```
 
-### Result Fields Explained
+### Interpret the result
 
-* **Processed**: Total rows evaluated from the CSV
-* **Inserted**: New products added
-* **Updated**: Existing products where data changed (e.g., price, availability)
-* **Unchanged**: Existing products with no data changes
-* **Skipped**: Rows missing required fields or invalid
+* **Processed**: Total rows evaluated
+* **Inserted**: New products created
+* **Updated**: Existing products with changed data (for example, price or availability)
+* **Unchanged**: Existing products with no changes
+* **Skipped**: Invalid rows or rows missing required fields
 
 ---
 
-## Step 4: Verify Products
+## 4. Verify Products
 
-Confirm that products were successfully ingested.
+Confirm that products are available in the catalog.
 
-### Example Request
+### Request
 
 ```bash
 curl -X GET "http://localhost:8000/products?feed_id=FD00009" \
   -H "x-api-key: demo-secret-key"
 ```
 
-### Example Response
+### Response
 
 ```json
 {
@@ -180,9 +180,9 @@ curl -X GET "http://localhost:8000/products?feed_id=FD00009" \
 }
 ```
 
-### Optional Filters
+### Optional filters
 
-You can refine results using query parameters:
+Use query parameters to refine results:
 
 * `partner_name`
 * `sku`
@@ -192,84 +192,90 @@ You can refine results using query parameters:
 
 ---
 
-## Common Issues and Troubleshooting
+## Troubleshooting
 
-### Missing Required Fields
+### Missing required fields
 
-**Problem:**
-Rows are skipped during processing.
+**Symptom**
 
-**Cause:**
-Missing `sku` or `product_name`.
+* Rows are skipped
 
-**Solution:**
-Ensure all required fields are present in the CSV.
+**Cause**
+
+* Missing `sku` or `product_name`
+
+**Fix**
+
+* Ensure all required fields are present
 
 ---
 
-### Duplicate Products
+### Duplicate products
 
-**Problem:**
-Products are updated instead of inserted.
+**Symptom**
 
-**Cause:**
-Deduplication is based on:
+* Products are updated instead of inserted
+
+**Cause**
+
+* Deduplication uses:
 
 ```
 (partner_name, sku)
 ```
 
-**Solution:**
-Ensure SKUs are unique per partner if new products are expected.
+**Fix**
+
+* Use unique SKUs for new products
+* Confirm whether updates are expected
 
 ---
 
-### No Products Returned
+### No products returned
 
-**Problem:**
-Query returns empty results.
+**Symptom**
 
-**Possible Causes:**
+* Query returns no results
 
-* ETL job not completed
+**Possible causes**
+
+* Job has not completed
 * Incorrect `feed_id`
-* Filters excluding results
+* Filters exclude results
 
 ---
 
-## What Happens Behind the Scenes
+## How the Pipeline Works
 
-This workflow follows a simple data pipeline:
+The ingestion process includes four stages:
 
-1. **Raw Layer**
+1. **Raw**
 
-   * CSV stored in S3
-   * Source data preserved
+   * Stores the original CSV in S3
 
-2. **Validation Layer**
+2. **Validation**
 
-   * Structure and required fields checked
-   * Invalid rows flagged or skipped
+   * Verifies structure and required fields
 
-3. **Transformation Layer**
+3. **Transformation**
 
-   * CSV rows mapped to product schema
-   * Data normalized
+   * Maps CSV rows to the product schema
+   * Normalizes data
 
-4. **Load Layer**
+4. **Load**
 
-   * Products inserted or updated in database
-   * Deduplication applied
+   * Inserts or updates products
+   * Applies deduplication
 
 ---
 
 ## Summary
 
-You have successfully:
+You:
 
-* Uploaded a partner product feed
-* Executed validation and ETL processing
-* Interpreted ingestion results
-* Verified product data in the system
+* Uploaded a product feed
+* Ran validation and ETL processing
+* Reviewed ingestion results
+* Verified products in the catalog
 
-This workflow represents a typical partner onboarding and data ingestion process for the Partner Catalog API.
+This workflow reflects a typical partner onboarding and feed ingestion process.

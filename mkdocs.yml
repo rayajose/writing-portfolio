@@ -1,11 +1,10 @@
 site_name: "Ray Jose – Technical Writing Portfolio"
-site_description: ""
+site_description: "API, integration, and data platform documentation portfolio."
 site_url: "https://rayajose.github.io/writing-portfolio/"
 use_directory_urls: true
 
 theme:
   name: "material"
-  #custom_dir: overrides
   features:
     - navigation.tabs
     - navigation.tabs.sticky
@@ -15,7 +14,7 @@ theme:
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: blue gey
+      primary: blue grey
       accent: blue
       toggle:
         icon: material/weather-night
@@ -33,24 +32,19 @@ extra_css:
   - stylesheets/extra.css
 
 nav:
-  - "Home": "index.md"
+  - Home: index.md
 
   - API & Developer Docs:
       - Overview: api/index.md
-      - Getting Started: api/getting_started.md
+      - Get Started: api/getting_started.md
+
+      - Tutorials:
+          - Your First Feed Ingestion: tutorials/first-feed.md
 
       - How-To Guides:
-          - Ingesting a Product Feed End-to-End: api/ingest-product-feed.md
-          - Debugging a Failed Feed: api/debug-product-feed.md
-
-      - Workflows: api/workflows.md
-
-      - Architecture:
-          - Overview: api/architecture.md
-          - Deployment: api/deployment.md
-
-      - SDKs:
-          - Python SDK Guide: api/sdk-python.md
+          - Ingest a Product Feed End-to-End: api/ingest-product-feed.md
+          - Debug a Failed Feed: api/debug-product-feed.md
+          - Partner Feed Onboarding: sop/onboarding.md
 
       - API Reference:
           - Overview: api/api-reference.md
@@ -60,18 +54,29 @@ nav:
           - Analytics API: api/analytics.md
           - Errors: api/errors.md
 
+      - Concepts:
+          - Architecture: api/architecture.md
+          - Workflows: api/workflows.md
+          - Deployment: api/deployment.md
+
+      - SDKs:
+          - Python SDK Guide: api/sdk-python.md
+
+      - Specifications:
+          - CSV Feed File Specification: sop/csv-feed-file-spec.md
+
       - Supporting Materials:
           - Resources: api/resources.md
           - Screenshots: api/screenshots.md
-          - "CSV Feed File Specification": "sop/csv-feed-file-spec.md"
 
-  - "SOPs & Operations":
-      - "Partner Feed Onboarding": "sop/onboarding.md"
+  - SOPs & Operations:
+      - Partner Feed Onboarding: sop/onboarding.md
+      - CSV Feed File Specification: sop/csv-feed-file-spec.md
 
-  - "Security & Compliance":
-      - "Incident Response Plan": "security/incident-response.md"
+  - Security & Compliance:
+      - Incident Response Plan: security/incident-response.md
 
-  - "About": "about.md"
+  - About: about.md
 
 markdown_extensions:
   - admonition
@@ -90,6 +95,7 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/rayajose
+
   meta:
     - property: og:title
       content: Ray Jose – Developer Documentation Portfolio
