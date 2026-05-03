@@ -44,60 +44,29 @@ Supports filtering, sorting, and cursor-based pagination.
 
 ---
 
-### Sorting
+#### Sorting examples
 
-Results can be sorted using `sort_by` and `order`.
-
-Supported fields:
-
-- `created_at`
-- `price`
-- `product_name`
-- `brand`
-- `category`
-
-Examples:
-
-```bash
+```text
 GET /products?sort_by=price&order=asc
-```
-
-```bash
 GET /products?sort_by=product_name&order=asc
 ```
 
----
+#### Pagination examples
 
-### Pagination
-
-Results are paginated using `limit` and `cursor`.
-
-- The cursor is based on `product_id`
-- The API returns a `next_cursor` when more results are available
-- To retrieve the next page, pass the returned cursor in the next request
-
-Examples:
-
-```bash
+```text
 GET /products?limit=5
-```
-
-```bash
 GET /products?limit=5&cursor=PR00010
 ```
-
-Response behavior:
-
-- `count` = number of items returned in the current page
-- `next_cursor` = present only when more results exist
 
 ---
 
 ### Example request
 
 ```bash
-GET /products?partner_name=Tech Haven&limit=5
-x-api-key: demo-secret-key
+curl -X 'GET' \
+  'http://<host>/products?limit=10&order=asc' \
+  -H 'accept: application/json' \
+  -H 'X-API-Key: demo-secret-key'
 ```
 
 ---
@@ -139,17 +108,53 @@ x-api-key: demo-secret-key
 
 ---
 
-## GET /products/{product_id}
+### Error responses
 
-Returns a single product by its unique product ID.
+#### 400 Bad Request
+Invalid sort value
+
+```json
+{
+  "detail": "Invalid sort_by value. Allowed values: product_id, price, product_name, brand, category, created_at."
+}
+```
+
+Invalid order value
+
+```json
+{
+  "detail": "Invalid order value. Allowed values: asc, desc."
+}
+```
+
+Invalid pagination sort value
+
+```json
+{
+  "detail": "Cursor pagination is currently supported only with sort_by=product_id."
+}
+```
 
 ---
+
+## GET /products/{product_id}
+
+Use this endpoint to retrieve a single product record by `product_id` from uploaded partner feeds.
+
+---
+
+### What happens
+
+- Retrieve the product by its unique ID  
+- Return product details if the product exists  
+- Return an error if the product is not found
 
 ### Path parameters
 
 | Name       | Type   | Required | Description                       |
 |------------|--------|----------|-----------------------------------|
 | product_id | string | Yes      | Unique identifier for the product |
+
 
 ---
 
@@ -180,6 +185,24 @@ x-api-key: demo-secret-key
   "created_at": "2026-04-08T12:00:00Z"
 }
 ```
+---
+
+### Response fields
+
+| Field         | Type    | Description                                              |
+|---------------|---------|----------------------------------------------------------|
+| product_id    | string  | Unique identifier for the product (PRxxxxx)              |
+| feed_id       | string  | Identifier of the feed that produced the product         |
+| partner_name  | string  | Name of the partner that supplied the product            |
+| sku           | string  | Partner-defined SKU (may be null)                        |
+| product_name  | string  | Display name of the product                              |
+| description   | string  | Product description (may be null)                        |
+| brand         | string  | Product brand (may be null)                              |
+| category      | string  | Product category (may be null)                           |
+| price         | number  | Product price (may be null)                              |
+| currency      | string  | Currency code (e.g., USD) (may be null)                  |
+| availability  | string  | Availability status (e.g., in_stock) (may be null)       |
+| created_at    | string  | UTC timestamp when the product was created               |
 
 ---
 
@@ -189,7 +212,7 @@ x-api-key: demo-secret-key
 
 ```json
 {
-  "detail": "Product PR99999 not found."
+  "detail": "Product PR00001 not found."
 }
 ```
 
@@ -199,7 +222,13 @@ x-api-key: demo-secret-key
 
 Returns all products associated with a specific feed.
 
----
+
+### What happens
+
+- Retrieve all products associated with the specified feed ID   
+- Return product records when the feed exists  
+- Return an error if the feed is not found
+
 
 ### Path parameters
 
@@ -212,8 +241,10 @@ Returns all products associated with a specific feed.
 ### Example request
 
 ```bash
-GET /products/by-feed/FD00001
-x-api-key: demo-secret-key
+curl -X 'GET' \
+  'http://127.0.0.1:8000/products/by-feed/FD00002' \
+  -H 'accept: application/json' \
+  -H 'X-API-Key: demo-secret-key'
 ```
 
 ---
@@ -236,6 +267,25 @@ x-api-key: demo-secret-key
       "created_at": "2026-04-08T12:00:00Z"
     }
   ]
+}
+```
+
+### Response fields
+
+| Field       | Type   | Description                                  |
+|-------------|--------|----------------------------------------------|
+| count       | int    | Number of items returned in the current page |
+| items       | array  | List of product objects                      |
+| next_cursor | string | Cursor for next page (if more results exist) |
+
+
+### Error responses
+
+#### 404 Not Found
+
+```json
+{
+  "detail": "Feed FD00002 not found."
 }
 ```
 

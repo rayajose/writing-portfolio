@@ -129,7 +129,7 @@ sg-00778f0b6fabbf1af
 
 Configured in the ECS task definition:
 
-```text
+```bash
 DB_TYPE=postgres
 DB_HOST=<rds-endpoint>
 DB_PORT=5432
@@ -140,7 +140,7 @@ DB_PASSWORD=<secured>
 
 ### Optional (S3 Configuration)
 
-```text
+```bash
 S3_RAW_BUCKET=partner-catalog-raw-rayj
 ```
 
@@ -200,6 +200,7 @@ Use the ECS service to deploy the updated image:
 ---
 
 ## Start / Stop workflow (Cost control)
+This workflow explains how to scale down ECS services and pause database resources to reduce AWS costs when the system is not in use.
 
 ### Stop the application
 
@@ -229,6 +230,7 @@ Use the ECS service to deploy the updated image:
 ---
 
 ## Troubleshooting
+Use this section to identify, diagnose, and fix common issues across the application, infrastructure, and data pipeline.
 
 ### Container fails to start
 

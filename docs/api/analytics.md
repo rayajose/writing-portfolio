@@ -199,32 +199,8 @@ Use this endpoint to retrieve each partner’s percentage contribution to total 
 
 ---
 
-## Key insights
+## Additional details
 
-The dataset demonstrates:
-
-- High-value partners generate more revenue with lower unit volume
-- High-volume partners drive unit sales but lower total revenue
-- Revenue distribution is concentrated among high-value partners
-- Time-based aggregation enables trend analysis
-
----
-
-## Concepts demonstrated
-
-- Dimensional modeling (fact and dimensions)
-- Analytical SQL queries (aggregation, grouping)
-- Time-based analysis
-- Window functions (revenue share)
-- API-driven analytics delivery
-
----
-
-## Portfolio value
-
-This layer demonstrates how an operational API system can evolve into a data platform that supports:
-
-- Business intelligence
-- Partner performance analysis
-- Revenue reporting
-- Data-driven decision-making
+- Metrics are computed from processed product and order data  
+- Aggregations are optimized for read-heavy workloads  
+- Results are exposed through API endpoints for external consumption  

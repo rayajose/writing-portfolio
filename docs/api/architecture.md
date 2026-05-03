@@ -2,6 +2,8 @@
 
 This page explains the architecture of the Partner Catalog API, including its components, data flow, and key design decisions.
 
+---
+
 ## Architecture principles
 
 The system is designed around:
@@ -175,6 +177,7 @@ Responsibilities:
 ---
 
 ## Storage layer
+The storage layer handles raw and processed data using Amazon S3 for ingestion and PostgreSQL for persistent storage.
 
 ### Amazon S3 (Raw data layer)
 
@@ -204,6 +207,7 @@ Core tables:
 ---
 
 ## Data flow
+The data flow describes how data moves through ingestion, validation, transformation, and access layers.
 
 ### Feed ingestion workflow
 
@@ -371,7 +375,7 @@ This approach:
 
 ---
 
-## ## Deployment architecture (AWS)
+## Deployment architecture (AWS)
 
 The Partner Catalog API is deployed using a container-based architecture:
 
@@ -405,7 +409,7 @@ AWS resources retain the application name `partner-catalog-api` (ECR, ECS, etc.)
 ---
 
 ## Design decisions
-
+This section outlines the architectural decisions that define system structure, data flow, and separation of responsibilities.
 ### Separation of concerns
 
 - Router layer handles HTTP

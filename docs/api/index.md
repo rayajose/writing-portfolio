@@ -71,14 +71,13 @@ Upload feed → Validate → Transform → Load → Query products
 ---
 
 ## Core concepts
+This section explains the fundamental concepts behind data ingestion, processing, and API interaction.
 
 ### Feed ingestion
 
 - CSV upload via `multipart/form-data`
 - Raw file storage in Amazon S3
 - Feed metadata and job tracking
-
----
 
 ### ETL processing
 
@@ -88,15 +87,11 @@ Upload feed → Validate → Transform → Load → Query products
 - Triggered via job execution (`POST /jobs/{job_id}/run`)
 - Results available through job status and summaries
 
----
-
 ### Job-based processing
 
 - Jobs track validation and ingestion workflows
 - Explicit execution model
 - Status lifecycle: `queued → in_progress → completed / failed`
-
----
 
 ### API design
 
@@ -135,5 +130,3 @@ It includes:
 ## Additional resources
 - <a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank">Swagger UI</a>
 - <a href="https://github.com/rayajose/writing-portfolio" target="_blank">Documentation source (docs-as-code)</a>
-
----

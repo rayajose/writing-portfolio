@@ -34,5 +34,3 @@ Use this resource to query processed product data.
 - Retrieve normalized product records
 
 → [Products API](products.md)
-
----

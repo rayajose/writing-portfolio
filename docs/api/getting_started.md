@@ -12,19 +12,19 @@ Use one of the following base URLs:
 
 **Local**
 
-```
+```text
 http://localhost:8000
 ```
 
 **Production**
 
-```
+```text
 http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
 ```
 
 **API explorer (Swagger UI)**
 
-```
+```text
 http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
 ```
 
@@ -34,7 +34,7 @@ http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
 
 Include your API key in every request:
 
-```
+```text
 x-api-key: demo-secret-key
 ```
 
@@ -110,7 +110,7 @@ Product data is only available **after ingestion completes**.
 
 Typical workflow:
 
-```
+```text
 Upload feed → Validate → Transform → Load → Query products
 ```
 
@@ -133,6 +133,7 @@ flowchart LR
 ---
 
 ## Use query parameters
+Use query parameters to filter, sort, and paginate results returned by the API.
 
 ### Pagination
 
@@ -141,7 +142,6 @@ flowchart LR
 | `limit`   | Number of results (default: 10, max: 100) |
 | `cursor`  | Cursor for the next page                  |
 
----
 
 ### Filtering
 
@@ -153,7 +153,6 @@ flowchart LR
 | `category`     | Filter by category     |
 | `availability` | Filter by availability |
 
----
 
 ### Sorting
 
@@ -194,5 +193,3 @@ The API uses standard HTTP status codes:
 - Use [Jobs](jobs.md) to track processing
 - Use [Products](products.md) to query catalog data
 - See [Debug a Failed Feed](debug-product-feed.md) to troubleshoot failures
-
----

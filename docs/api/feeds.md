@@ -8,7 +8,7 @@ Use this API to upload product feeds, store raw data, and process them through t
 
 Include an API key in all requests:
 
-```
+```text
 x-api-key: <your-api-key>
 ```
 
@@ -80,6 +80,7 @@ curl -X POST http://127.0.0.1:8000/feeds/upload \
 ---
 
 ### Error responses
+These responses are returned when a request fails validation or violates input requirements during feed upload.
 
 #### 400 Bad Request
 

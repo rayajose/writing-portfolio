@@ -51,6 +51,8 @@ Errors may occur in the following situations:
 
 ## Authentication errors
 
+These errors occur when a request is missing valid authentication credentials or includes an invalid API key.
+
 ### 401 Unauthorized
 
 Returned when the API key is missing.
@@ -80,6 +82,7 @@ Returned when the API key is invalid.
 ---
 
 ## Resource errors
+These errors occur when a requested resource cannot be found or does not exist in the system.
 
 ### 404 Not Found
 
@@ -112,6 +115,7 @@ Returned when a requested resource does not exist.
 ---
 
 ## Validation errors
+These errors occur when request data fails validation or does not meet required input rules.
 
 ### 400 Bad Request
 
@@ -164,6 +168,7 @@ Returned when request data fails validation (handled by FastAPI).
 ---
 
 ## Job execution errors
+These errors occur when job execution requests are invalid or when ETL processing fails.
 
 ### 400 Bad Request
 
@@ -194,6 +199,7 @@ Returned when ETL processing fails during job execution.
 ---
 
 ## Infrastructure errors
+These errors occur due to system-level failures affecting application availability or data access.
 
 ### 500 Internal Server Error
 

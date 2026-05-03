@@ -21,19 +21,19 @@ In this guide, you will:
 
 - Base URL:
 
-  ```
+  ```text
   http://localhost:8000
   ```
 
   or
 
-  ```
+  ```text
   http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
   ```
 
 - API key:
 
-  ```
+  ```text
   x-api-key: demo-secret-key
   ```
 
@@ -193,6 +193,7 @@ Use query parameters to refine results:
 ---
 
 ## Troubleshooting
+Use this section to identify and resolve common issues encountered during feed ingestion and ETL processing.
 
 ### Missing required fields
 
@@ -204,7 +205,7 @@ Use query parameters to refine results:
 
 - Missing `sku` or `product_name`
 
-**Fix**
+**Resolution**
 
 - Ensure all required fields are present
 
@@ -224,7 +225,7 @@ Use query parameters to refine results:
 (partner_name, sku)
 ```
 
-**Fix**
+**Resolution**
 
 - Use unique SKUs for new products
 - Confirm whether updates are expected

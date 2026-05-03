@@ -8,7 +8,7 @@ Use this API to retrieve job status and run validation jobs for ETL processing.
 
 Include an API key in all requests:
 
-```
+```text
 x-api-key: <your-api-key>
 ```
 
@@ -24,7 +24,7 @@ Returns status and metadata for a job.
 
 ### Example request
 
-```http
+```text
 GET /jobs/JS00001
 ```
 
@@ -162,6 +162,7 @@ Upload feed → Validate → Transform → Load → Query products
 ---
 
 ## Error responses
+These responses indicate invalid requests or missing resources.
 
 #### 404 Not Found
 

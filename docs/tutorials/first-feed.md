@@ -22,19 +22,19 @@ You need:
 
 - Base URL:
 
-  ```
+  ```bash
   http://localhost:8000
   ```
 
   or
 
-  ```
+  ```bash
   http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
   ```
 
 - API key:
 
-  ```
+  ```bash
   x-api-key: demo-secret-key
   ```
 
@@ -195,5 +195,3 @@ Now that you’ve completed your first ingestion:
 - See [Ingest a Product Feed End-to-End](../api/ingest-product-feed.md) for a task-focused workflow
 - See [Debug a Failed Feed](../api/debug-product-feed.md) to troubleshoot issues
 - Explore [Products API](../api/products.md) for advanced queries
-
----

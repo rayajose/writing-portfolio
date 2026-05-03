@@ -21,19 +21,19 @@ In this guide, you will:
 
 - Base URL:
 
-  ```
+  ```bash
   http://localhost:8000
   ```
 
   or
 
-  ```
+  ```bash
   http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
   ```
 
 - API key:
 
-  ```
+  ```bash
   x-api-key: demo-secret-key
   ```
 
