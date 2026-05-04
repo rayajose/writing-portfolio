@@ -2,66 +2,68 @@
 
 ## Ray Jose
 
-Principal-level Technical Writer specializing in developer documentation, enterprise integrations, and API-driven systems, with hands-on experience documenting and deploying cloud-based applications on AWS.
+Senior Technical Writer with 15+ years of experience documenting enterprise systems, partner integrations, and security/compliance environments.
 
-I design and build documentation systems that enable external partners, reduce onboarding friction, and support scalable platform growth. My work sits at the intersection of engineering, product, and security—translating complex systems into clear, actionable guidance that teams can rely on.
+My background spans structured content architecture, XML-based publishing systems, and large-scale e-commerce platforms. I’ve worked closely with engineering, product, and security teams to document systems that support real-world implementation, particularly in environments involving partner integrations, product data pipelines, and regulated systems.
+
+More recently, I’ve focused on maintaining and extending my skills in modern API design, data ingestion workflows, and cloud-based deployment by designing and documenting a partner-facing API platform.
 
 ---
 
 ## What I Do
 
-- Lead documentation strategy for API-first and integration-driven platforms  
-- Design self-service developer experiences (guides, workflows, architecture content)  
-- Document REST APIs, data pipelines, and distributed systems  
-- Build documentation architectures using docs-as-code and structured content practices  
-- Partner with engineering, product, and security teams to align documentation with real system behavior  
+- Document API-driven systems and integration workflows  
+- Create developer-focused content (guides, workflows, architecture)  
+- Define data structures and documentation for ingestion pipelines  
+- Build and maintain structured documentation systems (DITA, docs-as-code)  
+- Align documentation with actual system behavior through collaboration with engineering and product teams  
 
 ---
 
 ## Experience Highlights
 
-- 15+ years of technical writing across enterprise, fintech, and regulated environments  
-- Extensive experience documenting internal and partner-facing APIs and integration workflows  
-- Background in PCI DSS–aligned security documentation, including incident response and data handling policies  
-- Designed and maintained documentation for multi-partner e-commerce platforms and data ingestion systems  
-- Authored disaster recovery, business continuity, and incident response plans  
+- 15+ years of technical writing across enterprise and regulated environments  
+- Led PCI DSS audit documentation and security policy development  
+- Supported partner onboarding and B2B integrations across e-commerce platforms  
+- Defined product data standards and documentation for large-scale catalogs (including integrations with **1M+ records**)  
+- Built and maintained structured content systems using XML, XSLT, and DITA  
 
 ---
 
 ## Technical Background
 
-- Cloud & Infrastructure: AWS (ECS, RDS, S3), containerized deployments  
-- APIs & Data: REST APIs, ETL pipelines, async job processing, data modeling  
-- Documentation Systems: Docs-as-code (MkDocs), structured content, developer portals  
-- Tools & Languages: Python, SQL, PowerShell, GitHub, Markdown  
+- **APIs & Data**: REST APIs, data ingestion workflows, ETL concepts, data modeling  
+- **Cloud & Infrastructure**: AWS (ECS, RDS, S3), containerized deployments  
+- **Documentation Systems**: MkDocs (docs-as-code), structured content, developer documentation  
+- **Tools & Languages**: Python, SQL, PowerShell, GitHub, Markdown  
 
 ---
 
 ## Military & Mechanical Background
 
-Before transitioning fully into technical writing, I served as an Organizational Automotive Maintenance Technician in the U.S. Marine Corps, working on both gas and diesel vehicles.
+I began my career as an Organizational Automotive Maintenance Technician in the U.S. Marine Corps, working on gas and diesel systems.
 
-This experience built a strong foundation in:
+This experience shaped how I approach technical documentation:
 
-- Systems-level troubleshooting and root cause analysis  
-- Working with technical manuals, procedures, and maintenance workflows  
-- Diagnosing and resolving issues in high-pressure, operational environments  
-- Understanding how complex systems behave under real-world conditions  
+- Focus on systems, not just components  
+- Clear, actionable procedures  
+- Emphasis on real-world use and failure scenarios  
+- Solid foundation in troubleshooting and root cause analysis  
 
-This hands-on background continues to influence how I approach documentation—focusing on clarity, accuracy, and usability in real operational contexts.
+That perspective continues to influence how I document complex systems today.
 
 ---
 
 ## Portfolio Focus
 
-This portfolio demonstrates how I approach documentation as a system—not just a set of documents.
+This portfolio reflects how I approach documentation as part of a system—not just as standalone content.
 
-Featured work includes a fully documented Partner Catalog API, designed to simulate real-world partner integrations and data ingestion workflows. The project includes:
+Featured work includes a Partner Catalog API designed to simulate real-world partner integrations and product data ingestion workflows. The project includes:
 
 - End-to-end API documentation  
-- ETL pipeline workflows and processing logic  
-- Developer onboarding and self-service implementation guidance  
+- Data ingestion and processing workflows  
 - System architecture and integration patterns  
+- Developer onboarding and self-service guidance  
 
 ---
 
@@ -70,26 +72,20 @@ Featured work includes a fully documented Partner Catalog API, designed to simul
 I focus on documentation that works in real environments.
 
 **Clarity over completeness**  
-Content should enable action, not overwhelm users.
+Documentation should enable action, not overwhelm.
 
 **Systems thinking**  
-Documentation should explain how components interact—not just how they function in isolation.
+Explain how components interact, not just how they function.
 
 **Self-service enablement**  
-The goal is to reduce dependency on engineering teams.
+Reduce dependency on engineering teams.
 
 **Operational awareness**  
-Documentation should support real workflows, including failure scenarios and recovery paths.
+Support real workflows, including failure and recovery scenarios.
 
 ---
 
 ## Links
 
-<ul>
-<li>
-<a href="https://github.com/rayajose" target="_blank">GitHub</a>
-</li>
-<li>
-<a href="https://www.linkedin.com/in/rayjose/" target="_blank">LinkedIn</a>
-</li>
-</ul>
+- [GitHub](https://github.com/rayajose) 
+- [LinkedIn](https://www.linkedin.com/in/rayjose)
