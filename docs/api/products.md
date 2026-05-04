@@ -66,7 +66,7 @@ GET /products?limit=5&cursor=PR00010
 curl -X 'GET' \
   'http://<host>/products?limit=10&order=asc' \
   -H 'accept: application/json' \
-  -H 'X-API-Key: demo-secret-key'
+  -H 'x-api-key: demo-secret-key'
 ```
 
 ---
@@ -111,6 +111,7 @@ curl -X 'GET' \
 ### Error responses
 
 #### 400 Bad Request
+
 Invalid sort value
 
 ```json
@@ -161,8 +162,10 @@ Use this endpoint to retrieve a single product record by `product_id` from uploa
 ### Example request
 
 ```bash
-GET /products/PR00001
-x-api-key: demo-secret-key
+curl -X 'GET' \
+  'http://<host>/products/PR00001' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: demo-secret-key'
 ```
 
 ---
@@ -243,9 +246,9 @@ Returns all products associated with a specific feed.
 
 ```bash
 curl -X 'GET' \
-  'http://127.0.0.1:8000/products/by-feed/FD00002' \
+  'http://<host>/products/by-feed/FD00002' \
   -H 'accept: application/json' \
-  -H 'X-API-Key: demo-secret-key'
+  -H 'x-api-key: demo-secret-key'
 ```
 
 ---
@@ -270,15 +273,6 @@ curl -X 'GET' \
   ]
 }
 ```
-If invalid `feed_id`, the response will simply return product count = 0 and no item details.
-
-```json
-{
-  "count": 0,
-  "items": []
-}
-```
-
 
 ### Response fields
 
@@ -287,6 +281,15 @@ If invalid `feed_id`, the response will simply return product count = 0 and no i
 | count       | int    | Number of items returned in the current page |
 | items       | array  | List of product objects                      |
 | next_cursor | string | Cursor for next page (if more results exist) |
+
+If the specified `feed_id` has no associated products or not valid, the response returns count: 0 and an empty items array
+
+```json
+{
+  "count": 0,
+  "items": []
+}
+```
 
 ---
 
@@ -299,3 +302,12 @@ If invalid `feed_id`, the response will simply return product count = 0 and no i
 - Not all fields are guaranteed to be populated for every product
 - Results are ordered by `created_at` in descending order by default unless overridden
 - Cursor-based pagination uses `product_id` for efficient traversal of large datasets
+
+---
+
+## Related documentation
+
+- [Workflows](workflows.md)
+- [Errors](errors.md)
+- [Feeds API](feeds.md)
+- [Jobs API](jobs.md)

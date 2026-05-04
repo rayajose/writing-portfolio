@@ -2,15 +2,10 @@
 
 Use this API to upload product feeds, store raw data, and process them through the validation and ETL pipeline.
 
----
+- Upload feed files for ingestion into the platform
+- Store and track raw feed data and metadata
+- Trigger and monitor validation and ETL processing workflows
 
-## Authentication
-
-Include an API key in all requests:
-
-```text
-x-api-key: <your-api-key>
-```
 
 ---
 
@@ -18,20 +13,22 @@ x-api-key: <your-api-key>
 
 POST `/feeds/upload`
 
-Uploads a CSV product feed, stores the raw file in S3, and creates associated job records for processing.
+Use this endpoint to upload a CSV product feed, store the raw file in object storage, and create associated job records for processing.
+
+### What happens
+
+- Validates file type (CSV only)
+- Validates CSV structure (header row required)
+- Validates CSV structure (requires `product_name` and `sku` headers)
+- Stores raw file in object storage
+- Creates a submission job (JSxxxxx) and validation job (JVxxxxx)
+- Persists feed metadata for later retrieval
+
+> Note: Product data is **not ingested during upload**. Ingestion occurs during ETL processing.
 
 ---
 
-### Request
-
-**Headers**
-
-```bash
-x-api-key: demo-secret-key
-Content-Type: multipart/form-data
-```
-
-**Form Data**
+## Request body (multipart/form-data)
 
 | Field        | Type   | Required | Description                  |
 |--------------|--------|----------|------------------------------|
@@ -43,7 +40,7 @@ Content-Type: multipart/form-data
 ### Example request
 
 ```bash
-curl -X POST http://127.0.0.1:8000/feeds/upload \
+curl -X POST http://<host>/feeds/upload \
   -H "x-api-key: demo-secret-key" \
   -F "partner_name=Acme Corp" \
   -F "file=@sample_catalog.csv"
@@ -51,49 +48,44 @@ curl -X POST http://127.0.0.1:8000/feeds/upload \
 
 ---
 
-### Response (201 Created)
+### Example response
 
 ```json
 {
   "feed_id": "FD00001",
-  "status": "uploaded",
+  "status": "processing",
   "job_id": "JS00001"
 }
 ```
 
 ---
 
-### What happens
+### Response fields
 
-- Validates file type (CSV only)
-- Validates CSV structure (header row required)
-- Stores raw file in **Amazon S3**
-- Creates:
-
-  - **Submission job (JSxxxxx)** → tracks upload processing
-  - **Validation job (JVxxxxx)** → tracks ETL processing
-
-- Persists feed metadata for later retrieval
-
-> Note: Product data is **not ingested during upload**. Ingestion occurs during ETL processing.
+| Field     | Type   | Description                        |
+|-----------|--------|------------------------------------|
+| `feed_id` | string | Unique feed identifier             |
+| `status`  | string | Feed upload status  (`processing`) |
+| `job_id`  | string | Unique job identifier (JSxxxxx)    |
 
 ---
 
 ### Error responses
-These responses are returned when a request fails validation or violates input requirements during feed upload.
+Returned when the request fails validation or violates input requirements.
 
 #### 400 Bad Request
 
 ```json
 { "detail": "Only CSV uploads are supported at this time." }
 ```
-
 ```json
 { "detail": "Uploaded file is empty." }
 ```
-
 ```json
-{ "detail": "Invalid CSV file: CSV header row is missing." }
+{ "detail": "CSV file must be UTF-8 encoded." }
+```
+```json
+{ "detail": "Invalid CSV file: Missing required CSV headers: product_name, sku" }
 ```
 
 ---
@@ -102,19 +94,38 @@ These responses are returned when a request fails validation or violates input r
 
 GET `/feeds/{feed_id}`
 
-Returns metadata for a specific feed, including pipeline status and raw file location.
+Use this endpoint to retrieve metadata for a specific feed, including pipeline status and raw file location.
+
+### What happens
+
+- The system looks up the feed by `feed_id`
+- Returns feed metadata, including status, timestamps, and associated job information
+- Includes raw file storage details such as object storage bucket and object key
+- If the feed does not exist, a `404 Not Found` response is returned
+
+
+---
+
+### Path parameters
+
+| Name      | Type   | Required | Description                      |
+|-----------|--------|----------|----------------------------------|
+| `feed_id` | string | Yes      | Unique feed identifier (FDxxxxx) |
 
 ---
 
 ### Example request
 
-```http
-GET /feeds/FD00001
+```bash
+curl -X 'GET' \
+  'http://<host>/feeds/FD00020' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: demo-secret-key'
 ```
 
 ---
 
-### Response (200 OK)
+### Example response
 
 ```json
 {
@@ -134,50 +145,48 @@ GET /feeds/FD00001
 
 ---
 
-### Field definitions
-
-| Field              | Description                                             |
-|--------------------|---------------------------------------------------------|
-| feed_id            | Unique feed identifier (FDxxxxx)                        |
-| partner_name       | Partner that submitted the feed                         |
-| file_name          | Original uploaded file name                             |
-| content_type       | MIME type of the uploaded file                          |
-| status             | Feed upload status (`uploaded`)                         |
-| uploaded_at        | UTC timestamp of upload                                 |
-| validation_job_id  | Validation job ID (JVxxxxx)                             |
-| validation_status  | Job status (`queued`, `running`, `completed`, `failed`) |
-| validation_message | Human-readable ETL result summary                       |
-| raw_file_s3_key    | S3 object key for raw feed                              |
-| raw_file_bucket    | S3 bucket storing raw file                              |
-
----
-
-## ETL result definitions
-
-The ETL pipeline processes each product row and categorizes the result:
-
-| Result    | Description                                                                   |
-|-----------|-------------------------------------------------------------------------------|
-| Inserted  | New product (partner + SKU not previously seen)                               |
-| Updated   | Existing product where one or more fields changed (e.g., price, availability) |
-| Unchanged | Existing product where incoming data matches existing data                    |
-| Skipped   | Invalid row (missing required fields such as `sku` or `product_name`)         |
-
-> Note: Updates only occur when actual data changes are detected. This avoids unnecessary database writes.
+### Response fields
+| Field              | Type   | Description                                             |
+|--------------------|--------|---------------------------------------------------------|
+| feed_id            | string | Unique feed identifier (FDxxxxx)                        |
+| partner_name       | string | Partner that submitted the feed                         |
+| file_name          | string | Original uploaded file name                             |
+| content_type       | string | MIME type of the uploaded file                          |
+| status             | string | Feed upload status (`uploaded`)                         |
+| uploaded_at        | string | UTC timestamp of upload                                 |
+| validation_job_id  | string | Validation job ID (JVxxxxx)                             |
+| validation_status  | string | Job status (`queued`, `running`, `completed`, `failed`) |
+| validation_message | string | Human-readable ETL result summary                       |
+| raw_file_s3_key    | string | S3 object key for raw feed                              |
+| raw_file_bucket    | string | S3 bucket storing raw file                              |
 
 ---
 
-## Pipeline flow
+### Error responses
 
-```text
-Upload feed → Validate → Transform → Load → Query products
+#### 404 Not Found
+
+Returned when the requested resource does not exist.
+
+```json
+{
+  "detail": "Feed FD000201 not found."
+}
 ```
 
+## Additional details
+
+* All endpoints require a valid `x-api-key` header.
+* Feed processing is asynchronous. Uploading a feed does not immediately make product data available.
+* Use the `validation_status` field to track ETL progress (`queued`, `in_progress`, `completed`, `failed`).
+* Product data becomes queryable only after validation and ETL processing complete successfully.
+* Feed IDs (`FDxxxxx`) and job IDs (`JSxxxxx`, `JVxxxxx`) follow fixed formats for traceability across the system.
+
 ---
 
-## Related endpoints
+## Related documentation
 
-- `GET /feeds` — List all feeds
-- `GET /jobs/{job_id}` — Retrieve job status
-- `POST /jobs/{job_id}/run` — Run ETL processing
-- `GET /products/by-feed/{feed_id}` — Retrieve products for a feed
+- [Workflows](workflows.md)
+- [Errors](errors.md)
+- [Products API](products.md)
+- [Jobs API](jobs.md)
