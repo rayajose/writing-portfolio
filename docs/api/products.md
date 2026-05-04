@@ -270,7 +270,7 @@ curl -X 'GET' \
   ]
 }
 ```
-If invalid feed_id, the response will simply return product count = 0 and no item details.
+If invalid `feed_id`, the response will simply return product count = 0 and no item details.
 
 ```json
 {
