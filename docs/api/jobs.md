@@ -23,9 +23,9 @@ Use this endpoint to retrieve the status and metadata for a job.
 
 ### Path parameters
 
-| Name       | Type   | Required | Description                                |
-|------------|--------|----------|--------------------------------------------|
-| `<job_id>` | string | Yes      | Unique job identifier (JSxxxxx or JVxxxxx) |
+| Name     | Type   | Required | Description                                |
+|----------|--------|----------|--------------------------------------------|
+| `job_id` | string | Yes      | Unique job identifier (JSxxxxx or JVxxxxx) |
 
 ---
 
@@ -33,7 +33,7 @@ Use this endpoint to retrieve the status and metadata for a job.
 
 ```bash
 curl -X 'GET' \
-  'http://<host>/jobs/JV00012' \
+  'http://api.example.com/jobs/JV00012' \
   -H 'accept: application/json' \
   -H 'x-api-key: demo-secret-key'
 ```
@@ -57,10 +57,10 @@ curl -X 'GET' \
 
 | Field    | Type   | Description                                                        |
 |----------|--------|--------------------------------------------------------------------|
-| job_id   | string | Unique job identifier (JSxxxxx or JVxxxxx)                         |
-| feed_id  | string | Associated feed ID                                                 |
-| status   | string | Job status (`queued`, `running`, `completed`, `failed`)            |
-| job_type | string | UTC timestamp when job was created                                 |
+| `job_id`   | string | Unique job identifier (JSxxxxx or JVxxxxx)                         |
+| `feed_id`  | string | Associated feed ID                                                 |
+| `status`   | string | Job status (`queued`, `running`, `completed`, `failed`)            |
+| `job_type` | string | UTC timestamp when job was created                                 |
 
 ---
 
@@ -100,9 +100,9 @@ Use this endpoint to start a validation job and trigger ETL processing.
 
 ### Path parameters
 
-| Name       | Type   | Required | Description                     |
-|------------|--------|----------|---------------------------------|
-| `<job_id>` | string | Yes      | Unique job identifier (JVxxxxx) |
+| Name     | Type   | Required | Description                     |
+|----------|--------|----------|---------------------------------|
+| `job_id` | string | Yes      | Unique job identifier (JVxxxxx) |
 
 ---
 

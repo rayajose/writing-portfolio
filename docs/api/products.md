@@ -29,18 +29,18 @@ Supports filtering, sorting, and cursor-based pagination.
 
 ### Query parameters
 
-| Name         | Type   | Required | Description                                                                   |
-|--------------|--------|----------|-------------------------------------------------------------------------------|
-| partner_name | string | No       | Partner name filter                                                           |
-| feed_id      | string | No       | Filter by feed ID                                                             |
-| sku          | string | No       | Filter by SKU                                                                 |
-| brand        | string | No       | Filter by brand                                                               |
-| category     | string | No       | Filter by category                                                            |
-| availability | string | No       | Filter by availability                                                        |
-| limit        | int    | No       | Number of results to return (default: 10, max: 100)                           |
-| cursor       | string | No       | Cursor for pagination. Use the `next_cursor` value from the previous response |
-| sort_by      | string | No       | Field to sort by (created_at, price, product_name, brand, category)           |
-| order        | string | No       | Sort direction (`asc`, `desc`, default: `desc`)                               |
+| Name           | Type   | Required | Description                                                                   |
+|----------------|--------|----------|-------------------------------------------------------------------------------|
+| `partner_name` | string | No       | Partner name filter                                                           |
+| `feed_id`      | string | No       | Filter by feed ID                                                             |
+| `sku`          | string | No       | Filter by SKU                                                                 |
+| `brand`        | string | No       | Filter by brand                                                               |
+| `category`     | string | No       | Filter by category                                                            |
+| `availability` | string | No       | Filter by availability                                                        |
+| `limit`        | int    | No       | Number of results to return (default: 10, max: 100)                           |
+| `cursor`       | string | No       | Cursor for pagination. Use the `next_cursor` value from the previous response |
+| `sort_by`      | string | No       | Field to sort by (created_at, price, product_name, brand, category)           |
+| `order`        | string | No       | Sort direction (`asc`, `desc`, default: `desc`)                               |
 
 ---
 
@@ -64,7 +64,7 @@ GET /products?limit=5&cursor=PR00010
 
 ```bash
 curl -X 'GET' \
-  'http://<host>/products?limit=10&order=asc' \
+  'http://api.example.com/products?limit=10&order=asc' \
   -H 'accept: application/json' \
   -H 'x-api-key: demo-secret-key'
 ```
@@ -100,11 +100,11 @@ curl -X 'GET' \
 
 ### Response fields
 
-| Field       | Type   | Description                                  |
-|-------------|--------|----------------------------------------------|
-| count       | int    | Number of items returned in the current page |
-| items       | array  | List of product objects                      |
-| next_cursor | string | Cursor for next page (if more results exist) |
+| Field         | Type   | Description                                  |
+|---------------|--------|----------------------------------------------|
+| `count`       | int    | Number of items returned in the current page |
+| `items`       | array  | List of product objects                      |
+| `next_cursor` | string | Cursor for next page (if more results exist) |
 
 ---
 
@@ -146,9 +146,9 @@ Use this endpoint to retrieve a single product record by `product_id` from uploa
 
 ### Path parameters
 
-| Name       | Type   | Required | Description                       |
-|------------|--------|----------|-----------------------------------|
-| product_id | string | Yes      | Unique identifier for the product |
+| Name         | Type   | Required | Description                       |
+|--------------|--------|----------|-----------------------------------|
+| `product_id` | string | Yes      | Unique identifier for the product |
 
 
 ---
@@ -157,7 +157,7 @@ Use this endpoint to retrieve a single product record by `product_id` from uploa
 
 ```bash
 curl -X 'GET' \
-  'http://<host>/products/PR00001' \
+  'http://api.example.com/products/PR00001' \
   -H 'accept: application/json' \
   -H 'x-api-key: demo-secret-key'
 ```
@@ -187,20 +187,20 @@ curl -X 'GET' \
 
 ### Response fields
 
-| Field         | Type    | Description                                              |
-|---------------|---------|----------------------------------------------------------|
-| product_id    | string  | Unique identifier for the product (PRxxxxx)              |
-| feed_id       | string  | Identifier of the feed that produced the product         |
-| partner_name  | string  | Name of the partner that supplied the product            |
-| sku           | string  | Partner-defined SKU (may be null)                        |
-| product_name  | string  | Display name of the product                              |
-| description   | string  | Product description (may be null)                        |
-| brand         | string  | Product brand (may be null)                              |
-| category      | string  | Product category (may be null)                           |
-| price         | number  | Product price (may be null)                              |
-| currency      | string  | Currency code (e.g., USD) (may be null)                  |
-| availability  | string  | Availability status (e.g., in_stock) (may be null)       |
-| created_at    | string  | UTC timestamp when the product was created               |
+| Field          | Type   | Description                                        |
+|----------------|--------|----------------------------------------------------|
+| `product_id`   | string | Unique identifier for the product (PRxxxxx)        |
+| `feed_id`      | string | Identifier of the feed that produced the product   |
+| `partner_name` | string | Name of the partner that supplied the product      |
+| `sku`          | string | Partner-defined SKU (may be null)                  |
+| `product_name` | string | Display name of the product                        |
+| `description`  | string | Product description (may be null)                  |
+| `brand`        | string | Product brand (may be null)                        |
+| `category`     | string | Product category (may be null)                     |
+| `price`        | number | Product price (may be null)                        |
+| `currency`     | string | Currency code (e.g., USD) (may be null)            |
+| `availability` | string | Availability status (e.g., in_stock) (may be null) |
+| `created_at`   | string | UTC timestamp when the product was created         |
 
 ---
 
@@ -230,9 +230,9 @@ Returns all products associated with a specific feed.
 
 ### Path parameters
 
-| Name    | Type   | Required | Description                    |
-|---------|--------|----------|--------------------------------|
-| feed_id | string | Yes      | Unique identifier for the feed |
+| Name      | Type   | Required | Description                    |
+|-----------|--------|----------|--------------------------------|
+| `feed_id` | string | Yes      | Unique identifier for the feed |
 
 ---
 
@@ -240,7 +240,7 @@ Returns all products associated with a specific feed.
 
 ```bash
 curl -X 'GET' \
-  'http://<host>/products/by-feed/FD00002' \
+  'http://api.example.com/products/by-feed/FD00002' \
   -H 'accept: application/json' \
   -H 'x-api-key: demo-secret-key'
 ```
@@ -270,11 +270,11 @@ curl -X 'GET' \
 
 ### Response fields
 
-| Field       | Type   | Description                                  |
-|-------------|--------|----------------------------------------------|
-| count       | int    | Number of items returned in the current page |
-| items       | array  | List of product objects                      |
-| next_cursor | string | Cursor for next page (if more results exist) |
+| Field         | Type   | Description                                  |
+|---------------|--------|----------------------------------------------|
+| `count`       | int    | Number of items returned in the current page |
+| `items`       | array  | List of product objects                      |
+| `next_cursor` | string | Cursor for next page (if more results exist) |
 
 If the specified `feed_id` has no associated products or not valid, the response returns count: 0 and an empty items array
 
