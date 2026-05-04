@@ -9,9 +9,7 @@ Use this API to upload product feeds, store raw data, and process them through t
 
 ---
 
-## Upload feed
-
-POST `/feeds/upload`
+## POST /feeds/upload
 
 Use this endpoint to upload a CSV product feed, store the raw file in object storage, and create associated job records for processing.
 
@@ -73,26 +71,32 @@ curl -X POST http://<host>/feeds/upload \
 ### Error responses
 Returned when the request fails validation or violates input requirements.
 
-#### 400 Bad Request
+#### 400 Bad request
 
 ```json
-{ "detail": "Only CSV uploads are supported at this time." }
+{ 
+  "detail": "Only CSV uploads are supported at this time."
+}
 ```
 ```json
-{ "detail": "Uploaded file is empty." }
+{ 
+  "detail": "Uploaded file is empty."
+}
 ```
 ```json
-{ "detail": "CSV file must be UTF-8 encoded." }
+{ 
+  "detail": "CSV file must be UTF-8 encoded."
+}
 ```
 ```json
-{ "detail": "Invalid CSV file: Missing required CSV headers: product_name, sku" }
+{ 
+  "detail": "Invalid CSV file: Missing required CSV headers: product_name, sku"
+}
 ```
 
 ---
 
-## Get feed
-
-GET `/feeds/{feed_id}`
+## GET /feeds/{feed_id}
 
 Use this endpoint to retrieve metadata for a specific feed, including pipeline status and raw file location.
 
@@ -164,9 +168,7 @@ curl -X 'GET' \
 
 ### Error responses
 
-#### 404 Not Found
-
-Returned when the requested resource does not exist.
+#### 404 Not found
 
 ```json
 {

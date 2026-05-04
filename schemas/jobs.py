@@ -20,7 +20,7 @@ class JobResponse(BaseModel):
                     "job_id": "JV00001",
                     "feed_id": "FD00001",
                     "status": "running",
-                    "job_type": "feed_validation"
+                    "job_type": "validation"
                 }
             ]
         }

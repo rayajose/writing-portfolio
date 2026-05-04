@@ -4,65 +4,105 @@ Use this API to retrieve job status and run validation jobs for ETL processing.
 
 ---
 
-## Authentication
+- Retrieve job details and track processing status
+- Trigger validation jobs for uploaded feeds
+- Monitor ETL execution and results
 
-Include an API key in all requests:
+---
+##  GET /jobs/{job_id}
 
-```text
-x-api-key: <your-api-key>
-```
+Use this endpoint to retrieve the status and metadata for a job.
+
+### What happens
+
+- The system looks up the job by `job_id`
+- Returns job metadata including type, status, associated `feed_id`, and timestamps
+- If the job has completed, includes the ETL result summary (for validation jobs)
 
 ---
 
-## Get job
+### Path parameters
 
-GET `/jobs/{job_id}`
-
-Returns status and metadata for a job.
+| Name       | Type   | Required | Description                                |
+|------------|--------|----------|--------------------------------------------|
+| `<job_id>` | string | Yes      | Unique job identifier (JSxxxxx or JVxxxxx) |
 
 ---
 
 ### Example request
 
-```text
-GET /jobs/JS00001
+```bash
+curl -X 'GET' \
+  'http://<host>/jobs/JV00012' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: demo-secret-key'
 ```
 
 ---
 
-### Response (200 OK)
+### Example response
 
 ```json
 {
-  "job_id": "JS00001",
-  "job_type": "submission",
+  "job_id": "JV00012",
+  "feed_id": "FD00012",
   "status": "completed",
-  "created_at": "2026-04-06T14:17:27+00:00",
-  "feed_id": "FD00001",
-  "message": "Feed upload accepted."
+  "job_type": "validation"
 }
 ```
 
 ---
 
-### Field definitions
+### Response fields
 
-| Field      | Description                                                        |
-|------------|--------------------------------------------------------------------|
-| job_id     | Unique job identifier (JSxxxxx or JVxxxxx)                         |
-| job_type   | Type of job (`submission`, `validation`)                           |
-| status     | Job status (`queued`, `running`, `completed`, `failed`)            |
-| created_at | UTC timestamp when job was created                                 |
-| feed_id    | Associated feed ID                                                 |
-| message    | Optional status message (includes ETL results for validation jobs) |
+| Field    | Type   | Description                                                        |
+|----------|--------|--------------------------------------------------------------------|
+| job_id   | string | Unique job identifier (JSxxxxx or JVxxxxx)                         |
+| feed_id  | string | Associated feed ID                                                 |
+| status   | string | Job status (`queued`, `running`, `completed`, `failed`)            |
+| job_type | string | UTC timestamp when job was created                                 |
 
 ---
 
-## Run job
+### Error responses
 
-POST `/jobs/{job_id}/run`
+#### 404 Not found
 
-Executes a validation job and triggers ETL processing.
+Returned when the requested resource does not exist.
+
+```json
+{
+  "error_code": "JOB_NOT_FOUND",
+  "message": "Job JV00000 not found",
+  "details": {
+    "job_id": "JV00000"
+  }
+}
+```
+
+---
+
+## POST /jobs/{job_id}/run
+
+Use this endpoint to start a validation job and trigger ETL processing.
+
+### What happens
+
+- Only **validation jobs (JVxxxxx)** can be executed
+- Triggers ETL pipeline:
+  - Reads raw CSV from S3
+  - Cleans and validates data
+  - Loads products into PostgreSQL
+  - Detects changes and avoids unnecessary updates
+- Updates job status and message with ETL results summary
+
+---
+
+### Path parameters
+
+| Name       | Type   | Required | Description                     |
+|------------|--------|----------|---------------------------------|
+| `<job_id>` | string | Yes      | Unique job identifier (JVxxxxx) |
 
 ---
 
@@ -75,7 +115,7 @@ curl -X POST http://127.0.0.1:8000/jobs/JV00001/run \
 
 ---
 
-### Response (200 OK)
+### Example response
 
 ```json
 {
@@ -86,93 +126,19 @@ curl -X POST http://127.0.0.1:8000/jobs/JV00001/run \
 
 ---
 
-### What happens
+### Response fields
 
-- Only **validation jobs (JVxxxxx)** can be executed
-
-- Triggers ETL pipeline:
-
-  - Reads raw CSV from S3
-  - Cleans and validates data
-  - Loads products into PostgreSQL
-  - Detects changes and avoids unnecessary updates
-
-- Updates job status and message with ETL results summary
+| Field    | Type   | Description                                             |
+|----------|--------|---------------------------------------------------------|
+| `job_id` | string | Unique job identifier (JVxxxxx)                         |
+| `status` | string | Job status (`queued`, `running`, `completed`, `failed`) |
 
 ---
+### Error responses
 
-## ETL result summary (Validation jobs)
+#### 400 Bad request
 
-When a validation job completes, the `message` field contains a detailed summary of ETL processing results.
-
-### Example
-
-```text
-ETL processing completed. Products processed: 13. Inserted: 1. Updated: 0. Unchanged: 12. Skipped: 0.
-```
-
-### Result definitions
-
-| Result    | Description                                                                   |
-|-----------|-------------------------------------------------------------------------------|
-| Inserted  | New product (partner + SKU not previously seen)                               |
-| Updated   | Existing product where one or more fields changed (e.g., price, availability) |
-| Unchanged | Existing product where incoming data matches existing data                    |
-| Skipped   | Invalid row (missing required fields such as `sku` or `product_name`)         |
-
-> Note: Updates only occur when actual data changes are detected. This improves performance and reduces unnecessary database writes.
-
----
-
-## Job types
-
-| Type       | Description                                    |
-|------------|------------------------------------------------|
-| submission | Feed upload processing                         |
-| validation | ETL processing (Validate → Transform → Load)   |
-
----
-
-## Job lifecycle
-
-Jobs transition through the following states:
-
-```text
-queued → running → completed
-                ↘ failed
-```
-
-| Status    | Description                        |
-|-----------|------------------------------------|
-| queued    | Job created and awaiting execution |
-| running   | ETL processing in progress         |
-| completed | Job finished successfully          |
-| failed    | Job encountered an error           |
-
----
-
-## Pipeline context
-
-Jobs are part of the ingestion pipeline:
-
-```text
-Upload feed → Validate → Transform → Load → Query products
-```
-
----
-
-## Error responses
-These responses indicate invalid requests or missing resources.
-
-#### 404 Not Found
-
-```json
-{
-  "detail": "Job JS99999 not found."
-}
-```
-
-#### 400 Bad Request
+Returned when the request is malformed or contains a submission job id.
 
 ```json
 {
@@ -180,10 +146,25 @@ These responses indicate invalid requests or missing resources.
 }
 ```
 
+#### 404 Not found
+
+```json
+{
+  "detail": "Job not found"
+}
+```
+
+## Additional details
+
+- All endpoints require a valid `x-api-key` header.
+- Job processing is asynchronous. Jobs move through `queued` → `running` → `completed` or `failed`, and status must be polled via `GET /jobs/{job_id}`.
+- Only validation jobs (`JVxxxxx`) can be executed via the API. Each job is tied to a single `feed_id` and is idempotent at the feed level (re-running processes the same feed data).
+
 ---
 
-## Related endpoints
+## Related documentation
 
-- `POST /feeds/upload` — creates submission and validation jobs
-- `GET /feeds/{feed_id}` — retrieve feed and pipeline status
-- `GET /products/by-feed/{feed_id}` — retrieve ingested products
+- [Workflows](workflows.md)
+- [Errors](errors.md)
+- [Feeds API](feeds.md)
+- [Products API](products.md)

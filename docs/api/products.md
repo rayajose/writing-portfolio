@@ -110,9 +110,7 @@ curl -X 'GET' \
 
 ### Error responses
 
-#### 400 Bad Request
-
-Invalid sort value
+#### 400 Bad request
 
 ```json
 {
@@ -120,15 +118,11 @@ Invalid sort value
 }
 ```
 
-Invalid order value
-
 ```json
 {
   "detail": "Invalid order value. Allowed values: asc, desc."
 }
 ```
-
-Invalid pagination sort value
 
 ```json
 {
@@ -212,7 +206,7 @@ curl -X 'GET' \
 
 ### Error responses
 
-#### 404 Not Found
+#### 404 Not found
 
 ```json
 {
