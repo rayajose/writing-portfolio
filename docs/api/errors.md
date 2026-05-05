@@ -67,25 +67,10 @@ Returned when the API key is missing.
 
 ---
 
-### 403 Forbidden
-
-Returned when the API key is invalid.
-
-#### Example
-
-```json
-{
-  "detail": "Invalid or missing API key"
-}
-```
-
----
-
 ## Resource errors
 These errors occur when a requested resource cannot be found or does not exist in the system.
 
 ### 404 Not Found
-
 Returned when a requested resource does not exist.
 
 #### Example: Feed not found
@@ -118,7 +103,6 @@ Returned when a requested resource does not exist.
 These errors occur when request data fails validation or does not meet required input rules.
 
 ### 400 Bad Request
-
 Returned when the request is syntactically valid but fails business rules.
 
 #### Example: Unsupported file type
@@ -148,7 +132,6 @@ Returned when the request is syntactically valid but fails business rules.
 ---
 
 ### 422 Unprocessable Entity
-
 Returned when request data fails validation (handled by FastAPI).
 
 #### Example
@@ -185,7 +168,6 @@ Returned when attempting to execute an unsupported job type.
 ---
 
 ### 500 Internal Server Error (ETL Failure)
-
 Returned when ETL processing fails during job execution.
 
 #### Example
@@ -202,7 +184,6 @@ Returned when ETL processing fails during job execution.
 These errors occur due to system-level failures affecting application availability or data access.
 
 ### 500 Internal Server Error
-
 Returned when an unexpected server-side error occurs.
 
 #### Example scenarios
