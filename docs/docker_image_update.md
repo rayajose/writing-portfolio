@@ -6,7 +6,7 @@ from C:\myProjects\partner-catalog-api
 
 ## build image
 ```bash
-docker build -t partner-catalog-api .
+docker build -t writing-portfolio:latest .
 ```
 ## tag image
 
@@ -22,4 +22,13 @@ aws ecr get-login-password --region us-east-2 | docker login --username AWS --pa
 docker push 792233688886.dkr.ecr.us-east-2.amazonaws.com/partner-catalog-api:latest
 ```
 
-Next step is to redeploy the ECS service with the new latest image
+## deploy image
+this didn't work last time. have to do it from aws console
+
+```bash
+aws ecs update-service `
+  --cluster partner-catalog-api `
+  --service partner-catalog-service `
+  --force-new-deployment `
+  --region us-east-2
+```
