@@ -10,21 +10,18 @@ Use one of the following base URLs:
 
 **Local**
 
-```text
 http://localhost:8000
-```
 
 **Production**
 
-```text
 http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
-```
 
 **API explorer (Swagger UI)**
 
-```text
-http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
-```
+<p>
+    <a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank">http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs</a>
+</p>
+
 
 ---
 
