@@ -1,6 +1,6 @@
-# Ray Jose – Technical Documentation Portfolio
+<!-- # Ray Jose – Technical Documentation Portfolio -->
 
-## Principal Technical Writer — APIs, Integrations, and Enterprise Systems
+# Principal Technical Writer — APIs, Integrations, and Enterprise Systems
 
 I design and build documentation systems that enable partners, scale platforms, and reduce engineering dependency.
 
