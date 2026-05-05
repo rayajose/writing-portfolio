@@ -9,6 +9,19 @@ Use this API to retrieve job status and run validation jobs for ETL processing.
 - Monitor ETL execution and results
 
 ---
+
+## Authentication
+
+All endpoints in this resource require a valid `x-api-key` header.
+
+Include the API key in each request:
+
+```bash
+-H "x-api-key: YOUR_API_KEY"
+```
+
+
+---
 ##  GET /jobs/{job_id}
 
 Use this endpoint to retrieve the status and metadata for a job.
@@ -66,9 +79,17 @@ curl -X 'GET' \
 
 ### Error responses
 
-#### 404 Not found
+#### 401 Unauthorized
+Returned when the request is missing or includes an invalid `x-api-key` header.
 
-Returned when the requested resource does not exist.
+```json
+{
+  "detail": "Invalid or missing API key"
+}
+```
+
+#### 404 Not found
+Returned when the request contains a `job_id` not currently in system.
 
 ```json
 {
@@ -136,8 +157,16 @@ curl -X POST http://api.example.com/jobs/JV00001/run \
 ---
 ### Error responses
 
-#### 400 Bad request
+#### 401 Unauthorized
+Returned when the request is missing or includes an invalid `x-api-key` header.
 
+```json
+{
+  "detail": "Invalid or missing API key"
+}
+```
+
+#### 400 Bad request
 Returned when the request is malformed or contains a submission job id.
 
 ```json
@@ -147,6 +176,7 @@ Returned when the request is malformed or contains a submission job id.
 ```
 
 #### 404 Not found
+Returned when the request contains a `job_id` not currently in system.
 
 ```json
 {
@@ -156,7 +186,6 @@ Returned when the request is malformed or contains a submission job id.
 
 ## Additional details
 
-- All endpoints require a valid `x-api-key` header.
 - Job processing is asynchronous. Jobs move through `queued` → `running` → `completed` or `failed`, and status must be polled via `GET /jobs/{job_id}`.
 - Only validation jobs (`JVxxxxx`) can be executed via the API. Each job is tied to a single `feed_id` and is idempotent at the feed level (re-running processes the same feed data).
 

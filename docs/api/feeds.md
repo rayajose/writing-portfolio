@@ -6,6 +6,17 @@ Use this API to upload product feeds, store raw data, and process them through t
 - Store and track raw feed data and metadata
 - Trigger and monitor validation and ETL processing workflows
 
+---
+
+## Authentication
+
+All endpoints in this resource require a valid `x-api-key` header.
+
+Include the API key in each request:
+
+```bash
+-H "x-api-key: YOUR_API_KEY"
+```
 
 ---
 
@@ -69,25 +80,41 @@ curl -X POST http://api.example.com/feeds/upload \
 ---
 
 ### Error responses
-Returned when the request fails validation or violates input requirements.
+
+#### 401 Unauthorized
+
+Returned when the request is missing or includes an invalid `x-api-key` header.
+
+```json
+{
+  "detail": "Invalid or missing API key"
+}
+```
 
 #### 400 Bad request
+Returned when the request contains a file formant other than `.csv`.
 
 ```json
 { 
   "detail": "Only CSV uploads are supported at this time."
 }
 ```
+
+Returned when the request contains an empty `.csv` file.
 ```json
 { 
   "detail": "Uploaded file is empty."
 }
 ```
+
+Returned when the request contains a `.csv` file not UTF-8 encoded.
 ```json
 { 
   "detail": "CSV file must be UTF-8 encoded."
 }
 ```
+
+Returned when the request contains a `.csv` file missing the column headers `product_name` or `sku`. Both are required.
 ```json
 { 
   "detail": "Invalid CSV file: Missing required CSV headers: product_name, sku"
@@ -168,7 +195,17 @@ curl -X 'GET' \
 
 ### Error responses
 
+#### 401 Unauthorized
+Returned when the request is missing or includes an invalid `x-api-key` header.
+
+```json
+{
+  "detail": "Invalid or missing API key"
+}
+```
+
 #### 404 Not found
+Returned when the request contains a `feed_id` not currently in system.
 
 ```json
 {
@@ -178,7 +215,6 @@ curl -X 'GET' \
 
 ## Additional details
 
-* All endpoints require a valid `x-api-key` header.
 * Feed processing is asynchronous. Uploading a feed does not immediately make product data available.
 * Use the `validation_status` field to track ETL progress (`queued`, `in_progress`, `completed`, `failed`).
 * Product data becomes queryable only after validation and ETL processing complete successfully.

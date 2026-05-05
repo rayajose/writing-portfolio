@@ -13,6 +13,18 @@ Use this API to retrieve product data from partner catalog feeds.
 
 ---
 
+## Authentication
+
+All endpoints in this resource require a valid `x-api-key` header.
+
+Include the API key in each request:
+
+```bash
+-H "x-api-key: YOUR_API_KEY"
+```
+
+---
+
 ## GET /products
 
 Use this endpoint to retrieve product records from uploaded partner feeds.
@@ -40,7 +52,7 @@ Supports filtering, sorting, and cursor-based pagination.
 | `limit`        | int    | No       | Number of results to return (default: 10, max: 100)                           |
 | `cursor`       | string | No       | Cursor for pagination. Use the `next_cursor` value from the previous response |
 | `sort_by`      | string | No       | Field to sort by (created_at, price, product_name, brand, category)           |
-| `order`        | string | No       | Sort direction (`asc`, `desc`, default: `desc`)                               |
+| `order`        | string | No       | Sort direction (`asc` [ascending], `desc` [decending], default: `desc`)                               |
 
 ---
 
@@ -110,7 +122,17 @@ curl -X 'GET' \
 
 ### Error responses
 
+#### 401 Unauthorized
+Returned when the request is missing or includes an invalid `x-api-key` header.
+
+```json
+{
+  "detail": "Invalid or missing API key"
+}
+```
+
 #### 400 Bad request
+Returned when the request contains an invalid `sort_by` value. Allowed values are `product_id`, `price`, `product_name`, `brand`, `category`, or `created_at`.
 
 ```json
 {
@@ -118,12 +140,14 @@ curl -X 'GET' \
 }
 ```
 
+Returned when the request contains `order` value for sort direction. Allowed values are `asc` or `desc`.
 ```json
 {
   "detail": "Invalid order value. Allowed values: asc, desc."
 }
 ```
 
+Returned when the request contains a `sort_by` value other than `product_id`.
 ```json
 {
   "detail": "Cursor pagination is currently supported only with sort_by=product_id."
@@ -206,7 +230,17 @@ curl -X 'GET' \
 
 ### Error responses
 
+#### 401 Unauthorized
+Returned when the request is missing or includes an invalid `x-api-key` header.
+
+```json
+{
+  "detail": "Invalid or missing API key"
+}
+```
+
 #### 404 Not found
+Returned when the request contains a `product_id` not currently in the system.
 
 ```json
 {
@@ -276,7 +310,7 @@ curl -X 'GET' \
 | `items`       | array  | List of product objects                      |
 | `next_cursor` | string | Cursor for next page (if more results exist) |
 
-If the specified `feed_id` has no associated products or not valid, the response returns count: 0 and an empty items array
+If the specified `feed_id` has no associated products or not valid, the response returns count: 0 and an empty items array.
 
 ```json
 {
@@ -287,9 +321,21 @@ If the specified `feed_id` has no associated products or not valid, the response
 
 ---
 
+### Error responses
+
+#### 401 Unauthorized
+Returned when the request is missing or includes an invalid `x-api-key` header.
+
+```json
+{
+  "detail": "Invalid or missing API key"
+}
+```
+
+---
+
 ## Additional details
 
-- All endpoints require a valid `x-api-key` header
 - Product data is sourced from partner CSV feeds processed through the ETL pipeline
 - Products are **not available until ETL processing completes**
 - Raw feed data is stored in Amazon S3 and transformed before loading into PostgreSQL
