@@ -44,7 +44,7 @@ nav:
       - How-To Guides:
           - Ingest a Product Feed End-to-End: api/ingest-product-feed.md
           - Debug a Failed Feed: api/debug-product-feed.md
-          - Partner Feed Onboarding: sop/onboarding.md
+          # - Partner Feed Onboarding: sop/onboarding.md
 
       - API Reference:
           - Overview: api/api-reference.md
@@ -71,7 +71,7 @@ nav:
           - Screenshots: api/screenshots.md
 
   - SOPs & Operations:
-      - Partner Feed Onboarding: sop/onboarding.md
+      # - Partner Feed Onboarding: sop/onboarding.md
       - CSV Feed File Specification: sop/csv-feed-file-spec.md
 
   - Security & Compliance:

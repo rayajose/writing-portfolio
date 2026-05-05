@@ -11,9 +11,8 @@ Use this workflow during partner onboarding or when testing feed ingestion.
 In this guide, you will:
 
 1. Upload a product feed
-2. Run validation and ETL processing
-3. Review ingestion results
-4. Verify products in the catalog
+2. Review ingestion results
+3. Verify products in the catalog
 
 ---
 
@@ -37,108 +36,70 @@ In this guide, you will:
   x-api-key: demo-secret-key
   ```
 
-- A CSV file that includes:
-
-  - `sku`
-  - `product_name`
+- A CSV file that includes: `sku` and `product_name`
 
 ---
 
-## 1. Upload a Product Feed
+## Steps
 
-Upload a CSV file to create a new feed.
+### 1. Upload a product feed
 
-### Request
+To upload a product feed, do the following:
+
+- Run the POST /feeds/upload endpoint to submit the product `.csv` file.
+- Note the `feed_id` value in the response for use in the next step. In the example the `feed_id` is FD00021.
+
+**Example request**
 
 ```bash
-curl -X POST "http://localhost:8000/feeds/upload" \
+curl -X POST "http://api.example.com/feeds/upload" \
   -H "x-api-key: demo-secret-key" \
   -F "file=@electronics_catalog.csv" \
   -F "partner_name=Tronics"
 ```
 
-### Response
+**Example response**
 
 ```json
 {
-  "feed_id": "FD00009",
-  "partner_name": "Tronics",
-  "file_name": "electronics_catalog.csv",
+  "feed_id": "FD00021",
+  "job_id": "JS00021",
+  "status": "processing"
+}
+```
+
+---
+
+## 2. Review processing results
+Run the GET /feeds/{feed_id} endpoint using the `feed_id` captured in previous step, FD00021.
+
+**Example request**
+
+```bash
+curl --request GET \
+  --url http://api.example.com/feeds/FD00021 \
+  --header 'x-api-key: demo-secret-key'
+```
+
+**Example response**
+
+```json
+{
+  "feed_id": "FD00021",
+  "partner_name": "Joyeria Reina",
+  "file_name": "test-only-sku-product_name.csv",
   "content_type": "text/csv",
-  "status": "uploaded",
-  "uploaded_at": "2026-04-28T18:22:10Z",
-  "validation_job_id": "JV00009",
-  "validation_status": "queued",
-  "validation_message": "CSV structure validation queued for ETL processing.",
-  "raw_file_s3_key": "raw/partners/tronics/feeds/FD00009/electronics_catalog.csv",
+  "status": "processed",
+  "uploaded_at": "2026-05-05T16:18:58.792011Z",
+  "validation_job_id": "JV00021",
+  "validation_status": "completed",
+  "validation_message": "ETL processing completed. Products processed: 10. Inserted: 10. Updated: 0. Unchanged: 0. Skipped: 0.",
+  "raw_file_s3_key": "raw/partners/joyeria-reina/feeds/FD00021/test-only-sku-product_name.csv",
   "raw_file_bucket": "partner-catalog-raw-rayj"
 }
 ```
 
-### What happens
-
-- The file is stored in S3 (raw layer)
-- A validation job is created
-- Feed status is set to `uploaded`
-- ETL processing is queued
-
----
-
-## 2. Run ETL Processing
-
-If processing does not run automatically, trigger the job.
-
-### Request
-
-```bash
-curl -X POST "http://localhost:8000/jobs/JV00009/run" \
-  -H "x-api-key: demo-secret-key"
-```
-
-### Response
-
-```json
-{
-  "job_id": "JV00009",
-  "status": "completed",
-  "message": "ETL processing completed."
-}
-```
-
-### What happens
-
-During processing:
-
-- CSV structure is validated
-- Required fields are checked
-- Data is transformed into product records
-- Records are inserted or updated
-- Invalid rows are skipped
-
----
-
-## 3. Review Processing Results
-
-Retrieve the job to understand the ingestion outcome.
-
-### Request
-
-```bash
-curl -X GET "http://localhost:8000/jobs/JV00009" \
-  -H "x-api-key: demo-secret-key"
-```
-
-### Response
-
-```json
-{
-  "job_id": "JV00009",
-  "status": "completed",
-  "result": "Products processed: 13. Inserted: 1. Updated: 5. Unchanged: 7. Skipped: 0."
-}
-```
-
-### Interpret the result
+### Interpret the results
 
 - **Processed**: Total rows evaluated
 - **Inserted**: New products created
@@ -148,35 +109,51 @@ curl -X GET "http://localhost:8000/jobs/JV00009" \
 
 ---
 
-## 4. Verify Products
+## 3. Verify Products
+Run the GET /products endpoint using the `feed_id` from step 1 (FD00021) as a query parameter.
 
-Confirm that products are available in the catalog.
-
-### Request
+**Example request**
 
 ```bash
-curl -X GET "http://localhost:8000/products?feed_id=FD00009" \
+curl -X GET "http://api.example.com/products?feed_id=FD00021" \
   -H "x-api-key: demo-secret-key"
 ```
 
-### Response
+**Example response**
 
 ```json
 {
-  "data": [
+  "count": 2,
+  "items": [
     {
-      "product_id": "PR00001",
-      "partner_name": "Tronics",
-      "sku": "TV-001",
-      "product_name": "4K Smart TV",
-      "brand": "VisionTech",
-      "category": "Electronics",
-      "price": 799.99,
-      "availability": "in_stock",
-      "feed_id": "FD00009"
+      "product_id": "PR00145",
+      "feed_id": "FD00019",
+      "partner_name": "Test",
+      "sku": "RS1001",
+      "product_name": "Nike Air Zoom Pegasus 40",
+      "description": "Versatile daily trainer with responsive Zoom Air units and breathable mesh upper",
+      "brand": "Nike",
+      "category": "Running Shoes",
+      "price": 129.99,
+      "currency": "USD",
+      "availability": "In Stock",
+      "created_at": "2026-05-04T16:48:42.611576+00:00"
+    },
+    {
+      "product_id": "PR00146",
+      "feed_id": "FD00019",
+      "partner_name": "Test",
+      "sku": "RS1002",
+      "product_name": "Adidas Ultraboost 22",
+      "description": "High-cushion running shoe with Boost midsole for energy return and Primeknit upper",
+      "brand": "Adidas",
+      "category": "Running Shoes",
+      "price": 189.99,
+      "currency": "USD",
+      "availability": "In Stock",
+      "created_at": "2026-05-04T16:48:42.611576+00:00"
     }
-  ],
-  "next_cursor": null
+  ]
 }
 ```
 
@@ -192,91 +169,8 @@ Use query parameters to refine results:
 
 ---
 
-## Troubleshooting
-Use this section to identify and resolve common issues encountered during feed ingestion and ETL processing.
+## Related documentation
 
-### Missing required fields
+- [Debug a failed feed](debug-product-feed.md)
 
-**Symptom**
 
-- Rows are skipped
-
-**Cause**
-
-- Missing `sku` or `product_name`
-
-**Resolution**
-
-- Ensure all required fields are present
-
----
-
-### Duplicate products
-
-**Symptom**
-
-- Products are updated instead of inserted
-
-**Cause**
-
-- Deduplication uses:
-
-```
-(partner_name, sku)
-```
-
-**Resolution**
-
-- Use unique SKUs for new products
-- Confirm whether updates are expected
-
----
-
-### No products returned
-
-**Symptom**
-
-- Query returns no results
-
-**Possible causes**
-
-- Job has not completed
-- Incorrect `feed_id`
-- Filters exclude results
-
----
-
-## How the Pipeline Works
-
-The ingestion process includes four stages:
-
-1. **Raw**
-
-   - Stores the original CSV in S3
-
-2. **Validation**
-
-   - Verifies structure and required fields
-
-3. **Transformation**
-
-   - Maps CSV rows to the product schema
-   - Normalizes data
-
-4. **Load**
-
-   - Inserts or updates products
-   - Applies deduplication
-
----
-
-## Summary
-
-You:
-
-- Uploaded a product feed
-- Ran validation and ETL processing
-- Reviewed ingestion results
-- Verified products in the catalog
-
-This workflow reflects a typical partner onboarding and feed ingestion process.
