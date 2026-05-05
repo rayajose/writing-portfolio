@@ -2,8 +2,6 @@
 
 Use the Partner Catalog API to upload product feeds, process them through an ETL pipeline, and query normalized product data.
 
-Use this guide to authenticate requests, make your first API call, and understand the core workflow.
-
 ---
 
 ## Base URLs

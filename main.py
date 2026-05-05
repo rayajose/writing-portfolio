@@ -3,18 +3,26 @@ from routers import feeds, jobs, products, health, analytics
 from db import init_db
 
 tags_metadata = [
-    {
-        "name": "Feeds",
-        "description": "Upload and manage partner product feeds. Feeds are ingested and validated before products are made available for querying."
-    },
-    {
-        "name": "Jobs",
-        "description": "Track background processing jobs for feed submission and validation. Jobs provide status and error visibility."
-    },
-    {
-        "name": "Products",
-        "description": "Query the product catalog using filtering, sorting, and cursor-based pagination."
-    },
+  {
+    "name": "Feeds",
+    "description": "Upload and manage partner product feeds. Feeds are ingested, validated, and tracked through the processing pipeline before products become available for querying."
+  },
+  {
+    "name": "Jobs",
+    "description": "Monitor background processing jobs for feed ingestion and validation. Jobs expose execution status, progress, and error details for troubleshooting."
+  },
+  {
+    "name": "Products",
+    "description": "Query the centralized product catalog using filtering, sorting, and cursor-based pagination to access up-to-date partner product data."
+  },
+  {
+    "name": "Health",
+    "description": "Check the operational status of the API and underlying services. Used for monitoring, automated health checks, and verifying system availability."
+  },
+  {
+    "name": "Analytics",
+    "description": "Retrieve aggregated metrics derived from catalog and order data, including sales trends, revenue share, and partner performance across the platform."
+  }
 ]
 
 app = FastAPI(
@@ -29,12 +37,12 @@ app = FastAPI(
         "- Structured error handling\n"
         "- Filtering, sorting, and pagination\n"
         "- Deployment to AWS (ECS Fargate + RDS)\n\n"
-        "Authentication is handled via an API key passed in the `X-API-Key` header."
+        "Authentication is handled via an API key passed in the `x-api-key` header."
     ),
     version="0.1.0",
     contact={
         "name": "Ray Jose",
-        "url": "https://github.com/rayajose/partner-catalog-api",
+        "url": "https://github.com/rayajose/writing-portfolio",
         "email": "ray.a.jose@gmail.com",
         },
 license_info={

@@ -1,4 +1,4 @@
-site_name: "Ray Jose – Technical Writing Portfolio"
+site_name: "Ray Jose – Technical Documentation Portfolio"
 site_description: "API, integration, and data platform documentation portfolio."
 site_url: "https://rayajose.github.io/writing-portfolio/"
 use_directory_urls: true
@@ -49,8 +49,9 @@ nav:
       - API Reference:
           - Overview: api/api-reference.md
           - Feeds API: api/feeds.md
-          - Products API: api/products.md
           - Jobs API: api/jobs.md
+          - Products API: api/products.md
+          - Health API: api/health.md
           - Analytics API: api/analytics.md
           - Errors: api/errors.md
 

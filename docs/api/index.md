@@ -1,12 +1,21 @@
 # Partner Catalog API
+The Partner Catalog API is an e-commerce data ingestion and analytics platform designed to support frequent, automated uploads of partner retailer product catalogs.
 
-Use this API to upload product feeds, process them through an ETL pipeline, and query normalized product data.
-This documentation supports both initial onboarding and ongoing integration workflows.
+Retail partners can submit product data on a recurring basis (daily or hourly, depending on how frequently price and availability change). The system ingests, validates, and processes these feeds to maintain an up-to-date, queryable product catalog.
+
+The API enables:
+
+- Tracking of product data across partners, including pricing, availability, and catalog changes  
+- Generation of sales and revenue analytics across the platform  
+- Monitoring and troubleshooting of feed uploads and ingestion workflows  
+
+On the backend, the system provides full visibility into the ingestion pipeline, including feed status, validation results, and processing outcomes. This allows operators and integrators to quickly identify and resolve issues with data quality, failed uploads, or pipeline execution.
+
+The result is a reliable, scalable interface for managing partner product data and deriving business insights from catalog and sales activity.
 
 ---
 
 ## Start here
-
 Choose a path based on what you want to do:
 
 ### Get started
@@ -39,9 +48,6 @@ Use step-by-step guides for common workflows:
 Look up endpoints, parameters, and response models:
 
 - [API Reference](api-reference.md)
-- [Feeds API](feeds.md)
-- [Products API](products.md)
-- [Jobs API](jobs.md)
 
 ---
 

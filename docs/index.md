@@ -1,4 +1,4 @@
-# Ray Jose – Developer Documentation Portfolio
+# Ray Jose – Technical Documentation Portfolio
 
 ## Principal Technical Writer — APIs, Integrations, and Enterprise Systems
 
