@@ -115,7 +115,7 @@ Follow these guidelines when preparing a CSV file:
 ## Upload example
 
 ```bash
-curl -X POST "http://<host>/feeds/upload" \
+curl -X POST "http://api.example.com/feeds/upload" \
   -H "x-api-key: <api-key>" \
   -F "partner_name=Tronics" \
   -F "file=@electronics_catalog.csv"

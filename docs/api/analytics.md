@@ -1,201 +1,235 @@
-# Analytics Layer
+# Analytics API
 
-This page explains how the Partner Catalog API supports analytical queries across products, partners, and time.
+Use this API to expose read-only endpoints for aggregated insights.
 
-The analytics layer extends the platform beyond ingestion by enabling aggregated insights through SQL queries and API endpoints.
+- Retrieve aggregated sales and revenue metrics across partners
+- Analyze product and order data through precomputed summaries
+- Support reporting and dashboards with queryable analytics endpoints
 
----
-
-## Overview
-
-The analytics layer enables:
-
-- Product performance analysis
-- Partner performance analysis
-- Revenue distribution insights
-- Time-based trend analysis
-
-Example questions:
-
-- Which partners generate the most revenue?
-- Which products drive the highest sales?
-- How does revenue vary over time?
-- What percentage of revenue does each partner contribute?
-
----
-
-## Data model
-
-The analytics layer introduces an `orders` table that acts as a fact table.
-
-```text
-orders
-  product_id → products.product_id
-  partner_name
-  order_date
-  quantity
-  unit_price
-  total_amount
-```
-
----
-
-## Orders table
-
-```sql
-CREATE TABLE IF NOT EXISTS orders (
-    order_id TEXT PRIMARY KEY,
-    product_id TEXT NOT NULL,
-    partner_name TEXT NOT NULL,
-    order_date DATE NOT NULL,
-    quantity INTEGER NOT NULL CHECK (quantity > 0),
-    unit_price NUMERIC(10, 2) NOT NULL CHECK (unit_price >= 0),
-    total_amount NUMERIC(12, 2) GENERATED ALWAYS AS (quantity * unit_price) STORED,
-
-    CONSTRAINT fk_orders_product
-        FOREIGN KEY (product_id)
-        REFERENCES products(product_id)
-);
-```
-
----
-
-## Dimensional model
-
-The analytics layer uses a simplified dimensional model:
-
-| Type      | Table / Field  | Purpose                   |
-|-----------|----------------|---------------------------|
-| Fact      | `orders`       | Stores sales transactions |
-| Dimension | `products`     | Product attributes        |
-| Dimension | `partner_name` | Partner grouping          |
-| Dimension | `order_date`   | Time-based analysis       |
-
----
-
-## Dataset characteristics
-
-The sample dataset includes multiple partner types:
-
-- High-volume / low-price — Microbrews Brothers
-- High-value electronics — RayTech Corp., Tronics
-- Media retail — Cid's Vintage Records
-- Luxury goods — Joyeria Reina
-
-This enables comparison across:
-
-- Revenue vs volume
-- Product categories
-- Partner business models
-
----
-
-## Example queries
-
-### Sales by partner
-
-```sql
-SELECT
-    partner_name,
-    SUM(quantity) AS units_sold,
-    SUM(total_amount) AS total_sales
-FROM orders
-GROUP BY partner_name
-ORDER BY total_sales DESC;
-```
-
----
-
-### Sales over time
-
-```sql
-SELECT
-    order_date,
-    SUM(quantity) AS units_sold,
-    SUM(total_amount) AS total_sales
-FROM orders
-GROUP BY order_date
-ORDER BY order_date;
-```
-
----
-
-### Monthly aggregation
-
-```sql
-SELECT
-    DATE_TRUNC('month', order_date)::date AS sales_month,
-    SUM(quantity),
-    SUM(total_amount)
-FROM orders
-GROUP BY sales_month;
-```
-
----
-
-### Top products
-
-```sql
-SELECT
-    p.product_name,
-    SUM(o.quantity) AS units_sold,
-    SUM(o.total_amount) AS total_sales
-FROM orders o
-JOIN products p ON o.product_id = p.product_id
-GROUP BY p.product_name
-ORDER BY total_sales DESC
-LIMIT 5;
-```
-
----
-
-### Revenue share
-
-```sql
-SELECT
-    partner_name,
-    SUM(total_amount) AS total_revenue,
-    ROUND(
-        100.0 * SUM(total_amount) / SUM(SUM(total_amount)) OVER (),
-        2
-    ) AS revenue_pct
-FROM orders
-GROUP BY partner_name
-ORDER BY total_revenue DESC;
-```
-
----
-
-## Analytics API
-
-The analytics layer exposes read-only endpoints for aggregated insights.
-
-### GET /analytics/sales-by-partner
+## GET /analytics/sales-by-partner
 
 Use this endpoint to retrieve total units and revenue by partner.
 
+### What happens
+
+- The system aggregates order data grouped by `partner_name`
+- Calculates total units sold and total revenue per partner
+- Returns a list of partners sorted by total revenue (highest first)
+
 ---
 
-### GET /analytics/sales-over-time
+### Example request
+
+```bash
+curl -X 'GET' \
+  'http://api.example.com/analytics/sales-by-partner' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: demo-secret-key'
+```
+
+---
+
+### Example response
+
+```json
+{
+  "analytics_type": "sales_by_partner",
+  "results": [
+    {
+      "partner_name": "RayTech Corp.",
+      "units_sold": 31,
+      "total_sales": "14759.79"
+    },
+    {
+      "partner_name": "Tronics",
+      "units_sold": 23,
+      "total_sales": "11750.86"
+    },
+    {
+      "partner_name": "Joyeria Reina",
+      "units_sold": 17,
+      "total_sales": "11296.39"
+    }
+  ]
+}
+```
+
+---
+
+### Response fields
+
+| Field            | Type    | Description                                     |
+|------------------|---------|-------------------------------------------------|
+| `analytics_type` | string  | Type of analytics returned (`sales_by_partner`) |
+| `results`        | array   | List of aggregated sales results by partner     |
+| `partner_name`   | string  | Name of the partner                             |
+| `units_sold`     | integer | Total number of units sold for the partner      |
+| `total_sales`    | string  | Total revenue for the partner (currency value)  |
+
+
+---
+
+## GET /analytics/sales-over-time
 
 Use this endpoint to retrieve time-based sales metrics.
 
-Supports:
+### What happens
 
-- `daily`
-- `monthly`
-
----
-
-### GET /analytics/top-products
-
-Use this endpoint to retrieve top-performing products ranked by revenue.
+- The system aggregates order data over time based on the specified `grain`
+- Calculates total units sold and total revenue for each time interval
+- Returns results grouped and ordered chronologically
 
 ---
 
-### GET /analytics/revenue-share
+### Query parameters
+
+| Name    | Type   | Required | Description                                          |
+|---------|--------|----------|------------------------------------------------------|
+| `grain` | string | No       | Time interval for aggregation (`daily` or `monthly`) |
+
+Defaults to `daily` if `grain` parameter is not sent with the request.
+
+---
+
+### Example request
+
+```bash
+curl -X 'GET' \
+  'http://api.example.com/analytics/sales-over-time?grain=daily' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: demo-secret-key'
+```
+
+---
+
+### Example response
+
+```json
+{
+  "analytics_type": "sales_over_time",
+  "grain": "daily",
+  "results": [
+    {
+      "sales_period": "2026-04-01",
+      "units_sold": 15,
+      "total_sales": "2145.87"
+    },
+    {
+      "sales_period": "2026-04-02",
+      "units_sold": 7,
+      "total_sales": "1274.93"
+    },
+    {
+      "sales_period": "2026-04-03",
+      "units_sold": 13,
+      "total_sales": "2341.89"
+    }
+  ]
+}
+```
+
+---
+
+### Response fields
+
+| Field            | Type    | Description                                                 |
+|------------------|---------|-------------------------------------------------------------|
+| `analytics_type` | string  | Type of analytics returned (`sales_over_time`)              |
+| `grain`          | string  | Time interval used for aggregation (`daily` or `monthly`)   |
+| `results`        | array   | List of aggregated sales results by time period             |
+| `sales_period`   | string  | Time period for the aggregation (format depends on `grain`) |
+| `units_sold`     | integer | Total number of units sold during the period                |
+| `total_sales`    | string  | Total revenue for the period (currency value)               |
+
+
+---
+
+### Error responses
+
+#### 422 Unprocessable entity
+Invalid `grain` value
+
+```json
+{
+  "detail": [
+    {
+      "type": "enum",
+      "loc": [
+        "query",
+        "grain"
+      ],
+      "msg": "Input should be 'daily' or 'monthly'",
+      "input": "weekly",
+      "ctx": {
+        "expected": "'daily' or 'monthly'"
+      }
+    }
+  ]
+}
+```
+
+---
+
+## GET /analytics/revenue-share
 
 Use this endpoint to retrieve each partner’s percentage contribution to total revenue.
+
+### What happens
+
+- The system aggregates total revenue by `partner_name`
+- Calculates each partner’s percentage contribution relative to overall revenue
+- Returns results sorted by highest revenue contribution
+
+---
+
+### Example request
+
+```bash
+curl -X 'GET' \
+  'http://api.example.com/analytics/revenue-share' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: demo-secret-key'
+```
+
+---
+
+### Example response
+
+```json
+{
+  "analytics_type": "revenue_share",
+  "results": [
+    {
+      "partner_name": "RayTech Corp.",
+      "total_revenue": "14759.79",
+      "revenue_pct": 37.55
+    },
+    {
+      "partner_name": "Tronics",
+      "total_revenue": "11750.86",
+      "revenue_pct": 29.9
+    },
+    {
+      "partner_name": "Joyeria Reina",
+      "total_revenue": "11296.39",
+      "revenue_pct": 28.74
+    }
+  ]
+}
+```
+
+---
+
+### Response fields
+
+| Field            | Type   | Description                                            |
+|------------------|--------|--------------------------------------------------------|
+| `analytics_type` | string | Type of analytics returned (`revenue_share`)           |
+| `results`        | array  | List of revenue share results by partner               |
+| `partner_name`   | string | Name of the partner                                    |
+| `total_revenue`  | string | Total revenue generated by the partner                 |
+| `revenue_pct`    | number | Percentage of total revenue contributed by the partner |
+
 
 ---
 
@@ -203,4 +237,12 @@ Use this endpoint to retrieve each partner’s percentage contribution to total 
 
 - Metrics are computed from processed product and order data  
 - Aggregations are optimized for read-heavy workloads  
-- Results are exposed through API endpoints for external consumption  
+- Results are exposed through API endpoints for external consumption
+
+---
+
+## Related documentation
+
+- [Workflows](workflows.md)
+- [Errors](errors.md)
+- [Products API](products.md)

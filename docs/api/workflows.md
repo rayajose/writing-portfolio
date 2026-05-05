@@ -21,7 +21,7 @@ This workflow shows the full ingestion pipeline from raw upload to queryable pro
 ### Step 1: Upload a feed
 
 ```bash
-curl -X POST "http://127.0.0.1:8000/feeds/upload" \
+curl -X POST "http://api.example.com/feeds/upload" \
   -H "x-api-key: demo-secret-key" \
   -F "partner_name=Acme Corp" \
   -F "file=@sample_catalog.csv"
@@ -57,7 +57,7 @@ curl -X POST "http://127.0.0.1:8000/feeds/upload" \
 
 ```bash
 curl -H "x-api-key: demo-secret-key" \
-  "http://127.0.0.1:8000/jobs/JS00001"
+  "http://api.example.com/jobs/JS00001"
 ```
 
 ---
@@ -66,7 +66,7 @@ curl -H "x-api-key: demo-secret-key" \
 
 ```bash
 curl -H "x-api-key: demo-secret-key" \
-  "http://127.0.0.1:8000/jobs/JV00001"
+  "http://api.example.com/jobs/JV00001"
 ```
 
 ---
@@ -88,7 +88,7 @@ curl -H "x-api-key: demo-secret-key" \
 ### Step 4: Run ETL processing
 
 ```bash
-curl -X POST "http://127.0.0.1:8000/jobs/JV00001/run" \
+curl -X POST "http://api.example.com/jobs/JV00001/run" \
   -H "x-api-key: demo-secret-key"
 ```
 
@@ -110,7 +110,7 @@ curl -X POST "http://127.0.0.1:8000/jobs/JV00001/run" \
 
 ```bash
 curl -H "x-api-key: demo-secret-key" \
-  "http://127.0.0.1:8000/feeds/FD00001"
+  "http://api.example.com/feeds/FD00001"
 ```
 
 ---
@@ -139,7 +139,7 @@ curl -H "x-api-key: demo-secret-key" \
 
 ```bash
 curl -H "x-api-key: demo-secret-key" \
-  "http://127.0.0.1:8000/products?limit=5"
+  "http://api.example.com/products?limit=5"
 ```
 
 ---

@@ -109,7 +109,7 @@ Use this endpoint to start a validation job and trigger ETL processing.
 ### Example request
 
 ```bash
-curl -X POST http://127.0.0.1:8000/jobs/JV00001/run \
+curl -X POST http://api.example.com/jobs/JV00001/run \
   -H "x-api-key: demo-secret-key"
 ```
 

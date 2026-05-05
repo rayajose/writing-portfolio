@@ -4,7 +4,7 @@ from fastapi.security import APIKeyHeader
 from settings import Settings, get_settings
 
 api_key_header = APIKeyHeader(
-    name="X-API-Key",
+    name="x-api-key",
     scheme_name="APIKeyAuth",
     description="API key required to access this API."
 )

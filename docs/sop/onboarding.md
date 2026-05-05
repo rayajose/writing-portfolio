@@ -46,7 +46,7 @@ Before starting, confirm the following:
 Submit the product feed using the upload endpoint.
 
 ```bash
-curl -X POST "http://<host>/feeds/upload" \
+curl -X POST "http://api.example.com/feeds/upload" \
   -H "x-api-key: <api-key>" \
   -F "partner_name=<partner_name>" \
   -F "file=@<file_name>.csv"
@@ -78,7 +78,7 @@ Retrieve the feed to confirm it was successfully registered.
 
 ```bash
 curl -H "x-api-key: <api-key>" \
-  "http://<host>/feeds/FD00010"
+  "http://api.example.com/feeds/FD00010"
 ```
 
 ---
@@ -97,7 +97,7 @@ Check the status of the validation job.
 
 ```bash
 curl -H "x-api-key: <api-key>" \
-  "http://<host>/jobs/JV00010"
+  "http://api.example.com/jobs/JV00010"
 ```
 
 ---
@@ -139,7 +139,7 @@ Confirm that products are accessible via the API.
 
 ```bash
 curl -H "x-api-key: <api-key>" \
-  "http://<host>/products?partner_name=<partner_name>"
+  "http://api.example.com/products?partner_name=<partner_name>"
 ```
 
 ---
