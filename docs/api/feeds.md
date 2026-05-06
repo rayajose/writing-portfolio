@@ -40,13 +40,18 @@ Use this endpoint to upload a CSV product feed, store the raw file in object sto
 ## Request body (multipart/form-data)
 
 | Field          | Type   | Required | Description                  |
-|----------------|--------|----------|------------------------------|
+| -------------- | ------ | -------- | ---------------------------- |
 | `partner_name` | string | yes      | Name of the partner          |
 | `file`         | file   | yes      | CSV file containing products |
 
 ---
 
-### Example request
+### Request and response
+
+<div  class="api-example-grid">
+<div>
+
+<h3>Request</h3>
 
 ```bash
 curl -X POST http://api.example.com/feeds/upload \
@@ -55,9 +60,11 @@ curl -X POST http://api.example.com/feeds/upload \
   -F "file=@sample_catalog.csv"
 ```
 
----
+</div>
 
-### Example response
+<div>
+
+<h3>Response</h3>
 
 ```json
 {
@@ -67,12 +74,15 @@ curl -X POST http://api.example.com/feeds/upload \
 }
 ```
 
+</div>
+</div>
+
 ---
 
 ### Response fields
 
 | Field     | Type   | Description                        |
-|-----------|--------|------------------------------------|
+| --------- | ------ | ---------------------------------- |
 | `feed_id` | string | Unique feed identifier             |
 | `status`  | string | Feed upload status  (`processing`) |
 | `job_id`  | string | Unique job identifier (JSxxxxx)    |
@@ -140,12 +150,17 @@ Use this endpoint to retrieve metadata for a specific feed, including pipeline s
 ### Path parameters
 
 | Name      | Type   | Required | Description                      |
-|-----------|--------|----------|----------------------------------|
+| --------- | ------ | -------- | -------------------------------- |
 | `feed_id` | string | Yes      | Unique feed identifier (FDxxxxx) |
 
 ---
 
-### Example request
+### Request and response
+
+<div  class="api-example-grid">
+<div>
+
+<h3>Request</h3>
 
 ```bash
 curl -X 'GET' \
@@ -154,9 +169,11 @@ curl -X 'GET' \
   -H 'x-api-key: demo-secret-key'
 ```
 
----
+</div>
 
-### Example response
+<div>
+
+<h3>Response</h3>
 
 ```json
 {
@@ -174,22 +191,25 @@ curl -X 'GET' \
 }
 ```
 
+</div>
+</div>
+
 ---
 
 ### Response fields
-| Field               | Type   | Description                                             |
-|---------------------|--------|---------------------------------------------------------|
+| Field                | Type   | Description                                             |
+| -------------------- | ------ | ------------------------------------------------------- |
 | `feed_id`            | string | Unique feed identifier (FDxxxxx)                        |
 | `partner_name`       | string | Partner that submitted the feed                         |
-| `file_name`         | string | Original uploaded file name                             |
-| `content_type`      | string | MIME type of the uploaded file                          |
-| `status`            | string | Feed upload status (`uploaded`)                         |
-| `uploaded_at`       | string | UTC timestamp of upload                                 |
-| `validation_job_id` | string | Validation job ID (JVxxxxx)                             |
-| `validation_status` | string | Job status (`queued`, `running`, `completed`, `failed`) |
+| `file_name`          | string | Original uploaded file name                             |
+| `content_type`       | string | MIME type of the uploaded file                          |
+| `status`             | string | Feed upload status (`uploaded`)                         |
+| `uploaded_at`        | string | UTC timestamp of upload                                 |
+| `validation_job_id`  | string | Validation job ID (JVxxxxx)                             |
+| `validation_status`  | string | Job status (`queued`, `running`, `completed`, `failed`) |
 | `validation_message` | string | Human-readable ETL result summary                       |
-| `raw_file_s3_key`   | string | S3 object key for raw feed                              |
-| `raw_file_bucket`   | string | S3 bucket storing raw file                              |
+| `raw_file_s3_key`    | string | S3 object key for raw feed                              |
+| `raw_file_bucket`    | string | S3 bucket storing raw file                              |
 
 ---
 

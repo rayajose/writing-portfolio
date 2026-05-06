@@ -42,7 +42,7 @@ Supports filtering, sorting, and cursor-based pagination.
 ### Query parameters
 
 | Name           | Type   | Required | Description                                                                   |
-|----------------|--------|----------|-------------------------------------------------------------------------------|
+| -------------- | ------ | -------- | ----------------------------------------------------------------------------- |
 | `partner_name` | string | No       | Partner name filter                                                           |
 | `feed_id`      | string | No       | Filter by feed ID                                                             |
 | `sku`          | string | No       | Filter by SKU                                                                 |
@@ -52,7 +52,7 @@ Supports filtering, sorting, and cursor-based pagination.
 | `limit`        | int    | No       | Number of results to return (default: 10, max: 100)                           |
 | `cursor`       | string | No       | Cursor for pagination. Use the `next_cursor` value from the previous response |
 | `sort_by`      | string | No       | Field to sort by (created_at, price, product_name, brand, category)           |
-| `order`        | string | No       | Sort direction (`asc` [ascending], `desc` [decending], default: `desc`)                               |
+| `order`        | string | No       | Sort direction (`asc` [ascending], `desc` [decending], default: `desc`)       |
 
 ---
 
@@ -72,7 +72,12 @@ GET /products?limit=5&cursor=PR00010
 
 ---
 
-### Example request
+### Request and response
+
+<div  class="api-example-grid">
+<div>
+
+<h3>Request</h3>
 
 ```bash
 curl -X 'GET' \
@@ -81,9 +86,11 @@ curl -X 'GET' \
   -H 'x-api-key: demo-secret-key'
 ```
 
----
+</div>
 
-### Example Response
+<div>
+
+<h3>Response</h3>
 
 ```json
 {
@@ -108,12 +115,15 @@ curl -X 'GET' \
 }
 ```
 
+</div>
+</div>
+
 ---
 
 ### Response fields
 
 | Field         | Type   | Description                                  |
-|---------------|--------|----------------------------------------------|
+| ------------- | ------ | -------------------------------------------- |
 | `count`       | int    | Number of items returned in the current page |
 | `items`       | array  | List of product objects                      |
 | `next_cursor` | string | Cursor for next page (if more results exist) |
@@ -171,13 +181,18 @@ Use this endpoint to retrieve a single product record by `product_id` from uploa
 ### Path parameters
 
 | Name         | Type   | Required | Description                       |
-|--------------|--------|----------|-----------------------------------|
+| ------------ | ------ | -------- | --------------------------------- |
 | `product_id` | string | Yes      | Unique identifier for the product |
 
 
 ---
 
-### Example request
+### Request and response
+
+<div  class="api-example-grid">
+<div>
+
+<h3>Request</h3>
 
 ```bash
 curl -X 'GET' \
@@ -186,9 +201,11 @@ curl -X 'GET' \
   -H 'x-api-key: demo-secret-key'
 ```
 
----
+</div>
 
-### Example response
+<div>
+
+<h3>Response</h3>
 
 ```json
 {
@@ -207,12 +224,15 @@ curl -X 'GET' \
 }
 ```
 
+</div>
+</div>
+
 ---
 
 ### Response fields
 
 | Field          | Type   | Description                                        |
-|----------------|--------|----------------------------------------------------|
+| -------------- | ------ | -------------------------------------------------- |
 | `product_id`   | string | Unique identifier for the product (PRxxxxx)        |
 | `feed_id`      | string | Identifier of the feed that produced the product   |
 | `partner_name` | string | Name of the partner that supplied the product      |
@@ -265,12 +285,17 @@ Returns all products associated with a specific feed.
 ### Path parameters
 
 | Name      | Type   | Required | Description                    |
-|-----------|--------|----------|--------------------------------|
+| --------- | ------ | -------- | ------------------------------ |
 | `feed_id` | string | Yes      | Unique identifier for the feed |
 
 ---
 
-### Example request
+### Request and response
+
+<div  class="api-example-grid">
+<div>
+
+<h3>Request</h3>
 
 ```bash
 curl -X 'GET' \
@@ -279,9 +304,11 @@ curl -X 'GET' \
   -H 'x-api-key: demo-secret-key'
 ```
 
----
+</div>
 
-### Example response
+<div>
+
+<h3>Response</h3>
 
 ```json
 {
@@ -302,10 +329,15 @@ curl -X 'GET' \
 }
 ```
 
+</div>
+</div>
+
+---
+
 ### Response fields
 
 | Field         | Type   | Description                                  |
-|---------------|--------|----------------------------------------------|
+| ------------- | ------ | -------------------------------------------- |
 | `count`       | int    | Number of items returned in the current page |
 | `items`       | array  | List of product objects                      |
 | `next_cursor` | string | Cursor for next page (if more results exist) |

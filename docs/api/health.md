@@ -22,7 +22,12 @@ Use this endpoint to retrieve the current health status of the API and its datab
 
 ---
 
-### Example request
+### Request and response
+
+<div  class="api-example-grid">
+<div>
+
+<h3>Request</h3>
 
 ```bash
 curl -X 'GET' \
@@ -30,34 +35,42 @@ curl -X 'GET' \
   -H 'accept: application/json'
 ```
 
----
+</div>
 
-### Example response
-Healthy
+<div>
+
+<h3>Response</h3>
+
 
 ```json
+Healthy
+
 {
   "status": "ok",
   "database": "connected"
 }
 ```
 
-### Example response
-Unhealthy
+
 
 ```json
+Unhealthy
+
 {
   "status": "error",
   "database": "unreachable"
 }
 ```
 
+</div>
+</div>
+
 ---
 
 ### Response fields
 
 | Field      | Type   | Description                                                 |
-|------------|--------|-------------------------------------------------------------|
+| ---------- | ------ | ----------------------------------------------------------- |
 | `status`   | string | Overall system status (`ok` or `error`)                     |
 | `database` | string | Database connectivity status (`connected` or `unreachable`) |
 

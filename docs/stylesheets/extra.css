@@ -29,3 +29,49 @@
   color: var(--md-default-fg-color);
   font-weight: 475;
 }
+
+/* side by side */
+
+.api-example-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
+  margin: 1.5rem 0;
+}
+
+.api-example-grid>div {
+  min-width: 0;
+}
+
+@media screen and (max-width: 900px) {
+  .api-example-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.api-example-grid h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.api-example-grid .highlight {
+  margin-top: 0;
+}
+
+.md-grid {
+  max-width: 1500px;
+}
+
+/* body text size */
+.md-typeset {
+  font-size: 0.72rem;
+}
+
+/* table text size */
+.md-typeset table:not([class]) {
+  font-size: 0.72rem;
+}

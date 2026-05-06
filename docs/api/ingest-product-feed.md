@@ -18,25 +18,13 @@ In this guide, you will:
 
 ## Prerequisites
 
-- Base URL:
+| Requirement       | Description                                                         |
+| ----------------- | ------------------------------------------------------------------- |
+| Base URL (local)  | `http://localhost:8000`                                             |
+| Base URL (AWS)    | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
+| API key           | `x-api-key: demo-secret-key`                                        |
+| Valid .`csv` file | see  [CSV feed file specification](../sop/csv-feed-file-spec.md)    |
 
-  ```text
-  http://localhost:8000
-  ```
-
-  or
-
-  ```text
-  http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
-  ```
-
-- API key:
-
-  ```text
-  x-api-key: demo-secret-key
-  ```
-
-- A CSV file that includes: `sku` and `product_name`
 
 ---
 

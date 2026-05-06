@@ -32,7 +32,12 @@ Use this endpoint to retrieve total units and revenue by partner.
 
 ---
 
-### Example request
+### Request and response
+
+<div  class="api-example-grid">
+<div>
+
+<h3>Request</h3>
 
 ```bash
 curl -X 'GET' \
@@ -41,9 +46,11 @@ curl -X 'GET' \
   -H 'x-api-key: demo-secret-key'
 ```
 
----
+</div>
 
-### Example response
+<div>
+
+<h3>Response</h3>
 
 ```json
 {
@@ -68,12 +75,15 @@ curl -X 'GET' \
 }
 ```
 
+</div>
+</div>
+
 ---
 
 ### Response fields
 
 | Field            | Type    | Description                                     |
-|------------------|---------|-------------------------------------------------|
+| ---------------- | ------- | ----------------------------------------------- |
 | `analytics_type` | string  | Type of analytics returned (`sales_by_partner`) |
 | `results`        | array   | List of aggregated sales results by partner     |
 | `partner_name`   | string  | Name of the partner                             |
@@ -98,14 +108,19 @@ Use this endpoint to retrieve time-based sales metrics.
 ### Query parameters
 
 | Name    | Type   | Required | Description                                          |
-|---------|--------|----------|------------------------------------------------------|
+| ------- | ------ | -------- | ---------------------------------------------------- |
 | `grain` | string | No       | Time interval for aggregation (`daily` or `monthly`) |
 
 Defaults to `daily` if `grain` parameter is not sent with the request.
 
 ---
 
-### Example request
+### Request and response
+
+<div  class="api-example-grid">
+<div>
+
+<h3>Request</h3>
 
 ```bash
 curl -X 'GET' \
@@ -114,9 +129,11 @@ curl -X 'GET' \
   -H 'x-api-key: demo-secret-key'
 ```
 
----
+</div>
 
-### Example response
+<div>
+
+<h3>Response</h3>
 
 ```json
 {
@@ -142,12 +159,15 @@ curl -X 'GET' \
 }
 ```
 
+</div>
+</div>
+
 ---
 
 ### Response fields
 
 | Field            | Type    | Description                                                 |
-|------------------|---------|-------------------------------------------------------------|
+| ---------------- | ------- | ----------------------------------------------------------- |
 | `analytics_type` | string  | Type of analytics returned (`sales_over_time`)              |
 | `grain`          | string  | Time interval used for aggregation (`daily` or `monthly`)   |
 | `results`        | array   | List of aggregated sales results by time period             |
@@ -205,7 +225,12 @@ Use this endpoint to retrieve each partner’s percentage contribution to total 
 
 ---
 
-### Example request
+### Request and response
+
+<div  class="api-example-grid">
+<div>
+
+<h3>Request</h3>
 
 ```bash
 curl -X 'GET' \
@@ -214,9 +239,11 @@ curl -X 'GET' \
   -H 'x-api-key: demo-secret-key'
 ```
 
----
+</div>
 
-### Example response
+<div>
+
+<h3>Response</h3>
 
 ```json
 {
@@ -241,12 +268,15 @@ curl -X 'GET' \
 }
 ```
 
+</div>
+</div>
+
 ---
 
 ### Response fields
 
 | Field            | Type   | Description                                            |
-|------------------|--------|--------------------------------------------------------|
+| ---------------- | ------ | ------------------------------------------------------ |
 | `analytics_type` | string | Type of analytics returned (`revenue_share`)           |
 | `results`        | array  | List of revenue share results by partner               |
 | `partner_name`   | string | Name of the partner                                    |

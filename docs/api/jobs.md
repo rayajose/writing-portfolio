@@ -37,12 +37,18 @@ Use this endpoint to retrieve the status and metadata for a job.
 ### Path parameters
 
 | Name     | Type   | Required | Description                                |
-|----------|--------|----------|--------------------------------------------|
+| -------- | ------ | -------- | ------------------------------------------ |
 | `job_id` | string | Yes      | Unique job identifier (JSxxxxx or JVxxxxx) |
 
 ---
 
-### Example request
+### Request and response
+
+<div  class="api-example-grid">
+
+<div>
+
+<h3>Request</h3>
 
 ```bash
 curl -X 'GET' \
@@ -51,9 +57,12 @@ curl -X 'GET' \
   -H 'x-api-key: demo-secret-key'
 ```
 
----
+</div>
 
-### Example response
+
+<div>
+
+<h3>Response</h3>
 
 ```json
 {
@@ -64,16 +73,23 @@ curl -X 'GET' \
 }
 ```
 
+</div>
+
+</div>
+
+
+
+
 ---
 
 ### Response fields
 
-| Field    | Type   | Description                                                        |
-|----------|--------|--------------------------------------------------------------------|
-| `job_id`   | string | Unique job identifier (JSxxxxx or JVxxxxx)                         |
-| `feed_id`  | string | Associated feed ID                                                 |
-| `status`   | string | Job status (`queued`, `running`, `completed`, `failed`)            |
-| `job_type` | string | UTC timestamp when job was created                                 |
+| Field      | Type   | Description                                             |
+| ---------- | ------ | ------------------------------------------------------- |
+| `job_id`   | string | Unique job identifier (JSxxxxx or JVxxxxx)              |
+| `feed_id`  | string | Associated feed ID                                      |
+| `status`   | string | Job status (`queued`, `running`, `completed`, `failed`) |
+| `job_type` | string | UTC timestamp when job was created                      |
 
 ---
 
@@ -122,21 +138,30 @@ Use this endpoint to start a validation job and trigger ETL processing.
 ### Path parameters
 
 | Name     | Type   | Required | Description                     |
-|----------|--------|----------|---------------------------------|
+| -------- | ------ | -------- | ------------------------------- |
 | `job_id` | string | Yes      | Unique job identifier (JVxxxxx) |
 
 ---
 
-### Example request
+### Request and response
+
+<div  class="api-example-grid">
+
+<div>
+
+<h3>Example request</h3>
 
 ```bash
 curl -X POST http://api.example.com/jobs/JV00001/run \
   -H "x-api-key: demo-secret-key"
 ```
 
----
+</div>
 
-### Example response
+
+<div>
+
+<h3>Example response</h3>
 
 ```json
 {
@@ -145,12 +170,19 @@ curl -X POST http://api.example.com/jobs/JV00001/run \
 }
 ```
 
+</div>
+
+</div>
+
+
+
+
 ---
 
 ### Response fields
 
 | Field    | Type   | Description                                             |
-|----------|--------|---------------------------------------------------------|
+| -------- | ------ | ------------------------------------------------------- |
 | `job_id` | string | Unique job identifier (JVxxxxx)                         |
 | `status` | string | Job status (`queued`, `running`, `completed`, `failed`) |
 
