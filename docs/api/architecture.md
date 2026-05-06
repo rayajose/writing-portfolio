@@ -2,7 +2,6 @@
 
 This page explains the architecture of the Partner Catalog API, including its components, data flow, and key design decisions.
 
----
 
 ## Architecture principles
 
@@ -13,7 +12,6 @@ The system is designed around:
 - Explicit job-based processing  
 - Independent read and write paths  
 
----
 
 ## System overview
 
@@ -29,7 +27,6 @@ The Partner Catalog API is a layered system designed to:
 
 The system models a production-style ingestion pipeline with clear separation between raw data storage, processing, and serving layers.
 
----
 
 ## Architecture diagram
 
@@ -75,7 +72,6 @@ flowchart TD
 
 This architecture separates compute, storage, and networking concerns while introducing a dedicated raw data layer, processing pipeline, and analytics layer.
 
----
 
 ## Architecture Layers
 
@@ -93,7 +89,6 @@ Storage Layer:
   - PostgreSQL (processed data)
 ```
 
----
 
 ## Router layer (`routers/`)
 
@@ -116,7 +111,6 @@ Example endpoints:
 - `GET /products`
 - `GET /analytics/*`
 
----
 
 ## Application / Service layer
 
@@ -138,7 +132,6 @@ Responsibilities:
 
 This layer separates processing logic from HTTP and persistence concerns.
 
----
 
 ## Analytics layer
 
@@ -160,7 +153,6 @@ This layer is read-only and operates on processed data stored in PostgreSQL.
 
 It is optimized for query performance and does not participate in ingestion or ETL workflows.
 
----
 
 ## Data access layer (`db.py`)
 
@@ -174,7 +166,6 @@ Responsibilities:
 - Supporting filtering, sorting, and pagination
 - Mapping database records to API response schemas
 
----
 
 ## Storage layer
 The storage layer handles raw and processed data using Amazon S3 for ingestion and PostgreSQL for persistent storage.
@@ -191,8 +182,6 @@ Example object key:
 raw/partners/{partner_name}/feeds/{feed_id}/{filename}.csv
 ```
 
----
-
 ### PostgreSQL (Processed data layer)
 
 Stores normalized and queryable data.
@@ -204,7 +193,6 @@ Core tables:
 - `products`
 - `id_counters`
 
----
 
 ## Data flow
 The data flow describes how data moves through ingestion, validation, transformation, and access layers.
@@ -222,7 +210,6 @@ flowchart TD
     G --> H["Return upload response"]
 ```
 
----
 
 ### ETL processing workflow
 
@@ -244,7 +231,6 @@ flowchart TD
     I --> J
 ```
 
----
 
 ### ETL processing behavior
 
@@ -263,7 +249,6 @@ This design ensures:
 - No unnecessary database updates
 - Improved performance at scale
 
----
 
 ### Product query workflow
 
@@ -276,7 +261,6 @@ flowchart TD
     E --> F["Return response<br>items + next_cursor"]
 ```
 
----
 
 ## Read vs write paths
 
@@ -296,14 +280,13 @@ The system separates ingestion (write path) from data access (read path).
 
 This separation improves scalability, maintainability, and performance.
 
----
 
 ## Identifier strategy
 
 The API uses structured identifiers to ensure traceability.
 
 | Prefix | Resource       | Example |
-|--------|----------------|---------|
+| ------ | -------------- | ------- |
 | FD     | Feed           | FD00001 |
 | JS     | Submission Job | JS00001 |
 | JV     | Validation Job | JV00001 |
@@ -311,7 +294,6 @@ The API uses structured identifiers to ensure traceability.
 
 Identifiers are generated using a database-backed counter.
 
----
 
 ## Job model
 
@@ -335,7 +317,6 @@ Jobs are executed via:
 POST /jobs/{job_id}/run
 ```
 
----
 
 ## Job lifecycle workflow
 
@@ -350,20 +331,19 @@ stateDiagram-v2
 ```
 
 | Status    | Description                        |
-|-----------|------------------------------------|
+| --------- | ---------------------------------- |
 | queued    | Job created and awaiting execution |
 | running   | ETL processing in progress         |
 | completed | Job finished successfully          |
 | failed    | Job encountered an error           |
 
----
 
 ## Data mapping strategy
 
 The system separates internal storage models from API representations.
 
 | Layer        | Field Name  |
-|--------------|-------------|
+| ------------ | ----------- |
 | Database     | `filename`  |
 | API Response | `file_name` |
 
@@ -373,7 +353,6 @@ This approach:
 - Allows internal schema flexibility
 - Decouples storage from presentation
 
----
 
 ## Deployment architecture (AWS)
 
@@ -389,7 +368,6 @@ The Partner Catalog API is deployed using a container-based architecture:
 The source code and documentation are maintained in the `writing-portfolio` repository.  
 AWS resources retain the application name `partner-catalog-api` (ECR, ECS, etc.).
 
----
 
 ## Reliability and health monitoring
 
@@ -398,7 +376,6 @@ AWS resources retain the application name `partner-catalog-api` (ECR, ECS, etc.)
 - Failed containers are automatically replaced
 - Database availability is managed by RDS
 
----
 
 ## Documentation and developer experience
 
@@ -406,7 +383,6 @@ AWS resources retain the application name `partner-catalog-api` (ECR, ECS, etc.)
 - MkDocs documentation hosted on GitHub Pages  
 - Consistent request and response formats
 
----
 
 ## Design decisions
 This section outlines the architectural decisions that define system structure, data flow, and separation of responsibilities.
@@ -417,7 +393,6 @@ This section outlines the architectural decisions that define system structure, 
 - Data layer handles persistence
 - Storage layers separate raw and processed data
 
----
 
 ### Raw vs processed data separation
 
@@ -426,7 +401,6 @@ This section outlines the architectural decisions that define system structure, 
 
 This enables reprocessing, auditing, and scalability.
 
----
 
 ### Controlled job execution
 
@@ -434,7 +408,6 @@ This enables reprocessing, auditing, and scalability.
 - Execution is synchronous (current state)
 - Designed for future async processing
 
----
 
 ### Cursor-based pagination
 
@@ -442,7 +415,6 @@ This enables reprocessing, auditing, and scalability.
 - Avoids offset performance issues
 - Scales efficiently with large datasets
 
----
 
 ### Cloud-native deployment
 
@@ -451,7 +423,6 @@ This enables reprocessing, auditing, and scalability.
 - Managed storage (S3 + RDS)
 - Load-balanced public access (ALB)
 
----
 
 ## Future enhancements
 
@@ -462,7 +433,6 @@ This enables reprocessing, auditing, and scalability.
 - Read replicas for database scaling
 - Infrastructure as Code (Terraform / CloudFormation)
 
----
 
 ## Project structure
 
@@ -492,7 +462,6 @@ app/
     *.md
 ```
 
----
 
 ## Related documentation
 

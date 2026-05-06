@@ -3,7 +3,6 @@
 Use this guide to investigate and fix a failed product feed during validation or ETL processing.
 Use this workflow during partner onboarding or when troubleshooting production ingestion issues.
 
----
 
 ## Overview
 
@@ -15,7 +14,6 @@ In this guide, you will:
 4. Fix data issues
 5. Re-run processing and verify results
 
----
 
 ## Prerequisites
 
@@ -39,7 +37,6 @@ In this guide, you will:
 
 - A previously uploaded feed (`feed_id`) or job (`job_id`)
 
----
 
 ## 1. Identify the failed feed
 
@@ -72,7 +69,6 @@ curl -X GET "http://localhost:8000/feeds/FD00009" \
 - `validation_status: failed`
 - `validation_message` describing the issue
 
----
 
 ## 2. Retrieve job details
 
@@ -101,7 +97,6 @@ curl -X GET "http://localhost:8000/jobs/JV00009" \
 - No records were inserted or updated
 - The issue likely affects the entire file (schema or required fields)
 
----
 
 ## 3. Diagnose the failure
 
@@ -127,7 +122,6 @@ Ensure every row includes:
 - `sku`
 - `product_name`
 
----
 
 ### Invalid data format
 
@@ -145,7 +139,6 @@ Ensure every row includes:
 
 Validate data types and normalize values before upload.
 
----
 
 ### Duplicate records
 
@@ -158,7 +151,7 @@ Validate data types and normalize values before upload.
 
 Deduplication uses:
 
-```
+```text
 (partner_name, sku)
 ```
 
@@ -167,7 +160,6 @@ Deduplication uses:
 - Use unique SKUs for new products
 - Confirm whether updates are expected
 
----
 
 ### Partial success
 
@@ -185,7 +177,6 @@ Deduplication uses:
 - Review skipped rows
 - Correct only invalid records
 
----
 
 ## 4. Fix the source file
 
@@ -207,7 +198,6 @@ TV-001,4K Smart TV,799.99
 TV-002,LED TV,599.99
 ```
 
----
 
 ## 5. Re-run ETL processing
 
@@ -229,7 +219,6 @@ curl -X POST "http://localhost:8000/feeds/upload" \
   -F "partner_name=Tronics"
 ```
 
----
 
 ## 6. Verify success
 
@@ -250,7 +239,6 @@ curl -X GET "http://localhost:8000/jobs/JV00009" \
 }
 ```
 
----
 
 ## Debugging checklist
 
@@ -263,7 +251,6 @@ Use this checklist when troubleshooting:
 - Compare processed vs skipped counts
 - Re-run the job after fixes
 
----
 
 ## How the system processes a feed
 
@@ -287,7 +274,6 @@ When a feed is processed:
 
    - Sets job and feed status to `failed` or `completed`
 
----
 
 ## Summary
 

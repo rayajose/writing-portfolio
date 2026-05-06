@@ -6,7 +6,6 @@ Use this API to upload product feeds, store raw data, and process them through t
 - Store and track raw feed data and metadata
 - Trigger and monitor validation and ETL processing workflows
 
----
 
 ## Authentication
 
@@ -18,7 +17,6 @@ Include the API key in each request:
 -H "x-api-key: YOUR_API_KEY"
 ```
 
----
 
 ## POST /feeds/upload
 
@@ -35,7 +33,6 @@ Use this endpoint to upload a CSV product feed, store the raw file in object sto
 
 > Note: Product data is **not ingested during upload**. Ingestion occurs during ETL processing.
 
----
 
 ## Request body (multipart/form-data)
 
@@ -44,7 +41,6 @@ Use this endpoint to upload a CSV product feed, store the raw file in object sto
 | `partner_name` | string | yes      | Name of the partner          |
 | `file`         | file   | yes      | CSV file containing products |
 
----
 
 ### Request and response
 
@@ -77,7 +73,6 @@ curl -X POST http://api.example.com/feeds/upload \
 </div>
 </div>
 
----
 
 ### Response fields
 
@@ -87,7 +82,6 @@ curl -X POST http://api.example.com/feeds/upload \
 | `status`  | string | Feed upload status  (`processing`) |
 | `job_id`  | string | Unique job identifier (JSxxxxx)    |
 
----
 
 ### Error responses
 
@@ -131,7 +125,6 @@ Returned when the request contains a `.csv` file missing the column headers `pro
 }
 ```
 
----
 
 ## GET /feeds/{feed_id}
 
@@ -145,7 +138,6 @@ Use this endpoint to retrieve metadata for a specific feed, including pipeline s
 - If the feed does not exist, a `404 Not Found` response is returned
 
 
----
 
 ### Path parameters
 
@@ -153,7 +145,6 @@ Use this endpoint to retrieve metadata for a specific feed, including pipeline s
 | --------- | ------ | -------- | -------------------------------- |
 | `feed_id` | string | Yes      | Unique feed identifier (FDxxxxx) |
 
----
 
 ### Request and response
 
@@ -194,7 +185,6 @@ curl -X 'GET' \
 </div>
 </div>
 
----
 
 ### Response fields
 | Field                | Type   | Description                                             |
@@ -211,7 +201,6 @@ curl -X 'GET' \
 | `raw_file_s3_key`    | string | S3 object key for raw feed                              |
 | `raw_file_bucket`    | string | S3 bucket storing raw file                              |
 
----
 
 ### Error responses
 
@@ -240,7 +229,6 @@ Returned when the request contains a `feed_id` not currently in system.
 * Product data becomes queryable only after validation and ETL processing complete successfully.
 * Feed IDs (`FDxxxxx`) and job IDs (`JSxxxxx`, `JVxxxxx`) follow fixed formats for traceability across the system.
 
----
 
 ## Related documentation
 

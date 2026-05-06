@@ -4,7 +4,6 @@ In this tutorial, you will upload a product feed, process it through the system,
 
 This tutorial is designed for first-time users. It introduces the core workflow and explains what happens at each step.
 
----
 
 ## What you’ll learn
 
@@ -14,36 +13,18 @@ By the end of this tutorial, you will understand:
 - How the ingestion pipeline works
 - How product data becomes available in the API
 
----
 
 ## Before you begin
 
 You need:
 
-- Base URL:
+| Requirement       | Description                                                         |
+| ----------------- | ------------------------------------------------------------------- |
+| Base URL (local)  | `http://localhost:8000`                                             |
+| Base URL (AWS)    | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
+| API key           | `x-api-key: demo-secret-key`                                        |
+| Valid .`csv` file | see  [CSV feed file specification](../sop/csv-feed-file-spec.md)    |
 
-  ```bash
-  http://localhost:8000
-  ```
-
-  or
-
-  ```bash
-  http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
-  ```
-
-- API key:
-
-  ```bash
-  x-api-key: demo-secret-key
-  ```
-
-- A CSV file with at least:
-
-  - `sku`
-  - `product_name`
-
----
 
 ## Step 1: Understand what a feed is
 
@@ -56,7 +37,6 @@ Each row represents a product. At minimum, the system requires:
 
 When you upload a feed, the system does not immediately make products available. Instead, it stores the raw file and prepares it for processing.
 
----
 
 ## Step 2: Upload the feed
 
@@ -90,7 +70,6 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 
 At this point, the data is not yet available for querying.
 
----
 
 ## Step 3: Run ETL processing
 
@@ -123,7 +102,6 @@ During this step, the system:
 
 Only after this step completes can you query product data.
 
----
 
 ## Step 4: Retrieve products
 
@@ -156,7 +134,6 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 - Products are now available in the catalog
 - The ingestion pipeline completed successfully
 
----
 
 ## How the system processes your data
 
@@ -178,7 +155,6 @@ The ingestion workflow follows four stages:
 
    - Inserts or updates products in the database
 
----
 
 ## What to try next
 
@@ -188,7 +164,6 @@ Now that you’ve completed your first ingestion:
 - Upload a larger or more complex feed
 - Introduce invalid data to see how validation behaves
 
----
 
 ## Next steps
 

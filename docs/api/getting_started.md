@@ -2,28 +2,16 @@
 
 Use the Partner Catalog API to upload product feeds, process them through an ETL pipeline, and query normalized product data.
 
----
 
 ## Base URLs
 
-Use one of the following base URLs:
 
-**Local**
+| Target     | URL                                                                                                                                                                         |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| local      | `http://localhost:8000`                                                                                                                                                     |
+| AWS        | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com`                                                                                                         |
+| Swagger UI | <a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank">http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs</a> |
 
-http://localhost:8000
-
-**Production**
-
-http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
-
-**API explorer (Swagger UI)**
-
-<p>
-    <a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank">http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs</a>
-</p>
-
-
----
 
 ## Authenticate requests
 
@@ -35,7 +23,6 @@ x-api-key: demo-secret-key
 
 Requests without a valid API key return `401` or `403`.
 
----
 
 ## Quickstart
 
@@ -50,7 +37,6 @@ curl -X POST "http://localhost:8000/feeds/upload" \
   -F "partner_name=Tronics"
 ```
 
----
 
 ### 2. Run ETL processing
 
@@ -59,7 +45,6 @@ curl -X POST "http://localhost:8000/jobs/JV00009/run" \
   -H "x-api-key: demo-secret-key"
 ```
 
----
 
 ### 3. Query products
 
@@ -68,7 +53,6 @@ curl -X GET "http://localhost:8000/products?limit=5" \
   -H "x-api-key: demo-secret-key"
 ```
 
----
 
 ## Understand the response
 
@@ -97,7 +81,6 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 - `count`: Total number of results returned
 - `items`: List of product records
 
----
 
 ## Understand the workflow
 
@@ -109,7 +92,6 @@ Typical workflow:
 Upload feed → Validate → Transform → Load → Query products
 ```
 
----
 
 ## Ingestion flow
 
@@ -125,7 +107,6 @@ flowchart LR
     G --> H["Debug workflow"]
 ```
 
----
 
 ## Use query parameters
 Use query parameters to filter, sort, and paginate results returned by the API.
@@ -133,7 +114,7 @@ Use query parameters to filter, sort, and paginate results returned by the API.
 ### Pagination
 
 | Parameter | Description                               |
-|-----------|-------------------------------------------|
+| --------- | ----------------------------------------- |
 | `limit`   | Number of results (default: 10, max: 100) |
 | `cursor`  | Cursor for the next page                  |
 
@@ -141,7 +122,7 @@ Use query parameters to filter, sort, and paginate results returned by the API.
 ### Filtering
 
 | Parameter      | Description            |
-|----------------|------------------------|
+| -------------- | ---------------------- |
 | `partner_name` | Filter by partner      |
 | `feed_id`      | Filter by feed         |
 | `brand`        | Filter by brand        |
@@ -152,18 +133,17 @@ Use query parameters to filter, sort, and paginate results returned by the API.
 ### Sorting
 
 | Parameter | Description                                              |
-|-----------|----------------------------------------------------------|
+| --------- | -------------------------------------------------------- |
 | `sort_by` | Field to sort by (`price`, `created_at`, `product_name`) |
 | `order`   | `asc` or `desc`                                          |
 
----
 
 ## Handle errors
 
 The API uses standard HTTP status codes:
 
 | Status | Meaning            |
-|--------|--------------------|
+| ------ | ------------------ |
 | 200    | Request successful |
 | 400    | Invalid request    |
 | 401    | Missing API key    |
@@ -179,7 +159,6 @@ The API uses standard HTTP status codes:
 }
 ```
 
----
 
 ## Next steps
 

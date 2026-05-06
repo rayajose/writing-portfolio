@@ -4,14 +4,13 @@
 
 Uploaded files are stored as raw input and processed by the ETL pipeline to create or update product records.
 
----
 
 ## File requirements
 
 CSV files must meet the following requirements:
 
 | Requirement     | Description                                             |
-|-----------------|---------------------------------------------------------|
+| --------------- | ------------------------------------------------------- |
 | File format     | CSV                                                     |
 | Encoding        | UTF-8 recommended                                       |
 | Header row      | Required                                                |
@@ -20,27 +19,25 @@ CSV files must meet the following requirements:
 | Content type    | `text/csv`, `text/plain`, or `application/vnd.ms-excel` |
 | Required fields | `sku`, `product_name`                                   |
 
----
 
 ## Required columns
 
 The following columns are required for each product record:
 
 | Column         | Type   | Required | Description                                |
-|----------------|--------|----------|--------------------------------------------|
+| -------------- | ------ | -------- | ------------------------------------------ |
 | `sku`          | string | Yes      | Partner-provided unique product identifier |
 | `product_name` | string | Yes      | Display name of the product                |
 
 Rows missing `sku` or `product_name` are skipped during ETL processing.
 
----
 
 ## Recommended columns
 
 The following columns are recommended for complete product records:
 
 | Column         | Type    | Required | Description                                     |
-|----------------|---------|----------|-------------------------------------------------|
+| -------------- | ------- | -------- | ----------------------------------------------- |
 | `brand`        | string  | No       | Product brand or manufacturer                   |
 | `category`     | string  | No       | Product category                                |
 | `price`        | decimal | No       | Product price (numeric, no currency symbol)     |
@@ -48,7 +45,6 @@ The following columns are recommended for complete product records:
 | `availability` | string  | No       | Product availability status                     |
 | `description`  | string  | No       | Product description                             |
 
----
 
 ## Example CSV
 
@@ -59,7 +55,6 @@ SKU-1002,USB-C Cable,Anker,Electronics,12.99,USD,in_stock,6-foot USB-C charging 
 SKU-1003,Laptop Stand,Generic,Office Accessories,39.99,USD,out_of_stock,Adjustable aluminum laptop stand
 ```
 
----
 
 ## What happens
 
@@ -69,14 +64,13 @@ SKU-1003,Laptop Stand,Generic,Office Accessories,39.99,USD,out_of_stock,Adjustab
 - Process data during ETL  
 - Insert, update, or skip product records  
 
----
 
 ## Validation
 
 During ETL processing, the system validates each row.
 
 | Condition                                      | Result               |
-|------------------------------------------------|----------------------|
+| ---------------------------------------------- | -------------------- |
 | Valid row with new `sku`                       | Product is inserted  |
 | Valid row with existing `sku` and changed data | Product is updated   |
 | Valid row with existing `sku` and no changes   | Product is unchanged |
@@ -84,7 +78,6 @@ During ETL processing, the system validates each row.
 | Row missing `product_name`                     | Row is skipped       |
 | Malformed CSV structure                        | Validation may fail  |
 
----
 
 ## Product uniqueness
 
@@ -96,7 +89,6 @@ partner_name + sku
 This constraint prevents duplicate product ingestion for the same partner.
 This also means two different partners may use the same SKU without conflict.
 
----
 
 ## Formatting guidelines
 
@@ -110,28 +102,6 @@ Follow these guidelines when preparing a CSV file:
 * Do not include currency symbols in the `price` field
 * Use consistent availability values, such as `in_stock` or `out_of_stock`
 
----
+## Related documentation
 
-## Upload example
-
-```bash
-curl -X POST "http://api.example.com/feeds/upload" \
-  -H "x-api-key: <api-key>" \
-  -F "partner_name=Tronics" \
-  -F "file=@electronics_catalog.csv"
-```
-
----
-
-## Successful upload response
-
-```json
-{
-  "feed_id": "FD00010",
-  "partner_name": "Tronics",
-  "file_name": "electronics_catalog.csv",
-  "content_type": "text/csv",
-  "status": "uploaded",
-  "validation_job_id": "JV00010"
-}
-```
+- [Feeds API](../api/feeds.md)

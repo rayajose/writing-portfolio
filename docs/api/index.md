@@ -13,7 +13,6 @@ On the backend, the system provides full visibility into the ingestion pipeline,
 
 The result is a reliable, scalable interface for managing partner product data and deriving business insights from catalog and sales activity.
 
----
 
 ## Start here
 Choose a path based on what you want to do:
@@ -24,7 +23,6 @@ Set up authentication and make your first request:
 
 - [Get started](getting_started.md)
 
----
 
 ### Learn the system
 
@@ -32,7 +30,6 @@ Follow a guided walkthrough of the ingestion workflow:
 
 - [Your first feed ingestion](../tutorials/first-feed.md)
 
----
 
 ### Complete a task
 
@@ -41,7 +38,6 @@ Use step-by-step guides for common workflows:
 - [Ingest a product feed end-to-End](ingest-product-feed.md)
 - [Debug a failed feed](debug-product-feed.md)
 
----
 
 ### Explore the API
 
@@ -49,7 +45,6 @@ Look up endpoints, parameters, and response models:
 
 - [API Reference](api-reference.md)
 
----
 
 ### Understand the system
 
@@ -58,7 +53,6 @@ Learn how the platform is designed and how data flows:
 - [Architecture](architecture.md)
 - [Workflows](workflows.md)
 
----
 
 ## Platform overview
 
@@ -74,7 +68,6 @@ Upload feed → Validate → Transform → Load → Query products
 - **Load**: Records are inserted or updated in the database
 - **Query**: Products are accessed through the API
 
----
 
 ## Core concepts
 This section explains the fundamental concepts behind data ingestion, processing, and API interaction.
@@ -106,7 +99,6 @@ This section explains the fundamental concepts behind data ingestion, processing
 - Filtering and sorting
 - Consistent JSON response models
 
----
 
 ## Documentation overview
 
@@ -117,7 +109,6 @@ This documentation includes the following:
 - **API reference** for endpoint details
 - **Concepts** for architecture and system behavior
 
----
 
 ## About this project
 
@@ -131,7 +122,6 @@ It includes:
 - Cloud deployment (AWS, Docker)
 - Documentation architecture using MkDocs
 
----
 
 ## Additional resources
 - <a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank">Swagger UI</a>

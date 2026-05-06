@@ -2,13 +2,11 @@
 
 Use this API to retrieve job status and run validation jobs for ETL processing.
 
----
 
 - Retrieve job details and track processing status
 - Trigger validation jobs for uploaded feeds
 - Monitor ETL execution and results
 
----
 
 ## Authentication
 
@@ -20,8 +18,6 @@ Include the API key in each request:
 -H "x-api-key: YOUR_API_KEY"
 ```
 
-
----
 ##  GET /jobs/{job_id}
 
 Use this endpoint to retrieve the status and metadata for a job.
@@ -32,7 +28,6 @@ Use this endpoint to retrieve the status and metadata for a job.
 - Returns job metadata including type, status, associated `feed_id`, and timestamps
 - If the job has completed, includes the ETL result summary (for validation jobs)
 
----
 
 ### Path parameters
 
@@ -40,7 +35,6 @@ Use this endpoint to retrieve the status and metadata for a job.
 | -------- | ------ | -------- | ------------------------------------------ |
 | `job_id` | string | Yes      | Unique job identifier (JSxxxxx or JVxxxxx) |
 
----
 
 ### Request and response
 
@@ -78,10 +72,6 @@ curl -X 'GET' \
 </div>
 
 
-
-
----
-
 ### Response fields
 
 | Field      | Type   | Description                                             |
@@ -91,7 +81,6 @@ curl -X 'GET' \
 | `status`   | string | Job status (`queued`, `running`, `completed`, `failed`) |
 | `job_type` | string | UTC timestamp when job was created                      |
 
----
 
 ### Error responses
 
@@ -117,7 +106,6 @@ Returned when the request contains a `job_id` not currently in system.
 }
 ```
 
----
 
 ## POST /jobs/{job_id}/run
 
@@ -133,7 +121,6 @@ Use this endpoint to start a validation job and trigger ETL processing.
   - Detects changes and avoids unnecessary updates
 - Updates job status and message with ETL results summary
 
----
 
 ### Path parameters
 
@@ -141,7 +128,6 @@ Use this endpoint to start a validation job and trigger ETL processing.
 | -------- | ------ | -------- | ------------------------------- |
 | `job_id` | string | Yes      | Unique job identifier (JVxxxxx) |
 
----
 
 ### Request and response
 
@@ -175,10 +161,6 @@ curl -X POST http://api.example.com/jobs/JV00001/run \
 </div>
 
 
-
-
----
-
 ### Response fields
 
 | Field    | Type   | Description                                             |
@@ -186,7 +168,7 @@ curl -X POST http://api.example.com/jobs/JV00001/run \
 | `job_id` | string | Unique job identifier (JVxxxxx)                         |
 | `status` | string | Job status (`queued`, `running`, `completed`, `failed`) |
 
----
+
 ### Error responses
 
 #### 401 Unauthorized
@@ -221,7 +203,6 @@ Returned when the request contains a `job_id` not currently in system.
 - Job processing is asynchronous. Jobs move through `queued` → `running` → `completed` or `failed`, and status must be polled via `GET /jobs/{job_id}`.
 - Only validation jobs (`JVxxxxx`) can be executed via the API. Each job is tied to a single `feed_id` and is idempotent at the feed level (re-running processes the same feed data).
 
----
 
 ## Related documentation
 

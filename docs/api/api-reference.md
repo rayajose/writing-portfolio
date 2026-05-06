@@ -2,7 +2,6 @@
 
 Use this section to explore API endpoints, request formats, and response models.
 
----
 
 ## Feeds
 
@@ -10,7 +9,6 @@ Upload and manage partner product feeds. Feeds are ingested, validated, and trac
 
 → [Feeds API](feeds.md)
 
----
 
 ## Jobs
 
@@ -18,7 +16,6 @@ Monitor background processing jobs for feed ingestion and validation. Jobs expos
 
 → [Jobs API](jobs.md)
 
----
 
 ## Products
 
@@ -26,7 +23,6 @@ Query the centralized product catalog using filtering, sorting, and cursor-based
 
 → [Products API](products.md)
 
----
 
 ## Health
 
@@ -34,7 +30,6 @@ Check the operational status of the API and underlying services. Used for monito
 
 → [Health API](health.md)
 
----
 
 ## Analytics
 

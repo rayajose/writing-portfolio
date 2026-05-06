@@ -7,7 +7,6 @@ The API is deployed using Docker and AWS (ECS, RDS, S3), while documentation is 
 
 For visual confirmation of the deployed environment, see [Screenshots](screenshots.md).
 
----
 
 ## Architecture overview
 
@@ -22,7 +21,6 @@ The Partner Catalog API is deployed using the following AWS services:
 
 The source code and documentation are maintained in the `writing-portfolio` repository. The deployed API continues to use AWS resource names based on the application name, `partner-catalog-api`.
 
----
 
 ## Container configuration
 
@@ -38,7 +36,6 @@ The source code and documentation are maintained in the `writing-portfolio` repo
 8000
 ```
 
----
 
 ## ECS service configuration
 
@@ -47,7 +44,6 @@ The source code and documentation are maintained in the `writing-portfolio` repo
 - Deployment strategy: Rolling update
 - Load balancing: Enabled (via ALB target group)
 
----
 
 ## Networking
 
@@ -67,7 +63,6 @@ sg-00778f0b6fabbf1af
 - Allows outbound traffic to RDS and external services
 - Used as the trusted source for database access
 
----
 
 ## Load balancer (ALB)
 
@@ -87,7 +82,6 @@ http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
 - Port: 8000
 - Health check path: `/health`
 
----
 
 ## Database (RDS PostgreSQL)
 
@@ -123,7 +117,6 @@ sg-00778f0b6fabbf1af
 - Used by the ETL process to extract and transform data
 - Enables reprocessing and auditability
 
----
 
 ## Environment variables
 
@@ -149,8 +142,6 @@ S3_RAW_BUCKET=partner-catalog-raw-rayj
 - Can be externalized for different environments (dev, staging, prod)
 
 
----
-
 ## S3 and ETL integration
 
 - Raw feed files are stored in Amazon S3
@@ -161,8 +152,6 @@ S3_RAW_BUCKET=partner-catalog-raw-rayj
 
 > Note: IAM permissions for S3 access are required in a production setup (not fully configured in this demo).
 
-
----
 
 ## Deployment workflow
 
@@ -197,7 +186,6 @@ Use the ECS service to deploy the updated image:
 - Update the ECS service
 - Enable **Force new deployment**
 
----
 
 ## Start / Stop workflow (Cost control)
 This workflow explains how to scale down ECS services and pause database resources to reduce AWS costs when the system is not in use.
@@ -209,7 +197,6 @@ This workflow explains how to scale down ECS services and pause database resourc
 3. Deploy
 4. RDS → Actions → **Stop temporarily**
 
----
 
 ### Start the application
 
@@ -219,7 +206,6 @@ This workflow explains how to scale down ECS services and pause database resourc
 4. Set **Desired tasks = 1**
 5. Deploy
 
----
 
 ## Health check behavior
 
@@ -227,7 +213,6 @@ This workflow explains how to scale down ECS services and pause database resourc
 - Container must start successfully and establish database connectivity
 - Failed health checks result in task replacement by ECS
 
----
 
 ## Troubleshooting
 Use this section to identify, diagnose, and fix common issues across the application, infrastructure, and data pipeline.
@@ -246,7 +231,6 @@ Use this section to identify, diagnose, and fix common issues across the applica
 
 - Verify image tag and push to ECR
 
----
 
 ### Container exits immediately
 
@@ -263,7 +247,6 @@ Use this section to identify, diagnose, and fix common issues across the applica
 - Verify environment variables
 - Confirm RDS accessibility from ECS
 
----
 
 ### Database connection timeout
 
@@ -281,7 +264,6 @@ psycopg.errors.ConnectionTimeout
 
 - Add ECS security group to RDS inbound rules (port 5432)
 
----
 
 ## Cost considerations
 
@@ -299,7 +281,6 @@ To reduce cost:
 
 AWS resources retain the application name `partner-catalog-api` (ECR, ECS, etc.).
 
----
 
 ## Operational notes
 
@@ -318,6 +299,5 @@ AWS resources retain the application name `partner-catalog-api` (ECR, ECS, etc.)
   - Re-running the same feed does not create duplicate updates
   - Ensures efficient reprocessing and consistency
 
----
 
 For deployment evidence, see [Screenshots](screenshots.md).

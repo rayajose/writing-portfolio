@@ -8,7 +8,6 @@ Use this API to verify the operational status of the system and its core depende
 
 > Note: This endpoint is lightweight and intended for frequent use by load balancers and monitoring systems.
 
----
 
 ## GET /health
 
@@ -20,7 +19,6 @@ Use this endpoint to retrieve the current health status of the API and its datab
 - If successful, the connection is immediately closed and the system reports a healthy status  
 - If the connection fails, the system returns an error status indicating database unavailability 
 
----
 
 ### Request and response
 
@@ -65,7 +63,6 @@ Unhealthy
 </div>
 </div>
 
----
 
 ### Response fields
 
@@ -75,7 +72,6 @@ Unhealthy
 | `database` | string | Database connectivity status (`connected` or `unreachable`) |
 
 
----
 
 ### Error responses
 
@@ -92,7 +88,6 @@ Instead, failures are reflected in the response body:
 - Intended for use by monitoring tools, uptime checks, and load balancers
 - Does not expose internal error details for security reasons
 
----
 
 ## Related documentation
 

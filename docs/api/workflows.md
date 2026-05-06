@@ -10,13 +10,11 @@ Use this guide to upload a partner feed, run ETL processing, and retrieve produc
 - Store products in the database  
 - Retrieve products through the API  
 
----
 
 ## Upload and process a feed
 
 This workflow shows the full ingestion pipeline from raw upload to queryable product data.
 
----
 
 ### Step 1: Upload a feed
 
@@ -27,7 +25,6 @@ curl -X POST "http://api.example.com/feeds/upload" \
   -F "file=@sample_catalog.csv"
 ```
 
----
 
 ### Example response
 
@@ -39,7 +36,6 @@ curl -X POST "http://api.example.com/feeds/upload" \
 }
 ```
 
----
 
 ### What happens
 
@@ -51,7 +47,6 @@ curl -X POST "http://api.example.com/feeds/upload" \
 
 > Product data is **not ingested at this stage**
 
----
 
 ### Step 2: Check submission job
 
@@ -60,7 +55,6 @@ curl -H "x-api-key: demo-secret-key" \
   "http://api.example.com/jobs/JS00001"
 ```
 
----
 
 ### Step 3: Check validation job (queued)
 
@@ -69,7 +63,6 @@ curl -H "x-api-key: demo-secret-key" \
   "http://api.example.com/jobs/JV00001"
 ```
 
----
 
 ### Example response
 
@@ -83,7 +76,6 @@ curl -H "x-api-key: demo-secret-key" \
 }
 ```
 
----
 
 ### Step 4: Run ETL processing
 
@@ -92,7 +84,6 @@ curl -X POST "http://api.example.com/jobs/JV00001/run" \
   -H "x-api-key: demo-secret-key"
 ```
 
----
 
 ### What happens
 
@@ -104,7 +95,6 @@ curl -X POST "http://api.example.com/jobs/JV00001/run" \
 - Unchanged products are skipped
 - Job status and message are updated with ETL results
 
----
 
 ### Step 5: Verify feed processing
 
@@ -112,8 +102,6 @@ curl -X POST "http://api.example.com/jobs/JV00001/run" \
 curl -H "x-api-key: demo-secret-key" \
   "http://api.example.com/feeds/FD00001"
 ```
-
----
 
 ### Example response
 
@@ -133,7 +121,6 @@ curl -H "x-api-key: demo-secret-key" \
 }
 ```
 
----
 
 ### Step 6: Query products
 
@@ -142,7 +129,6 @@ curl -H "x-api-key: demo-secret-key" \
   "http://api.example.com/products?limit=5"
 ```
 
----
 
 ### Response
 
@@ -166,7 +152,6 @@ curl -H "x-api-key: demo-secret-key" \
 }
 ```
 
----
 
 ## Reprocessing example (idempotency)
 
@@ -192,7 +177,6 @@ Products processed: 13. Inserted: 0. Updated: 1. Unchanged: 12. Skipped: 0.
 
 > This behavior ensures efficient processing and avoids unnecessary database writes.
 
----
 
 ## Workflow summary
 
@@ -212,8 +196,6 @@ Query
   → Products become available via /products
 ```
 
----
-
 ## Key points
 
 - Upload and ingestion are **separate steps**
@@ -230,15 +212,12 @@ Query
   - `JVxxxxx` → Validation Job
   - `PRxxxxx` → Product
 
----
-
 ## Additional details
 
 - ETL processing is currently synchronous
 - Designed to support asynchronous execution in the future
 - Validation includes both structure and transformation readiness
 
----
 
 ## Related documentation
 

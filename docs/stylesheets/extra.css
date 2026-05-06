@@ -24,6 +24,11 @@
   margin-top: 2rem;
 }
 
+.md-typeset h2 {
+  border-bottom: 1px solid #9c9c9c;
+}
+
+
 /* H3 = still strong, slightly less emphasis */
 .md-typeset h3 {
   color: var(--md-default-fg-color);
@@ -74,4 +79,38 @@
 /* table text size */
 .md-typeset table:not([class]) {
   font-size: 0.72rem;
+}
+
+
+/* Darker horizontal rules */
+.md-typeset hr {
+  border-bottom: 1px solid #9a9a9a;
+}
+
+
+/* Tables: rounded corners + darker grid lines */
+.md-typeset table:not([class]) {
+  border: 1px solid #b0b0b0;
+  border-radius: 10px;
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Header cells */
+.md-typeset table:not([class]) th {
+  border-bottom: 1px solid #9a9a9a;
+  border-right: 1px solid #b0b0b0;
+}
+
+/* Body cells */
+.md-typeset table:not([class]) td {
+  border-top: 1px solid #c0c0c0;
+  border-right: 1px solid #b0b0b0;
+}
+
+/* Remove extra right border on last column */
+.md-typeset table:not([class]) th:last-child,
+.md-typeset table:not([class]) td:last-child {
+  border-right: none;
 }

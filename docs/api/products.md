@@ -11,7 +11,6 @@ Use this API to retrieve product data from partner catalog feeds.
 > Product data becomes available only after ETL processing completes.
 > See [Workflows](workflows.md) for the full ingestion process.
 
----
 
 ## Authentication
 
@@ -23,7 +22,6 @@ Include the API key in each request:
 -H "x-api-key: YOUR_API_KEY"
 ```
 
----
 
 ## GET /products
 
@@ -37,7 +35,6 @@ Supports filtering, sorting, and cursor-based pagination.
 - Apply filters, sorting, and pagination  
 - Return results with an optional `next_cursor`  
 
----
 
 ### Query parameters
 
@@ -54,7 +51,6 @@ Supports filtering, sorting, and cursor-based pagination.
 | `sort_by`      | string | No       | Field to sort by (created_at, price, product_name, brand, category)           |
 | `order`        | string | No       | Sort direction (`asc` [ascending], `desc` [decending], default: `desc`)       |
 
----
 
 #### Sorting examples
 
@@ -70,7 +66,6 @@ GET /products?limit=5
 GET /products?limit=5&cursor=PR00010
 ```
 
----
 
 ### Request and response
 
@@ -118,7 +113,6 @@ curl -X 'GET' \
 </div>
 </div>
 
----
 
 ### Response fields
 
@@ -128,7 +122,6 @@ curl -X 'GET' \
 | `items`       | array  | List of product objects                      |
 | `next_cursor` | string | Cursor for next page (if more results exist) |
 
----
 
 ### Error responses
 
@@ -164,13 +157,11 @@ Returned when the request contains a `sort_by` value other than `product_id`.
 }
 ```
 
----
 
 ## GET /products/{product_id}
 
 Use this endpoint to retrieve a single product record by `product_id` from uploaded partner feeds.
 
----
 
 ### What happens
 
@@ -184,8 +175,6 @@ Use this endpoint to retrieve a single product record by `product_id` from uploa
 | ------------ | ------ | -------- | --------------------------------- |
 | `product_id` | string | Yes      | Unique identifier for the product |
 
-
----
 
 ### Request and response
 
@@ -227,7 +216,6 @@ curl -X 'GET' \
 </div>
 </div>
 
----
 
 ### Response fields
 
@@ -246,7 +234,6 @@ curl -X 'GET' \
 | `availability` | string | Availability status (e.g., in_stock) (may be null) |
 | `created_at`   | string | UTC timestamp when the product was created         |
 
----
 
 ### Error responses
 
@@ -268,7 +255,6 @@ Returned when the request contains a `product_id` not currently in the system.
 }
 ```
 
----
 
 ## GET /products/by-feed/{feed_id}
 
@@ -288,7 +274,6 @@ Returns all products associated with a specific feed.
 | --------- | ------ | -------- | ------------------------------ |
 | `feed_id` | string | Yes      | Unique identifier for the feed |
 
----
 
 ### Request and response
 
@@ -332,7 +317,6 @@ curl -X 'GET' \
 </div>
 </div>
 
----
 
 ### Response fields
 
@@ -351,7 +335,6 @@ If the specified `feed_id` has no associated products or not valid, the response
 }
 ```
 
----
 
 ### Error responses
 
@@ -364,7 +347,6 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
----
 
 ## Additional details
 
@@ -375,7 +357,6 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 - Results are ordered by `created_at` in descending order by default unless overridden
 - Cursor-based pagination uses `product_id` for efficient traversal of large datasets
 
----
 
 ## Related documentation
 

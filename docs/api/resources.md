@@ -2,7 +2,6 @@
 
 Use this page to understand core resources and supporting concepts in the Partner Catalog API.
 
----
 
 ## Feed
 
@@ -22,14 +21,12 @@ A feed represents a product data file submitted by a partner for ingestion.
 - `raw_file_s3_key` — S3 object key for the raw feed file
 - `raw_file_bucket` — S3 bucket storing the raw feed
 
----
 
 ### Additional details
 
 - Feed status reflects upload state only
 - Processing state is tracked via the associated validation job
 
----
 
 ## Job
 
@@ -46,27 +43,24 @@ Jobs provide visibility into and control over the ingestion pipeline.
 - `created_at` — timestamp when the job was created
 - `message` — status or result message
 
----
 
 ### Job types
 
-| Type       | Description                                   |
-|------------|-----------------------------------------------|
-| submission | Feed upload processing                        |
-| validation | ETL processing (Validate → Transform → Load)  |
+| Type       | Description                                  |
+| ---------- | -------------------------------------------- |
+| submission | Feed upload processing                       |
+| validation | ETL processing (Validate → Transform → Load) |
 
----
 
 ### Status values
 
 | Status    | Description                        |
-|-----------|------------------------------------|
+| --------- | ---------------------------------- |
 | queued    | Job created and awaiting execution |
 | running   | ETL processing in progress         |
 | completed | Job completed successfully         |
 | failed    | Job encountered an error           |
 
----
 
 ## Product
 
@@ -89,20 +83,18 @@ Products are created during ETL processing and stored for querying.
 - `availability` — availability status (e.g., in_stock)
 - `created_at` — timestamp when product was ingested
 
----
 
 ## Identifier format
 
 All resources use structured identifiers for consistency and traceability:
 
 | Prefix | Resource       | Example |
-|--------|----------------|---------|
+| ------ | -------------- | ------- |
 | FD     | Feed           | FD00001 |
 | JS     | Submission Job | JS00001 |
 | JV     | Validation Job | JV00001 |
 | PR     | Product        | PR00001 |
 
----
 
 ## Health endpoint
 
@@ -125,7 +117,6 @@ Returns the operational status of the API.
 - Check API availability  
 - Verify database connectivity  
 
----
 
 ## Additional details
 

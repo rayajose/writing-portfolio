@@ -4,7 +4,6 @@ This guide shows how to upload, process, and verify a partner product feed using
 
 Use this workflow during partner onboarding or when testing feed ingestion.
 
----
 
 ## Overview
 
@@ -14,7 +13,6 @@ In this guide, you will:
 2. Review ingestion results
 3. Verify products in the catalog
 
----
 
 ## Prerequisites
 
@@ -26,11 +24,8 @@ In this guide, you will:
 | Valid .`csv` file | see  [CSV feed file specification](../sop/csv-feed-file-spec.md)    |
 
 
----
 
-## Steps
-
-### 1. Upload a product feed
+## 1. Upload a product feed
 
 To upload a product feed, do the following:
 
@@ -56,12 +51,10 @@ curl -X POST "http://api.example.com/feeds/upload" \
 }
 ```
 
----
-
 ## 2. Review processing results
 Run the GET /feeds/{feed_id} endpoint using the `feed_id` captured in previous step, FD00021.
 
-**Example request**
+### Example request
 
 ```bash
 curl --request GET \
@@ -69,7 +62,7 @@ curl --request GET \
   --header 'x-api-key: demo-secret-key'
 ```
 
-**Example response**
+### Example response
 
 ```json
 {
@@ -88,6 +81,7 @@ curl --request GET \
 ```
 
 ### Interpret the results
+Review the following values from the `validation_message` field in the response.
 
 - **Processed**: Total rows evaluated
 - **Inserted**: New products created
@@ -95,7 +89,6 @@ curl --request GET \
 - **Unchanged**: Existing products with no changes
 - **Skipped**: Invalid rows or rows missing required fields
 
----
 
 ## 3. Verify Products
 Run the GET /products endpoint using the `feed_id` from step 1 (FD00021) as a query parameter.
@@ -155,7 +148,6 @@ Use query parameters to refine results:
 - `category`
 - `availability`
 
----
 
 ## Related documentation
 

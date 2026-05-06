@@ -10,7 +10,6 @@ This client provides reusable methods for uploading feeds, checking jobs, and re
 - Support filtering, sorting, and pagination  
 - Raise exceptions for failed requests  
 
----
 
 ## Example files
 
@@ -21,7 +20,6 @@ The client and example scripts are available in the repository:
 
 These files demonstrate how to interact with the API using an SDK-style approach.
 
----
 
 ## Authentication
 
@@ -33,7 +31,6 @@ headers = {
 }
 ```
 
----
 
 ## Install dependencies
 
@@ -41,7 +38,6 @@ headers = {
 pip install requests
 ```
 
----
 
 ## Example client
 
@@ -119,7 +115,6 @@ class PartnerCatalogClient:
         return response.json()
 ```
 
----
 
 ## Usage example
 
@@ -137,7 +132,6 @@ response = client.upload_feed(
 print(response)
 ```
 
----
 
 ## Check job status
 
@@ -146,7 +140,6 @@ job = client.get_job("JS00001")
 print(job)
 ```
 
----
 
 ## Retrieve products
 
@@ -155,7 +148,6 @@ products = client.get_products(limit=5)
 print(products)
 ```
 
----
 
 ## Filter and sort products
 
@@ -171,7 +163,6 @@ products = client.get_products(
 print(products)
 ```
 
----
 
 ## Cursor-based pagination
 Use cursor-based pagination to retrieve large result sets.
@@ -190,7 +181,6 @@ if next_cursor:
     print(second_page)
 ```
 
----
 
 ## Error handling
 
@@ -205,7 +195,6 @@ except requests.exceptions.HTTPError as error:
     print(f"Request failed: {error}")
 ```
 
----
 ## Run the example locally
 
 Start the API:
@@ -227,7 +216,6 @@ python example_usage.py
 ```
 The script will retrieve product data from the API and print the response.
 
----
 
 ## Additional details
 

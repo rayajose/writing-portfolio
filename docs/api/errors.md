@@ -2,7 +2,6 @@
 
 Use this page to understand how the Partner Catalog API returns errors.
 
----
 
 ## Error format
 
@@ -17,10 +16,9 @@ The API primarily uses FastAPI’s standard error response format.
 ### Fields
 
 | Field  | Type   | Description              |
-|--------|--------|--------------------------|
+| ------ | ------ | ------------------------ |
 | detail | string | Description of the error |
 
----
 
 ## Common error scenarios
 
@@ -32,12 +30,11 @@ Errors may occur in the following situations:
 - ETL processing failure
 - Database or infrastructure issues
 
----
 
 ## Status codes
 
 | Status | Meaning                                                |
-|--------|--------------------------------------------------------|
+| ------ | ------------------------------------------------------ |
 | 200    | Request completed successfully                         |
 | 201    | Resource created successfully                          |
 | 400    | Bad request (invalid input or business rule violation) |
@@ -47,7 +44,6 @@ Errors may occur in the following situations:
 | 422    | Request validation failed                              |
 | 500    | Internal server error                                  |
 
----
 
 ## Authentication errors
 
@@ -65,7 +61,6 @@ Returned when the API key is missing.
 }
 ```
 
----
 
 ## Resource errors
 These errors occur when a requested resource cannot be found or does not exist in the system.
@@ -97,7 +92,6 @@ Returned when a requested resource does not exist.
 }
 ```
 
----
 
 ## Validation errors
 These errors occur when request data fails validation or does not meet required input rules.
@@ -129,7 +123,6 @@ Returned when the request is syntactically valid but fails business rules.
 }
 ```
 
----
 
 ### 422 Unprocessable Entity
 Returned when request data fails validation (handled by FastAPI).
@@ -148,7 +141,6 @@ Returned when request data fails validation (handled by FastAPI).
 }
 ```
 
----
 
 ## Job execution errors
 These errors occur when job execution requests are invalid or when ETL processing fails.
@@ -165,7 +157,6 @@ Returned when attempting to execute an unsupported job type.
 }
 ```
 
----
 
 ### 500 Internal Server Error (ETL Failure)
 Returned when ETL processing fails during job execution.
@@ -178,7 +169,6 @@ Returned when ETL processing fails during job execution.
 }
 ```
 
----
 
 ## Infrastructure errors
 These errors occur due to system-level failures affecting application availability or data access.
@@ -201,7 +191,6 @@ Returned when an unexpected server-side error occurs.
 }
 ```
 
----
 
 ## Error design
 
@@ -218,7 +207,6 @@ Returned when an unexpected server-side error occurs.
 
 - Errors are predictable and human-readable to support debugging
 
----
 
 ## Related documentation
 
