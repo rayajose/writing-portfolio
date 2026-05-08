@@ -1,11 +1,14 @@
-<!-- # Ray Jose – Technical Documentation Portfolio -->
-
-# Principal Technical Writer — APIs, Integrations, and Enterprise Systems
+##  Principal Technical Writer — APIs, Integrations, and Enterprise Systems
 
 I design and build documentation systems that enable partners, scale platforms, and reduce engineering dependency.
 
 With over 15 years of experience across API documentation, enterprise integrations, and security/compliance environments, I focus on creating documentation that supports real-world implementation—not just reference material.
 
+## Featured Project: Commerce Integration API
+
+Full documentation:
+
+* [View API Documentation](api/index.md)
 
 ## Featured Work
 
@@ -24,9 +27,7 @@ End-to-end documentation for a partner product ingestion platform, including API
 * [Ingesting a Product Feed End-to-End](api/ingest-product-feed.md)
 * [Debugging a Failed Feed](api/debug-product-feed.md)
 
-Full documentation:
 
-* [View API Documentation](api/index.md)
 
 ### SOPs & Operational Documentation
 
