@@ -1,6 +1,6 @@
 # Get started
 
-Use the Partner Catalog API to upload product feeds, process them through an ETL pipeline, and query normalized product data.
+Use the Commerce Integration API to upload product feeds, process them through an ETL pipeline, and query normalized product data.
 
 
 ## Base URLs

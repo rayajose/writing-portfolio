@@ -1,6 +1,6 @@
 # Architecture
 
-This page explains the architecture of the Partner Catalog API, including its components, data flow, and key design decisions.
+This page explains the architecture of the Commerce Integration API, including its components, data flow, and key design decisions.
 
 
 ## Architecture principles
@@ -15,13 +15,13 @@ The system is designed around:
 
 ## System overview
 
-The Partner Catalog API is a layered system designed to:
+The Commerce Integration API is a layered system designed to:
 
 - Ingest partner product feeds (CSV)  
 - Store raw data in Amazon S3  
-- Track processing using job resources  
+- Track ingestion workflows using job resources  
 - Execute ETL processing to transform and load data  
-- Persist structured product data in a relational database  
+- Persist normalized product data in a relational database  
 - Expose product data through queryable endpoints  
 - Provide aggregated analytics on processed data  
 
@@ -78,7 +78,7 @@ This architecture separates compute, storage, and networking concerns while intr
 ```text
 Client (curl / Postman / Swagger UI)
         ↓
-Router Layer (FastAPI endpoints)
+API Layer (FastAPI endpoints)
         ↓
 Application / Service Layer (ETL, S3 integration, analytics)
         ↓
@@ -135,23 +135,25 @@ This layer separates processing logic from HTTP and persistence concerns.
 
 ## Analytics layer
 
-The analytics layer provides aggregated insights derived from product data.
+The analytics layer provides aggregated reporting and operational insights derived from processed product and order data.
 
 Responsibilities:
 
-- Execute read-heavy queries on product data
+- Execute read-heavy aggregation queries
+- Support reporting and dashboard-style workflows
+- Provide summarized business and operational metrics
+- Expose analytics endpoints through `/analytics/*`
 
-- Aggregate metrics such as:
+Example analytics include:
 
-  - Product counts by partner
-  - Inventory availability
-  - Category distribution
+- Revenue by partner
+- Sales trends over time
+- Revenue share distribution
+- Product and inventory metrics
 
-- Support reporting endpoints via `/analytics/*`
+The analytics layer operates exclusively on processed data stored in PostgreSQL.
 
-This layer is read-only and operates on processed data stored in PostgreSQL.
-
-It is optimized for query performance and does not participate in ingestion or ETL workflows.
+It is designed to support read-heavy reporting and aggregation workflows independently from ingestion and ETL processing operations.
 
 
 ## Data access layer (`db.py`)
@@ -266,6 +268,8 @@ flowchart TD
 
 The system separates ingestion (write path) from data access (read path).
 
+Because ingestion occurs asynchronously, read operations may temporarily reflect stale data until ETL processing completes.
+
 ### Write path (Ingestion)
 
 - Feed upload via `/feeds/upload`
@@ -356,7 +360,7 @@ This approach:
 
 ## Deployment architecture (AWS)
 
-The Partner Catalog API is deployed using a container-based architecture:
+The Commerce Integration API is deployed using a container-based architecture:
 
 - **FastAPI (Docker container)** — application runtime  
 - **Amazon ECR** — container image registry (`partner-catalog-api`)  
@@ -404,9 +408,11 @@ This enables reprocessing, auditing, and scalability.
 
 ### Controlled job execution
 
-- Jobs are triggered via API
-- Execution is synchronous (current state)
-- Designed for future async processing
+- Jobs are initiated through explicit API operations
+- Processing is modeled as a job-based workflow
+- Clients interact with ingestion asynchronously through job status resources
+- Current ETL execution occurs within the application runtime
+- The architecture supports future migration to dedicated workers or queue-based execution
 
 
 ### Cursor-based pagination
@@ -432,36 +438,6 @@ This enables reprocessing, auditing, and scalability.
 - Horizontal scaling with multiple workers
 - Read replicas for database scaling
 - Infrastructure as Code (Terraform / CloudFormation)
-
-
-## Project structure
-
-```text
-app/
-  main.py
-  db.py
-  security.py
-  settings.py
-  routers/
-    analytics.py
-    feeds.py
-    health.py
-    jobs.py
-    products.py
-  schemas/
-    analytics.py
-    feeds.py
-    jobs.py
-    products.py
-    common.py
-  etl/
-    process_feed.py
-  services/
-    s3_service.py
-  docs/
-    *.md
-```
-
 
 ## Related documentation
 

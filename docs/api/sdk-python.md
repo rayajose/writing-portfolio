@@ -1,6 +1,6 @@
 # Python SDK guide
 
-Use this guide to interact with the Partner Catalog API using a lightweight Python client.
+Use this guide to interact with the Commerce Integration API using a lightweight Python client.
 This client provides reusable methods for uploading feeds, checking jobs, and retrieving product data without writing raw HTTP requests.
 
 ## What the client does

@@ -47,9 +47,9 @@ Submit the product feed using the upload endpoint.
 
 ```bash
 curl -X POST "http://api.example.com/feeds/upload" \
-  -H "x-api-key: <api-key>" \
-  -F "partner_name=<partner_name>" \
-  -F "file=@<file_name>.csv"
+  -H "x-api-key: demo-secret-key" \
+  -F "partner_name=Acme Corp" \
+  -F "file=@sample_catalog.csv"
 ```
 
 ---
@@ -65,8 +65,8 @@ Example response:
 ```json
 {
   "feed_id": "FD00010",
-  "status": "uploaded",
-  "validation_job_id": "JV00010"
+  "status": "processing",
+  "job_id": "JS00010"
 }
 ```
 

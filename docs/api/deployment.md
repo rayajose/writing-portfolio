@@ -1,6 +1,6 @@
 # Deployment guide
 
-This page explains how to deploy the Partner Catalog API to AWS using a containerized architecture.
+This page explains how to deploy the Commerce Integration API to AWS using a containerized architecture.
 
 The application and its documentation are maintained in a single repository (`writing-portfolio`).  
 The API is deployed using Docker and AWS (ECS, RDS, S3), while documentation is published via GitHub Pages.
@@ -10,7 +10,7 @@ For visual confirmation of the deployed environment, see [Screenshots](screensho
 
 ## Architecture overview
 
-The Partner Catalog API is deployed using the following AWS services:
+The Commerce Integration API is deployed using the following AWS services:
 
 - **FastAPI** — application runtime packaged as a Docker container
 - **Amazon ECR** — container image registry (`partner-catalog-api`)

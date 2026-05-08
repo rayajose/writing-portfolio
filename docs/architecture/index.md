@@ -2,7 +2,7 @@
 
 ## System overview
 
-This page explains how the Partner Catalog API ingests, processes, and serves partner product data.
+This page explains how the Commerce Integration API ingests, processes, and serves partner product data.
 
 ---
 

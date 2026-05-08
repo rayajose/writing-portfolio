@@ -1,6 +1,6 @@
 # Errors
 
-Use this page to understand how the Partner Catalog API returns errors.
+Use this page to understand how the Commerce Integration API returns errors.
 
 
 ## Error format

@@ -1,6 +1,6 @@
-# Partner Catalog API — Roadmap
+# Commerce Integration API — Roadmap
 
-This roadmap outlines the phased approach for building, deploying, and evolving the Partner Catalog API into a full data platform.
+This roadmap outlines the phased approach for building, deploying, and evolving the Commerce Integration API into a full data platform.
 
 ---
 
@@ -57,7 +57,7 @@ Deploy a working, cloud-hosted API for portfolio use and demonstration.
 
 ### Resume Line (Phase 1)
 
-Deployed a containerized Partner Catalog API to AWS (ECS Fargate, RDS, ALB), implementing data ingestion workflows, database persistence, and production-style API documentation.
+Deployed a containerized Commerce Integration API to AWS (ECS Fargate, RDS, ALB), implementing data ingestion workflows, database persistence, and production-style API documentation.
 
 ---
 

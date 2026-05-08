@@ -1,6 +1,6 @@
 # Resources
 
-Use this page to understand core resources and supporting concepts in the Partner Catalog API.
+Use this page to understand core resources and supporting concepts in the Commerce Integration API.
 
 
 ## Feed

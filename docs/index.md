@@ -6,7 +6,6 @@ I design and build documentation systems that enable partners, scale platforms, 
 
 With over 15 years of experience across API documentation, enterprise integrations, and security/compliance environments, I focus on creating documentation that supports real-world implementation—not just reference material.
 
----
 
 ## Featured Work
 
@@ -29,8 +28,6 @@ Full documentation:
 
 * [View API Documentation](api/index.md)
 
----
-
 ### SOPs & Operational Documentation
 
 Process-driven content designed to support repeatable operations and reduce failure points in production workflows.
@@ -42,7 +39,6 @@ Process-driven content designed to support repeatable operations and reduce fail
 
 [View SOP Documentation](sop/onboarding.md)
 
----
 
 ### Security & Compliance Documentation
 
@@ -55,7 +51,6 @@ Content aligned to regulated enterprise environments, with a focus on clarity, a
 
 [View Security Documentation](security/incident-response.md)
 
----
 
 ### Integration & Architecture Documentation
 
@@ -68,7 +63,6 @@ System-level documentation that explains how services interact, how data flows, 
 
 [View Architecture Documentation](architecture/index.md)
 
----
 
 ## How I Approach Documentation
 
@@ -86,7 +80,6 @@ The goal is to reduce dependency on engineering teams.
 **Operational awareness**
 Documentation should support real workflows, failure scenarios, and recovery paths.
 
----
 
 ## Portfolio Scope
 

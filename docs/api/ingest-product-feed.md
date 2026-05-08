@@ -1,6 +1,6 @@
 # Ingest a product feed end-to-End
 
-This guide shows how to upload, process, and verify a partner product feed using the Partner Catalog API.
+This guide shows how to upload, process, and verify a partner product feed using the Commerce Integration API.
 
 Use this workflow during partner onboarding or when testing feed ingestion.
 
@@ -23,7 +23,9 @@ In this guide, you will:
 | API key           | `x-api-key: demo-secret-key`                                        |
 | Valid .`csv` file | see  [CSV feed file specification](../sop/csv-feed-file-spec.md)    |
 
+### Feed file specification
 
+For complete CSV formatting rules, supported fields, validation requirements, and file constraints, see the [CSV Feed File Specification](../sop/csv-feed-file-spec.md).
 
 ## 1. Upload a product feed
 

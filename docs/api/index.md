@@ -1,5 +1,5 @@
-# Partner Catalog API
-The Partner Catalog API is an e-commerce data ingestion and analytics platform designed to support frequent, automated uploads of partner retailer product catalogs.
+# Commerce Integration API
+The Commerce Integration API is an e-commerce data ingestion and analytics platform designed to support frequent, automated uploads of partner retailer product catalogs.
 
 Retail partners can submit product data on a recurring basis (daily or hourly, depending on how frequently price and availability change). The system ingests, validates, and processes these feeds to maintain an up-to-date, queryable product catalog.
 

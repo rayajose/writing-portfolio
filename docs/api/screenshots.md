@@ -1,6 +1,6 @@
 # Screenshots
 
-Use this page to view the deployed Partner Catalog API running in an AWS environment.
+Use this page to view the deployed Commerce Integration API running in an AWS environment.
 
 ## Live API documentation
 <p>

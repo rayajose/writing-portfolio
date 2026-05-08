@@ -8,8 +8,6 @@ My background spans structured content architecture, XML-based publishing system
 
 More recently, I’ve focused on maintaining and extending my skills in modern API design, data ingestion workflows, and cloud-based deployment by designing and documenting a partner-facing API platform.
 
----
-
 ## What I Do
 
 - Document API-driven systems and integration workflows  
@@ -17,8 +15,6 @@ More recently, I’ve focused on maintaining and extending my skills in modern A
 - Define data structures and documentation for ingestion pipelines  
 - Build and maintain structured documentation systems (DITA, docs-as-code)  
 - Align documentation with actual system behavior through collaboration with engineering and product teams  
-
----
 
 ## Experience Highlights
 
@@ -28,16 +24,12 @@ More recently, I’ve focused on maintaining and extending my skills in modern A
 - Defined product data standards and documentation for large-scale catalogs (including integrations with **1M+ records**)  
 - Built and maintained structured content systems using XML, XSLT, and DITA  
 
----
-
 ## Technical Background
 
 - **APIs & Data**: REST APIs, data ingestion workflows, ETL concepts, data modeling  
 - **Cloud & Infrastructure**: AWS (ECS, RDS, S3), containerized deployments  
 - **Documentation Systems**: MkDocs (docs-as-code), structured content, developer documentation  
 - **Tools & Languages**: Python, SQL, PowerShell, GitHub, Markdown  
-
----
 
 ## Military & Mechanical Background
 
@@ -52,20 +44,16 @@ This experience shaped how I approach technical documentation:
 
 That perspective continues to influence how I document complex systems today.
 
----
-
 ## Portfolio Focus
 
 This portfolio reflects how I approach documentation as part of a system—not just as standalone content.
 
-Featured work includes a Partner Catalog API designed to simulate real-world partner integrations and product data ingestion workflows. The project includes:
+Featured work includes a Commerce Integration API designed to simulate real-world partner integrations and product data ingestion workflows. The project includes:
 
 - End-to-end API documentation  
 - Data ingestion and processing workflows  
 - System architecture and integration patterns  
 - Developer onboarding and self-service guidance  
-
----
 
 ## Approach
 
@@ -82,8 +70,6 @@ Reduce dependency on engineering teams.
 
 **Operational awareness**  
 Support real workflows, including failure and recovery scenarios.
-
----
 
 ## Links
 

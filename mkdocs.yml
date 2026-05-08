@@ -37,6 +37,7 @@ nav:
   - API & Developer Docs:
       - Overview: api/index.md
       - Get Started: api/getting_started.md
+      - Integration guide: api/integration-guide.md
 
       - Tutorials:
           - Your First Feed Ingestion: tutorials/first-feed.md
