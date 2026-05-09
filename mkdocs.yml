@@ -52,6 +52,7 @@ nav:
           - Feeds API: api/feeds.md
           - Jobs API: api/jobs.md
           - Products API: api/products.md
+          - Orders API: api/orders.md
           - Health API: api/health.md
           - Analytics API: api/analytics.md
           - Errors: api/errors.md

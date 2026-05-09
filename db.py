@@ -2,13 +2,12 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
 DB_TYPE = os.getenv("DB_TYPE", "sqlite").lower()
-
-print("DB_TYPE =", DB_TYPE)
 
 # SQLite config
 DB_PATH = Path(__file__).resolve().parent / "partner_catalog.db"
@@ -24,46 +23,59 @@ DB_PASSWORD = os.getenv("DB_PASSWORD", "")
 def q(sql: str) -> str:
     """
     Convert generic ? placeholders to database-specific placeholders.
-    SQLite uses ?, PostgreSQL uses %s.
+
+    SQLite uses ? placeholders.
+    PostgreSQL uses %s placeholders.
     """
     if DB_TYPE == "postgres":
         return sql.replace("?", "%s")
+
     return sql
 
 
 def get_connection():
+    """
+    Return a database connection for the configured database type.
+    """
     if DB_TYPE == "sqlite":
         import sqlite3
+
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
         return conn
 
     if DB_TYPE == "postgres":
         import psycopg
+        from psycopg.rows import dict_row
+
         return psycopg.connect(
             host=DB_HOST,
             port=DB_PORT,
             dbname=DB_NAME,
             user=DB_USER,
             password=DB_PASSWORD,
+            row_factory=dict_row,
         )
 
     raise ValueError(f"Unsupported DB_TYPE: {DB_TYPE}")
 
 
 def init_db() -> None:
+    """
+    Create database tables and indexes if they do not already exist.
+    """
     with get_connection() as conn:
+        cur = conn.cursor()
 
-        if DB_TYPE == "sqlite":
-
-            conn.execute(q("""
+        try:
+            cur.execute(q("""
                 CREATE TABLE IF NOT EXISTS id_counters (
                     prefix TEXT PRIMARY KEY,
                     last_value INTEGER NOT NULL
                 )
             """))
 
-            conn.execute(q("""
+            cur.execute(q("""
                 CREATE TABLE IF NOT EXISTS feeds (
                     feed_id TEXT PRIMARY KEY,
                     partner_name TEXT NOT NULL,
@@ -75,7 +87,7 @@ def init_db() -> None:
                 )
             """))
 
-            conn.execute(q("""
+            cur.execute(q("""
                 CREATE TABLE IF NOT EXISTS jobs (
                     job_id TEXT PRIMARY KEY,
                     job_type TEXT NOT NULL,
@@ -87,7 +99,13 @@ def init_db() -> None:
                 )
             """))
 
-            conn.execute(q("""
+            product_price_type = (
+                "DOUBLE PRECISION"
+                if DB_TYPE == "postgres"
+                else "REAL"
+            )
+
+            cur.execute(q(f"""
                 CREATE TABLE IF NOT EXISTS products (
                     product_id TEXT PRIMARY KEY,
                     feed_id TEXT NOT NULL,
@@ -97,7 +115,7 @@ def init_db() -> None:
                     description TEXT,
                     brand TEXT,
                     category TEXT,
-                    price REAL,
+                    price {product_price_type},
                     currency TEXT,
                     availability TEXT,
                     created_at TEXT NOT NULL,
@@ -105,132 +123,130 @@ def init_db() -> None:
                 )
             """))
 
-            # ✅ Duplicate prevention
-            conn.execute(q("""
+            cur.execute(q("""
                 CREATE UNIQUE INDEX IF NOT EXISTS idx_products_partner_sku
                 ON products (partner_name, sku)
             """))
 
-        elif DB_TYPE == "postgres":
+            amount_type = (
+                "DOUBLE PRECISION"
+                if DB_TYPE == "postgres"
+                else "REAL"
+            )
 
-            cur = conn.cursor()
-            try:
-                cur.execute(q("""
-                    CREATE TABLE IF NOT EXISTS id_counters (
-                        prefix TEXT PRIMARY KEY,
-                        last_value INTEGER NOT NULL
-                    )
-                """))
+            cur.execute(q(f"""
+                CREATE TABLE IF NOT EXISTS orders (
+                    order_id TEXT PRIMARY KEY,
+                    partner_name TEXT NOT NULL,
+                    customer_reference TEXT,
+                    status TEXT NOT NULL DEFAULT 'created',
+                    total_amount {amount_type},
+                    currency TEXT DEFAULT 'USD',
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+                )
+            """))
 
-                cur.execute(q("""
-                    CREATE TABLE IF NOT EXISTS feeds (
-                        feed_id TEXT PRIMARY KEY,
-                        partner_name TEXT NOT NULL,
-                        file_name TEXT NOT NULL,
-                        content_type TEXT NOT NULL,
-                        status TEXT NOT NULL,
-                        uploaded_at TEXT NOT NULL,
-                        validation_job_id TEXT
-                    )
-                """))
+            cur.execute(q(f"""
+                CREATE TABLE IF NOT EXISTS order_items (
+                    order_item_id TEXT PRIMARY KEY,
+                    order_id TEXT NOT NULL,
+                    product_id TEXT NOT NULL,
+                    sku TEXT,
+                    product_name TEXT,
+                    quantity INTEGER NOT NULL,
+                    unit_price {amount_type},
+                    line_total {amount_type},
+                    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+                    FOREIGN KEY (product_id) REFERENCES products(product_id)
+                )
+            """))
 
-                cur.execute(q("""
-                    CREATE TABLE IF NOT EXISTS jobs (
-                        job_id TEXT PRIMARY KEY,
-                        job_type TEXT NOT NULL,
-                        status TEXT NOT NULL,
-                        created_at TEXT NOT NULL,
-                        feed_id TEXT NOT NULL,
-                        message TEXT,
-                        FOREIGN KEY (feed_id) REFERENCES feeds(feed_id)
-                    )
-                """))
+            cur.execute(q("""
+                CREATE TABLE IF NOT EXISTS fulfillment_jobs (
+                    job_id TEXT PRIMARY KEY,
+                    order_id TEXT NOT NULL,
+                    status TEXT NOT NULL DEFAULT 'queued',
+                    message TEXT,
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+                )
+            """))
 
-                cur.execute(q("""
-                    CREATE TABLE IF NOT EXISTS products (
-                        product_id TEXT PRIMARY KEY,
-                        feed_id TEXT NOT NULL,
-                        partner_name TEXT NOT NULL,
-                        sku TEXT,
-                        product_name TEXT NOT NULL,
-                        description TEXT,
-                        brand TEXT,
-                        category TEXT,
-                        price DOUBLE PRECISION,
-                        currency TEXT,
-                        availability TEXT,
-                        created_at TEXT NOT NULL,
-                        FOREIGN KEY (feed_id) REFERENCES feeds(feed_id)
-                    )
-                """))
-
-                # ✅ Duplicate prevention
-                cur.execute(q("""
-                    CREATE UNIQUE INDEX IF NOT EXISTS idx_products_partner_sku
-                    ON products (partner_name, sku)
-                """))
-
-            finally:
-                cur.close()
+            cur.execute(q("""
+                CREATE TABLE IF NOT EXISTS shipments (
+                    shipment_id TEXT PRIMARY KEY,
+                    order_id TEXT NOT NULL,
+                    job_id TEXT NOT NULL,
+                    status TEXT NOT NULL DEFAULT 'pending',
+                    carrier TEXT,
+                    tracking_number TEXT,
+                    shipped_at TEXT,
+                    delivered_at TEXT,
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+                    FOREIGN KEY (job_id) REFERENCES fulfillment_jobs(job_id)
+                )
+            """))
 
             conn.commit()
 
-        else:
-            raise ValueError(f"Unsupported DB_TYPE: {DB_TYPE}")
+        finally:
+            cur.close()
 
 
 def _next_id_with_conn(conn, prefix: str) -> str:
-    if DB_TYPE == "postgres":
-        cur = conn.cursor()
-        try:
-            cur.execute(
-                q("SELECT last_value FROM id_counters WHERE prefix = ?"),
-                (prefix,)
-            )
-            row = cur.fetchone()
+    """
+    Generate the next ID for a prefix using the shared id_counters table.
 
-            if row is None:
-                next_value = 1
-                cur.execute(
-                    q("INSERT INTO id_counters (prefix, last_value) VALUES (?, ?)"),
-                    (prefix, next_value)
-                )
-            else:
-                next_value = row[0] + 1
-                cur.execute(
-                    q("UPDATE id_counters SET last_value = ? WHERE prefix = ?"),
-                    (next_value, prefix)
-                )
-        finally:
-            cur.close()
-    else:
-        row = conn.execute(
+    Examples:
+        FD00001
+        JS00001
+        JV00001
+        PR00001
+        OR00001
+        OI00001
+        JF00001
+        SH00001
+    """
+    cur = conn.cursor()
+
+    try:
+        cur.execute(
             q("SELECT last_value FROM id_counters WHERE prefix = ?"),
-            (prefix,)
-        ).fetchone()
+            (prefix,),
+        )
+        row = cur.fetchone()
 
         if row is None:
             next_value = 1
-            conn.execute(
+            cur.execute(
                 q("INSERT INTO id_counters (prefix, last_value) VALUES (?, ?)"),
-                (prefix, next_value)
+                (prefix, next_value),
             )
         else:
-            next_value = row["last_value"] + 1
-            conn.execute(
+            last_value = row["last_value"]
+            next_value = last_value + 1
+            cur.execute(
                 q("UPDATE id_counters SET last_value = ? WHERE prefix = ?"),
-                (next_value, prefix)
+                (next_value, prefix),
             )
 
-    return f"{prefix}{next_value:05d}"
+        return f"{prefix}{next_value:05d}"
+
+    finally:
+        cur.close()
 
 
 def _next_id(prefix: str) -> str:
+    """
+    Generate and commit the next ID using a standalone connection.
+    """
     with get_connection() as conn:
-        next_value = _next_id_with_conn(conn, prefix)
-        if DB_TYPE == "postgres":
-            conn.commit()
-        return next_value
+        next_id = _next_id_with_conn(conn, prefix)
+        conn.commit()
+        return next_id
 
 
 def next_feed_id() -> str:
@@ -251,3 +267,19 @@ def next_product_id() -> str:
 
 def next_product_id_with_conn(conn) -> str:
     return _next_id_with_conn(conn, "PR")
+
+
+def next_order_id() -> str:
+    return _next_id("OR")
+
+
+def next_order_item_id_with_conn(conn) -> str:
+    return _next_id_with_conn(conn, "OI")
+
+
+def next_fulfillment_job_id_with_conn(conn) -> str:
+    return _next_id_with_conn(conn, "JF")
+
+
+def next_shipment_id_with_conn(conn) -> str:
+    return _next_id_with_conn(conn, "SH")

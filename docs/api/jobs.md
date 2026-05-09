@@ -206,7 +206,7 @@ Returned when the request contains a `job_id` not currently in system.
 
 ## Related documentation
 
-- [Workflows](workflows.md)
-- [Errors](errors.md)
 - [Feeds API](feeds.md)
 - [Products API](products.md)
+- [Workflows](workflows.md)
+- [Errors](errors.md)

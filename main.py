@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import feeds, jobs, products, health, analytics
+from routers import feeds, jobs, products, health, analytics, orders
 from db import init_db
 
 tags_metadata = [
@@ -14,6 +14,12 @@ tags_metadata = [
   {
     "name": "Products",
     "description": "Query the centralized product catalog using filtering, sorting, and cursor-based pagination to access up-to-date partner product data."
+  },
+  {
+    "name": "Orders",
+    "description": "Create and retrieve customer orders and associated order items. "
+        "Orders are generated from catalog products and include calculated totals, "
+        "line item pricing, and order status tracking."
   },
   {
     "name": "Health",
@@ -59,3 +65,4 @@ app.include_router(jobs.router, tags=["Jobs"])
 app.include_router(products.router, tags=["Products"])
 app.include_router(health.router, tags=["Health"])
 app.include_router(analytics.router, tags=["Analytics"])
+app.include_router(orders.router, tags=["Orders"])
