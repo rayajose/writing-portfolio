@@ -49,14 +49,25 @@ When a partner uploads a feed:
 5. Products become available through query and analytics endpoints.
 
 ```mermaid
-flowchart LR
-    A[Commerce Data Source] --> B[Feed Upload API]
-    B --> C[S3 Raw Feed Storage]
+flowchart TD
+    A[Commerce Source] --> B[Feed Upload API]
+
+    B --> C[S3 Raw Storage]
     B --> D[Validation Job]
+
     D --> E[ETL Processing]
-    E --> F[PostgreSQL Product Catalog]
+
+    E --> F[PostgreSQL Catalog]
+
     F --> G[Products API]
-    F --> H[Analytics API]
+
+    G --> H[Orders API]
+
+    H --> I[(Orders and Order Items)]
+
+    I --> J[Analytics API]
+
+    J --> K[Revenue Reporting]
 ```
 
 ## Asynchronous processing model

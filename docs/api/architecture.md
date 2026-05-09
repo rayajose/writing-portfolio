@@ -445,6 +445,7 @@ This enables reprocessing, auditing, and scalability.
 - [Feeds API](feeds.md)
 - [Jobs API](jobs.md)
 - [Products API](products.md)
+- [Orders API](orders.md)
 - [Analytics API](analytics.md)
 - [Workflows](workflows.md)
 - [Errors](errors.md)

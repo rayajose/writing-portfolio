@@ -2,7 +2,6 @@
 
 Use this page to understand how the Commerce Integration API returns errors.
 
-
 ## Error format
 
 The API primarily uses FastAPI’s standard error response format.
@@ -15,21 +14,20 @@ The API primarily uses FastAPI’s standard error response format.
 
 ### Fields
 
-| Field  | Type   | Description              |
-| ------ | ------ | ------------------------ |
-| detail | string | Description of the error |
-
+| Field    | Type   | Description              |
+| -------- | ------ | ------------------------ |
+| `detail` | string | Description of the error |
 
 ## Common error scenarios
 
 Errors may occur in the following situations:
 
 - Missing or invalid API key
-- Invalid request data (e.g., malformed CSV)
-- Resource not found (feed, job, or product does not exist)
+- Invalid request data (for example, malformed CSV)
+- Resource not found (feed, job, product, or order does not exist)
+- Product availability conflicts during order creation
 - ETL processing failure
 - Database or infrastructure issues
-
 
 ## Status codes
 
@@ -41,9 +39,9 @@ Errors may occur in the following situations:
 | 401    | Missing API key                                        |
 | 403    | Invalid API key                                        |
 | 404    | Requested resource not found                           |
+| 409    | Request conflict or unavailable resource               |
 | 422    | Request validation failed                              |
 | 500    | Internal server error                                  |
-
 
 ## Authentication errors
 
@@ -61,11 +59,24 @@ Returned when the API key is missing.
 }
 ```
 
+### 403 Forbidden
+
+Returned when the API key is invalid.
+
+#### Example
+
+```json
+{
+  "detail": "Invalid API key"
+}
+```
 
 ## Resource errors
+
 These errors occur when a requested resource cannot be found or does not exist in the system.
 
 ### 404 Not Found
+
 Returned when a requested resource does not exist.
 
 #### Example: Feed not found
@@ -92,11 +103,20 @@ Returned when a requested resource does not exist.
 }
 ```
 
+#### Example: Order not found
+
+```json
+{
+  "detail": "Order OR99999 not found."
+}
+```
 
 ## Validation errors
+
 These errors occur when request data fails validation or does not meet required input rules.
 
 ### 400 Bad Request
+
 Returned when the request is syntactically valid but fails business rules.
 
 #### Example: Unsupported file type
@@ -123,8 +143,28 @@ Returned when the request is syntactically valid but fails business rules.
 }
 ```
 
+#### Example: Empty order
+
+```json
+{
+  "detail": "Order must contain at least one item."
+}
+```
+
+### 409 Conflict
+
+Returned when the request conflicts with the current resource state.
+
+#### Example: Product unavailable
+
+```json
+{
+  "detail": "Product is not available: PR00001"
+}
+```
 
 ### 422 Unprocessable Entity
+
 Returned when request data fails validation (handled by FastAPI).
 
 #### Example
@@ -141,8 +181,8 @@ Returned when request data fails validation (handled by FastAPI).
 }
 ```
 
-
 ## Job execution errors
+
 These errors occur when job execution requests are invalid or when ETL processing fails.
 
 ### 400 Bad Request
@@ -157,8 +197,8 @@ Returned when attempting to execute an unsupported job type.
 }
 ```
 
+### 500 Internal Server Error (ETL failure)
 
-### 500 Internal Server Error (ETL Failure)
 Returned when ETL processing fails during job execution.
 
 #### Example
@@ -169,11 +209,12 @@ Returned when ETL processing fails during job execution.
 }
 ```
 
-
 ## Infrastructure errors
+
 These errors occur due to system-level failures affecting application availability or data access.
 
 ### 500 Internal Server Error
+
 Returned when an unexpected server-side error occurs.
 
 #### Example scenarios
@@ -191,25 +232,28 @@ Returned when an unexpected server-side error occurs.
 }
 ```
 
-
 ## Error design
 
 - The API uses FastAPI’s built-in error handling for consistency and simplicity
 - Most error responses use the `detail` field
 - Validation errors (`422`) use a structured list format defined by FastAPI
 - ETL-related errors are surfaced through job status messages and API responses
+- Orders use transactional validation before persistence
 - Resource identifiers follow structured formats:
 
   - `FDxxxxx` → Feed
   - `JSxxxxx` → Submission Job
   - `JVxxxxx` → Validation Job
   - `PRxxxxx` → Product
+  - `ORxxxxx` → Order
+  - `OIxxxxx` → Order Item
 
 - Errors are predictable and human-readable to support debugging
-
 
 ## Related documentation
 
 - [Feeds API](feeds.md)
 - [Jobs API](jobs.md)
 - [Products API](products.md)
+- [Orders API](orders.md)
+- [Analytics API](analytics.md)
