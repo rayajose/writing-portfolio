@@ -23,6 +23,11 @@ Query the centralized product catalog using filtering, sorting, and cursor-based
 
 → [Products API](products.md)
 
+## Orders
+
+Create and retrieve customer orders and associated order items. The Orders API supports transactional order creation using catalog products, calculated order totals, and line item pricing.
+
+→ [Orders API](orders.md)
 
 ## Health
 

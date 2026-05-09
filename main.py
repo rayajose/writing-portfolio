@@ -32,7 +32,7 @@ tags_metadata = [
 ]
 
 app = FastAPI(
-    title="Partner Catalog API",
+    title="Commerce Integration API",
 
     description=(
         "A REST API for ingesting partner product feeds, validating data, "
@@ -51,11 +51,15 @@ app = FastAPI(
         "url": "https://github.com/rayajose/writing-portfolio",
         "email": "ray.a.jose@gmail.com",
         },
-license_info={
+    license_info={
         "name": "MIT License",
         "url": "https://opensource.org/licenses/MIT",
         },
     openapi_tags=tags_metadata,
+    swagger_ui_parameters={
+        "operationsSorter": "none",
+        "tagsSorter": "none",
+    },
 )
 
 init_db()
