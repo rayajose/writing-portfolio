@@ -1,6 +1,6 @@
 # Integrate with the Commerce Integration API
 
-Use this guide to build a complete commerce data integration workflow, from product feed upload through catalog retrieval and analytics.
+Use this guide to build a complete commerce data integration workflow, from product feed upload through catalog retrieval, order creation, and analytics.
 
 The Commerce Integration API supports a common integration workflow:
 
@@ -9,7 +9,8 @@ The Commerce Integration API supports a common integration workflow:
 3. Monitor validation status.
 4. Process the feed through the ETL pipeline.
 5. Query product data.
-6. Retrieve analytics.
+6. Create and retrieve order data.
+7. Retrieve analytics.
 
 ```mermaid
 flowchart TD
@@ -18,14 +19,15 @@ flowchart TD
     C --> D[Run ETL processing]
     D --> E[Store products]
     E --> F[Retrieve product data]
-    F --> G[Retrieve analytics]
+    F --> G[Create order]
+    G --> H[Retrieve analytics]
 ```
 
 ## When to use this guide
 
-Use this guide when you need to design or document a repeatable partner catalog integration.
+Use this guide to design, implement, or document a repeatable commerce data integration workflow.
 
-This guide explains how the major integration components work together, including feed preparation, asynchronous validation, ETL processing, product retrieval, and analytics.
+This guide explains how the major integration components work together, including feed preparation, asynchronous validation, ETL processing, product retrieval, order creation, and analytics.
 
 For a step-by-step walkthrough of a single feed upload, see [Ingest a product feed end to end](ingest-product-feed.md).
 
@@ -34,6 +36,7 @@ For complete endpoint details, see the related API reference pages:
 - [Feeds API](feeds.md)
 - [Jobs API](jobs.md)
 - [Products API](products.md)
+- [Orders API](orders.md)
 - [Analytics API](analytics.md)
 
 ## Integration architecture
@@ -46,7 +49,9 @@ When a partner uploads a feed:
 2. A feed record is created.
 3. A validation job checks the file structure and required fields.
 4. An ETL process transforms and loads valid product data into the product catalog.
-5. Products become available through query and analytics endpoints.
+5. Products become available through query endpoints.
+6. Orders can be created from catalog products.
+7. Analytics endpoints aggregate order and revenue data.
 
 ```mermaid
 flowchart TD
@@ -83,6 +88,7 @@ Integrations should:
 
 Because ingestion occurs asynchronously, downstream systems should account for eventual consistency between feed submission and catalog availability.
 
+Integrations should avoid tightly coupling downstream workflows to immediate catalog availability after feed submission.
 
 ## Scalability considerations
 
@@ -98,7 +104,6 @@ Key scalability characteristics include:
 - Decoupled storage and processing architecture
 
 Integrations should avoid assuming immediate consistency between feed upload and downstream catalog availability.
-
 
 ## Integration design considerations
 
@@ -152,6 +157,19 @@ For large catalogs:
 - Avoid unnecessary full catalog retrievals
 - Cache frequently requested product data when appropriate
 
+### Order processing strategy
+
+Orders are created transactionally using catalog product data.
+
+During order creation:
+
+- Product availability is validated.
+- Product pricing is copied into each order item.
+- Line totals are calculated at order creation time.
+- Order totals are calculated from associated order items.
+
+This approach preserves order pricing independently from future catalog changes.
+
 ### Analytics and reporting
 
 Analytics endpoints can support:
@@ -160,6 +178,9 @@ Analytics endpoints can support:
 - Product performance analysis
 - Operational dashboards
 - Feed processing reconciliation
+- Order volume and sales trend analysis
+
+Analytics endpoints aggregate sales and revenue data from submitted orders and processed catalog records.
 
 ## ETL processing behavior
 
@@ -195,10 +216,9 @@ Integrations should account for repeat uploads and retry scenarios.
 
 Because unchanged products are not rewritten, the ingestion pipeline supports idempotent processing behavior for repeated feed submissions containing the same product data.
 
-
 ## Error handling and operational resilience
 
-Integrations should account for validation failures, ETL processing issues, delayed processing, and malformed product data.
+Integrations should account for validation failures, ETL processing issues, delayed processing, malformed product data, and order creation failures.
 
 Because feed ingestion is asynchronous, failures may occur after a successful upload response is returned.
 
@@ -210,17 +230,20 @@ Because feed ingestion is asynchronous, failures may occur after a successful up
 | Missing required headers | Required fields such as `sku` or `product_name` are missing. |
 | Invalid product data     | Product rows contain malformed or unsupported values.        |
 | ETL processing failure   | An internal processing error prevents product ingestion.     |
+| Product unavailable      | A requested product cannot be used to create an order.       |
+| Missing order resource   | A requested order does not exist.                            |
 | Authentication failure   | The request does not include a valid API key.                |
 
 ### Recommended operational practices
 
 Implementations should:
 
-- Log upload and job identifiers for troubleshooting
+- Log upload, job, product, and order identifiers for troubleshooting
 - Monitor validation and ETL job status
 - Retry failed uploads when appropriate
 - Alert on repeated processing failures
 - Retain source feed files for auditing and replay scenarios
+- Verify product availability before creating downstream orders
 
 ### Troubleshooting workflows
 
@@ -231,6 +254,7 @@ When troubleshooting failed processing:
 3. Correct feed data issues.
 4. Re-upload the corrected feed.
 5. Verify successful ETL completion before querying products.
+6. Verify product availability before creating orders.
 
 For additional troubleshooting guidance, see [Debug a failed feed](debug-product-feed.md).
 
@@ -248,6 +272,7 @@ Use the following resources to implement and support partner catalog integration
 - [Feeds API](feeds.md)
 - [Jobs API](jobs.md)
 - [Products API](products.md)
+- [Orders API](orders.md)
 - [Analytics API](analytics.md)
 
 ### Specifications and architecture
@@ -257,6 +282,6 @@ Use the following resources to implement and support partner catalog integration
 
 ## Summary
 
-The Commerce Integration API provides a scalable ingestion and catalog management platform for integrating external commerce data into downstream product and analytics workflows.
+The Commerce Integration API provides a scalable ingestion, catalog management, order processing, and analytics platform for integrating external commerce data into downstream product and reporting workflows.
 
-Successful integrations should account for validation workflows, ETL processing behavior, operational monitoring, and downstream product consumption patterns when designing production ingestion pipelines.
+Successful integrations should account for validation workflows, ETL processing behavior, operational monitoring, downstream product consumption, and order creation patterns when designing production ingestion pipelines.
