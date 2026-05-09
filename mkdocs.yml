@@ -1,4 +1,4 @@
-site_name: "Ray Jose – Technical Documentation Portfolio"
+site_name: "Ray Jose – Developer Documentation Portfolio"
 site_description: "API, integration, and data platform documentation portfolio."
 site_url: "https://rayajose.github.io/writing-portfolio/"
 use_directory_urls: true
@@ -71,9 +71,9 @@ nav:
           # - Resources: api/resources.md
           - Screenshots: api/screenshots.md
 
-  - SOPs & Operations:
+  # - SOPs & Operations:
       # - Partner Feed Onboarding: sop/onboarding.md
-      - CSV Feed File Specification: sop/csv-feed-file-spec.md
+      # - CSV Feed File Specification: sop/csv-feed-file-spec.md
 
   # - Security & Compliance:
       # - Incident Response Plan: security/incident-response.md

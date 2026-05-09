@@ -1,31 +1,28 @@
-<!-- ##  Principal Technical Writer — APIs, Integrations, and Enterprise Systems
-
-I design and build documentation systems that enable partners, scale platforms, and reduce engineering dependency.
-
-With over 15 years of experience across API documentation, enterprise integrations, and security/compliance environments, I focus on creating documentation that supports real-world implementation—not just reference material.-->
+# APIs, Integrations, and Cloud Platforms
+Principal-level technical writing portfolio focused on developer platforms, API ecosystems, cloud-native integrations, and operational documentation.
 
 ## Featured Project: Commerce Integration API
 
 Full documentation:
 
-* [View API Documentation](api/index.md)
+- [View API Documentation](api/index.md)
 
 ## Featured Work
 
 ### API & Developer Documentation
 
-End-to-end documentation for a partner product ingestion platform, including API reference, workflows, data ingestion, analytics, and SDK usage.
+End-to-end documentation for a cloud-native commerce integration platform, including API reference, ingestion workflows, ETL processing, analytics services, and architecture documentation.
 
-* REST API design and documentation
-* ETL workflow documentation
-* Async job processing and workflow modeling
-* Pagination, filtering, and data access patterns
-* Developer onboarding and self-service enablement
+- REST API design and documentation
+- ETL workflow documentation
+- Async job processing and workflow modeling
+- Pagination, filtering, and data access patterns
+- Developer onboarding and self-service enablement
 
 **Start here (recommended):**
 
-* [Ingesting a Product Feed End-to-End](api/ingest-product-feed.md)
-* [Debugging a Failed Feed](api/debug-product-feed.md)
+- [Ingesting a Product Feed End-to-End](api/ingest-product-feed.md)
+- [Debugging a Failed Feed](api/debug-product-feed.md)
 
 
 
@@ -33,10 +30,10 @@ End-to-end documentation for a partner product ingestion platform, including API
 
 Process-driven content designed to support repeatable operations and reduce failure points in production workflows.
 
-* Step-by-step operational procedures
-* Decision points and failure handling
-* ETL pipeline runbooks and recovery workflows
-* Partner onboarding processes
+- Step-by-step operational procedures
+- Decision points and failure handling
+- ETL pipeline runbooks and recovery workflows
+- Partner onboarding processes
 
 [View SOP Documentation](sop/onboarding.md)
 
@@ -45,10 +42,10 @@ Process-driven content designed to support repeatable operations and reduce fail
 
 Content aligned to regulated enterprise environments, with a focus on clarity, auditability, and risk reduction.
 
-* Incident response planning
-* Data handling and access control policies
-* PCI DSS–aligned documentation practices
-* Security-focused system documentation
+- Incident response planning
+- Data handling and access control policies
+- PCI DSS–aligned documentation practices
+- Security-focused system documentation
 
 [View Security Documentation](security/incident-response.md)
 
@@ -57,10 +54,10 @@ Content aligned to regulated enterprise environments, with a focus on clarity, a
 
 System-level documentation that explains how services interact, how data flows, and how platforms scale.
 
-* Data flow and ETL architecture
-* Integration patterns for external partners
-* System interaction and service boundaries
-* Platform-level documentation strategy
+- Data flow and ETL architecture
+- Integration patterns for external partners
+- System interaction and service boundaries
+- Platform-level documentation strategy
 
 [View Architecture Documentation](architecture/index.md)
 
@@ -76,7 +73,7 @@ Documentation should enable action, not overwhelm users.
 I document how components interact, not just how they function in isolation.
 
 **Self-service enablement**
-The goal is to reduce dependency on engineering teams.
+Documentation should reduce onboarding friction and minimize dependency on engineering teams.
 
 **Operational awareness**
 Documentation should support real workflows, failure scenarios, and recovery paths.
@@ -86,7 +83,8 @@ Documentation should support real workflows, failure scenarios, and recovery pat
 
 This portfolio includes representative work across multiple documentation domains:
 
-* API & Developer Documentation
-* Standard Operating Procedures (SOPs)
-* Security & Compliance Documentation
-* Integration & Architecture Documentation
+- API & Developer Documentation
+- Docs-as-code workflow using Markdown, GitHub, OpenAPI, Swagger, and MkDocs Material
+- Standard Operating Procedures (SOPs)
+- Security & Compliance Documentation
+- Integration & Architecture Documentation
