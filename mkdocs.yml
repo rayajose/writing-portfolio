@@ -69,12 +69,12 @@ nav:
           - CSV Feed File Specification: sop/csv-feed-file-spec.md
 
       - Supporting Materials:
-          # - Resources: api/resources.md
+          - Resources: api/resources.md
           - Screenshots: api/screenshots.md
 
-  - SOPs & Operations:
-      - Partner Feed Onboarding: sop/onboarding.md
-      # - CSV Feed File Specification: sop/csv-feed-file-spec.md
+  - Operations & Systems:
+      - System Architecture and Operational Flow: architecture/index.md
+    #  - Edge Gateway Deployment and Service Guide: operations/edge-gateway-guide.md
 
   - Security & Compliance:
       - Incident Response Plan: security/incident-response.md

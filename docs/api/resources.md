@@ -1,126 +1,192 @@
-# Resources
+# System Resource Model
 
-Use this page to understand core resources and supporting concepts in the Commerce Integration API.
+## Overview
+
+This page describes the primary operational resources used within the Commerce Integration API.
+
+Feeds, jobs, and products represent the core entities that model the ingestion lifecycle, from partner feed submission through asynchronous ETL processing and normalized product persistence.
+
+These resources provide operational visibility, traceability, and structured relationships across the ingestion platform.
+
+
+## Resource relationships
+
+```mermaid
+flowchart LR
+    Feed --> ValidationJob
+    ValidationJob --> Product
+```
+
+### Resource lifecycle
+
+1. A partner uploads a feed.
+2. The system creates processing jobs.
+3. ETL workflows validate and transform ingestion data.
+4. Products are normalized and stored for retrieval.
+5. Operational metadata retained for troubleshooting and auditing.
 
 
 ## Feed
 
-A feed represents a product data file submitted by a partner for ingestion.
+A feed represents a partner-submitted product data file entering the ingestion pipeline.
 
-### Fields
+Feeds serve as the operational entry point for asynchronous validation and ETL workflows.
 
-- `feed_id` — unique identifier for the feed (FDxxxxx)
-- `partner_name` — name of the submitting partner
-- `file_name` — name of the uploaded file
-- `content_type` — MIME type of the uploaded file
-- `status` — feed upload status (`uploaded`)
-- `uploaded_at` — timestamp when the feed was uploaded
-- `validation_job_id` — associated validation job ID (JVxxxxx)
-- `validation_status` — current ETL job status (`queued`, `running`, `completed`, `failed`)
-- `validation_message` — result of ETL processing
-- `raw_file_s3_key` — S3 object key for the raw feed file
-- `raw_file_bucket` — S3 bucket storing the raw feed
+### Feed fields
 
+| Field                | Description                                |
+| -------------------- | ------------------------------------------ |
+| `feed_id`            | Unique identifier for the feed (`FDxxxxx`) |
+| `partner_name`       | Name of the submitting partner             |
+| `file_name`          | Uploaded file name                         |
+| `content_type`       | MIME type of uploaded file                 |
+| `status`             | Feed upload status                         |
+| `uploaded_at`        | Upload timestamp                           |
+| `validation_job_id`  | Associated validation job ID (`JVxxxxx`)   |
+| `validation_status`  | Current ETL processing state               |
+| `validation_message` | ETL processing result summary              |
+| `raw_file_s3_key`    | S3 object key for raw feed storage         |
+| `raw_file_bucket`    | S3 bucket storing the raw feed             |
 
-### Additional details
+### Operational details
 
 - Feed status reflects upload state only
-- Processing state is tracked via the associated validation job
+- ETL lifecycle state tracked through associated validation jobs
+- Raw feed files retained to support replay and troubleshooting workflows
+- Feed metadata provides ingestion traceability across processing lifecycle
 
 
 ## Job
 
-A job represents a processing task such as feed submission or ETL execution.
+A job represents an asynchronous processing task executed by the ingestion platform.
 
-Jobs provide visibility into and control over the ingestion pipeline.
+Jobs provide operational visibility into ingestion, validation, transformation, and ETL execution workflows.
 
-### Fields
+### Job fields
 
-- `job_id` — unique identifier for the job (JSxxxxx or JVxxxxx)
-- `feed_id` — associated feed
-- `job_type` — type of job
-- `status` — current job status
-- `created_at` — timestamp when the job was created
-- `message` — status or result message
-
+| Field        | Description                                            |
+| ------------ | ------------------------------------------------------ |
+| `job_id`     | Unique identifier for the job (`JSxxxxx` or `JVxxxxx`) |
+| `feed_id`    | Associated feed identifier                             |
+| `job_type`   | Processing task type                                   |
+| `status`     | Current operational state                              |
+| `created_at` | Job creation timestamp                                 |
+| `message`    | Status or processing summary message                   |
 
 ### Job types
 
-| Type       | Description                                  |
-| ---------- | -------------------------------------------- |
-| submission | Feed upload processing                       |
-| validation | ETL processing (Validate → Transform → Load) |
+| Type         | Description                                    |
+| ------------ | ---------------------------------------------- |
+| `submission` | Feed upload processing                         |
+| `validation` | ETL processing (`Validate → Transform → Load`) |
 
+### Operational states
 
-### Status values
+| Status        | Description                        |
+| ------------- | ---------------------------------- |
+| `queued`      | Job created and awaiting execution |
+| `in_progress` | ETL processing currently running   |
+| `completed`   | Job completed successfully         |
+| `failed`      | Job encountered processing failure |
 
-| Status    | Description                        |
-| --------- | ---------------------------------- |
-| queued    | Job created and awaiting execution |
-| running   | ETL processing in progress         |
-| completed | Job completed successfully         |
-| failed    | Job encountered an error           |
+### Operational details
+
+- Jobs support asynchronous ingestion workflows
+- Lifecycle states provide operational visibility and monitoring
+- Job metadata retained for troubleshooting and auditability
+- Processing summaries expose ETL outcomes and validation results
 
 
 ## Product
 
-A product represents a normalized item derived from a partner feed.
+A product represents a normalized catalog item derived from partner feed ingestion.
 
-Products are created during ETL processing and stored for querying.
+Products are generated during ETL processing and stored for querying, analytics, and downstream integration workflows.
 
-### Fields
+### Product fields
 
-- `product_id` — unique identifier for the product (PRxxxxx)
-- `feed_id` — associated feed
-- `partner_name` — originating partner
-- `sku` — partner-defined stock keeping unit
-- `product_name` — display name of the product
-- `description` — product description
-- `brand` — product brand
-- `category` — product category
-- `price` — product price (numeric)
-- `currency` — currency code (e.g., USD)
-- `availability` — availability status (e.g., in_stock)
-- `created_at` — timestamp when product was ingested
+| Field          | Description                                   |
+| -------------- | --------------------------------------------- |
+| `product_id`   | Unique identifier for the product (`PRxxxxx`) |
+| `feed_id`      | Associated feed identifier                    |
+| `partner_name` | Originating partner                           |
+| `sku`          | Partner-defined stock keeping unit            |
+| `product_name` | Product display name                          |
+| `description`  | Product description                           |
+| `brand`        | Product brand                                 |
+| `category`     | Product category                              |
+| `price`        | Product price                                 |
+| `currency`     | Currency code                                 |
+| `availability` | Product availability status                   |
+| `created_at`   | Product ingestion timestamp                   |
 
+### Operational details
 
-## Identifier format
-
-All resources use structured identifiers for consistency and traceability:
-
-| Prefix | Resource       | Example |
-| ------ | -------------- | ------- |
-| FD     | Feed           | FD00001 |
-| JS     | Submission Job | JS00001 |
-| JV     | Validation Job | JV00001 |
-| PR     | Product        | PR00001 |
+- Products generated through ETL normalization workflows
+- Duplicate prevention enforced during ingestion
+- Existing records evaluated for change detection
+- Products queryable independently from originating feeds
 
 
-## Health endpoint
+## Identifier structure
 
-Used to verify API and database availability.
+All operational resources use structured identifiers to support consistency and traceability across ingestion workflows.
 
-### GET /health
+| Prefix | Resource       | Example   |
+| ------ | -------------- | --------- |
+| `FD`   | Feed           | `FD00001` |
+| `JS`   | Submission Job | `JS00001` |
+| `JV`   | Validation Job | `JV00001` |
+| `PR`   | Product        | `PR00001` |
 
-Returns the operational status of the API.
+### Identifier characteristics
 
-**Response**
-
-```json
-{
-  "status": "ok",
-  "database": "connected"
-}
-```
-### What happens
-
-- Check API availability  
-- Verify database connectivity  
+- Generated through database-backed counters
+- Uniqueness enforced at resource level
+- Structured prefixes simplify operational troubleshooting and tracking
 
 
-## Additional details
+## Processing concepts
 
-- All resources use `snake_case` field names  
-- Identifiers are generated using database-backed counters  
-- Raw data is stored in Amazon S3 and processed via ETL  
-- Products are derived from feeds but can be queried independently  
+### Asynchronous processing
+
+Feed ingestion and ETL execution occur independently from client-facing request handling.
+
+This architecture supports:
+
+- Non-blocking uploads
+- Scalable ingestion workflows
+- Background validation and transformation
+- Operational resiliency during large processing events
+
+### Data normalization
+
+Incoming partner data is transformed into a normalized schema before persistence.
+
+Normalization workflows include:
+
+- Required field validation
+- Structural consistency checks
+- Duplicate prevention
+- Change detection processing
+
+### Traceability
+
+Operational metadata retained throughout ingestion lifecycle includes:
+
+- Feed identifiers
+- Job lifecycle states
+- ETL summaries
+- Raw file storage references
+- Processing timestamps
+
+This metadata supports troubleshooting, auditing, and operational analysis.
+
+
+## Related documentation
+
+- [System Architecture and Operational Flow](../architecture/index.md)
+- [Integration Guide](../api/integration-guide.md)
+- [Feeds API](../api/feeds.md)
+- [Jobs API](../api/jobs.md)
+- [Products API](../api/products.md)
