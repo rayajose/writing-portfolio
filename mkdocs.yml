@@ -1,5 +1,5 @@
-site_name: "Ray Jose – Developer Documentation Portfolio"
-site_description: "API, integration, and data platform documentation portfolio."
+site_name: "Ray Jose – Systems Documentation Portfolio"
+site_description: "Technical documentation for APIs, integration platforms, operational workflows, cloud systems, and engineering-driven environments."
 site_url: "https://rayajose.github.io/writing-portfolio/"
 use_directory_urls: true
 
@@ -45,7 +45,7 @@ nav:
       - How-To Guides:
           - Ingest a Product Feed End-to-End: api/ingest-product-feed.md
           - Debug a Failed Feed: api/debug-product-feed.md
-          # - Partner Feed Onboarding: sop/onboarding.md
+          - Partner Feed Onboarding: sop/onboarding.md
 
       - API Reference:
           - Overview: api/api-reference.md
@@ -72,12 +72,12 @@ nav:
           # - Resources: api/resources.md
           - Screenshots: api/screenshots.md
 
-  # - SOPs & Operations:
-      # - Partner Feed Onboarding: sop/onboarding.md
+  - SOPs & Operations:
+      - Partner Feed Onboarding: sop/onboarding.md
       # - CSV Feed File Specification: sop/csv-feed-file-spec.md
 
-  # - Security & Compliance:
-      # - Incident Response Plan: security/incident-response.md
+  - Security & Compliance:
+      - Incident Response Plan: security/incident-response.md
 
   - About: about.md
 

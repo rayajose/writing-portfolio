@@ -99,7 +99,7 @@ This section explains the fundamental concepts behind ingestion, processing, ord
 - Jobs track validation and ingestion workflows
 - Explicit execution model
 - Status lifecycle:
-  `queued → in_progress → completed / failed`
+  `queued → running → completed / failed`
 - Validation and ETL execution visibility
 
 ### Product catalog management

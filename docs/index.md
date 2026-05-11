@@ -1,5 +1,5 @@
-# APIs, Integrations, and Cloud Platforms
-Principal-level technical writing portfolio focused on developer platforms, API ecosystems, cloud-native integrations, and operational documentation.
+# Systems, Integrations, and Technical Platforms
+Principal-level technical writing portfolio focused on API ecosystems, operational workflows, cloud-native systems, and implementation-focused documentation for complex technical environments.
 
 ## Featured Project: Commerce Integration API
 

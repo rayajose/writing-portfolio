@@ -225,7 +225,7 @@ Returned when the request contains a `feed_id` not currently in system.
 ## Additional details
 
 * Feed processing is asynchronous. Uploading a feed does not immediately make product data available.
-* Use the `validation_status` field to track ETL progress (`queued`, `in_progress`, `completed`, `failed`).
+* Use the `validation_status` field to track ETL progress (`queued`, `running`, `completed`, `failed`).
 * Product data becomes queryable only after validation and ETL processing complete successfully.
 * Feed IDs (`FDxxxxx`) and job IDs (`JSxxxxx`, `JVxxxxx`) follow fixed formats for traceability across the system.
 

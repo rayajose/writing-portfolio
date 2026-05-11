@@ -4,7 +4,6 @@
 
 This page defines how to detect, respond to, and recover from security incidents affecting the platform.
 
----
 
 ## Scope
 
@@ -15,7 +14,6 @@ This process applies to the following scenarios:
 - Service disruption caused by malicious activity
 - Integrity issues affecting system or data accuracy
 
----
 
 ## Objectives
 
@@ -25,7 +23,6 @@ This process applies to the following scenarios:
 - Structured recovery and post-incident analysis
 - Alignment with compliance requirements (e.g., PCI DSS practices)
 
----
 
 ## Incident classification
 
@@ -53,7 +50,6 @@ This process applies to the following scenarios:
 - Informational alerts
 - Non-impacting anomalies
 
----
 
 ## Roles and responsibilities
 
@@ -76,7 +72,6 @@ Leads response efforts and coordinates decision-making.
 - Manages internal and external communication
 - Coordinates stakeholder updates
 
----
 
 ## Incident response lifecycle
 
@@ -89,7 +84,6 @@ Incidents may be identified through:
 - User or partner reports
 - Automated security tools
 
----
 
 ### 2. Triage
 
@@ -97,7 +91,6 @@ Incidents may be identified through:
 - Validate whether the event is a true incident
 - Identify affected systems and data
 
----
 
 ### 3. Containment
 
@@ -108,7 +101,6 @@ Common containment actions include:
 - Blocking malicious IP addresses
 - Disabling impacted integrations
 
----
 
 ### 4. Investigation
 
@@ -117,7 +109,6 @@ Common containment actions include:
 - Determine scope of impact
 - Confirm whether data was accessed or altered
 
----
 
 ### 5. Eradication
 
@@ -126,7 +117,6 @@ Common containment actions include:
 - Rotate credentials and keys
 - Apply security fixes
 
----
 
 ### 6. Recovery
 
@@ -134,7 +124,6 @@ Common containment actions include:
 - Validate system integrity
 - Monitor for recurrence
 
----
 
 ### 7. Post-incident review
 
@@ -143,7 +132,6 @@ Common containment actions include:
 - Define corrective actions
 - Update documentation and controls
 
----
 
 ## Communication guidelines
 
@@ -153,7 +141,6 @@ Common containment actions include:
 - Provide regular status updates during active incidents
 - Maintain a centralized incident log
 
----
 
 ### External communication
 
@@ -161,7 +148,6 @@ Common containment actions include:
 - Provide regular status updates  
 - Maintain a centralized incident log  
 
----
 
 ## Data handling
 
@@ -169,7 +155,6 @@ Common containment actions include:
 - Limit access to incident data to authorized personnel only
 - Maintain audit logs for all response actions
 
----
 
 ## Escalation criteria
 
@@ -180,7 +165,6 @@ Escalate immediately if:
 - Service disruption impacts critical functionality
 - Regulatory reporting may be required
 
----
 
 ## Tools
 
@@ -189,7 +173,6 @@ Escalate immediately if:
 - Audit trails
 - Incident tracking records
 
----
 
 ## Post-incident deliverables
 
@@ -199,7 +182,6 @@ Escalate immediately if:
 - Remediation actions taken
 - Recommendations for prevention
 
----
 
 ## Related documentation
 

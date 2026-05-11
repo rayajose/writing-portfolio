@@ -4,7 +4,6 @@
 
 This page defines the process for onboarding a new partner product feed into the platform.
 
----
 
 ## Scope
 
@@ -16,7 +15,6 @@ This process applies to the following scenarios:
 
 It is intended for use by operations teams, integration engineers, and support personnel.
 
----
 
 ## Preconditions
 
@@ -27,7 +25,6 @@ Before starting, confirm the following:
 - API access is available (API key configured)
 - Target environment is identified (test or production)
 
----
 
 ## What happens
 
@@ -37,7 +34,6 @@ Before starting, confirm the following:
 - Store products in the database  
 - Make products available via the API  
 
----
 
 ## Procedure
 
@@ -52,7 +48,6 @@ curl -X POST "http://api.example.com/feeds/upload" \
   -F "file=@sample_catalog.csv"
 ```
 
----
 
 ### What happens
 
@@ -70,7 +65,6 @@ Example response:
 }
 ```
 
----
 
 ### Step 2: Verify feed registration
 
@@ -81,7 +75,6 @@ curl -H "x-api-key: <api-key>" \
   "http://api.example.com/feeds/FD00010"
 ```
 
----
 
 ### Validation checks
 
@@ -89,7 +82,6 @@ curl -H "x-api-key: <api-key>" \
 - `validation_job_id` is present
 - `partner_name` and `file_name` should match input
 
----
 
 ### Step 3: Monitor validation job
 
@@ -100,14 +92,12 @@ curl -H "x-api-key: <api-key>" \
   "http://api.example.com/jobs/JV00010"
 ```
 
----
 
 ### Expected status flow
 
 - `queued` → `running` → `completed`
 - If errors occur: `failed`
 
----
 
 ### Step 4: Review validation results
 
@@ -122,7 +112,6 @@ Example:
 }
 ```
 
----
 
 ### What the results mean
 
@@ -131,7 +120,6 @@ Example:
 - **Unchanged**: No changes from existing records
 - **Skipped**: Invalid rows (missing required fields or malformed data)
 
----
 
 ### Step 5: Validate product availability
 
@@ -142,7 +130,6 @@ curl -H "x-api-key: <api-key>" \
   "http://api.example.com/products?partner_name=<partner_name>"
 ```
 
----
 
 ### Validation checks
 
@@ -150,7 +137,6 @@ curl -H "x-api-key: <api-key>" \
 - Key fields (SKU, name, price, availability) are populated
 - Record counts align with ETL summary
 
----
 
 ## Decision points
 
@@ -160,7 +146,6 @@ curl -H "x-api-key: <api-key>" \
 - Check CSV format and required fields
 - Correct issues and re-upload feed
 
----
 
 ### If high skip count
 
@@ -168,7 +153,6 @@ curl -H "x-api-key: <api-key>" \
 - Confirm required fields (`sku`, `product_name`) are present
 - Coordinate with partner to correct source data
 
----
 
 ### If products not returned
 
@@ -176,7 +160,6 @@ curl -H "x-api-key: <api-key>" \
 - Verify filters in product query
 - Check database connectivity or ingestion logs
 
----
 
 ## Results
 
@@ -187,7 +170,6 @@ After successful onboarding:
 - Data is persisted in the system
 - Partner can perform subsequent updates via feed re-submission
 
----
 
 ## Additional details
 
@@ -196,7 +178,6 @@ After successful onboarding:
 - Updates are only counted when actual data changes occur
 - Raw files are stored for traceability and reprocessing
 
----
 
 ## Related documentation
 
