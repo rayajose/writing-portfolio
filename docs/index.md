@@ -1,13 +1,26 @@
-# Systems, Integrations, and Technical Platforms
-Principal-level technical writing portfolio focused on API ecosystems, operational workflows, cloud-native systems, and implementation-focused documentation for complex technical environments.
+<div class="portfolio-hero">
 
-## Featured Project: Commerce Integration API
+<h1>Systems, integrations, and technical platforms</h1>
 
-Full documentation:
+<p class="hero-subtitle">
+Principal-level technical writing portfolio focused on API ecosystems, operational workflows, cloud-native systems, and implementation-focused documentation.
+</p>
 
-- [View API Documentation](api/index.md)
+<h2>Featured project: Commerce Integration API</h2>
 
-## Featured Work
+<p class="hero-summary">
+Cloud-native API platform demonstrating feed ingestion, ETL processing, async job workflows, analytics services, and developer-focused documentation.
+</p>
+
+<div class="portfolio-hero-actions">
+<a class="md-button md-button--primary" href="/writing-portfolio/api/">View API documentation</a>
+<a class="md-button" href="/writing-portfolio/api/ingest-product-feed/">View integration workflow</a>
+</div>
+
+</div>
+
+
+## Documentation areas
 
 ### API & Developer Documentation
 
@@ -19,7 +32,7 @@ End-to-end documentation for a cloud-native commerce integration platform, inclu
 - Pagination, filtering, and data access patterns
 - Developer onboarding and self-service enablement
 
-**Start here (recommended):**
+**Implementation guides**
 
 - [Ingesting a Product Feed End-to-End](api/ingest-product-feed.md)
 - [Debugging a Failed Feed](api/debug-product-feed.md)
