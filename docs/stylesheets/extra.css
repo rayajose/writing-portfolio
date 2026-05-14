@@ -1,9 +1,8 @@
-/* Global colors */
+/* Global */
 body {
   background-color: #f3f5f8;
 }
 
-/* Typography */
 body,
 input,
 button,
@@ -16,12 +15,11 @@ select {
     sans-serif;
 }
 
-/* Page width */
+/* Layout */
 .md-grid {
   max-width: 1500px;
 }
 
-/* Main content surface */
 .md-main__inner {
   margin-top: 1.2rem;
 }
@@ -33,19 +31,52 @@ select {
   padding: 1.65rem 2.1rem;
 }
 
-/* Header polish */
+/* Header */
 .md-header {
+  background-color: #eef2f7;
   box-shadow: none;
   border-bottom: 1px solid #d8dee6;
+  color: #1f2933;
 }
 
 .md-header__title {
+  color: #1f2933;
   font-weight: 600;
   letter-spacing: -0.015em;
 }
 
+.md-header__button {
+  color: #4b5563;
+}
+
+/* Search */
+.md-search__form {
+  background-color: #ffffff;
+  border: 1px solid #cfd8e3;
+  border-radius: 8px;
+}
+
+.md-search__input {
+  color: #1f2933;
+}
+
+.md-search__input::placeholder,
+.md-search__icon {
+  color: #5f6b7a;
+}
+
+.md-search__icon[for="__search"] {
+  color: #5f6b7a !important;
+}
+
+.md-search__icon[for="__search"] svg {
+  fill: currentColor !important;
+}
+
+/* Top tabs */
 .md-tabs {
-  border-bottom: 1px solid #e1e5ea;
+  background-color: #e7edf5;
+  border-bottom: 1px solid #d8dee6;
 }
 
 .md-tabs__list {
@@ -54,17 +85,30 @@ select {
 
 .md-tabs__link {
   padding: 0 0.45rem;
+  color: #4b5563;
   font-size: 0.68rem;
   font-weight: 500;
-  opacity: 0.78;
+  opacity: 0.82;
 }
 
-.md-tabs__link:hover,
-.md-tabs__link--active {
+.md-tabs__link:hover {
+  color: #1f2933;
   opacity: 1;
 }
 
-/* Navigation polish */
+.md-tabs__item--active .md-tabs__link,
+.md-tabs__item--active .md-tabs__link:hover,
+.md-tabs__link--active,
+.md-tabs__link--active:hover {
+  color: #1f2933 !important;
+  opacity: 1 !important;
+}
+
+/* Side navigation */
+.md-sidebar {
+  padding-top: 0.025rem;
+}
+
 .md-nav__title {
   font-size: 0.72rem;
   font-weight: 500;
@@ -85,11 +129,6 @@ select {
 .md-nav__link--active {
   font-weight: 500;
   background-color: rgba(31, 79, 130, 0.08);
-}
-
-/* Align sidebars with content card */
-.md-sidebar {
-  padding-top: 0.025rem;
 }
 
 /* Typography */
@@ -126,10 +165,6 @@ select {
 
 .md-typeset h3+p {
   color: var(--md-default-fg-color--light);
-}
-
-/* Home page section descriptions */
-.md-typeset h3+p {
   font-size: 0.74rem;
   line-height: 1.7;
   max-width: 880px;
@@ -160,7 +195,7 @@ select {
   text-decoration-thickness: 0.12em;
 }
 
-/* Home page hero section */
+/* Hero */
 .portfolio-hero {
   padding: 2.5rem 0 2rem;
   max-width: 760px;
@@ -239,7 +274,7 @@ select {
   background-color: #f3f7fb;
 }
 
-/* Global button polish */
+/* Buttons */
 .md-button {
   border-radius: 6px;
   font-weight: 500;
@@ -266,14 +301,14 @@ select {
   margin: 1.5rem auto;
 }
 
-/* Code blocks */
+/* Code */
 .md-typeset pre>code {
   font-size: 0.7rem;
   line-height: 1.55;
 }
 
 .highlight {
-  border: 1px solid #d8dee6;
+  border: 0.5px solid #d8dee6;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -281,20 +316,14 @@ select {
 .highlight pre {
   margin: 0;
   padding: 1rem;
-}
-
-.md-typeset code {
-  border-radius: 4px;
-  padding: 0.12em 0.35em;
-  font-size: 0.68rem;
-}
-
-.highlight pre {
   background-color: #f7f9fc;
 }
 
 .md-typeset code {
-  background-color: #eef3f8;
+  background-color: #ebeef1;
+  border-radius: 4px;
+  padding: 0.12em 0.35em;
+  font-size: 0.68rem;
 }
 
 /* Side-by-side API examples */
@@ -345,23 +374,19 @@ select {
 }
 
 .md-typeset table:not([class]) th {
-  border-bottom: 1px solid #9a9a9a;
-  border-right: 1px solid #b0b0b0;
-}
-
-/* Table polish */
-.md-typeset table:not([class]) th {
   background-color: #f6f8fb;
   font-weight: 600;
-}
-
-.md-typeset table:not([class]) tr:hover td {
-  background-color: #fafbfd;
+  border-bottom: 1px solid #9a9a9a;
+  border-right: 1px solid #b0b0b0;
 }
 
 .md-typeset table:not([class]) td {
   border-top: 1px solid #c0c0c0;
   border-right: 1px solid #b0b0b0;
+}
+
+.md-typeset table:not([class]) tr:hover td {
+  background-color: #fafbfd;
 }
 
 .md-typeset table:not([class]) th:last-child,
