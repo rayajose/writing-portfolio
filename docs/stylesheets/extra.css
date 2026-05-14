@@ -203,7 +203,7 @@ select {
 
 .portfolio-hero h1 {
   margin-bottom: 0.35rem;
-  font-size: 1.9rem;
+  font-size: 1.7rem;
   font-weight: 525;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -211,7 +211,7 @@ select {
 }
 
 .portfolio-hero h2 {
-  margin-top: 1.8rem;
+  margin-top: 1.6rem;
   margin-bottom: 0.4rem;
   padding-bottom: 0;
   border-bottom: none;
