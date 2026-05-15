@@ -22,6 +22,7 @@ select {
 
 .md-main__inner {
   margin-top: 1.2rem;
+  margin-bottom: 2rem;
 }
 
 .md-content {
@@ -169,7 +170,11 @@ select {
 /* Typography */
 .md-typeset {
   color: #1f2933;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
+}
+
+.md-typeset {
+  max-width: 920px;
 }
 
 .md-typeset h1 {
@@ -427,4 +432,9 @@ select {
 .md-typeset table:not([class]) th:last-child,
 .md-typeset table:not([class]) td:last-child {
   border-right: none;
+}
+
+/* Hide MkDocs footer */
+.md-footer {
+  display: none;
 }
