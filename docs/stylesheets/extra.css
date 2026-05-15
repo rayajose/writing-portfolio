@@ -393,30 +393,6 @@ select {
   font-size: 0.62rem;
 }
 
-/* Wrap long code lines instead of scrolling horizontally */
-.md-typeset pre,
-.md-typeset code {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-/* Reduce horizontal scroll behavior in Material code blocks */
-.md-typeset .highlight pre {
-  overflow-x: hidden;
-}
-
-/* Optional: slightly tighten code text
-.md-typeset .highlight code {
-  font-size: 0.72rem;
-  line-height: 1.5;
-} */
-
-@media screen and (max-width: 900px) {
-  .md-typeset .highlight {
-    grid-template-columns: 1fr;
-  }
-}
 
 /* Side-by-side API examples */
 .api-example-grid {
@@ -444,9 +420,8 @@ select {
   margin-top: 0;
 }
 
-/* Wrap long code lines instead of scrolling horizontally */
-.api-example-grid pre,
-.api-example-grid code {
+/* Wrap long lines only inside fenced code blocks */
+.api-example-grid pre code {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -457,16 +432,17 @@ select {
   overflow-x: hidden;
 }
 
+/* Prevent inline code in tables from wrapping */
+.md-typeset table code {
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
 /* Optional: slightly tighten code text */
 .api-example-grid .highlight code {
   font-size: 0.62rem;
   line-height: 1.5;
-}
-
-@media screen and (max-width: 900px) {
-  .api-example-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media screen and (max-width: 900px) {
