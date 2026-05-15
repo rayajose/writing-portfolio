@@ -326,12 +326,12 @@ select {
 
 .highlight pre {
   margin: 0;
-  padding: 0.5rem;
+  /* padding: 0.25rem; */
   background-color: #f7f9fc;
 }
 
 .md-typeset code {
-  background-color: #ebeef1;
+  background-color: #faf0f0;
   border-radius: 4px;
   padding: 0.12em 0.35em;
   font-size: 0.68rem;
