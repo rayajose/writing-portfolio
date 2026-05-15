@@ -50,7 +50,7 @@ Healthy
 ```
 
 
-
+<p>
 ```json
 Unhealthy
 
@@ -59,6 +59,7 @@ Unhealthy
   "database": "unreachable"
 }
 ```
+</p>
 
 </div>
 </div>

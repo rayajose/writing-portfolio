@@ -85,7 +85,7 @@ curl -X POST http://api.example.com/orders \
   "items": [
     {
       "order_item_id": "OI00001",
-      "product_id": "PR00001",
+      "product_id": "PR00021",
       "sku": "BR-4001",
       "product_name": "All Day IPA",
       "quantity": 1,
@@ -197,7 +197,7 @@ curl -X GET http://api.example.com/orders \
       "items": [
         {
           "order_item_id": "OI00001",
-          "product_id": "PR00001",
+          "product_id": "PR00021",
           "sku": "BR-4001",
           "product_name": "All Day IPA",
           "quantity": 1,
@@ -282,7 +282,7 @@ curl -X GET http://api.example.com/orders/OR00001 \
   "items": [
     {
       "order_item_id": "OI00001",
-      "product_id": "PR00001",
+      "product_id": "PR00021",
       "sku": "BR-4001",
       "product_name": "All Day IPA",
       "quantity": 1,
