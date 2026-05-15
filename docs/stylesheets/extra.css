@@ -217,10 +217,19 @@ select {
 
 .md-typeset h3 {
   color: var(--md-default-fg-color);
-  font-weight: 475;
+  font-weight: 525;
+  font-size: 0.9rem;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
   padding-top: 1.25rem;
+}
+
+.md-typeset h4 {
+  font-size: 0.72rem;
+  font-weight: 500;
+  margin-top: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #4b5563;
 }
 
 .md-typeset h3:not(:first-child) {
