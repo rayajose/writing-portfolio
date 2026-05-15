@@ -56,15 +56,14 @@ select {
 }
 
 .md-header__inner::before {
-  content: "Ray Jose · Technical Writing Portfolio";
+  content: "</> Ray Jose – Technical Writing Portfolio";
   display: flex;
   align-items: center;
   margin-right: 1.25rem;
-  color: #111827;
+  color: #394253;
   font-family: Arial, sans-serif;
   font-size: 16px;
   font-weight: 575;
-  letter-spacing: 0;
   line-height: 1;
   white-space: nowrap;
 }
