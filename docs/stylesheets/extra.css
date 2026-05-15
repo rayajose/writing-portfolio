@@ -33,37 +33,47 @@ select {
 
 /* Header */
 .md-header {
-  background-color: #eef2f7;
+  background-color: #ffffff;
   box-shadow: none;
-  border-bottom: 1px solid #d8dee6;
-  color: #1f2933;
+  border-bottom: 1px solid #e1e6ed;
+  color: #111827;
+}
+
+.md-header__inner {
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
 }
 
 .md-header__title {
-  color: #1f2933;
+  color: #111827;
   font-weight: 600;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
 }
 
 .md-header__button {
-  color: #4b5563;
+  color: #6b7280;
+}
+
+.md-header__button:hover {
+  color: #111827;
 }
 
 /* Search */
 .md-search__form {
-  background-color: #ffffff;
-  border: 1px solid #cfd8e3;
-  border-radius: 8px;
+  background-color: #f8fafc;
+  border: 1px solid #d8dee6;
+  border-radius: 999px;
 }
 
 .md-search__input {
-  color: #1f2933;
+  color: #111827;
+  font-size: 0.68rem;
 }
 
 .md-search__input::placeholder,
 .md-search__icon,
 .md-search__icon[for="__search"] {
-  color: #5f6b7a !important;
+  color: #6b7280 !important;
 }
 
 .md-search__icon[for="__search"] svg {
@@ -72,33 +82,47 @@ select {
 
 /* Top tabs */
 .md-tabs {
-  background-color: #e7edf5;
-  border-bottom: 1px solid #d8dee6;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e1e6ed;
 }
 
 .md-tabs__list {
-  gap: 0.25rem;
+  gap: 0.35rem;
 }
 
 .md-tabs__link {
-  padding: 0 0.45rem;
-  color: #4b5563;
+  padding: 0 0.55rem;
+  color: #6b7280;
   font-size: 0.68rem;
   font-weight: 500;
-  opacity: 0.82;
+  opacity: 1;
 }
 
 .md-tabs__link:hover {
-  color: #1f2933;
-  opacity: 1;
+  color: #111827;
 }
 
 .md-tabs__item--active .md-tabs__link,
 .md-tabs__item--active .md-tabs__link:hover,
 .md-tabs__link--active,
 .md-tabs__link--active:hover {
-  color: #1f2933 !important;
+  color: #111827 !important;
   opacity: 1 !important;
+}
+
+.md-tabs__item--active .md-tabs__link {
+  position: relative;
+}
+
+.md-tabs__item--active .md-tabs__link::after {
+  content: "";
+  position: absolute;
+  left: 0.55rem;
+  right: 0.55rem;
+  bottom: -0.45rem;
+  height: 2px;
+  border-radius: 999px;
+  background-color: #111827;
 }
 
 /* Side navigation */
