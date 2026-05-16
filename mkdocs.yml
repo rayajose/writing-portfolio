@@ -4,27 +4,20 @@ site_url: "https://rayajose.github.io/writing-portfolio/"
 use_directory_urls: true
 
 theme:
-  name: "material"
+  name: material
+  language: en
   features:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.top
     - content.code.copy
-
   palette:
-    - scheme: default
-    - primary: white
-    - accent: blue
-
+    scheme: default
+    primary: white
+    accent: blue
 
 extra_css:
   - stylesheets/extra.css
-
-extra_head:
-  - <link rel="preconnect" href="https://fonts.googleapis.com">
-  - <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  # - <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  # - <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=optional" rel="stylesheet">
 
 nav:
   - Home: index.md
@@ -33,6 +26,7 @@ nav:
       - Overview: api/index.md
       - Get Started: api/getting_started.md
       - Integration guide: api/integration-guide.md
+      - Webhook integration guide: api/webhooks.md
 
       - Tutorials:
           - Your First Feed Ingestion: tutorials/first-feed.md
@@ -69,7 +63,6 @@ nav:
 
   - Operations & Systems:
       - System Architecture and Operational Flow: architecture/index.md
-    #  - Edge Gateway Deployment and Service Guide: operations/edge-gateway-guide.md
 
   - Security & Compliance:
       - Incident Response Plan: security/incident-response.md
@@ -90,10 +83,10 @@ plugins:
   - search
 
 extra:
+  generator: false
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/rayajose
-
   meta:
     - property: og:title
       content: Ray Jose – Developer Documentation Portfolio

@@ -22,6 +22,9 @@ Cloud-native API platform demonstrating feed ingestion, ETL processing, async jo
 
 ## Documentation areas
 
+This portfolio demonstrates documentation developed for integration-focused, cloud-native systems. The samples emphasize developer enablement, operational workflows, API usability, and production-style platform documentation commonly used in enterprise SaaS and e-commerce environments.
+
+
 ### API & Developer Documentation
 
 End-to-end documentation for a cloud-native commerce integration platform, including API reference, ingestion workflows, ETL processing, analytics services, and architecture documentation.

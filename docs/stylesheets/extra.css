@@ -388,11 +388,11 @@ select {
 
 .highlight pre {
   margin: 0;
-  background-color: #f7f9fc;
+  background-color: #f3f4f6;
 }
 
 .md-typeset code {
-  background-color: #faf0f0;
+  background-color: #eceff3;
   border-radius: 4px;
   padding: 0.12em 0.35em;
   font-size: 0.62rem;
@@ -423,6 +423,20 @@ select {
 
 .api-example-grid .highlight {
   margin-top: 0;
+}
+
+/* Request example */
+.api-example-grid>div:first-child .highlight,
+.api-example-grid>div:first-child .highlight pre,
+.api-example-grid>div:first-child .highlight code {
+  background-color: #e3f0ff !important;
+}
+
+/* Response example */
+.api-example-grid>div:last-child .highlight,
+.api-example-grid>div:last-child .highlight pre,
+.api-example-grid>div:last-child .highlight code {
+  background-color: #efe9ff !important;
 }
 
 /* Wrap long lines only inside fenced code blocks */
@@ -491,6 +505,18 @@ select {
 .md-typeset table:not([class]) td:last-child {
   border-right: none;
 }
+
+
+/* Copy-to-clipboard dialog */
+.md-dialog,
+.md-dialog__inner {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border: 1px solid #d8dee6 !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12) !important;
+}
+
 
 /* Hide MkDocs footer */
 .md-footer {
