@@ -168,5 +168,5 @@ Now that you’ve completed your first ingestion:
 ## Next steps
 
 - See [Ingest a product feed end-to-end](../api/ingest-product-feed.md) for a task-focused workflow
-- See [Debug a product Feed](../operations/debug-product-feed.md) to troubleshoot issues
+- See [Debug product feed failure](../operations/debug-product-feed.md) to troubleshoot issues
 - Explore [Products API](../api/products.md) for advanced queries

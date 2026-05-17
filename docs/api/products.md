@@ -49,7 +49,7 @@ Supports filtering, sorting, and cursor-based pagination.
 | `limit`        | int    | No       | Number of results to return (default: 10, max: 100)                           |
 | `cursor`       | string | No       | Cursor for pagination. Use the `next_cursor` value from the previous response |
 | `sort_by`      | string | No       | Field to sort by (created_at, price, product_name, brand, category)           |
-| `order`        | string | No       | Sort direction (`asc` [ascending], `desc` [decending], default: `desc`)       |
+| `order`        | string | No       | Sort direction (`asc` [ascending], `desc` [descending], default: `desc`)      |
 
 
 #### Sorting examples

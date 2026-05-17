@@ -1,4 +1,4 @@
-# Integration and architecture documentation
+# Architecture and deployment
 
 This section documents the system architecture, processing workflows, integration patterns, and operational design of the Commerce Integration API platform.
 

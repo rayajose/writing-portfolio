@@ -22,9 +22,9 @@ extra_css:
 nav:
   - Home: index.md
 
-  - API & Developer:
+  - API & Integrations:
+
       - Overview: api/index.md
-      - Platform overview: api/platform-overview.md
       - Get started: api/getting_started.md
       - Integration guide: api/integration-guide.md
       - Webhook integration guide: api/webhooks.md
@@ -34,7 +34,6 @@ nav:
 
       - How-to guides:
           - Ingest a product feed end-to-end: api/ingest-product-feed.md
-          - Debug a failed feed: operations/debug-product-feed.md
 
       - API reference:
           - Overview: api/api-reference.md
@@ -52,22 +51,26 @@ nav:
       - Specifications:
           - CSV feed file specification: specs/csv-feed-file-spec.md
 
-      - Resources:
+      - Supporting materials:
           - Resources: api/resources.md
           - Screenshots: api/screenshots.md
 
-  - Integration & Architecture:
-      - Overview: architecture/index.md
-      - Platform architecture: architecture/platform-architecture.md
-      - Workflows: architecture/workflows.md
-      - Deployment: architecture/deployment.md
+  - Architecture & Deployment:
 
-  - SOPs & Operations:
+      - Overview: architecture/index.md
+      - Platform architecture and operational flow: architecture/platform-architecture.md
+      - System architecture: api/architecture.md
+      - Workflows: architecture/workflows.md
+      - Deployment guide: architecture/deployment.md
+
+  - Operations:
+
       - Overview: operations/index.md
       - Partner onboarding SOP: operations/onboarding.md
       - Debug failed feed runbook: operations/debug-product-feed.md
 
   - Security & Compliance:
+
       - Overview: security/index.md
       - Incident response plan: security/incident-response.md
 

@@ -20,6 +20,8 @@ x-api-key: demo-secret-key
 
 Requests without a valid API key return `401` or `403`.
 
+> Note: The API uses a demo API key for documentation and portfolio purposes. Production-style API access and additional credentials can be discussed upon request.
+
 ## Quickstart
 
 Use this minimal workflow to ingest catalog data, query products, and create an order.
@@ -237,4 +239,4 @@ The platform uses structured identifiers for feeds, jobs, products, and orders.
 - Use [Products API](products.md) to query catalog data
 - Use [Orders API](orders.md) to create and retrieve order data
 - Use [Analytics API](analytics.md) to analyze sales and revenue
-- See [Debug a product feed](../operations/debug-product-feed.md) to troubleshoot failures
+- See [Debug product feed failure](../operations/debug-product-feed.md) to troubleshoot

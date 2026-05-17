@@ -1,4 +1,4 @@
-# Operations documentation
+# Operations
 
 This section contains operational documentation supporting onboarding workflows, ingestion procedures, troubleshooting activities, and repeatable production processes used throughout the Commerce Integration API platform.
 

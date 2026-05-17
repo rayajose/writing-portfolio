@@ -2,8 +2,7 @@
 
 This page explains how to deploy the Commerce Integration API to AWS using a containerized architecture.
 
-The application and its documentation are maintained in a single repository (`writing-portfolio`).  
-The API is deployed using Docker and AWS (ECS, RDS, S3), while documentation is published via GitHub Pages.
+The application and its documentation are maintained in a single repository (`writing-portfolio`). The API is deployed using Docker and AWS (ECS, RDS, S3), while documentation is published through GitHub Pages.
 
 For visual confirmation of the deployed environment, see [Screenshots](../api/screenshots.md).
 
@@ -12,25 +11,25 @@ For visual confirmation of the deployed environment, see [Screenshots](../api/sc
 
 The Commerce Integration API is deployed using the following AWS services:
 
-- **FastAPI** — application runtime packaged as a Docker container
-- **Amazon ECR** — container image registry (`partner-catalog-api`)
-- **Amazon ECS (Fargate)** — serverless container orchestration
-- **Application Load Balancer (ALB)** — public HTTP endpoint and traffic routing
-- **Amazon RDS (PostgreSQL)** — relational database for processed product data
-- **Amazon S3** — raw data layer for uploaded feed files
+- FastAPI application runtime packaged as a Docker container
+- Amazon ECR container image registry (`partner-catalog-api`)
+- Amazon ECS (Fargate) serverless container orchestration
+- Application Load Balancer (ALB) for public HTTP access and traffic routing
+- Amazon RDS (PostgreSQL) for processed product data
+- Amazon S3 for raw uploaded feed storage
 
-The source code and documentation are maintained in the `writing-portfolio` repository. The deployed API continues to use AWS resource names based on the application name, `partner-catalog-api`.
+The source code and documentation are maintained in the `writing-portfolio` repository. AWS resources continue to use the original application naming convention (`partner-catalog-api`).
 
 
 ## Container configuration
 
-**Image URI**
+### Image URI
 
 ```text
 792233688886.dkr.ecr.us-east-2.amazonaws.com/partner-catalog-api:latest
 ```
 
-**Container Port**
+### Container port
 
 ```text
 8000
@@ -42,41 +41,56 @@ The source code and documentation are maintained in the `writing-portfolio` repo
 - Launch type: Fargate
 - Desired tasks: 1 (set to 0 when not in use)
 - Deployment strategy: Rolling update
-- Load balancing: Enabled (via ALB target group)
+- Load balancing enabled through an ALB target group
 
 
 ## Networking
 
-- VPC: `vpc-03a81166f39b94bd9`
-- Subnets:
+### VPC
 
-  - `subnet-0397a6bfd705d1c76`
-  - `subnet-07a21f9409bffa8e9`
-- Public IP assignment: Enabled
+```text
+vpc-03a81166f39b94bd9
+```
 
-**ECS Security Group**
+### Subnets
+
+```text
+subnet-0397a6bfd705d1c76
+subnet-07a21f9409bffa8e9
+```
+
+### Public IP assignment
+
+```text
+Enabled
+```
+
+
+## ECS security group
 
 ```text
 sg-00778f0b6fabbf1af
 ```
 
+### Purpose
+
 - Allows outbound traffic to RDS and external services
-- Used as the trusted source for database access
+- Serves as the trusted source for database access
 
 
 ## Load balancer (ALB)
 
-**DNS Name**
+### DNS name
 
 ```text
 http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
 ```
 
-**Listener**
+### Listener
 
 - HTTP :80 → Target Group
 
-**Target Group**
+### Target group
 
 - Protocol: HTTP
 - Port: 8000
@@ -84,6 +98,8 @@ http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
 
 
 ## Database (RDS PostgreSQL)
+
+### Configuration
 
 - Engine: PostgreSQL
 - Port: 5432
@@ -95,32 +111,39 @@ http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
 sg-07a78daece2d2cf47
 ```
 
-**Inbound Rules**
+### Inbound rules
 
-- PostgreSQL (5432) from ECS security group:
+Allow PostgreSQL traffic from the ECS security group:
 
 ```text
 sg-00778f0b6fabbf1af
 ```
 
-- Optional: developer IP for direct access
+Optional:
 
-**Notes**
+- Developer IP address for direct administrative access
+
+### Notes
 
 - RDS is not publicly accessible
 - Only ECS tasks are permitted to connect
 
+
 ## Raw data storage (Amazon S3)
 
+### Purpose
+
 - Stores uploaded CSV feed files
-- Acts as the system of record for raw partner data
-- Used by the ETL process to extract and transform data
-- Enables reprocessing and auditability
+- Serves as the raw system of record
+- Supports ETL extraction and transformation workflows
+- Enables feed reprocessing and auditability
 
 
 ## Environment variables
 
-Configured in the ECS task definition:
+Configured in the ECS task definition.
+
+### Database configuration
 
 ```bash
 DB_TYPE=postgres
@@ -131,26 +154,28 @@ DB_USER=postgres
 DB_PASSWORD=<secured>
 ```
 
-### Optional (S3 Configuration)
+### Optional S3 configuration
 
 ```bash
 S3_RAW_BUCKET=partner-catalog-raw-rayj
 ```
 
-- Defines the S3 bucket used to store raw feed files
-- Used by the ETL process to locate and read uploaded data
-- Can be externalized for different environments (dev, staging, prod)
+### Notes
+
+- Defines the S3 bucket used for raw feed storage
+- Used by the ETL pipeline to locate uploaded feed files
+- Can be externalized for different deployment environments
 
 
 ## S3 and ETL integration
 
 - Raw feed files are stored in Amazon S3
-- The application uses AWS SDK (`boto3`) to read files during ETL processing
-- ETL is triggered via the Jobs API (`POST /jobs/{job_id}/run`)
+- The application uses the AWS SDK (`boto3`) during ETL processing
+- ETL processing is triggered through the Jobs API (`POST /jobs/{job_id}/run`)
 - ETL compares incoming data against existing records to avoid unnecessary updates
-- The ECS task must have network access to S3
+- ECS tasks require network access to S3
 
-> Note: IAM permissions for S3 access are required in a production setup (not fully configured in this demo).
+> Note: IAM permissions for S3 access are required in a production environment and are only partially configured in this demo deployment.
 
 
 ## Deployment workflow
@@ -162,32 +187,35 @@ aws ecr get-login-password --region us-east-2 \
 | docker login --username AWS --password-stdin 792233688886.dkr.ecr.us-east-2.amazonaws.com
 ```
 
-### 2. Build image
+### 2. Build the image
 
 ```bash
 docker build -t partner-catalog-api .
 ```
 
-### 3. Tag image
+### 3. Tag the image
 
 ```bash
 docker tag partner-catalog-api:latest \
 792233688886.dkr.ecr.us-east-2.amazonaws.com/partner-catalog-api:latest
 ```
 
-### 4. Push image
+### 4. Push the image
 
 ```bash
 docker push 792233688886.dkr.ecr.us-east-2.amazonaws.com/partner-catalog-api:latest
 ```
 
 ### 5. Deploy to ECS
-Use the ECS service to deploy the updated image:
-- Update the ECS service
-- Enable **Force new deployment**
+
+Deploy the updated image through the ECS service:
+
+1. Update the ECS service
+2. Enable **Force new deployment**
 
 
-## Start / Stop workflow (Cost control)
+## Start / Stop workflow (cost control)
+
 This workflow explains how to scale down ECS services and pause database resources to reduce AWS costs when the system is not in use.
 
 ### Stop the application
@@ -196,7 +224,6 @@ This workflow explains how to scale down ECS services and pause database resourc
 2. Set **Desired tasks = 0**
 3. Deploy
 4. RDS → Actions → **Stop temporarily**
-
 
 ### Start the application
 
@@ -210,39 +237,46 @@ This workflow explains how to scale down ECS services and pause database resourc
 ## Health check behavior
 
 - ALB performs HTTP health checks against `/health`
-- Container must start successfully and establish database connectivity
-- Failed health checks result in task replacement by ECS
+- The container must start successfully and establish database connectivity
+- Failed health checks result in automatic task replacement by ECS
 
 
 ## Troubleshooting
-Use this section to identify, diagnose, and fix common issues across the application, infrastructure, and data pipeline.
+
+Use this section to diagnose and resolve common infrastructure and deployment issues.
 
 ### Container fails to start
 
-**Symptom**
+#### Symptom
 
-- `CannotPullContainerError`
+```text
+CannotPullContainerError
+```
 
-**Cause**
+#### Cause
 
 - Image not available in ECR
 
-**Fix**
+#### Resolution
 
-- Verify image tag and push to ECR
+- Verify the image tag
+- Confirm the image was successfully pushed to ECR
 
 
 ### Container exits immediately
 
-**Symptom**
+#### Symptom
 
-- Exit code 1
+```text
+Exit code 1
+```
 
-**Cause**
+#### Cause
 
-- Application startup failure (commonly database connectivity)
+- Application startup failure
+- Most commonly caused by database connectivity issues
 
-**Resolution**
+#### Resolution
 
 - Verify environment variables
 - Confirm RDS accessibility from ECS
@@ -250,54 +284,59 @@ Use this section to identify, diagnose, and fix common issues across the applica
 
 ### Database connection timeout
 
-**Error**
+#### Error
 
 ```text
 psycopg.errors.ConnectionTimeout
 ```
 
-**Cause**
+#### Cause
 
 - RDS security group does not allow inbound traffic from ECS
 
-**Resolution**
+#### Resolution
 
-- Add ECS security group to RDS inbound rules (port 5432)
+- Add the ECS security group to the RDS inbound rules for port 5432
 
 
 ## Cost considerations
 
-This deployment incurs cost from the following services:
+This deployment incurs cost from the following AWS services:
 
-- ECS Fargate (compute)
-- RDS (database instance)
+- ECS Fargate
+- RDS
 - Application Load Balancer
 
-To reduce cost:
+### Cost reduction strategies
 
-- Stop ECS service when not in use
-- Stop RDS instance when not in use (auto-restarts after ~7 days)
-- Retain snapshots instead of running the database continuously
+- Stop the ECS service when not in use
+- Stop the RDS instance when not in use
+- Retain snapshots instead of continuously running the database
 
-AWS resources retain the application name `partner-catalog-api` (ECR, ECS, etc.).
+> Note: RDS instances automatically restart after approximately 7 days when temporarily stopped.
+
+AWS resources retain the original application naming convention (`partner-catalog-api`).
 
 
 ## Operational notes
 
-- Database schema is initialized at application startup (`init_db()`)
+- Database schema initialization occurs at application startup (`init_db()`)
 - The database must be reachable for the container to start successfully
-- Single-task deployments may experience brief downtime during updates
-- ETL processing is executed on-demand via the Jobs API
-- Product data is loaded into PostgreSQL only after ETL completes
-- Raw data remains stored in S3 for reprocessing and auditability
-- ETL processing includes change detection:
-  - New products are inserted
-  - Existing products are only updated when data changes
-  - Unchanged products are skipped
+- Single-task deployments may experience brief downtime during deployments
+- ETL processing is executed on demand through the Jobs API
+- Product data is persisted to PostgreSQL only after ETL completes
+- Raw uploaded data remains stored in S3 for reprocessing and auditability
 
-- ETL processing is idempotent:
-  - Re-running the same feed does not create duplicate updates
-  - Ensures efficient reprocessing and consistency
+### ETL change detection behavior
+
+- New products are inserted
+- Existing products are updated only when data changes
+- Unchanged products are skipped
+
+### Idempotent ETL processing
+
+- Re-running the same feed does not create duplicate updates
+- Supports safe reprocessing and operational consistency
 
 
 For deployment evidence, see [Screenshots](../api/screenshots.md).

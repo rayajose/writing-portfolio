@@ -20,18 +20,18 @@ Cloud-native API platform demonstrating feed ingestion, ETL processing, async jo
 </div>
 
 
-### [API & developer documentation](/writing-portfolio/api/)
+### [API & developer documentation](api/index.md)
 
 REST APIs, ingestion workflows, async processing, analytics services, and developer enablement documentation.
 
-### [Integration & architecture documentation](/writing-portfolio/architecture/)
+### [Integration & architecture documentation](architecture/index.md)
 
 System architecture, ETL workflows, integration patterns, and operational design documentation.
 
-### [SOPs & operational documentation](/writing-portfolio/operations/)
+### [SOPs & operational documentation](operations/index.md)
 
 Operational procedures, onboarding workflows, troubleshooting processes, and recovery documentation.
 
-### [Security & compliance documentation](/writing-portfolio/security/)
+### [Security & compliance documentation](security/index.md)
 
 Incident response planning, operational controls, and compliance-oriented documentation.

@@ -1,82 +1,201 @@
-# System Architecture and Operational Flow
+# Platform architecture and operational flow
 
-## System overview
+This page explains how the Commerce Integration API ingests, processes, stores, and serves partner product data across ingestion, ETL, and operational workflows.
 
-This page explains how the Commerce Integration API ingests, processes, stores, and serves partner product data across asynchronous processing and operational workflows.
-
-The platform is designed around scalable ingestion and background processing patterns, allowing large partner feeds to be validated, transformed, and processed independently of client-facing request handling.
+The platform is designed around a job-based ingestion model that separates feed submission, processing, storage, and data access responsibilities.
 
 
-## Architecture goals
+## Platform goals
 
-- Enable scalable partner data ingestion
-- Support asynchronous processing of large datasets
-- Ensure data integrity and operational traceability
-- Provide reliable access to processed product data
-- Support troubleshooting and operational visibility
-- Reduce operational overhead through structured workflows
+The architecture is designed to:
+
+- Support scalable partner feed ingestion
+- Separate raw and processed data layers
+- Provide operational visibility through job tracking
+- Enable reliable ETL processing workflows
+- Support troubleshooting and feed reprocessing
+- Expose normalized product and analytics data through APIs
+
+
+## Platform overview
+
+The Commerce Integration API consists of the following core layers:
+
+| Layer                | Responsibility                                               |
+| -------------------- | ------------------------------------------------------------ |
+| API Layer            | Handles HTTP requests and integration workflows              |
+| Raw Data Layer       | Stores uploaded partner feed files in Amazon S3              |
+| Processing Layer     | Executes validation and ETL workflows                        |
+| Data Layer           | Stores normalized product and operational data in PostgreSQL |
+| Analytics Layer      | Provides aggregated reporting and operational metrics        |
+| Infrastructure Layer | Hosts and routes application traffic through AWS services    |
 
 
 ## High-level architecture
 
-The platform consists of the following core components:
+```mermaid
+flowchart LR
 
-- **API Layer (FastAPI)** — Handles incoming requests and exposes integration endpoints
-- **Storage Layer (Amazon S3)** — Stores raw partner feed files for replay and traceability
-- **Processing Layer (ETL Pipeline)** — Validates, transforms, and processes ingestion data
-- **Database Layer (PostgreSQL)** — Stores normalized product and operational metadata
-- **Compute & Hosting (AWS ECS / Fargate)** — Runs application and processing services
-- **Load Balancer (ALB)** — Routes external traffic to the API layer
+    Client["Client<br>(curl / Postman / Swagger UI)"]
+
+    ALB["Application Load Balancer"]
+
+    ECS["Amazon ECS Fargate<br>FastAPI Application"]
+
+    S3["Amazon S3<br>Raw Feed Storage"]
+
+    ETL["ETL Processing"]
+
+    DB["Amazon RDS<br>PostgreSQL"]
+
+    Analytics["Analytics Layer"]
+
+    Client -->|HTTP Requests| ALB
+    ALB --> ECS
+
+    ECS -->|Store Raw Feed| S3
+    ECS -->|Trigger ETL Workflow| ETL
+
+    ETL -->|Transform + Load| DB
+
+    ECS -->|Read / Write| DB
+    Analytics -->|Aggregate Queries| DB
+
+    ECS -->|Analytics Requests| Analytics
+```
 
 
-## Data flow overview
+## Core workflow
+
+The platform follows a multi-stage ingestion and processing workflow.
 
 ### 1. Feed submission
 
-- Partner uploads a CSV file via the `/feeds/upload` endpoint
-- API stores the raw file in Amazon S3
-- A feed record is created in the database
-- A validation job (`JVxxxxx`) is initialized with a `queued` status
+Partners upload CSV product feeds through the Feeds API.
 
-The raw file is retained to support replay, auditing, troubleshooting, and operational recovery workflows.
+```text
+POST /feeds/upload
+```
+
+During upload:
+
+- Feed metadata is validated
+- The raw CSV file is stored in Amazon S3
+- Feed records are persisted in PostgreSQL
+- Submission and validation jobs are created
+
+The raw uploaded file remains stored in S3 to support replay, auditing, troubleshooting, and operational traceability.
 
 
-### 2. Asynchronous processing
+## Feed processing workflow
 
-ETL processing executes independently from client-facing requests to support scalable ingestion and non-blocking upload workflows.
+```mermaid
+flowchart TD
+    A["Partner Upload"] --> B["Validate Upload"]
+    B --> C["Store Raw Feed in S3"]
+    C --> D["Create Feed + Job Records"]
+    D --> E["Return Upload Response"]
+```
 
-Processing steps include:
+### Generated identifiers
 
-- Retrieving the uploaded file from S3
-- Parsing and validating ingestion data
-- Detecting structural and formatting issues
-- Evaluating required fields and data consistency
+| Resource       | Prefix | Example   |
+| -------------- | ------ | --------- |
+| Feed           | `FD`   | `FD00001` |
+| Submission Job | `JS`   | `JS00001` |
+| Validation Job | `JV`   | `JV00001` |
+| Product        | `PR`   | `PR00001` |
+
+
+## Job-based processing
+
+The platform models ingestion workflows through explicit job resources.
+
+Validation and ETL processing are triggered through the Jobs API:
+
+```text
+POST /jobs/{job_id}/run
+```
+
+This design separates ingestion workflows from client-facing upload operations while providing operational visibility into processing state and ETL results.
+
+
+## Job lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> queued
+    queued --> running
+    running --> completed
+    running --> failed
+    completed --> [*]
+    failed --> [*]
+```
+
+| Status      | Description                        |
+| ----------- | ---------------------------------- |
+| `queued`    | Job created and awaiting execution |
+| `running`   | Processing currently executing     |
+| `completed` | Processing completed successfully  |
+| `failed`    | Processing encountered an error    |
+
+
+## ETL processing workflow
+
+The ETL pipeline extracts uploaded feed data, validates records, normalizes product information, and persists processed records to PostgreSQL.
+
+### ETL workflow
+
+```mermaid
+flowchart TD
+
+    A["Run Validation Job"] --> B["Read Feed Metadata"]
+
+    B --> C["Retrieve Raw CSV from S3"]
+
+    C --> D["Validate + Normalize Data"]
+
+    D --> E["Compare Existing Products"]
+
+    E --> F["Insert New Products"]
+    E --> G["Update Changed Products"]
+    E --> H["Skip Unchanged Products"]
+    E --> I["Skip Invalid Rows"]
+
+    F --> J["Generate ETL Summary"]
+    G --> J
+    H --> J
+    I --> J
+```
+
+### Validation behavior
 
 Validation includes:
 
-- Required field checks (`sku`, `product_name`)
-- Data type validation
-- Structural consistency validation
-- Feed-level processing integrity checks
+- Required field checks
+- CSV structure validation
+- Data normalization
+- Product uniqueness validation
+- Feed integrity validation
 
-Operational job states include:
+Minimum required fields:
 
-- `queued`
-- `running`
-- `completed`
-- `failed`
+```text
+sku
+product_name
+```
 
 
-### 3. Data transformation
+## Change detection and idempotency
 
-Valid records are normalized into the system schema before persistence.
+The ETL pipeline uses change detection to avoid unnecessary updates.
 
-Transformation processing includes:
-
-- Product normalization
-- Duplicate prevention
-- Change detection
-- Feed-to-product association tracking
+| Result    | Description                |
+| --------- | -------------------------- |
+| Inserted  | New product created        |
+| Updated   | Existing product changed   |
+| Unchanged | Existing product identical |
+| Skipped   | Invalid or incomplete row  |
 
 Product uniqueness is enforced using:
 
@@ -84,33 +203,52 @@ Product uniqueness is enforced using:
 (partner_name, sku)
 ```
 
-Existing records are compared against incoming feed data to determine whether changes are required.
+This design supports:
 
-Processing results include:
-
-- **Inserted** — New product created
-- **Updated** — Existing product modified
-- **Unchanged** — No changes detected
-- **Skipped** — Invalid or incomplete record
+- Idempotent processing
+- Efficient reprocessing
+- Reduced database writes
+- Reliable synchronization behavior
 
 
-### 4. Data persistence
+## Storage architecture
 
-Processed records are stored in PostgreSQL along with associated feed and job metadata.
+The platform separates raw and processed data layers.
 
-Persistence workflows include:
+### Amazon S3 (Raw data layer)
 
-- Product record insertion and updates
-- Feed status updates
-- ETL summary generation
-- Job lifecycle tracking
+Amazon S3 stores uploaded CSV feed files.
 
-Operational metadata is retained to support troubleshooting, auditing, and processing traceability.
+Responsibilities include:
+
+- Raw feed retention
+- Reprocessing support
+- Operational recovery
+- Auditability
+- Feed traceability
+
+Example object key:
+
+```text
+raw/partners/{partner_name}/feeds/{feed_id}/{filename}.csv
+```
+
+### PostgreSQL (Processed data layer)
+
+PostgreSQL stores normalized and queryable data.
+
+Core tables include:
+
+- `feeds`
+- `jobs`
+- `products`
+- `orders`
+- `id_counters`
 
 
-### 5. Data access
+## Product access workflows
 
-Clients retrieve processed product data through API query endpoints.
+Clients retrieve processed product data through query endpoints.
 
 Supported capabilities include:
 
@@ -118,129 +256,143 @@ Supported capabilities include:
 - Sorting
 - Cursor-based pagination
 - Feed-level product retrieval
-- Analytics and reporting queries
+- Analytics queries
 
-Cursor-based pagination is used to support scalable retrieval of large datasets.
-
-
-## System interaction diagram
+### Product query workflow
 
 ```mermaid
-flowchart LR
-    Partner --> API
-    API --> S3
-    API --> JobState
-    JobState --> ETL
-    ETL --> Database
-    Database --> API
-    API --> Client
+flowchart TD
+
+    A["Client Request"] --> B["GET /products"]
+
+    B --> C["Apply Filtering + Sorting"]
+
+    C --> D["Query PostgreSQL"]
+
+    D --> E["Map Database Records"]
+
+    E --> F["Return API Response"]
 ```
 
 
-## Key integration points
+## Analytics workflows
 
-### API ↔ S3
+The analytics layer provides aggregated reporting across processed order and product data.
 
-- Raw files retained for replay and operational recovery
-- Enables reprocessing without requiring file re-upload
-- Supports ingestion traceability and auditing workflows
+Example analytics include:
 
-### API ↔ ETL
+- Revenue by partner
+- Sales trends over time
+- Revenue share distribution
+- Order analytics
+- Product-level reporting
 
-- Job-based processing model decouples ingestion from validation and transformation
-- Background processing improves responsiveness during large uploads
-- Job lifecycle states provide operational visibility
-
-### ETL ↔ Database
-
-- Inserts and updates normalized product records
-- Applies validation and consistency rules
-- Maintains processing summaries and operational metadata
-
-### API ↔ Database
-
-- Serves processed product and analytics data
-- Applies filtering, sorting, and pagination logic
-- Exposes operational status and ingestion results
+Analytics endpoints operate exclusively on processed PostgreSQL data.
 
 
-## Design considerations
+## Operational visibility
 
-### Asynchronous processing
+Operational metadata is retained throughout ingestion and processing workflows.
 
-- Prevents blocking during large uploads
-- Improves client responsiveness
-- Supports scalable ingestion workflows
+The platform provides:
 
-### Idempotent data handling
+- Job lifecycle tracking
+- ETL summaries
+- Feed-level traceability
+- Validation status visibility
+- Structured processing metadata
 
-- Reprocessing the same feed does not create duplicate records
-- Change detection prevents unnecessary updates
-
-### Operational traceability
-
-- Raw files retained in S3 using structured storage paths
-- Feed and job metadata preserved throughout ingestion lifecycle
-- Processing summaries support operational analysis
-
-### Scalability
-
-- ECS Fargate supports horizontal application scaling
-- Decoupled processing components support workload growth
-- Cursor-based pagination reduces large query overhead
+This supports troubleshooting, replay workflows, and operational analysis.
 
 
 ## Failure handling
 
 ### Validation failures
 
-- Invalid records skipped during ingestion
-- Validation issues reflected in processing summaries
-- Feed-level integrity checks prevent malformed ingestion workflows
+- Invalid rows are skipped during processing
+- Validation issues appear in ETL summaries
+- Feed processing continues for valid rows when possible
 
 ### Processing failures
 
-- Job status updated to `failed`
-- Processing logs support troubleshooting and root cause analysis
-- Operational metadata retained for recovery workflows
+- Job status transitions to `failed`
+- Processing metadata is retained
+- Raw feed data remains available in S3 for replay
 
 ### Recovery workflows
 
-- Failed jobs can be replayed without requiring feed re-upload
-- Raw S3 files retained for reprocessing and troubleshooting
-- Job metadata enables lifecycle traceability across ingestion events
-
-### Data integrity protections
-
-- Duplicate prevention enforced during ingestion
-- Required field validation ensures minimum data quality
-- Transformation workflows enforce schema consistency
+- Failed jobs can be re-run
+- Raw uploaded feeds remain available for reprocessing
+- Processing history remains traceable through job records
 
 
-## Observability
+## Deployment model
 
-Operational visibility is provided through job tracking, processing summaries, and structured system metadata.
+The Commerce Integration API uses a containerized AWS deployment architecture.
 
-Observability features include:
+Core infrastructure components include:
 
-- Job lifecycle tracking (`queued`, `running`, `completed`, `failed`)
-- ETL processing summaries
-- Validation result visibility
-- Feed-level operational metadata
-- Structured logs supporting troubleshooting and auditing workflows
+- FastAPI application running in Docker containers
+- Amazon ECS (Fargate) for container orchestration
+- Amazon ECR for image storage
+- Application Load Balancer for public routing
+- Amazon RDS for relational storage
+- Amazon S3 for raw feed storage
 
 
-## Security considerations
+## Design decisions
 
-- API access controlled through API key authentication
-- Input validation prevents malformed ingestion data
-- Raw feed storage supports controlled operational traceability
-- Sensitive data handling aligned with secure processing practices
+### Separation of raw and processed data
+
+The platform separates ingestion storage from queryable product storage.
+
+Benefits include:
+
+- Safer reprocessing workflows
+- Improved auditability
+- Reduced processing risk
+- Operational traceability
+
+### Explicit job-based execution
+
+ETL processing is modeled as an explicit operational workflow rather than automatic inline execution.
+
+This approach provides:
+
+- Better operational visibility
+- Clear lifecycle management
+- Improved troubleshooting support
+- Flexible future migration to worker-based architectures
+
+### Cursor-based pagination
+
+The Products API uses cursor-based pagination to support scalable retrieval of large datasets.
+
+This avoids the performance limitations associated with large offset-based queries.
+
+
+## Future enhancements
+
+Potential future improvements include:
+
+- Dedicated asynchronous worker infrastructure
+- Queue-based ETL orchestration
+- Event-driven ingestion workflows
+- Advanced validation pipelines
+- Read replicas for analytics scaling
+- Infrastructure as Code (Terraform / CloudFormation)
 
 
 ## Related documentation
 
-- [API Documentation](../api/index.md)
-- [Integration Guide](../api/integration-guide.md)
-- [SOP](../operations/onboarding.md)
-- [Incident Response](../security/incident-response.md)
+- [Architecture](../api/architecture.md)
+- [Deployment guide](deployment.md)
+- [Feeds API](../api/feeds.md)
+- [Jobs API](../api/jobs.md)
+- [Products API](../api/products.md)
+- [Orders API](../api/orders.md)
+- [Analytics API](../api/analytics.md)
+- [Integration guide](../api/integration-guide.md)
+- [Workflows](../architecture/workflows.md)
+
+For deployment evidence, see [Screenshots](../api/screenshots.md).
