@@ -208,5 +208,5 @@ Returned when the request contains a `job_id` not currently in system.
 
 - [Feeds API](feeds.md)
 - [Products API](products.md)
-- [Workflows](workflows.md)
+- [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)

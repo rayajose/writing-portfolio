@@ -414,6 +414,41 @@ select {
   color: #64748b;
 }
 
+/* documentation links */
+.doc-section-link {
+  margin-top: 0.9rem;
+}
+
+.doc-section-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #2563eb;
+  transition: color 0.15s ease;
+}
+
+.doc-section-link a::after {
+  content: "→";
+  font-size: 0.7rem;
+  transition: transform 0.15s ease;
+}
+
+.doc-section-link a:hover {
+  color: #1d4ed8;
+}
+
+.doc-section-link a:hover::after {
+  transform: translateX(2px);
+}
+
+.doc-section-link {
+  margin-top: 0.7rem;
+  margin-left: 0.9rem;
+}
+
 /* Blockquotes */
 .md-typeset blockquote {
   margin: 1.2rem 0;

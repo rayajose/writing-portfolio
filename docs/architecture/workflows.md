@@ -229,8 +229,8 @@ curl -H "x-api-key: demo-secret-key" \
 
 ### Related APIs
 
-- [Products API](products.md)
-- [Orders API](orders.md)
+- [Products API](../api/products.md)
+- [Orders API](../api/orders.md)
 
 ## Reprocessing example (idempotency)
 
@@ -310,9 +310,9 @@ Analytics
 
 ## Related documentation
 
-- [Feeds API](feeds.md)
-- [Jobs API](jobs.md)
-- [Products API](products.md)
-- [Orders API](orders.md)
-- [Analytics API](analytics.md)
-- [Errors](errors.md)
+- [Feeds API](../api/feeds.md)
+- [Jobs API](../api/jobs.md)
+- [Products API](../api/products.md)
+- [Orders API](../api/orders.md)
+- [Analytics API](../api/analytics.md)
+- [Errors](../api/errors.md)

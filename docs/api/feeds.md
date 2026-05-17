@@ -232,7 +232,7 @@ Returned when the request contains a `feed_id` not currently in system.
 
 ## Related documentation
 
-- [Workflows](workflows.md)
+- [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)
 - [Products API](products.md)
 - [Jobs API](jobs.md)

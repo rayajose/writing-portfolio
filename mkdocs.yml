@@ -22,50 +22,54 @@ extra_css:
 nav:
   - Home: index.md
 
-  - API & Developer Docs:
+  - API & Developer:
       - Overview: api/index.md
-      - Get Started: api/getting_started.md
+      - Platform overview: api/platform-overview.md
+      - Get started: api/getting_started.md
       - Integration guide: api/integration-guide.md
       - Webhook integration guide: api/webhooks.md
 
       - Tutorials:
-          - Your First Feed Ingestion: tutorials/first-feed.md
+          - Your first feed ingestion: tutorials/first-feed.md
 
-      - How-To Guides:
-          - Ingest a Product Feed End-to-End: api/ingest-product-feed.md
-          - Debug a Failed Feed: api/debug-product-feed.md
-          - Partner Feed Onboarding: sop/onboarding.md
+      - How-to guides:
+          - Ingest a product feed end-to-end: api/ingest-product-feed.md
+          - Debug a failed feed: operations/debug-product-feed.md
 
-      - API Reference:
+      - API reference:
           - Overview: api/api-reference.md
           - Feeds API: api/feeds.md
           - Jobs API: api/jobs.md
           - Products API: api/products.md
           - Orders API: api/orders.md
-          - Health API: api/health.md
           - Analytics API: api/analytics.md
+          - Health API: api/health.md
           - Errors: api/errors.md
 
-      - Concepts:
-          - Architecture: api/architecture.md
-          - Workflows: api/workflows.md
-          - Deployment: api/deployment.md
-
       - SDKs:
-          - Python SDK Guide: api/sdk-python.md
+          - Python SDK guide: api/sdk-python.md
 
       - Specifications:
-          - CSV Feed File Specification: sop/csv-feed-file-spec.md
+          - CSV feed file specification: specs/csv-feed-file-spec.md
 
-      - Supporting Materials:
+      - Resources:
           - Resources: api/resources.md
           - Screenshots: api/screenshots.md
 
-  - Operations & Systems:
-      - System Architecture and Operational Flow: architecture/index.md
+  - Integration & Architecture:
+      - Overview: architecture/index.md
+      - Platform architecture: architecture/platform-architecture.md
+      - Workflows: architecture/workflows.md
+      - Deployment: architecture/deployment.md
+
+  - SOPs & Operations:
+      - Overview: operations/index.md
+      - Partner onboarding SOP: operations/onboarding.md
+      - Debug failed feed runbook: operations/debug-product-feed.md
 
   - Security & Compliance:
-      - Incident Response Plan: security/incident-response.md
+      - Overview: security/index.md
+      - Incident response plan: security/incident-response.md
 
   - About: about.md
 

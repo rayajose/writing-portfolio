@@ -182,5 +182,5 @@ After successful onboarding:
 ## Related documentation
 
 - [API Overview](../api/index.md)
-- [Workflows](../api/workflows.md)
+- [Workflows](../architecture/workflows.md)
 - [Products Endpoint](../api/products.md)

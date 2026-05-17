@@ -447,7 +447,7 @@ This enables reprocessing, auditing, and scalability.
 - [Products API](products.md)
 - [Orders API](orders.md)
 - [Analytics API](analytics.md)
-- [Workflows](workflows.md)
+- [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)
 
 For deployment evidence, see [Screenshots](screenshots.md).

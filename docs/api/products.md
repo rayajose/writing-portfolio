@@ -9,7 +9,7 @@ Use this API to retrieve product data from partner catalog feeds.
 - Retrieve a single product by ID
 
 > Product data becomes available only after ETL processing completes.
-> See [Workflows](workflows.md) for the full ingestion process.
+> See [Workflows](../architecture/workflows.md) for the full ingestion process.
 
 
 ## Authentication
@@ -363,7 +363,7 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ## Related documentation
 
-- [Workflows](workflows.md)
+- [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)
 - [Feeds API](feeds.md)
 - [Jobs API](jobs.md)

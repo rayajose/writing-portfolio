@@ -237,4 +237,4 @@ The platform uses structured identifiers for feeds, jobs, products, and orders.
 - Use [Products API](products.md) to query catalog data
 - Use [Orders API](orders.md) to create and retrieve order data
 - Use [Analytics API](analytics.md) to analyze sales and revenue
-- See [Debug a failed feed](debug-product-feed.md) to troubleshoot failures
+- See [Debug a product feed](../operations/debug-product-feed.md) to troubleshoot failures

@@ -5,7 +5,7 @@ This page explains how to deploy the Commerce Integration API to AWS using a con
 The application and its documentation are maintained in a single repository (`writing-portfolio`).  
 The API is deployed using Docker and AWS (ECS, RDS, S3), while documentation is published via GitHub Pages.
 
-For visual confirmation of the deployed environment, see [Screenshots](screenshots.md).
+For visual confirmation of the deployed environment, see [Screenshots](../api/screenshots.md).
 
 
 ## Architecture overview
@@ -300,4 +300,4 @@ AWS resources retain the application name `partner-catalog-api` (ECR, ECS, etc.)
   - Ensures efficient reprocessing and consistency
 
 
-For deployment evidence, see [Screenshots](screenshots.md).
+For deployment evidence, see [Screenshots](../api/screenshots.md).

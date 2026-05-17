@@ -21,11 +21,11 @@ In this guide, you will:
 | Base URL (local)  | `http://localhost:8000`                                             |
 | Base URL (AWS)    | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
 | API key           | `x-api-key: demo-secret-key`                                        |
-| Valid .`csv` file | see  [CSV feed file specification](../sop/csv-feed-file-spec.md)    |
+| Valid .`csv` file | see  [CSV feed file specification](../specs/csv-feed-file-spec.md)  |
 
 ### Feed file specification
 
-For complete CSV formatting rules, supported fields, validation requirements, and file constraints, see the [CSV Feed File Specification](../sop/csv-feed-file-spec.md).
+For complete CSV formatting rules, supported fields, validation requirements, and file constraints, see the [CSV Feed File Specification](../specs/csv-feed-file-spec.md).
 
 ## 1. Upload a product feed
 
@@ -153,6 +153,6 @@ Use query parameters to refine results:
 
 ## Related documentation
 
-- [Debug a failed feed](debug-product-feed.md)
+- [Debug a product feed](../operations/debug-product-feed.md)
 
 

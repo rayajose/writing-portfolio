@@ -256,7 +256,7 @@ When troubleshooting failed processing:
 5. Verify successful ETL completion before querying products.
 6. Verify product availability before creating orders.
 
-For additional troubleshooting guidance, see [Debug a failed feed](debug-product-feed.md).
+For additional troubleshooting guidance, see [Debug a product feed](../operations/debug-product-feed.md).
 
 ## Related documentation
 
@@ -265,7 +265,7 @@ Use the following resources to implement and support partner catalog integration
 ### Tutorials and workflows
 
 - [Ingest a product feed end to end](ingest-product-feed.md)
-- [Debug a failed feed](debug-product-feed.md)
+- [Debug a product feed](../operations/debug-product-feed.md)
 
 ### API reference
 
@@ -277,7 +277,7 @@ Use the following resources to implement and support partner catalog integration
 
 ### Specifications and architecture
 
-- [CSV Feed File Specification](../sop/csv-feed-file-spec.md)
+- [CSV Feed File Specification](../specs/csv-feed-file-spec.md)
 - [Architecture overview](architecture.md)
 
 ## Summary

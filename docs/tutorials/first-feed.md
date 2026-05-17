@@ -23,7 +23,7 @@ You need:
 | Base URL (local)  | `http://localhost:8000`                                             |
 | Base URL (AWS)    | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
 | API key           | `x-api-key: demo-secret-key`                                        |
-| Valid .`csv` file | see  [CSV feed file specification](../sop/csv-feed-file-spec.md)    |
+| Valid .`csv` file | see  [CSV feed file specification](../specs/csv-feed-file-spec.md)  |
 
 
 ## Step 1: Understand what a feed is
@@ -167,6 +167,6 @@ Now that you’ve completed your first ingestion:
 
 ## Next steps
 
-- See [Ingest a Product Feed End-to-End](../api/ingest-product-feed.md) for a task-focused workflow
-- See [Debug a Failed Feed](../api/debug-product-feed.md) to troubleshoot issues
+- See [Ingest a product feed end-to-end](../api/ingest-product-feed.md) for a task-focused workflow
+- See [Debug a product Feed](../operations/debug-product-feed.md) to troubleshoot issues
 - Explore [Products API](../api/products.md) for advanced queries

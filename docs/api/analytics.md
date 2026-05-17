@@ -294,6 +294,6 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ## Related documentation
 
-- [Workflows](workflows.md)
+- [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)
 - [Products API](products.md)
