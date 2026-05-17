@@ -68,12 +68,20 @@ nav:
       - Overview: operations/index.md
       - Partner onboarding SOP: operations/onboarding.md
       - Debug failed feed runbook: operations/debug-product-feed.md
+      - Deployment change procedure: operations/deployment-change-procedure.md
+      - Backup and recovery procedure: operations/backup-recovery-procedure.md
 
   - Security & Compliance:
 
       - Overview: security/index.md
       - Incident response plan: security/incident-response.md
       - API access control policy: security/api-access-control.md
+      - Logging and monitoring standard: security/logging-monitoring-standard.md
+      - Data retention and handling policy: security/data-retention-policy.md
+
+  - Releases:
+  
+      - Release history: releases/release-history.md
 
   - About: about.md
 
