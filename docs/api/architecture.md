@@ -32,18 +32,6 @@ The system models a production-style ingestion architecture with separate API, p
 
 ## Architecture layers
 
-```text
-Client
-  ↓
-API layer
-  ↓
-Application / service layer
-  ↓
-Data access layer
-  ↓
-Storage layer
-```
-
 | Layer                       | Implementation                       | Responsibility                      |
 | --------------------------- | ------------------------------------ | ----------------------------------- |
 | Client                      | curl, Postman, Swagger UI            | Sends API requests                  |
@@ -169,51 +157,15 @@ flowchart TD
     E --> F
 ```
 
+<!--![Feed ingestion data flow](../api/screenshots/feed-ingestion-data-flow-visio-style.svg)-->
+
 
 ## ETL processing data flow
 
 ETL processing reads raw feed data from S3, transforms it, and updates processed records in PostgreSQL.
 
-```mermaid
-flowchart TD
 
-    A["Run job
-    POST /jobs/{job_id}/run"]
-
-    B["Read feed metadata"]
-
-    C["Retrieve raw CSV
-    from S3"]
-
-    D["Validate and normalize
-    feed rows"]
-
-    E["Compare product records
-    by partner + SKU"]
-
-    F["Insert new products"]
-    G["Update changed products"]
-    H["Skip unchanged products"]
-    I["Skip invalid rows"]
-
-    J["Update job status
-    and ETL summary"]
-
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-
-    E --> F
-    E --> G
-    E --> H
-    E --> I
-
-    F --> J
-    G --> J
-    H --> J
-    I --> J
-```
+![ETL processing data flow](../api/screenshots/etl-processing-data-flow.svg)
 
 
 ## Product query data flow

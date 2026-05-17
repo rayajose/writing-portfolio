@@ -1,0 +1,228 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1050" viewBox="0 0 1600 1050" role="img" aria-labelledby="title desc">
+  <!-- <title id="title">ETL processing data flow</title> -->
+  <!-- <desc id="desc">AWS-style ETL processing data flow showing a job run request, feed metadata lookup, raw CSV retrieval from Amazon S3, validation, product comparison, insert update skip branches, and job summary update.</desc> -->
+
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 34px Arial, Helvetica, sans-serif; fill: #111827; }
+      .subtitle { font: 400 16px Arial, Helvetica, sans-serif; fill: #64748b; }
+      .group-title { font: 700 15px Arial, Helvetica, sans-serif; fill: #334155; letter-spacing: .04em; text-transform: uppercase; }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 18; filter: url(#shadow); }
+      .card-orange { fill: #fff7ed; stroke: #fdba74; }
+      .card-green { fill: #f0fdf4; stroke: #86efac; }
+      .card-blue { fill: #eff6ff; stroke: #93c5fd; }
+      .card-purple { fill: #faf5ff; stroke: #d8b4fe; }
+      .card-gray { fill: #f8fafc; stroke: #cbd5e1; }
+      .label { font: 700 22px Arial, Helvetica, sans-serif; fill: #111827; }
+      .small { font: 400 16px Arial, Helvetica, sans-serif; fill: #475569; }
+      .aws-caption { font: 700 12px Arial, Helvetica, sans-serif; fill: #475569; letter-spacing: .03em; }
+      .line { fill: none; stroke: #64748b; stroke-width: 3; marker-end: url(#arrow); }
+      .line-soft { fill: none; stroke: #94a3b8; stroke-width: 2.5; marker-end: url(#arrow); }
+      .branch-label { font: 700 13px Arial, Helvetica, sans-serif; fill: #475569; }
+      .icon-stroke { stroke: #232f3e; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .aws-orange { fill: #ff9900; }
+      .aws-dark { fill: #232f3e; }
+      .aws-green { fill: #7aa116; }
+      .aws-blue { fill: #527fff; }
+      .aws-purple { fill: #8c4fff; }
+      .aws-red { fill: #d13212; }
+      .pill { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1; rx: 10; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1600" height="1050"/>
+
+  <!-- <text x="80" y="75" class="title">ETL processing data flow</text> -->
+  <!-- <text x="80" y="104" class="subtitle">Job execution reads feed metadata, retrieves raw CSV data from S3, validates rows, compares product records, and updates processing status.</text> -->
+
+  <!-- swimlane containers -->
+  <rect x="55" y="145" width="1490" height="825" rx="26" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <line x1="55" y1="355" x2="1545" y2="355" stroke="#e2e8f0" stroke-width="1.5"/>
+  <line x1="55" y1="620" x2="1545" y2="620" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="86" y="185" class="group-title">Request and job orchestration</text>
+  <text x="86" y="394" class="group-title">Storage, validation, and comparison</text>
+  <text x="86" y="659" class="group-title">Product outcomes and status update</text>
+
+  <!-- AWS-like Icons -->
+  <!-- Client/API icon -->
+  <g id="icon-client" transform="translate(0,0)">
+    <rect x="0" y="0" width="58" height="42" rx="6" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+    <path d="M8 10h42M8 22h27M8 32h36" class="icon-stroke"/>
+    <circle cx="47" cy="11" r="3" class="aws-orange"/>
+  </g>
+
+  <!-- ECS/Fargate compute icon -->
+  <g id="icon-compute" transform="translate(0,0)">
+    <hexagon/>
+  </g>
+
+  <!-- Run job card -->
+  <g transform="translate(125,225)">
+    <rect class="card card-orange" width="300" height="115"/>
+    <g transform="translate(26,26)">
+      <rect x="0" y="0" width="58" height="42" rx="6" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <path d="M8 10h42M8 22h27M8 32h36" class="icon-stroke"/>
+      <circle cx="47" cy="11" r="3" class="aws-orange"/>
+    </g>
+    <text x="105" y="45" class="label">Run job</text>
+    <text x="105" y="73" class="small">POST /jobs/{job_id}/run</text>
+    <text x="26" y="98" class="aws-caption">CLIENT / API REQUEST</text>
+  </g>
+
+  <!-- Read feed metadata card -->
+  <g transform="translate(510,225)">
+    <rect class="card card-blue" width="300" height="115"/>
+    <g transform="translate(28,24)">
+      <ellipse cx="31" cy="10" rx="30" ry="9" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <path d="M1 10v42c0 5 13 9 30 9s30-4 30-9V10" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <path d="M1 31c0 5 13 9 30 9s30-4 30-9" class="icon-stroke"/>
+      <path d="M1 51c0 5 13 9 30 9s30-4 30-9" class="icon-stroke"/>
+      <circle cx="50" cy="50" r="8" class="aws-blue"/>
+    </g>
+    <text x="108" y="45" class="label">Read feed</text>
+    <text x="108" y="73" class="small">Load feed metadata</text>
+    <text x="28" y="98" class="aws-caption">AMAZON RDS / POSTGRESQL</text>
+  </g>
+
+  <!-- Retrieve raw CSV card -->
+  <g transform="translate(895,225)">
+    <rect class="card card-green" width="300" height="115"/>
+    <g transform="translate(28,20)">
+      <path d="M8 20l28-16 28 16v34L36 70 8 54z" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <path d="M8 20l28 16 28-16M36 36v34" class="icon-stroke"/>
+      <rect x="18" y="24" width="36" height="28" rx="3" fill="#7aa116" opacity="0.95"/>
+      <text x="36" y="43" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#ffffff">S3</text>
+    </g>
+    <text x="108" y="45" class="label">Retrieve raw CSV</text>
+    <text x="108" y="73" class="small">Read file from S3</text>
+    <text x="28" y="98" class="aws-caption">AMAZON S3 RAW STORAGE</text>
+  </g>
+
+  <!-- Validate and normalize -->
+  <g transform="translate(510,440)">
+    <rect class="card card-purple" width="300" height="125"/>
+    <g transform="translate(28,25)">
+      <path d="M31 3l28 16v33L31 68 3 52V19z" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <path d="M18 34l9 10 18-22" fill="none" stroke="#8c4fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M31 3v17M3 19l28 16 28-16" class="icon-stroke" opacity="0.55"/>
+    </g>
+    <text x="108" y="44" class="label">Validate and</text>
+    <text x="108" y="71" class="label">normalize rows</text>
+    <text x="28" y="106" class="aws-caption">ETL PROCESSING TASK</text>
+  </g>
+
+  <!-- Compare product records -->
+  <g transform="translate(895,440)">
+    <rect class="card card-orange" width="330" height="125"/>
+    <g transform="translate(28,25)">
+      <circle cx="22" cy="25" r="17" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <circle cx="52" cy="45" r="17" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <path d="M34 36l8 6" class="icon-stroke"/>
+      <path d="M14 25h16M44 45h16" stroke="#ff9900" stroke-width="5" stroke-linecap="round"/>
+    </g>
+    <text x="108" y="43" class="label">Compare products</text>
+    <text x="108" y="73" class="small">Match by partner + SKU</text>
+    <text x="28" y="106" class="aws-caption">CHANGE DETECTION</text>
+  </g>
+
+  <!-- Outcome cards -->
+  <g transform="translate(145,700)">
+    <rect class="card card-green" width="265" height="120"/>
+    <g transform="translate(26,25)">
+      <rect x="6" y="8" width="52" height="52" rx="10" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <path d="M32 20v30M17 35h30" stroke="#7aa116" stroke-width="6" stroke-linecap="round"/>
+    </g>
+    <text x="100" y="48" class="label">Insert</text>
+    <text x="100" y="76" class="small">New products</text>
+    <text x="26" y="103" class="aws-caption">POSTGRESQL WRITE</text>
+  </g>
+
+  <g transform="translate(475,700)">
+    <rect class="card card-blue" width="265" height="120"/>
+    <g transform="translate(26,25)">
+      <rect x="6" y="8" width="52" height="52" rx="10" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <path d="M21 23h24l-8-8M43 45H19l8 8" fill="none" stroke="#527fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="100" y="48" class="label">Update</text>
+    <text x="100" y="76" class="small">Changed products</text>
+    <text x="26" y="103" class="aws-caption">POSTGRESQL WRITE</text>
+  </g>
+
+  <g transform="translate(805,700)">
+    <rect class="card card-gray" width="265" height="120"/>
+    <g transform="translate(26,25)">
+      <rect x="6" y="8" width="52" height="52" rx="10" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <path d="M18 35h28" stroke="#64748b" stroke-width="6" stroke-linecap="round"/>
+    </g>
+    <text x="100" y="48" class="label">Skip</text>
+    <text x="100" y="76" class="small">Unchanged rows</text>
+    <text x="26" y="103" class="aws-caption">NO DATABASE CHANGE</text>
+  </g>
+
+  <g transform="translate(1135,700)">
+    <rect class="card" width="265" height="120" fill="#fff1f2" stroke="#fda4af"/>
+    <g transform="translate(26,25)">
+      <rect x="6" y="8" width="52" height="52" rx="10" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <path d="M21 24l22 22M43 24L21 46" stroke="#d13212" stroke-width="6" stroke-linecap="round"/>
+    </g>
+    <text x="100" y="48" class="label">Skip</text>
+    <text x="100" y="76" class="small">Invalid rows</text>
+    <text x="26" y="103" class="aws-caption">VALIDATION FAILURE</text>
+  </g>
+
+  <!-- Final status card -->
+  <g transform="translate(575,875)">
+    <rect class="card card-blue" width="450" height="95"/>
+    <g transform="translate(30,18)">
+      <ellipse cx="28" cy="9" rx="27" ry="8" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <path d="M1 9v39c0 5 12 8 27 8s27-3 27-8V9" fill="#ffffff" stroke="#232f3e" stroke-width="2.5"/>
+      <path d="M1 29c0 5 12 8 27 8s27-3 27-8" class="icon-stroke"/>
+      <circle cx="47" cy="45" r="7" class="aws-orange"/>
+    </g>
+    <text x="110" y="39" class="label">Update job status</text>
+    <text x="110" y="67" class="small">Persist ETL summary and processing counts</text>
+  </g>
+
+  <!-- Connectors -->
+  <path class="line" d="M425 282 C455 282 475 282 510 282"/>
+  <path class="line" d="M810 282 C840 282 865 282 895 282"/>
+  <path class="line" d="M1045 340 C1045 386 860 383 810 462"/>
+  <path class="line" d="M810 503 C840 503 865 503 895 503"/>
+
+  <!-- Branching from compare -->
+  <path class="line-soft" d="M1060 565 C1060 630 278 620 278 700"/>
+  <path class="line-soft" d="M1060 565 C1060 630 608 622 608 700"/>
+  <path class="line-soft" d="M1060 565 C1060 630 938 622 938 700"/>
+  <path class="line-soft" d="M1060 565 C1060 630 1268 622 1268 700"/>
+
+  <rect x="202" y="635" width="105" height="26" class="pill"/>
+  <text x="254" y="653" text-anchor="middle" class="branch-label">new</text>
+  <rect x="535" y="635" width="105" height="26" class="pill"/>
+  <text x="588" y="653" text-anchor="middle" class="branch-label">changed</text>
+  <rect x="866" y="635" width="120" height="26" class="pill"/>
+  <text x="926" y="653" text-anchor="middle" class="branch-label">unchanged</text>
+  <rect x="1210" y="635" width="105" height="26" class="pill"/>
+  <text x="1262" y="653" text-anchor="middle" class="branch-label">invalid</text>
+
+  <!-- Outcome to final -->
+  <path class="line-soft" d="M278 820 C278 870 500 898 575 918"/>
+  <path class="line-soft" d="M608 820 C608 847 650 858 735 875"/>
+  <path class="line-soft" d="M938 820 C938 847 900 858 835 875"/>
+  <path class="line-soft" d="M1268 820 C1268 870 1110 900 1025 918"/>
+
+  <!-- Legend -->
+  <!--<g transform="translate(1238,68)">
+    <rect x="0" y="0" width="275" height="58" rx="16" fill="#ffffff" stroke="#e2e8f0"/>
+    <circle cx="28" cy="29" r="8" class="aws-orange"/>
+     <text x="45" y="34" class="small">AWS-style architecture icons</text> 
+  </g>-->
+</svg>

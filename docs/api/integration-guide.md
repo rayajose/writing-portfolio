@@ -8,9 +8,10 @@ The Commerce Integration API supports a common integration workflow:
 2. Upload the feed.
 3. Monitor validation status.
 4. Process the feed through the ETL pipeline.
-5. Query product data.
-6. Create and retrieve order data.
-7. Retrieve analytics.
+5. Store product data.
+6. Query product data.
+7. Create and retrieve order data.
+8. Retrieve analytics.
 
 ```mermaid
 flowchart TD
@@ -22,6 +23,8 @@ flowchart TD
     F --> G[Create order]
     G --> H[Retrieve analytics]
 ```
+
+<!-- ![Integration workflow](../api/screenshots/integration-workflow-aws-icons.svg) -->
 
 ## When to use this guide
 
@@ -74,6 +77,8 @@ flowchart TD
 
     J --> K[Revenue Reporting]
 ```
+
+<!-- ![Integration architecture](../api/screenshots/integration-architecture-aws-icons.svg) -->
 
 ## Asynchronous processing model
 

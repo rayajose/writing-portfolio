@@ -33,41 +33,7 @@ The Commerce Integration API consists of the following core layers:
 
 ## High-level architecture
 
-```mermaid
-flowchart TD
-
-    Client["Client
-    curl / Postman / Swagger UI"]
-
-    ALB["Application
-    Load Balancer"]
-
-    ECS["Amazon ECS Fargate
-    FastAPI application"]
-
-    S3["Amazon S3
-    Raw feed storage"]
-
-    ETL["ETL
-    Processing"]
-
-    DB["Amazon RDS
-    PostgreSQL"]
-
-    Analytics["Analytics
-    Layer"]
-
-    Client --> ALB
-    ALB --> ECS
-
-    ECS -->|Store feeds| S3
-    ECS -->|Run ETL| ETL
-    ECS -->|Read / write| DB
-    ECS --> Analytics
-
-    ETL -->|Load data| DB
-    Analytics -->|Aggregate queries| DB
-```
+![High-level architecture](../api/screenshots/high-level-architecture-visio-style.svg)
 
 
 ## Operational workflow
@@ -112,15 +78,9 @@ Read operations operate on processed PostgreSQL data. Because ingestion and proc
 
 ## Job lifecycle
 
-```mermaid
-stateDiagram-v2
-    [*] --> queued
-    queued --> running
-    running --> completed
-    running --> failed
-    completed --> [*]
-    failed --> [*]
-```
+<!-- ![Job lifecycle](../api/screenshots/job-lifecycle-visio-style.svg) -->
+
+
 
 | Status      | Description                        |
 | ----------- | ---------------------------------- |

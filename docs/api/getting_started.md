@@ -143,28 +143,7 @@ Upload feed
 
 ## Ingestion and order flow
 
-```mermaid
-flowchart TD
-    A["Partner CSV upload"] --> B["Raw layer: Amazon S3"]
-
-    B --> C["Validation layer"]
-
-    C --> D["ETL processing"]
-
-    D --> E["PostgreSQL product catalog"]
-
-    E --> F["Products API"]
-
-    F --> G["Orders API"]
-
-    G --> H["Orders and order items"]
-
-    H --> I["Analytics API"]
-
-    C -->|Validation errors| J["Failed feed or job"]
-
-    J --> K["Debug workflow"]
-```
+![Ingestion and order flow](../api/screenshots/ingestion-order-flow-aws-icons.svg)
 
 ## Use query parameters
 
