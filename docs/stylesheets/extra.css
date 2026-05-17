@@ -61,7 +61,7 @@ select {
 .md-typeset>blockquote,
 .md-typeset>.admonition,
 .md-typeset>details {
-  max-width: 860px;
+  max-width: 820px;
 }
 
 /* Header */
@@ -73,6 +73,8 @@ select {
 }
 
 .md-header__inner {
+  display: flex;
+  align-items: center;
   padding-left: 1.2rem;
   padding-right: 1.2rem;
 }
@@ -89,21 +91,21 @@ select {
 }
 
 .md-header__inner::before {
-  content: "</> Ray Jose – Technical Writing Portfolio";
-  display: flex;
-  align-items: center;
-  margin-right: 1.25rem;
-  color: #394253;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 575;
-  line-height: 1;
-  white-space: nowrap;
-}
+  content: "</>  Ray Jose  /  Technical Writing Portfolio";
 
-.md-header__inner {
   display: flex;
   align-items: center;
+
+  margin-right: 1.25rem;
+
+  color: #334155;
+
+  font-size: 0.80rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1;
+
+  white-space: nowrap;
 }
 
 .md-header__source,
@@ -140,7 +142,6 @@ select {
 .md-search__icon[for="__search"] svg {
   fill: currentColor !important;
 }
-
 
 /* Top tabs */
 .md-tabs {
@@ -194,9 +195,11 @@ select {
 }
 
 .md-nav__title {
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  font-size: 0.64rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  text-transform: uppercase;
 }
 
 .md-nav__link {
@@ -214,6 +217,15 @@ select {
   font-weight: 600;
   color: #111827 !important;
   background-color: rgba(148, 163, 184, 0.12);
+}
+
+/* Left sidebar section labels */
+.md-sidebar--primary label.md-nav__link .md-ellipsis {
+  color: #64748b !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase;
 }
 
 /* Nested navigation hierarchy */
@@ -265,8 +277,6 @@ select {
   padding-left: calc(0.45rem - 2px);
 }
 
-
-
 /* Typography */
 .md-typeset {
   color: #1f2933;
@@ -281,28 +291,27 @@ select {
 
 .md-typeset h2 {
   color: var(--md-default-fg-color);
-  font-weight: 500;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   border-bottom: 1px solid #d8dee6;
   padding-bottom: 0.35rem;
   margin-top: 3rem;
   margin-bottom: 1rem;
 }
 
-.md-typeset h3 {
-  color: var(--md-default-fg-color);
-  font-weight: 525;
-  font-size: 0.9rem;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-  padding-top: 1.25rem;
+.md-typeset h2:first-of-type {
+  margin-top: 1rem;
 }
 
-.md-typeset h4 {
-  font-size: 0.72rem;
-  font-weight: 500;
-  margin-top: 1.4rem;
-  margin-bottom: 0.5rem;
-  color: #4b5563;
+.md-typeset h3 {
+  color: #1e293b;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-top: 2rem;
+  margin-bottom: 0.55rem;
+  padding-top: 1rem;
 }
 
 .md-typeset h3:not(:first-child) {
@@ -316,44 +325,6 @@ select {
   max-width: 880px;
 }
 
-/* Strong terms in documentation */
-.md-typeset li>strong:first-child,
-.md-typeset td>strong:first-child {
-  color: #334155;
-  font-weight: 600;
-}
-
-/* List spacing refinement */
-.md-typeset ul,
-.md-typeset ol {
-  padding-left: 1.15rem;
-}
-
-.md-typeset li>p {
-  margin-top: 0.2rem;
-  margin-bottom: 0.2rem;
-}
-
-.md-typeset ul li::marker,
-.md-typeset ol li::marker {
-  color: #94a3b8;
-}
-
-/* Blockquotes */
-.md-typeset blockquote {
-  margin: 1.2rem 0;
-  padding: 0.85rem 1rem;
-  border-left: 3px solid #94a3b8;
-  background-color: #f8fafc;
-  color: #475569;
-  border-radius: 0 8px 8px 0;
-}
-
-.md-typeset blockquote p {
-  margin: 0;
-}
-
-/* Small API section headings */
 .md-typeset h4 {
   margin-top: 1.75rem;
   margin-bottom: 0.6rem;
@@ -367,13 +338,43 @@ select {
 .md-typeset p,
 .md-typeset ul,
 .md-typeset ol {
-  margin-top: 0.55rem;
-  margin-bottom: 0.75rem;
+  margin-top: 0.45rem;
+  margin-bottom: 0.65rem;
+}
+
+.md-typeset ul,
+.md-typeset ol {
+  padding-left: 1.15rem;
 }
 
 .md-typeset ul li,
 .md-typeset ol li {
   margin-bottom: 0.22rem;
+}
+
+.md-typeset li>p {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.md-typeset ul li::marker,
+.md-typeset ol li::marker {
+  color: #94a3b8;
+}
+
+/* Strong terms in documentation */
+.md-typeset strong {
+  font-weight: 600;
+}
+
+.md-typeset li>strong:first-child,
+.md-typeset td>strong:first-child {
+  color: #334155;
+  font-weight: 600;
+}
+
+.md-typeset strong+ul {
+  margin-top: 0.35rem;
 }
 
 /* Heading spacing before structured content */
@@ -408,6 +409,20 @@ select {
 
 .md-typeset .headerlink:hover {
   color: #64748b;
+}
+
+/* Blockquotes */
+.md-typeset blockquote {
+  margin: 1.2rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid #94a3b8;
+  background-color: #f8fafc;
+  color: #475569;
+  border-radius: 0 8px 8px 0;
+}
+
+.md-typeset blockquote p {
+  margin: 0;
 }
 
 /* Hero */
@@ -460,18 +475,6 @@ select {
   align-items: center;
 }
 
-/* Home page section spacing */
-.md-typeset h2:first-of-type {
-  margin-top: 1rem;
-}
-
-/* Home page section headings */
-.md-content .md-typeset>h2 {
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
 .portfolio-hero-actions .md-button {
   padding: 0.45rem 0.8rem;
   font-size: 0.7rem;
@@ -505,9 +508,6 @@ select {
   color: #1f4f82;
   border-color: #8fa9c7;
   background-color: #f3f7fb;
-}
-
-.portfolio-hero-actions .md-button:not(.md-button--primary):hover {
   transform: translateY(-1px);
 }
 
@@ -522,16 +522,6 @@ select {
     box-shadow 0.15s ease,
     transform 0.15s ease;
 }
-
-/* Home page link groups */
-.md-typeset strong {
-  font-weight: 600;
-}
-
-.md-typeset strong+ul {
-  margin-top: 0.35rem;
-}
-
 
 /* Screenshots */
 .screenshot-img {
@@ -559,9 +549,30 @@ select {
 }
 
 /* Code */
+.md-typeset code,
+.md-typeset pre,
+.highlight code {
+  font-family:
+    "SFMono-Regular",
+    "SF Mono",
+    Consolas,
+    "Liberation Mono",
+    Menlo,
+    monospace;
+}
+
 .md-typeset pre>code {
   font-size: 0.62rem;
   line-height: 1.55;
+}
+
+.md-typeset code {
+  background-color: #f1f5f9;
+  color: #334155;
+  border: none;
+  border-radius: 4px;
+  padding: 0.1em 0.32em;
+  font-size: 0.62rem;
 }
 
 .highlight {
@@ -575,28 +586,6 @@ select {
   background-color: #f3f4f6;
 }
 
-.md-typeset code {
-  background-color: #f3f5f8;
-  color: #475569;
-  border: 1px solid #e5e9ef;
-  border-radius: 4px;
-  padding: 0.1em 0.32em;
-  font-size: 0.62rem;
-}
-
-/* Monospace refinement */
-.md-typeset code,
-.md-typeset pre,
-.highlight code {
-  font-family:
-    "SFMono-Regular",
-    "SF Mono",
-    Consolas,
-    "Liberation Mono",
-    Menlo,
-    monospace;
-}
-
 /* Code copy button */
 .md-clipboard {
   color: #94a3b8;
@@ -606,6 +595,11 @@ select {
   color: #475569;
 }
 
+/* Tighten spacing before API example cards */
+.md-typeset h3+.api-example-grid,
+.md-typeset h4+.api-example-grid {
+  margin-top: 0.6rem;
+}
 
 /* Side-by-side API examples */
 .api-example-grid {
@@ -618,9 +612,10 @@ select {
 
 .api-example-grid>div {
   min-width: 0;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid #d8dee6;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
 }
 
 .api-example-grid>div:first-child {
@@ -631,15 +626,25 @@ select {
   background-color: #efe9ff;
 }
 
+/* Request/Response card headings */
 .api-example-grid h3 {
-  margin: 0;
-  padding: 0.8rem 1rem;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  margin: 0 !important;
+  padding: 0.55rem 0.85rem !important;
+  border-top: none !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18) !important;
   background-color: rgba(255, 255, 255, 0.35);
-  color: #475569;
-  font-size: 0.7rem;
+  font-size: 0.68rem !important;
   font-weight: 600;
+  line-height: 1.2;
   letter-spacing: 0.01em;
+}
+
+.api-example-grid>div:first-child>h3 {
+  color: #003f88 !important;
+}
+
+.api-example-grid>div:last-child>h3 {
+  color: #4c1d95 !important;
 }
 
 .api-example-grid .highlight {
@@ -651,10 +656,7 @@ select {
 
 .api-example-grid .highlight pre {
   border-radius: 0;
-}
-
-.api-example-grid .highlight {
-  margin-top: 0;
+  overflow-x: hidden;
 }
 
 /* Request example */
@@ -678,11 +680,10 @@ select {
   word-break: break-word;
 }
 
-/* Reduce horizontal scroll behavior in Material code blocks */
-.api-example-grid .highlight pre {
-  overflow-x: hidden;
+.api-example-grid pre>code {
+  font-size: 0.58rem;
+  line-height: 1.5;
 }
-
 
 /* Syntax highlighting refinement */
 
@@ -739,7 +740,6 @@ select {
   color: #be185d;
 }
 
-
 /* Prevent inline code in tables from wrapping */
 .md-typeset table code {
   white-space: nowrap;
@@ -747,11 +747,48 @@ select {
   word-break: normal;
 }
 
+/* Tables */
+.md-typeset table:not([class]) {
+  font-size: 0.72rem;
+  border: 1px solid #b0b0b0;
+  border-radius: 10px;
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+}
 
-@media screen and (max-width: 900px) {
-  .api-example-grid {
-    grid-template-columns: 1fr;
-  }
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+  padding: 0.7rem 0.9rem;
+  vertical-align: top;
+}
+
+.md-typeset table:not([class]) th {
+  color: #334155;
+  background-color: #f8fafc;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid #cbd5e1;
+  border-right: 1px solid #d7dde5;
+}
+
+.md-typeset table:not([class]) td {
+  color: #475569;
+  border-top: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+}
+
+.md-typeset table:not([class]) th:last-child,
+.md-typeset table:not([class]) td:last-child {
+  border-right: none;
+}
+
+.md-typeset table:not([class]) tbody tr:nth-child(even) td {
+  background-color: #fafbfd;
+}
+
+.md-typeset table:not([class]) tr:hover td {
+  background-color: #fafbfd;
 }
 
 /* Keyboard/input styling */
@@ -772,60 +809,6 @@ select {
   margin: 2.2rem 0;
   border: 0;
   border-top: 1px solid #e2e8f0;
-}
-
-/* Tables */
-.md-typeset table:not([class]) {
-  font-size: 0.72rem;
-  border: 1px solid #b0b0b0;
-  border-radius: 10px;
-  overflow: hidden;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-.md-typeset table:not([class]) th {
-  background-color: #f6f8fb;
-  font-weight: 600;
-  border-bottom: 1px solid #9a9a9a;
-  border-right: 1px solid #b0b0b0;
-}
-
-.md-typeset table:not([class]) td {
-  border-top: 1px solid #c0c0c0;
-  border-right: 1px solid #b0b0b0;
-}
-
-.md-typeset table:not([class]) tr:hover td {
-  background-color: #fafbfd;
-}
-
-.md-typeset table:not([class]) th:last-child,
-.md-typeset table:not([class]) td:last-child {
-  border-right: none;
-}
-
-/* Subtle table row striping */
-.md-typeset table:not([class]) tbody tr:nth-child(even) td {
-  background-color: #fafbfd;
-}
-
-/* Table cell spacing */
-.md-typeset table:not([class]) th,
-.md-typeset table:not([class]) td {
-  padding: 0.7rem 0.9rem;
-  vertical-align: top;
-}
-
-/* Header styling */
-.md-typeset table:not([class]) th {
-  color: #334155;
-  letter-spacing: 0.01em;
-}
-
-/* Reduce visual heaviness */
-.md-typeset table:not([class]) td {
-  color: #475569;
 }
 
 /* Admonitions */
@@ -902,6 +885,12 @@ select {
     box-shadow 0.2s ease;
 }
 
+/* Responsive layout */
+@media screen and (max-width: 900px) {
+  .api-example-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* Hide MkDocs footer */
 .md-footer {
