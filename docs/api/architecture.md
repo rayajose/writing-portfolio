@@ -1,182 +1,118 @@
-# Architecture
+# System architecture
 
-This page explains the architecture of the Commerce Integration API, including its components, data flow, and key design decisions.
+This page explains the implementation architecture of the Commerce Integration API, including system components, application layers, storage boundaries, and key design decisions.
+
+For a higher-level operational view of ingestion, job execution, traceability, and recovery workflows, see [Platform architecture and operational flow](../architecture/platform-architecture.md).
 
 
 ## Architecture principles
 
 The system is designed around:
 
-- Separation of concerns (routing, processing, storage)  
-- Clear data flow between raw and processed layers  
-- Explicit job-based processing  
-- Independent read and write paths  
+- Separation of concerns between routing, processing, and persistence
+- Clear boundaries between raw and processed data
+- Explicit job-based processing
+- Independent read and write paths
+- Traceable ingestion and processing workflows
 
 
 ## System overview
 
-The Commerce Integration API is a layered system designed to:
+The Commerce Integration API is a layered platform designed to:
 
-- Ingest partner product feeds (CSV)  
-- Store raw data in Amazon S3  
-- Track ingestion workflows using job resources  
-- Execute ETL processing to transform and load data  
-- Persist normalized product data in a relational database  
-- Expose product data through queryable endpoints  
-- Provide aggregated analytics on processed data  
+- Ingest partner product feeds
+- Store raw feed files in Amazon S3
+- Track ingestion workflows using job resources
+- Execute ETL processing to transform and load data
+- Persist normalized product and order data in PostgreSQL
+- Expose product, order, and analytics data through queryable endpoints
 
-The system models a production-style ingestion pipeline with clear separation between raw data storage, processing, and serving layers.
-
-
-## Architecture diagram
-
-The following diagram illustrates the high-level system architecture and request flow:
-
-```mermaid
-flowchart TD
-
-    Client["Client<br>(curl / Postman / Swagger UI)"]
-
-    ALB["Application Load Balancer<br>(Public Endpoint)"]
-
-    ECS["Amazon ECS Fargate<br>FastAPI Container"]
-
-    S3["Amazon S3<br>Raw Data Layer"]
-
-    ETL["ETL Processing<br>(process_feed)"]
-
-    DB["Amazon RDS<br>PostgreSQL Database"]
-
-    Analytics["Analytics Layer<br>(Aggregations & Reporting)"]
-
-    ECR["Amazon ECR<br>Container Registry"]
-
-    Docs["MkDocs<br>GitHub Pages"]
-
-    Client -->|HTTP Request| ALB
-    ALB -->|Route Traffic| ECS
-
-    ECS -->|Store Raw Feed| S3
-    ECS -->|Trigger ETL| ETL
-
-    ETL -->|Load Products| DB
-
-    ECS -->|Read/Write| DB
-    ECS -->|Query Analytics| Analytics
-    Analytics -->|Read Data| DB
-
-    ECS -->|Pull Image| ECR
-
-    Client -->|View Docs| Docs
-```
-
-This architecture separates compute, storage, and networking concerns while introducing a dedicated raw data layer, processing pipeline, and analytics layer.
+The system models a production-style ingestion architecture with separate API, processing, storage, and analytics concerns.
 
 
-## Architecture Layers
+## Architecture layers
 
 ```text
-Client (curl / Postman / Swagger UI)
-        ↓
-API Layer (FastAPI endpoints)
-        ↓
-Application / Service Layer (ETL, S3 integration, analytics)
-        ↓
-Data Access Layer (db.py)
-        ↓
-Storage Layer:
-  - Amazon S3 (raw data)
-  - PostgreSQL (processed data)
+Client
+  ↓
+API layer
+  ↓
+Application / service layer
+  ↓
+Data access layer
+  ↓
+Storage layer
 ```
 
+| Layer                       | Implementation                       | Responsibility                      |
+| --------------------------- | ------------------------------------ | ----------------------------------- |
+| Client                      | curl, Postman, Swagger UI            | Sends API requests                  |
+| API layer                   | FastAPI routers                      | Handles HTTP requests and responses |
+| Application / service layer | ETL, S3 integration, analytics logic | Coordinates processing workflows    |
+| Data access layer           | `db.py`                              | Manages database operations         |
+| Storage layer               | Amazon S3, PostgreSQL                | Stores raw and processed data       |
 
-## Router layer (`routers/`)
 
-The router layer handles HTTP interactions and orchestrates application behavior.
+## API layer
 
-Responsibilities:
+The API layer handles HTTP interactions and routes requests to application services.
 
-- Request/response handling
+Responsibilities include:
+
+- Request and response handling
 - Input validation using FastAPI and Pydantic
 - API key authentication
-- Triggering job execution and ETL processing
-- Routing requests to the data and service layers
+- Triggering job execution
+- Routing requests to data and service layers
 
-Example endpoints:
+Example endpoints include:
 
 - `POST /feeds/upload`
 - `GET /feeds/{feed_id}`
 - `GET /jobs/{job_id}`
 - `POST /jobs/{job_id}/run`
 - `GET /products`
+- `POST /orders`
 - `GET /analytics/*`
 
 
-## Application / Service layer
+## Application and service layer
 
-This layer contains processing logic and integrations.
+The application and service layer contains processing logic and external service integrations.
 
-Responsibilities:
+Responsibilities include:
 
-- ETL processing (`etl/process_feed.py`)
+- ETL processing
+- S3 raw feed storage and retrieval
+- Job status updates
+- Pipeline coordination
+- Analytics query handling
 
-  - Extract data from S3
-  - Transform and clean CSV data
-  - Load into PostgreSQL
-
-- S3 integration for raw file storage
-
-- Job status updates and pipeline coordination
-
-- Analytics query handling and aggregation logic
-
-This layer separates processing logic from HTTP and persistence concerns.
+The ETL implementation extracts raw feed data, validates and normalizes records, and loads processed records into PostgreSQL.
 
 
-## Analytics layer
+## Data access layer
 
-The analytics layer provides aggregated reporting and operational insights derived from processed product and order data.
+The data access layer encapsulates database interactions.
 
-Responsibilities:
+Responsibilities include:
 
-- Execute read-heavy aggregation queries
-- Support reporting and dashboard-style workflows
-- Provide summarized business and operational metrics
-- Expose analytics endpoints through `/analytics/*`
-
-Example analytics include:
-
-- Revenue by partner
-- Sales trends over time
-- Revenue share distribution
-- Product and inventory metrics
-
-The analytics layer operates exclusively on processed data stored in PostgreSQL.
-
-It is designed to support read-heavy reporting and aggregation workflows independently from ingestion and ETL processing operations.
-
-
-## Data access layer (`db.py`)
-
-This layer encapsulates all database interactions.
-
-Responsibilities:
-
-- Managing database connections (SQLite for local, PostgreSQL in production)
+- Managing database connections
 - Performing CRUD operations
 - Generating structured identifiers
 - Supporting filtering, sorting, and pagination
 - Mapping database records to API response schemas
 
+The application supports local and deployed database configurations, with PostgreSQL used for the deployed environment.
+
 
 ## Storage layer
-The storage layer handles raw and processed data using Amazon S3 for ingestion and PostgreSQL for persistent storage.
 
-### Amazon S3 (Raw data layer)
+The storage layer separates raw ingestion data from processed application data.
 
-- Stores uploaded CSV files
-- Acts as the system of record for raw partner data
-- Enables reprocessing and auditability
+### Amazon S3
+
+Amazon S3 stores raw uploaded feed files.
 
 Example object key:
 
@@ -184,270 +120,327 @@ Example object key:
 raw/partners/{partner_name}/feeds/{feed_id}/{filename}.csv
 ```
 
-### PostgreSQL (Processed data layer)
+S3 supports:
 
-Stores normalized and queryable data.
+- Raw feed retention
+- Reprocessing
+- Auditability
+- Operational recovery
 
-Core tables:
+### PostgreSQL
+
+PostgreSQL stores normalized and queryable data.
+
+Core tables include:
 
 - `feeds`
 - `jobs`
 - `products`
+- `orders`
 - `id_counters`
 
 
-## Data flow
-The data flow describes how data moves through ingestion, validation, transformation, and access layers.
+## Feed ingestion data flow
 
-### Feed ingestion workflow
+The feed ingestion workflow stores the raw file, creates operational metadata, and initializes processing jobs.
 
 ```mermaid
 flowchart TD
-    A["Client"] --> B["POST /feeds/upload"]
-    B --> C["Validate CSV structure"]
-    C --> D["Store raw file in S3"]
-    D --> E["Generate IDs<br>FDxxxxx, JSxxxxx, JVxxxxx"]
-    E --> F["Persist feed metadata"]
-    F --> G["Create submission and validation jobs"]
-    G --> H["Return upload response"]
+
+    A["Client request
+    POST /feeds/upload"]
+
+    B["Validate upload"]
+
+    C["Store raw file
+    in Amazon S3"]
+
+    D["Create feed record
+    in PostgreSQL"]
+
+    E["Create job records"]
+
+    F["Return upload response"]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
 ```
 
 
-### ETL processing workflow
+## ETL processing data flow
+
+ETL processing reads raw feed data from S3, transforms it, and updates processed records in PostgreSQL.
 
 ```mermaid
 flowchart TD
-    A["POST /jobs/{job_id}/run"] --> B["Fetch feed metadata<br>S3 key + bucket"]
-    B --> C["Read CSV from S3"]
-    C --> D["Clean and normalize data"]
-    D --> E["Compare against existing products<br>partner + SKU"]
 
-    E --> F["Insert new products"]
-    E --> G["Update changed products"]
-    E --> H["Unchanged products"]
-    E --> I["Skip invalid rows"]
+    A["Run job
+    POST /jobs/{job_id}/run"]
 
-    F --> J["Update job status and ETL summary"]
+    B["Read feed metadata"]
+
+    C["Retrieve raw CSV
+    from S3"]
+
+    D["Validate and normalize
+    feed rows"]
+
+    E["Compare product records
+    by partner + SKU"]
+
+    F["Insert new products"]
+    G["Update changed products"]
+    H["Skip unchanged products"]
+    I["Skip invalid rows"]
+
+    J["Update job status
+    and ETL summary"]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+
+    E --> F
+    E --> G
+    E --> H
+    E --> I
+
+    F --> J
     G --> J
     H --> J
     I --> J
 ```
 
 
-### ETL processing behavior
+## Product query data flow
 
-The ETL pipeline uses change detection to ensure efficient and accurate data loading:
-
-```text
-Inserted   → New product (partner + SKU not previously seen)  
-Updated    → Existing product with changed data (e.g., price, availability)  
-Unchanged  → Existing product with identical data  
-Skipped    → Invalid row (missing required fields)
-```
-
-This design ensures:
-
-- Idempotent reprocessing (safe to run multiple times)
-- No unnecessary database updates
-- Improved performance at scale
-
-
-### Product query workflow
+Product query operations read from processed PostgreSQL data.
 
 ```mermaid
 flowchart TD
-    A["Client"] --> B["GET /products"]
-    B --> C["Apply filters, sorting, pagination"]
-    C --> D["Query PostgreSQL"]
-    D --> E["Map DB fields to API schema"]
-    E --> F["Return response<br>items + next_cursor"]
+
+    A["Client request
+    GET /products"]
+
+    B["Apply filters,
+    sorting, and pagination"]
+
+    C["Query PostgreSQL"]
+
+    D["Map database records
+    to API schema"]
+
+    E["Return product response"]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
 ```
 
 
-## Read vs write paths
+## Read and write paths
 
-The system separates ingestion (write path) from data access (read path).
+The system separates ingestion workflows from query workflows.
 
-Because ingestion occurs asynchronously, read operations may temporarily reflect stale data until ETL processing completes.
+### Write path
 
-### Write path (Ingestion)
+The write path handles feed submission and ETL processing.
 
-- Feed upload via `/feeds/upload`
-- Raw data stored in S3
-- ETL processing transforms and loads data into PostgreSQL
+- Feed upload occurs through `/feeds/upload`
+- Raw data is stored in S3
+- Processing is tracked through jobs
+- Processed data is loaded into PostgreSQL
 
-### Read path (Query & Analytics)
+### Read path
 
-- Product data retrieved via `/products`
-- Aggregated insights retrieved via `/analytics/*`
-- All read operations operate on processed data in PostgreSQL
+The read path serves processed product, order, and analytics data.
 
-This separation improves scalability, maintainability, and performance.
+- Product data is retrieved through `/products`
+- Order data is retrieved through order endpoints
+- Aggregated insights are retrieved through `/analytics/*`
+- Read operations operate on processed PostgreSQL data
+
+Because ingestion and ETL processing are separate workflows, read operations may temporarily reflect stale data until processing completes.
 
 
 ## Identifier strategy
 
-The API uses structured identifiers to ensure traceability.
+The API uses structured identifiers to support traceability.
 
-| Prefix | Resource       | Example |
-| ------ | -------------- | ------- |
-| FD     | Feed           | FD00001 |
-| JS     | Submission Job | JS00001 |
-| JV     | Validation Job | JV00001 |
-| PR     | Product        | PR00001 |
+| Prefix | Resource       | Example   |
+| ------ | -------------- | --------- |
+| `FD`   | Feed           | `FD00001` |
+| `JS`   | Submission job | `JS00001` |
+| `JV`   | Validation job | `JV00001` |
+| `PR`   | Product        | `PR00001` |
 
 Identifiers are generated using a database-backed counter.
 
 
 ## Job model
 
-Each feed submission generates two job resources:
+Each feed submission creates job resources used to track processing activity.
 
-### Submission job (`JSxxxxx`)
+### Submission job
 
-- Tracks feed upload processing
-- Typically completes immediately
+The submission job tracks feed upload processing.
 
-### Validation job (`JVxxxxx`)
+```text
+JSxxxxx
+```
 
-- Executes ETL processing
-- Reads raw data from S3
-- Transforms and loads product data into PostgreSQL
-- Updates job status and ingestion results
+### Validation job
 
-Jobs are executed via:
+The validation job tracks validation and ETL execution.
+
+```text
+JVxxxxx
+```
+
+Jobs are executed through:
 
 ```text
 POST /jobs/{job_id}/run
 ```
 
+For job lifecycle behavior, see [Platform architecture and operational flow](../architecture/platform-architecture.md).
 
-## Job lifecycle workflow
 
-```mermaid
-stateDiagram-v2
-    [*] --> queued
-    queued --> running
-    running --> completed
-    running --> failed
-    failed --> [*]
-    completed --> [*]
-```
+## Analytics layer
 
-| Status    | Description                        |
-| --------- | ---------------------------------- |
-| queued    | Job created and awaiting execution |
-| running   | ETL processing in progress         |
-| completed | Job finished successfully          |
-| failed    | Job encountered an error           |
+The analytics layer provides aggregated reporting and operational insights derived from processed product and order data.
+
+Responsibilities include:
+
+- Executing aggregation queries
+- Supporting reporting workflows
+- Providing summarized business metrics
+- Exposing analytics endpoints through `/analytics/*`
+
+Example analytics include:
+
+- Revenue by partner
+- Sales trends over time
+- Revenue share distribution
+
+The analytics layer operates on processed data stored in PostgreSQL.
+
+
+## Deployment architecture
+
+The Commerce Integration API is deployed using a container-based AWS architecture.
+
+| Component                 | Purpose                  |
+| ------------------------- | ------------------------ |
+| FastAPI application       | API runtime              |
+| Docker                    | Application packaging    |
+| Amazon ECR                | Container image registry |
+| Amazon ECS Fargate        | Container orchestration  |
+| Application Load Balancer | Public HTTP routing      |
+| Amazon RDS PostgreSQL     | Relational data storage  |
+| Amazon S3                 | Raw feed storage         |
+| GitHub Pages              | Documentation hosting    |
+
+For deployment details, see [Deployment guide](../architecture/deployment.md).
+
+
+## Reliability and health monitoring
+
+The deployed architecture supports basic reliability through managed AWS services and health checks.
+
+- ECS maintains desired task count
+- ALB performs health checks
+- Failed containers are automatically replaced
+- RDS manages database availability
+- `/health` supports application health verification
 
 
 ## Data mapping strategy
 
 The system separates internal storage models from API representations.
 
-| Layer        | Field Name  |
+| Layer        | Field name  |
 | ------------ | ----------- |
 | Database     | `filename`  |
-| API Response | `file_name` |
+| API response | `file_name` |
 
 This approach:
 
 - Maintains consistent API naming conventions
 - Allows internal schema flexibility
-- Decouples storage from presentation
-
-
-## Deployment architecture (AWS)
-
-The Commerce Integration API is deployed using a container-based architecture:
-
-- **FastAPI (Docker container)** — application runtime  
-- **Amazon ECR** — container image registry (`partner-catalog-api`)  
-- **Amazon ECS (Fargate)** — container orchestration  
-- **Application Load Balancer (ALB)** — public HTTP endpoint  
-- **Amazon RDS (PostgreSQL)** — persistent storage  
-- **Amazon S3** — raw data storage  
-
-The source code and documentation are maintained in the `writing-portfolio` repository.  
-AWS resources retain the application name `partner-catalog-api` (ECR, ECS, etc.).
-
-
-## Reliability and health monitoring
-
-- ECS maintains desired task count
-- ALB performs health checks
-- Failed containers are automatically replaced
-- Database availability is managed by RDS
-
-
-## Documentation and developer experience
-
-- Swagger UI (`/docs`) for interactive API exploration  
-- MkDocs documentation hosted on GitHub Pages  
-- Consistent request and response formats
+- Decouples storage from API presentation
 
 
 ## Design decisions
-This section outlines the architectural decisions that define system structure, data flow, and separation of responsibilities.
+
 ### Separation of concerns
 
-- Router layer handles HTTP
-- Service layer handles ETL and integrations
-- Data layer handles persistence
-- Storage layers separate raw and processed data
+The system separates routing, processing, persistence, and storage responsibilities.
 
+This improves:
 
-### Raw vs processed data separation
+- Maintainability
+- Testability
+- Operational clarity
+- Future extensibility
 
-- S3 stores immutable raw data
-- PostgreSQL stores normalized queryable data
+### Raw and processed data separation
 
-This enables reprocessing, auditing, and scalability.
+S3 stores raw feed files, while PostgreSQL stores normalized queryable data.
 
+This enables:
+
+- Reprocessing
+- Auditing
+- Recovery workflows
+- Clean separation between ingestion and serving layers
 
 ### Controlled job execution
 
-- Jobs are initiated through explicit API operations
-- Processing is modeled as a job-based workflow
-- Clients interact with ingestion asynchronously through job status resources
-- Current ETL execution occurs within the application runtime
-- The architecture supports future migration to dedicated workers or queue-based execution
+Jobs are initiated through explicit API operations.
 
+This supports:
+
+- Operational visibility
+- Controlled execution
+- Troubleshooting
+- Future migration to queue-based processing
 
 ### Cursor-based pagination
 
-- Uses `product_id` as cursor
-- Avoids offset performance issues
-- Scales efficiently with large datasets
+The Products API uses cursor-based pagination to support scalable retrieval of large product datasets.
 
-
-### Cloud-native deployment
-
-- Containerized application (Docker)
-- Serverless compute (ECS Fargate)
-- Managed storage (S3 + RDS)
-- Load-balanced public access (ALB)
+This avoids the performance limitations associated with large offset-based queries.
 
 
 ## Future enhancements
 
-- Asynchronous job processing (queues/workers)
+Potential architecture enhancements include:
+
+- Dedicated asynchronous workers
+- Queue-based ETL orchestration
 - Event-driven ingestion pipelines
 - Advanced validation rules
 - Horizontal scaling with multiple workers
-- Read replicas for database scaling
-- Infrastructure as Code (Terraform / CloudFormation)
+- Read replicas for analytics workloads
+- Infrastructure as Code using Terraform or CloudFormation
+
 
 ## Related documentation
 
-- [Index](../index.md)
-- [Feeds API](feeds.md)
-- [Jobs API](jobs.md)
-- [Products API](products.md)
-- [Orders API](orders.md)
-- [Analytics API](analytics.md)
+- [Platform architecture and operational flow](../architecture/platform-architecture.md)
 - [Workflows](../architecture/workflows.md)
-- [Errors](errors.md)
+- [Deployment guide](../architecture/deployment.md)
+- [Feeds API](../api/feeds.md)
+- [Jobs API](../api/jobs.md)
+- [Products API](../api/products.md)
+- [Orders API](../api/orders.md)
+- [Analytics API](../api/analytics.md)
+- [Errors](../api/errors.md)
 
-For deployment evidence, see [Screenshots](screenshots.md).
+For deployment evidence, see [Screenshots](../api/screenshots.md).

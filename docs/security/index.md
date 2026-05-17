@@ -4,15 +4,25 @@ This section contains security-focused operational documentation supporting inci
 
 The documentation reflects practices commonly used in regulated enterprise environments requiring operational accountability, risk reduction, and procedural clarity.
 
-### Incident response
 
-Documentation supporting operational response procedures, escalation handling, containment activities, and recovery coordination for security-related events.
+### Incident response and recovery
 
-<div class="doc-section-link">
-<a href="../security/incident-response/">
-View incident response plan
-</a>
-</div>
+Documentation covering security incident handling, escalation procedures, containment workflows, operational recovery, and response coordination.
+
+Related documentation:
+
+- [Incident response plan](incident-response.md)
+- [Debug failed feed runbook](../operations/debug-product-feed.md)
+
+
+### Secure operational practices
+
+Documentation supporting operational accountability, workflow consistency, traceability, and recovery-oriented processing procedures.
+
+Related documentation:
+
+- [Operations](../operations/index.md)
+- [Architecture and deployment](../architecture/index.md)
 
 
 ## Security focus areas
@@ -43,6 +53,6 @@ Key priorities include:
 
 ## Related documentation
 
-- [SOPs & Operations Documentation](../operations/index.md)
-- [Integration & Architecture Documentation](../architecture/index.md)
-- [API & Developer Documentation](../api/index.md)
+- [API and integrations](../api/index.md)
+- [Architecture and deployment](../architecture/index.md)
+- [Operations](../operations/index.md)

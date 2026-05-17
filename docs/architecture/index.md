@@ -2,41 +2,43 @@
 
 This section documents the system architecture, processing workflows, integration patterns, and operational design of the Commerce Integration API platform.
 
-The documentation focuses on how services interact, how ingestion workflows operate, and how the platform supports scalable partner integrations and asynchronous processing.
+The documentation focuses on how services interact, how ingestion workflows operate, and how the platform supports scalable partner integrations, ETL processing, and operational visibility.
+
 
 ### System architecture
 
-High-level platform architecture, ingestion flow, ETL processing model, data persistence, and operational workflows.
+Documentation covering platform architecture, ingestion workflows, ETL processing behavior, data persistence, storage layers, and deployment topology.
 
-<div class="doc-section-link">
-<a href="../api/architecture">
-View system architecture
-</a>
-</div>
+Related documentation:
 
-### Integration patterns
+- [Platform architecture and operational flow](platform-architecture.md)
+- [System architecture](../api/architecture.md)
+- [Deployment guide](deployment.md)
 
-Documentation covering partner integration workflows, ingestion patterns, and processing interactions.
 
-<div class="doc-section-link">
-<a href="../api/ingest-product-feed/">
-View ingestion workflow
-</a>
-</div>
+### Processing workflows
+
+Documentation describing ingestion workflows, job execution behavior, ETL processing flows, and operational processing interactions.
+
+Related documentation:
+
+- [Workflows](workflows.md)
+- [Integration guide](../api/integration-guide.md)
+- [Ingest a product feed end-to-end](../api/ingest-product-feed.md)
+
 
 ### Operational design
 
-Operational considerations including replay workflows, observability, failure handling, and processing traceability.
+Documentation covering observability, replay workflows, failure handling, operational traceability, and recovery procedures.
 
-<div class="doc-section-link">
-<a href="../security/incident-response/">
-View operational recovery documentation
-</a>
-</div>
+Related documentation:
+
+- [Debug failed feed runbook](../operations/debug-product-feed.md)
+- [Incident response plan](../security/incident-response.md)
 
 
 ## Related documentation
 
-- [SOPs & Operations Documentation](../operations/index.md)
-- [Security & Compliance Documentation](../security/index.md)
-- [API & Developer Documentation](../api/index.md)
+- [API and integrations](../api/index.md)
+- [Operations](../operations/index.md)
+- [Security and compliance](../security/index.md)

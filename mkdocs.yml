@@ -73,6 +73,7 @@ nav:
 
       - Overview: security/index.md
       - Incident response plan: security/incident-response.md
+      - API access control policy: security/api-access-control.md
 
   - About: about.md
 

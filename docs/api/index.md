@@ -1,40 +1,72 @@
 # API and integrations
 
-This section contains developer-focused documentation for the Commerce Integration API platform, including onboarding guidance, integration workflows, API reference documentation, tutorials, and implementation-focused operational guides.
+This section contains developer-focused documentation for the Commerce Integration API platform, including onboarding guidance, integration workflows, API reference documentation, tutorials, and operational implementation guides.
 
-The platform demonstrates ingestion-driven commerce workflows using asynchronous processing, ETL pipelines, relational data modeling, and cloud-native deployment patterns.
-
-
-### [Platform overview](../api/platform-overview.md)
-
-High-level overview of the platform, ingestion model, ETL processing, order workflows, analytics capabilities, and system concepts.
+The platform demonstrates ingestion-driven commerce workflows using ETL processing, job-based execution, relational data modeling, and cloud-native deployment patterns.
 
 
-### [Get started](../api/getting_started.md)
+### Platform overview
 
-Authenticate requests and complete your first API workflow.
+High-level documentation describing the platform architecture, ingestion model, ETL processing workflows, order management capabilities, analytics services, and core system concepts.
 
+Related documentation:
 
-### [Integration guide](../api/integration-guide.md)
-
-Build an end-to-end partner integration using ingestion, processing, and product retrieval workflows.
-
-
-### [Tutorials](../tutorials/first-feed.md)
-
-Guided walkthroughs demonstrating ingestion and processing workflows.
+- [Platform overview](platform-overview.md)
+- [Get started](getting_started.md)
 
 
-### [How-to guides](../api/ingest-product-feed.md)
+### Integration workflows
 
-Task-oriented operational workflows and troubleshooting procedures.
+Documentation covering partner onboarding flows, ingestion patterns, webhook integrations, and end-to-end processing workflows.
+
+Related documentation:
+
+- [Integration guide](integration-guide.md)
+- [Webhook integration guide](webhooks.md)
+- [Ingest a product feed end-to-end](ingest-product-feed.md)
 
 
-### [API reference](../api/api-reference.md)
+### Tutorials and operational guidance
 
-Endpoint definitions, request/response models, parameters, and error handling documentation.
+Guided walkthroughs and operational documentation supporting implementation, troubleshooting, and workflow validation.
+
+Related documentation:
+
+- [Your first feed ingestion](../tutorials/first-feed.md)
+- [Debug a failed feed](../operations/debug-product-feed.md)
 
 
-### [SDKs](../api/sdk-python.md)
+### API reference
 
-SDK usage and integration examples for programmatic API access.
+Endpoint-level reference documentation covering request and response models, parameters, authentication requirements, pagination behavior, and error handling.
+
+Related documentation:
+
+- [API reference overview](api-reference.md)
+- [Feeds API](feeds.md)
+- [Jobs API](jobs.md)
+- [Products API](products.md)
+- [Orders API](orders.md)
+- [Analytics API](analytics.md)
+- [Health API](health.md)
+- [Errors](errors.md)
+
+
+### SDKs and specifications
+
+Supporting implementation resources including SDK usage guidance and feed formatting specifications.
+
+Related documentation:
+
+- [Python SDK guide](sdk-python.md)
+- [CSV feed file specification](../specs/csv-feed-file-spec.md)
+
+
+### Supporting materials
+
+Supplementary documentation, visual references, and supporting implementation resources.
+
+Related documentation:
+
+- [Resources](resources.md)
+- [Screenshots](screenshots.md)

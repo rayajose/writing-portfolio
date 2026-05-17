@@ -1,40 +1,38 @@
 # Operations
 
-This section contains operational documentation supporting onboarding workflows, ingestion procedures, troubleshooting activities, and repeatable production processes used throughout the Commerce Integration API platform.
+This section contains operational documentation supporting onboarding workflows, ingestion procedures, troubleshooting activities, and repeatable operational processes used throughout the Commerce Integration API platform.
 
-The documentation emphasizes operational clarity, workflow consistency, and failure recovery practices commonly required in production SaaS and integration environments.
-
-### Partner onboarding
-
-Operational procedures supporting partner integration setup, feed onboarding, validation readiness, and ingestion workflow coordination.
-
-<div class="doc-section-link">
-<a href="../operations/onboarding/">
-View onboarding procedure
-</a>
-</div>
+The documentation emphasizes operational clarity, workflow consistency, troubleshooting guidance, and recovery procedures commonly required in production SaaS and integration environments.
 
 
-### Feed ingestion workflows
+### Partner onboarding and integration operations
 
-Step-by-step operational workflows covering feed submission, validation processing, ETL execution, and product ingestion lifecycle management.
+Documentation covering partner onboarding procedures, integration setup, feed validation readiness, and operational coordination workflows.
 
-<div class="doc-section-link">
-<a href="../api/ingest-product-feed/">
-View ingestion workflow
-</a>
-</div>
+Related documentation:
+
+- [Partner onboarding SOP](onboarding.md)
+- [Integration guide](../api/integration-guide.md)
+
+
+### Feed ingestion operations
+
+Operational workflows covering feed submission, validation processing, ETL execution, and ingestion lifecycle management.
+
+Related documentation:
+
+- [Ingest a product feed end-to-end](../api/ingest-product-feed.md)
+- [Workflows](../architecture/workflows.md)
 
 
 ### Troubleshooting and recovery
 
-Operational recovery procedures supporting validation failures, ETL troubleshooting, failed job analysis, and ingestion recovery workflows.
+Documentation supporting validation failure analysis, ETL troubleshooting, failed job recovery, and operational replay workflows.
 
-<div class="doc-section-link">
-<a href="../operations/debug-product-feed/">
-View troubleshooting workflow
-</a>
-</div>
+Related documentation:
+
+- [Debug failed feed runbook](debug-product-feed.md)
+- [Incident response plan](../security/incident-response.md)
 
 
 ## Operational focus areas
@@ -51,6 +49,6 @@ This documentation demonstrates operational content patterns commonly used in en
 
 ## Related documentation
 
-- [API & Developer Documentation](../api/index.md)
-- [Integration & Architecture Documentation](../architecture/index.md)
-- [Security & Compliance Documentation](../security/index.md)
+- [API and integrations](../api/index.md)
+- [Architecture and deployment](../architecture/index.md)
+- [Security and compliance](../security/index.md)
