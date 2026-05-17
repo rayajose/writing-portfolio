@@ -27,12 +27,18 @@ select {
 .md-content {
   position: relative;
   background: #fcfcfd;
+
   border: 1px solid #e5e9ef;
+  border-top: 2px solid #cbd5e1;
+
   border-radius: 14px;
+
   padding: 1.65rem 2.1rem;
+
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.03),
     0 8px 24px rgba(15, 23, 42, 0.04);
+
   transition:
     box-shadow 0.18s ease,
     border-color 0.18s ease;
@@ -40,18 +46,11 @@ select {
 
 .md-content:hover {
   border-color: #d8dee6;
+  border-top: 2px solid #64748b;
+
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.04),
     0 12px 32px rgba(15, 23, 42, 0.06);
-}
-
-.md-content::before {
-  content: "";
-  display: block;
-  height: 3px;
-  margin: -1.65rem -2.1rem 1.65rem;
-  border-radius: 14px 14px 0 0;
-  background: linear-gradient(90deg, #4f46e5, #2b6cb0);
 }
 
 /* Improve readability for prose-heavy pages */
@@ -194,13 +193,13 @@ select {
   padding-top: 0.025rem;
 }
 
-.md-nav__title {
+/* .md-nav__title {
   font-size: 0.64rem;
   font-weight: 400;
   letter-spacing: 0.05em;
   color: #94a3b8;
   text-transform: uppercase;
-}
+} */
 
 .md-nav__link {
   font-size: 0.68rem;
@@ -215,8 +214,11 @@ select {
 
 .md-nav__link--active {
   font-weight: 600;
-  color: #111827 !important;
-  background-color: rgba(148, 163, 184, 0.12);
+  color: #312e81 !important;
+  background-color: rgba(79, 70, 229, 0.08);
+
+  border-left: 2px solid #4f46e5;
+  padding-left: calc(0.45rem - 2px);
 }
 
 /* Left sidebar section labels */
@@ -285,8 +287,9 @@ select {
 }
 
 .md-typeset h1 {
-  color: var(--md-default-fg-color--light);
+  color: #2b4c7e;
   font-weight: 575;
+  letter-spacing: -0.015em;
 }
 
 .md-typeset h2 {
@@ -432,12 +435,17 @@ select {
 }
 
 .portfolio-hero h1 {
-  margin-bottom: 0.35rem;
-  font-size: 1.95rem;
-  font-weight: 525;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  margin-bottom: 0.3rem;
+
+  font-size: 1.55rem;
+  font-weight: 550;
+
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+
   color: var(--md-default-fg-color);
+
+  white-space: nowrap;
 }
 
 .portfolio-hero h2 {
@@ -619,33 +627,25 @@ select {
 }
 
 .api-example-grid>div:first-child {
-  background-color: #e3f0ff;
+  background-color: #eff6ff;
 }
 
 .api-example-grid>div:last-child {
-  background-color: #efe9ff;
+  background-color: #f8fafc;
 }
 
 /* Request/Response card headings */
 .api-example-grid h3 {
-  margin: 0 !important;
-  padding: 0.55rem 0.85rem !important;
-  border-top: none !important;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.18) !important;
-  background-color: rgba(255, 255, 255, 0.35);
-  font-size: 0.68rem !important;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: 0.01em;
+  display: none;
 }
 
-.api-example-grid>div:first-child>h3 {
+/* .api-example-grid>div:first-child>h3 {
   color: #003f88 !important;
 }
 
 .api-example-grid>div:last-child>h3 {
   color: #4c1d95 !important;
-}
+} */
 
 .api-example-grid .highlight {
   margin: 0;
@@ -659,18 +659,37 @@ select {
   overflow-x: hidden;
 }
 
+/* Tighten code block padding inside API example cards */
+.api-example-grid .highlight pre {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.api-example-grid .highlight pre>code {
+  display: block;
+  margin: 0 !important;
+  padding: 0.45rem 0.85rem 0.65rem !important;
+}
+
+.api-example-grid .highlight,
+.api-example-grid .highlight pre,
+.api-example-grid .highlight code {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
 /* Request example */
 .api-example-grid>div:first-child .highlight,
 .api-example-grid>div:first-child .highlight pre,
 .api-example-grid>div:first-child .highlight code {
-  background-color: #e3f0ff !important;
+  background-color: #eff6ff !important;
 }
 
 /* Response example */
 .api-example-grid>div:last-child .highlight,
 .api-example-grid>div:last-child .highlight pre,
 .api-example-grid>div:last-child .highlight code {
-  background-color: #efe9ff !important;
+  background-color: #f8fafc !important;
 }
 
 /* Wrap long lines only inside fenced code blocks */
