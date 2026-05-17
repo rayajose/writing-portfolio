@@ -25,6 +25,9 @@ This process applies to the following scenarios:
 
 
 ## Incident classification
+Use severity classifications to prioritize response activities, escalation paths, stakeholder communication, and remediation timelines.
+
+Severity levels should be assigned based on the scope of impact, data sensitivity, operational disruption, and likelihood of active compromise.
 
 ### Severity levels
 

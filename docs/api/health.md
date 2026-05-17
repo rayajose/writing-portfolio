@@ -6,8 +6,7 @@ Use this API to verify the operational status of the system and its core depende
 - Validate database connectivity  
 - Support monitoring and automated health checks  
 
-> Note: This endpoint is lightweight and intended for frequent use by load balancers and monitoring systems.
-
+> This endpoint is lightweight and intended for frequent use by load balancers and monitoring systems.
 
 ## GET /health
 
