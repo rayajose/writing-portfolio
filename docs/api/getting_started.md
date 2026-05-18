@@ -143,7 +143,7 @@ Upload feed
 
 ## Ingestion and order flow
 
-![Ingestion and order flow](../api/screenshots/ingestion-order-flow-aws-icons.svg)
+![Ingestion and order flow](../api/screenshots/ingestion-order-flow.svg)
 
 ## Use query parameters
 

@@ -32,6 +32,7 @@ The system models a production-style ingestion architecture with separate API, p
 
 ## Architecture layers
 
+
 | Layer                       | Implementation                       | Responsibility                      |
 | --------------------------- | ------------------------------------ | ----------------------------------- |
 | Client                      | curl, Postman, Swagger UI            | Sends API requests                  |
@@ -132,32 +133,7 @@ Core tables include:
 
 The feed ingestion workflow stores the raw file, creates operational metadata, and initializes processing jobs.
 
-```mermaid
-flowchart TD
-
-    A["Client request
-    POST /feeds/upload"]
-
-    B["Validate upload"]
-
-    C["Store raw file
-    in Amazon S3"]
-
-    D["Create feed record
-    in PostgreSQL"]
-
-    E["Create job records"]
-
-    F["Return upload response"]
-
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-    E --> F
-```
-
-<!--![Feed ingestion data flow](../api/screenshots/feed-ingestion-data-flow-visio-style.svg)-->
+![Feed ingestion data flow](../api/screenshots/feed-ingestion-data-flow.svg)
 
 
 ## ETL processing data flow
@@ -172,27 +148,7 @@ ETL processing reads raw feed data from S3, transforms it, and updates processed
 
 Product query operations read from processed PostgreSQL data.
 
-```mermaid
-flowchart TD
-
-    A["Client request
-    GET /products"]
-
-    B["Apply filters,
-    sorting, and pagination"]
-
-    C["Query PostgreSQL"]
-
-    D["Map database records
-    to API schema"]
-
-    E["Return product response"]
-
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-```
+![Product query data flow](../api/screenshots/product-query-data-flow.svg)
 
 
 ## Read and write paths

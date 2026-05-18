@@ -15,16 +15,7 @@ Webhook integrations follow this general workflow:
 4. Your endpoint returns a successful `2xx` HTTP response.
 5. Failed deliveries are retried automatically.
 
-```mermaid
-sequenceDiagram
-    participant Partner
-    participant CommerceIntegrationAPI
-
-    Partner->>CommerceIntegrationAPI: Upload feed
-    CommerceIntegrationAPI->>CommerceIntegrationAPI: Validate feed
-    CommerceIntegrationAPI->>Partner: POST webhook event
-    Partner->>CommerceIntegrationAPI: HTTP 200 OK
-```
+![Webhooks sequence](../api/screenshots/webhooks-sequence.svg)
 
 
 ## Webhook endpoint requirements

@@ -13,18 +13,6 @@ The Commerce Integration API supports a common integration workflow:
 7. Create and retrieve order data.
 8. Retrieve analytics.
 
-```mermaid
-flowchart TD
-    A[Prepare CSV feed] --> B[Upload feed]
-    B --> C[Validate feed]
-    C --> D[Run ETL processing]
-    D --> E[Store products]
-    E --> F[Retrieve product data]
-    F --> G[Create order]
-    G --> H[Retrieve analytics]
-```
-
-<!-- ![Integration workflow](../api/screenshots/integration-workflow-aws-icons.svg) -->
 
 ## When to use this guide
 
@@ -56,29 +44,7 @@ When a partner uploads a feed:
 6. Orders can be created from catalog products.
 7. Analytics endpoints aggregate order and revenue data.
 
-```mermaid
-flowchart TD
-    A[Commerce Source] --> B[Feed Upload API]
-
-    B --> C[S3 Raw Storage]
-    B --> D[Validation Job]
-
-    D --> E[ETL Processing]
-
-    E --> F[PostgreSQL Catalog]
-
-    F --> G[Products API]
-
-    G --> H[Orders API]
-
-    H --> I[(Orders and Order Items)]
-
-    I --> J[Analytics API]
-
-    J --> K[Revenue Reporting]
-```
-
-<!-- ![Integration architecture](../api/screenshots/integration-architecture-aws-icons.svg) -->
+![Integration architecture](../api/screenshots/integration-architecture.svg)
 
 ## Asynchronous processing model
 
