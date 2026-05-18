@@ -78,10 +78,6 @@ Read operations operate on processed PostgreSQL data. Because ingestion and proc
 
 ## Job lifecycle
 
-<!-- ![Job lifecycle](../api/screenshots/job-lifecycle-visio-style.svg) -->
-
-
-
 | Status      | Description                        |
 | ----------- | ---------------------------------- |
 | `queued`    | Job created and awaiting execution |
