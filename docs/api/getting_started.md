@@ -143,7 +143,9 @@ Upload feed
 
 ## Ingestion and order flow
 
+<div class="diagram-card" markdown="1">
 ![Ingestion and order flow](../api/screenshots/ingestion-order-flow.svg)
+</div>
 
 ## Use query parameters
 

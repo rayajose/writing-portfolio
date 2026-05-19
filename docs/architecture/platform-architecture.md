@@ -33,8 +33,9 @@ The Commerce Integration API consists of the following core layers:
 
 ## High-level architecture
 
+<div class="diagram-card" markdown="1">
 ![High-level architecture](../api/screenshots/high-level-architecture.svg)
-
+</div>
 
 ## Operational workflow
 

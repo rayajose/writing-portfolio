@@ -133,23 +133,25 @@ Core tables include:
 
 The feed ingestion workflow stores the raw file, creates operational metadata, and initializes processing jobs.
 
-![Feed ingestion data flow](../api/screenshots/feed-ingestion-data-flow.svg)
-
+<div class="diagram-card" markdown="1">
+ ![Feed ingestion data flow](../api/screenshots/feed-ingestion-data-flow.svg) 
+</div>
 
 ## ETL processing data flow
 
 ETL processing reads raw feed data from S3, transforms it, and updates processed records in PostgreSQL.
 
-
+<div class="diagram-card" markdown="1">
 ![ETL processing data flow](../api/screenshots/etl-processing-data-flow.svg)
-
+</div>
 
 ## Product query data flow
 
 Product query operations read from processed PostgreSQL data.
 
+<div class="diagram-card" markdown="1">
 ![Product query data flow](../api/screenshots/product-query-data-flow.svg)
-
+</div>
 
 ## Read and write paths
 

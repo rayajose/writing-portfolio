@@ -18,7 +18,7 @@ Include the API key in each request:
 ```
 
 
-## POST /feeds/upload
+## `POST /feeds/upload`
 
 Use this endpoint to upload a CSV product feed, store the raw file in object storage, and create associated job records for processing.
 
@@ -126,7 +126,7 @@ Returned when the request contains a `.csv` file missing the column headers `pro
 ```
 
 
-## GET /feeds/{feed_id}
+## `GET /feeds/{feed_id}`
 
 Use this endpoint to retrieve metadata for a specific feed, including pipeline status and raw file location.
 

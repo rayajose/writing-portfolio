@@ -18,7 +18,7 @@ Include the API key in each request:
 -H "x-api-key: YOUR_API_KEY"
 ```
 
-##  GET /jobs/{job_id}
+##  `GET /jobs/{job_id}`
 
 Use this endpoint to retrieve the status and metadata for a job.
 
@@ -107,7 +107,7 @@ Returned when the request contains a `job_id` not currently in system.
 ```
 
 
-## POST /jobs/{job_id}/run
+## `POST /jobs/{job_id}/run`
 
 Use this endpoint to start a validation job and trigger ETL processing.
 

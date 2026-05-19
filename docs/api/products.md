@@ -23,7 +23,7 @@ Include the API key in each request:
 ```
 
 
-## GET /products
+## `GET /products`
 
 Use this endpoint to retrieve product records from uploaded partner feeds.
 
@@ -158,7 +158,7 @@ Returned when the request contains a `sort_by` value other than `product_id`.
 ```
 
 
-## GET /products/{product_id}
+## `GET /products/{product_id}`
 
 Use this endpoint to retrieve a single product record by `product_id` from uploaded partner feeds.
 
@@ -256,7 +256,7 @@ Returned when the request contains a `product_id` not currently in the system.
 ```
 
 
-## GET /products/by-feed/{feed_id}
+## `GET /products/by-feed/{feed_id}`
 
 Returns all products associated with a specific feed.
 

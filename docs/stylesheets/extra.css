@@ -294,13 +294,46 @@ select {
 
 .md-typeset h2 {
   color: var(--md-default-fg-color);
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-size: 1.08rem;
+  font-weight: 625;
+  letter-spacing: -0.012em;
+
   border-bottom: 1px solid #d8dee6;
-  padding-bottom: 0.35rem;
-  margin-top: 3rem;
-  margin-bottom: 1rem;
+
+  padding-bottom: 0.45rem;
+
+  margin-top: 3.25rem;
+  margin-bottom: 1.15rem;
+}
+
+/* API endpoint headings */
+.md-typeset h2 code,
+.md-typeset h3 code {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  font-size: 0.82rem;
+  font-weight: 675;
+  line-height: 1;
+
+  padding: 0.5rem 0.9rem;
+
+  border-radius: 999px;
+  border: 1px solid #c7d2fe;
+
+  background: #eef2ff;
+  color: #3730a3;
+
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+/* Remove default MkDocs inline-code decorations */
+
+.md-typeset h2 code::before,
+.md-typeset h2 code::after,
+.md-typeset h3 code::before,
+.md-typeset h3 code::after {
+  display: none;
 }
 
 .md-typeset h2:first-of-type {
@@ -332,16 +365,12 @@ select {
   border-bottom-color: #1d4ed8;
 }
 
-.md-typeset h3 a:hover {
-  color: #2563eb;
-}
-
 .md-typeset h3 a:hover::after {
   opacity: 1;
 }
 
 .md-typeset h3:not(:first-child) {
-  border-top: 1px solid #edf1f5;
+  border-top: 1px solid #f3f6f9;
 }
 
 .md-typeset h3+p {
@@ -364,8 +393,8 @@ select {
 .md-typeset p,
 .md-typeset ul,
 .md-typeset ol {
-  margin-top: 0.45rem;
-  margin-bottom: 0.65rem;
+  margin-top: 0.55rem;
+  margin-bottom: 0.75rem;
 }
 
 .md-typeset ul,
@@ -602,6 +631,25 @@ select {
     0 10px 28px rgba(15, 23, 42, 0.05);
 }
 
+/* Diagram cards */
+.diagram-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin: 1.75rem 0;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.diagram-card img {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
 /* Mermaid diagrams */
 .mermaid {
   margin: 2rem auto;
@@ -613,6 +661,9 @@ select {
     0 1px 2px rgba(15, 23, 42, 0.03),
     0 8px 24px rgba(15, 23, 42, 0.04);
 }
+
+/* API endpoint pill */
+
 
 /* Code */
 .md-typeset code,

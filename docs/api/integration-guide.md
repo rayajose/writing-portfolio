@@ -44,7 +44,9 @@ When a partner uploads a feed:
 6. Orders can be created from catalog products.
 7. Analytics endpoints aggregate order and revenue data.
 
+<div class="diagram-card" markdown="1">
 ![Integration architecture](../api/screenshots/integration-architecture.svg)
+</div>
 
 ## Asynchronous processing model
 

@@ -15,7 +15,9 @@ Webhook integrations follow this general workflow:
 4. Your endpoint returns a successful `2xx` HTTP response.
 5. Failed deliveries are retried automatically.
 
+<div class="diagram-card" markdown="1">
 ![Webhooks sequence](../api/screenshots/webhooks-sequence.svg)
+</div>
 
 
 ## Webhook endpoint requirements
