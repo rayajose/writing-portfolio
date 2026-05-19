@@ -2,6 +2,13 @@
 
 Use the Commerce Integration API to upload product feeds, process them through an ETL pipeline, query normalized catalog data, and create transactional orders.
 
+<div class="doc-meta">
+  <span>API v1</span>
+  <span>Authentication required</span>
+  <span>CSV upload</span>
+  <span>ETL workflow</span>
+</div>
+
 ## Base URLs
 
 | Target     | URL                                                                                                                                                                         |

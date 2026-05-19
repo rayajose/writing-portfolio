@@ -2,6 +2,13 @@
 
 Use this guide to build a complete commerce data integration workflow, from product feed upload through catalog retrieval, order creation, and analytics.
 
+<div class="doc-meta">
+  <span>Partner integration</span>
+  <span>REST</span>
+  <span>JSON</span>
+  <span>Workflow guide</span>
+</div>
+
 The Commerce Integration API supports a common integration workflow:
 
 1. Prepare a partner product feed.

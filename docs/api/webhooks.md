@@ -4,6 +4,12 @@ Use webhooks to receive event notifications when feed processing, validation, jo
 
 Webhooks allow partner systems to receive asynchronous updates without continuously polling the API for status changes.
 
+<div class="doc-meta">
+  <span>Webhook integration</span>
+  <span>Event driven</span>
+  <span>JSON payloads</span>
+  <span>HTTPS</span>
+</div>
 
 ## How webhooks work
 

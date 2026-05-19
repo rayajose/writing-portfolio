@@ -1,5 +1,12 @@
 # Incident response
 
+<div class="doc-meta">
+  <span>Security operations</span>
+  <span>Incident response</span>
+  <span>PCI DSS</span>
+  <span>Operational readiness</span>
+</div>
+
 ## Purpose
 
 This page defines how to detect, respond to, and recover from security incidents affecting the platform.

@@ -6,6 +6,12 @@ The policy establishes requirements for retaining, storing, processing, and reco
 
 The practices described in this document reflect operational patterns commonly used in enterprise SaaS and integration environments.
 
+<div class="doc-meta">
+  <span>Data retention</span>
+  <span>Compliance</span>
+  <span>Lifecycle management</span>
+  <span>Governance</span>
+</div>
 
 ## Purpose
 

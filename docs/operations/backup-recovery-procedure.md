@@ -4,6 +4,12 @@ This procedure defines backup, recovery, replay, and operational restoration wor
 
 The procedure supports operational continuity by preserving raw feed data, processed application data, and workflow metadata required for troubleshooting and recovery.
 
+<div class="doc-meta">
+  <span>Business continuity</span>
+  <span>Disaster recovery</span>
+  <span>Backup operations</span>
+  <span>Recovery procedures</span>
+</div>
 
 ## Purpose
 

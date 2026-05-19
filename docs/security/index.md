@@ -4,6 +4,12 @@ This section contains security-focused operational documentation supporting inci
 
 The documentation reflects practices commonly used in regulated enterprise environments requiring operational accountability, risk reduction, and procedural clarity.
 
+<div class="doc-meta">
+  <span>Security program</span>
+  <span>Compliance</span>
+  <span>Operational controls</span>
+  <span>Governance</span>
+</div>
 
 ### Incident response and recovery
 

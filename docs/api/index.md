@@ -4,6 +4,12 @@ This section contains developer-focused documentation for the Commerce Integrati
 
 The platform demonstrates ingestion-driven commerce workflows using ETL processing, job-based execution, relational data modeling, and cloud-native deployment patterns.
 
+<div class="doc-meta">
+  <span>REST APIs</span>
+  <span>ETL workflows</span>
+  <span>Async processing</span>
+  <span>Developer platform</span>
+</div>
 
 ### Platform overview
 

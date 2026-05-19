@@ -1,5 +1,12 @@
 # CSV feed file specification
 
+<div class="doc-meta">
+  <span>File specification</span>
+  <span>CSV schema</span>
+  <span>Data validation</span>
+  <span>Partner onboarding</span>
+</div>
+
 ## Purpose
 
 Uploaded files are stored as raw input and processed by the ETL pipeline to create or update product records.

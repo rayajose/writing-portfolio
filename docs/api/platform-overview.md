@@ -6,6 +6,13 @@ Retail partners can submit product data on a scheduled or event-driven basis, al
 
 The platform demonstrates production-style ingestion architecture patterns commonly used in enterprise commerce and SaaS environments, including asynchronous processing, ETL workflows, operational job tracking, relational data modeling, and cloud-native deployment patterns.
 
+<div class="doc-meta">
+  <span>Cloud native</span>
+  <span>AWS</span>
+  <span>ETL platform</span>
+  <span>REST APIs</span>
+</div>
+
 
 ### [Authentication and setup](getting_started.md)
 

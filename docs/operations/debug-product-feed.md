@@ -3,6 +3,12 @@
 Use this guide to investigate and fix a failed product feed during validation or ETL processing.
 Use this workflow during partner onboarding or when troubleshooting production ingestion issues.
 
+<div class="doc-meta">
+  <span>Troubleshooting</span>
+  <span>Operations</span>
+  <span>ETL processing</span>
+  <span>Support workflow</span>
+</div>
 
 ## Overview
 

@@ -6,6 +6,13 @@ The policy documents security controls supporting API authentication, operationa
 
 The controls described in this document reflect operational practices commonly used in enterprise SaaS and integration environments.
 
+<div class="doc-meta">
+  <span>Access control</span>
+  <span>Authentication</span>
+  <span>API security</span>
+  <span>Least privilege</span>
+</div>
+
 
 ## Purpose
 

@@ -4,6 +4,12 @@ This section documents the system architecture, processing workflows, integratio
 
 The documentation focuses on how services interact, how ingestion workflows operate, and how the platform supports scalable partner integrations, ETL processing, and operational visibility.
 
+<div class="doc-meta">
+  <span>System architecture</span>
+  <span>AWS deployment</span>
+  <span>Cloud infrastructure</span>
+  <span>Containerized services</span>
+</div>
 
 ### System architecture
 

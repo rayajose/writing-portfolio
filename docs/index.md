@@ -12,6 +12,13 @@ Principal-level technical writing portfolio focused on API ecosystems, operation
 Cloud-native API platform demonstrating feed ingestion, ETL processing, async job workflows, analytics services, and developer-focused documentation.
 </p>
 
+<div class="doc-meta">
+  <span>Cloud-native platform</span>
+  <span>API documentation</span>
+  <span>Systems integration</span>
+  <span>Operations and security</span>
+</div>
+
 <div class="portfolio-hero-actions">
 <a class="md-button md-button--primary" href="/writing-portfolio/api/">View API documentation</a>
 <a class="md-button" href="/writing-portfolio/api/ingest-product-feed/">View ingestion workflow</a>

@@ -2,6 +2,12 @@
 
 Use this section to explore API endpoints, request formats, and response models.
 
+<div class="doc-meta">
+  <span>REST API</span>
+  <span>OpenAPI</span>
+  <span>Pagination</span>
+  <span>Filtering</span>
+</div>
 
 ### [Feeds API](feeds.md)
 

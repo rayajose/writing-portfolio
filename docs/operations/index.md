@@ -4,6 +4,13 @@ This section contains operational documentation supporting onboarding workflows,
 
 The documentation emphasizes operational clarity, workflow consistency, troubleshooting guidance, and recovery procedures commonly required in production SaaS and integration environments.
 
+<div class="doc-meta">
+  <span>Operations</span>
+  <span>SOPs</span>
+  <span>Platform support</span>
+  <span>Operational workflows</span>
+</div>
+
 
 ### Partner onboarding and integration operations
 

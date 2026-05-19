@@ -1020,6 +1020,36 @@ select {
   }
 }
 
+/* Documentation metadata chips */
+
+.doc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  margin-top: -0.2rem;
+  margin-bottom: 1.4rem;
+}
+
+.doc-meta span {
+  display: inline-flex;
+  align-items: center;
+
+  font-size: 0.64rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  padding: 0.3rem 0.55rem;
+
+  border-radius: 999px;
+
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+
+  color: #64748b;
+}
+
 /* Hide MkDocs footer */
 .md-footer {
   display: none;

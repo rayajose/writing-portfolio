@@ -3,6 +3,13 @@
 Use this guide to interact with the Commerce Integration API using a lightweight Python client.
 This client provides reusable methods for uploading feeds, checking jobs, and retrieving product data without writing raw HTTP requests.
 
+<div class="doc-meta">
+  <span>Python SDK</span>
+  <span>API integration</span>
+  <span>Developer tooling</span>
+  <span>Automation workflows</span>
+</div>
+
 ## What the client does
 
 - Wrap API endpoints in reusable methods  
