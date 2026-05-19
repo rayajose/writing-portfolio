@@ -26,7 +26,7 @@ Before starting, confirm the following:
 - Target environment is identified (test or production)
 
 
-## What happens
+## Processing behavior
 
 - Upload a partner feed  
 - Create submission and validation jobs  
@@ -49,7 +49,7 @@ curl -X POST "http://api.example.com/feeds/upload" \
 ```
 
 
-### What happens
+### Processing behavior
 
 - A `feed_id` is generated
 - A submission job (`JSxxxxx`) is created

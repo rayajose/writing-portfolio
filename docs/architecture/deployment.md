@@ -6,6 +6,12 @@ The application and its documentation are maintained in a single repository (`wr
 
 For visual confirmation of the deployed environment, see [Screenshots](../api/screenshots.md).
 
+<div class="doc-meta">
+  <span>AWS deployment</span>
+  <span>Containerized services</span>
+  <span>ECS Fargate</span>
+  <span>Infrastructure workflows</span>
+</div>
 
 ## Architecture overview
 
@@ -20,6 +26,9 @@ The Commerce Integration API is deployed using the following AWS services:
 
 The source code and documentation are maintained in the `writing-portfolio` repository. AWS resources continue to use the original application naming convention (`partner-catalog-api`).
 
+!!! note "Single repository model"
+
+    The API application, infrastructure documentation, and technical portfolio content are maintained within a unified docs-as-code repository workflow.
 
 ## Container configuration
 
@@ -43,6 +52,9 @@ The source code and documentation are maintained in the `writing-portfolio` repo
 - Deployment strategy: Rolling update
 - Load balancing enabled through an ALB target group
 
+!!! tip "Cost optimization"
+
+    ECS services can be scaled down to zero running tasks when the environment is not actively being demonstrated or tested.
 
 ## Networking
 
@@ -128,6 +140,9 @@ Optional:
 - RDS is not publicly accessible
 - Only ECS tasks are permitted to connect
 
+!!! warning "Database availability"
+
+    ECS tasks depend on active PostgreSQL connectivity during application startup. Containers may fail health checks if the database is unavailable.
 
 ## Raw data storage (Amazon S3)
 
@@ -173,10 +188,12 @@ S3_RAW_BUCKET=partner-catalog-raw-rayj
 - The application uses the AWS SDK (`boto3`) during ETL processing
 - ETL processing is triggered through the Jobs API (`POST /jobs/{job_id}/run`)
 - ETL compares incoming data against existing records to avoid unnecessary updates
+- Raw uploaded feed files remain available for ETL reprocessing, troubleshooting, and auditability workflows
 - ECS tasks require network access to S3
 
-> Note: IAM permissions for S3 access are required in a production environment and are only partially configured in this demo deployment.
+!!! note "IAM permissions"
 
+    IAM permissions for Amazon S3 access are required in a production environment and are only partially configured in this demo deployment.
 
 ## Deployment workflow
 
@@ -213,6 +230,9 @@ Deploy the updated image through the ECS service:
 1. Update the ECS service
 2. Enable **Force new deployment**
 
+!!! tip "Rolling deployments"
+
+    ECS rolling deployments allow updated containers to replace running tasks with minimal operational interruption.
 
 ## Start / Stop workflow (cost control)
 
@@ -240,6 +260,9 @@ This workflow explains how to scale down ECS services and pause database resourc
 - The container must start successfully and establish database connectivity
 - Failed health checks result in automatic task replacement by ECS
 
+!!! warning "Health check dependency"
+
+    Successful ALB health checks require both application startup completion and successful database connectivity.
 
 ## Troubleshooting
 
@@ -313,10 +336,11 @@ This deployment incurs cost from the following AWS services:
 - Stop the RDS instance when not in use
 - Retain snapshots instead of continuously running the database
 
-> Note: RDS instances automatically restart after approximately 7 days when temporarily stopped.
+!!! note "Temporary RDS shutdown"
+
+    Amazon RDS automatically restarts temporarily stopped database instances after approximately seven days.
 
 AWS resources retain the original application naming convention (`partner-catalog-api`).
-
 
 ## Operational notes
 
@@ -338,5 +362,8 @@ AWS resources retain the original application naming convention (`partner-catalo
 - Re-running the same feed does not create duplicate updates
 - Supports safe reprocessing and operational consistency
 
+!!! tip "Safe reprocessing"
+
+    ETL change-detection logic prevents duplicate product updates when previously processed feeds are re-executed.
 
 For deployment evidence, see [Screenshots](../api/screenshots.md).

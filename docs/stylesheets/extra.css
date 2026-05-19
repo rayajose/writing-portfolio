@@ -306,7 +306,7 @@ select {
   margin-bottom: 1.15rem;
 }
 
-/* API endpoint headings */
+/* API endpoint pills headings */
 .md-typeset h2 code,
 .md-typeset h3 code {
   display: inline-block;
@@ -325,6 +325,12 @@ select {
   color: #3730a3;
 
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.md-typeset h2 code:hover,
+.md-typeset h3 code:hover {
+  background: #e0e7ff;
+  border-color: #a5b4fc;
 }
 
 /* Remove default MkDocs inline-code decorations */
@@ -650,6 +656,11 @@ select {
   border-radius: 10px;
 }
 
+.diagram-card:hover {
+  border-color: #d8e1ec;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
 /* Mermaid diagrams */
 .mermaid {
   margin: 2rem auto;
@@ -747,14 +758,6 @@ select {
 .api-example-grid h3 {
   display: none;
 }
-
-/* .api-example-grid>div:first-child>h3 {
-  color: #003f88 !important;
-}
-
-.api-example-grid>div:last-child>h3 {
-  color: #4c1d95 !important;
-} */
 
 .api-example-grid .highlight {
   margin: 0;
@@ -919,6 +922,38 @@ select {
   background-color: #fafbfd;
 }
 
+/* Table refinement */
+
+.md-typeset table:not([class]) {
+  font-size: 0.7rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.md-typeset table:not([class]) th {
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 650;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+}
+
+.md-typeset table:not([class]) td {
+  border-top: 1px solid #edf2f7;
+}
+
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+  padding: 0.65rem 0.75rem;
+  vertical-align: top;
+}
+
+.md-typeset table:not([class]) tr:hover td {
+  background: #f8fafc;
+}
+
 /* Keyboard/input styling */
 .md-typeset kbd {
   background-color: #f3f5f8;
@@ -1048,6 +1083,62 @@ select {
   border: 1px solid #e2e8f0;
 
   color: #64748b;
+}
+
+.doc-meta span:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+/* Admonition refinement */
+
+.md-typeset .admonition,
+.md-typeset details {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  overflow: hidden;
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary {
+  font-weight: 650;
+  font-size: 0.72rem;
+  letter-spacing: 0.01em;
+}
+
+.md-typeset .admonition.note {
+  border-left: 4px solid #93c5fd;
+}
+
+.md-typeset .admonition.tip {
+  border-left: 4px solid #86efac;
+}
+
+.md-typeset .admonition.warning {
+  border-left: 4px solid #fcd34d;
+}
+
+.md-typeset .admonition.danger {
+  border-left: 4px solid #fca5a5;
+}
+
+/* Global interaction polish */
+
+.md-typeset a,
+.md-nav__link,
+.md-typeset table,
+.diagram-card,
+.doc-meta span,
+.md-typeset h2 code,
+.md-typeset h3 code {
+  transition:
+    color 0.16s ease,
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    transform 0.16s ease;
 }
 
 /* Hide MkDocs footer */

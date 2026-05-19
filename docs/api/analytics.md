@@ -22,7 +22,7 @@ Include the API key in each request:
 
 Use this endpoint to retrieve total units and revenue by partner.
 
-### What happens
+### Processing behavior
 
 - The system aggregates order data grouped by `partner_name`
 - Calculates total units sold and total revenue per partner
@@ -92,7 +92,7 @@ curl -X 'GET' \
 
 Use this endpoint to retrieve time-based sales metrics.
 
-### What happens
+### Processing behavior
 
 - The system aggregates order data over time based on the specified `grain`
 - Calculates total units sold and total revenue for each time interval
@@ -207,7 +207,7 @@ Returned when request validation fails  for invalid `grain` value.
 
 Use this endpoint to retrieve each partner’s percentage contribution to total revenue.
 
-### What happens
+### Processing behavior
 
 - The system aggregates total revenue by `partner_name`
 - Calculates each partner’s percentage contribution relative to overall revenue

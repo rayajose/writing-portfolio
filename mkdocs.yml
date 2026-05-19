@@ -69,7 +69,7 @@ nav:
       - Partner onboarding SOP: operations/onboarding.md
       - Debug failed feed runbook: operations/debug-product-feed.md
       - Deployment change procedure: operations/deployment-change-procedure.md
-      - Backup and recovery procedure: operations/backup-recovery-procedure.md
+      - Backup and recovery runbook: operations/backup-recovery-procedure.md
 
   - Security & Compliance:
 

@@ -22,7 +22,7 @@ Include the API key in each request:
 
 Use this endpoint to retrieve the status and metadata for a job.
 
-### What happens
+### Processing behavior
 
 - The system looks up the job by `job_id`
 - Returns job metadata including type, status, associated `feed_id`, and timestamps
@@ -111,7 +111,7 @@ Returned when the request contains a `job_id` not currently in system.
 
 Use this endpoint to start a validation job and trigger ETL processing.
 
-### What happens
+### Processing behavior
 
 - Only **validation jobs (JVxxxxx)** can be executed
 - Triggers ETL pipeline:

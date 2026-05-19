@@ -4,6 +4,12 @@ This page explains the implementation architecture of the Commerce Integration A
 
 For a higher-level operational view of ingestion, job execution, traceability, and recovery workflows, see [Platform architecture and operational flow](../architecture/platform-architecture.md).
 
+<div class="doc-meta">
+  <span>System architecture</span>
+  <span>Service workflows</span>
+  <span>ETL processing</span>
+  <span>Platform design</span>
+</div>
 
 ## Architecture principles
 

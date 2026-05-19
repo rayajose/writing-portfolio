@@ -12,7 +12,7 @@ Use this API to verify the operational status of the system and its core depende
 
 Use this endpoint to retrieve the current health status of the API and its database connection.
 
-### What happens
+### Processing behavior
 
 - The system attempts to establish a database connection  
 - If successful, the connection is immediately closed and the system reports a healthy status  

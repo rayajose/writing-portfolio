@@ -153,6 +153,6 @@ Use query parameters to refine results:
 
 ## Related documentation
 
-- [Debug product feed failure](../operations/debug-product-feed.md)
+- [Debug failed feed runbook](../operations/debug-product-feed.md)
 
 

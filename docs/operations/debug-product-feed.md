@@ -1,4 +1,4 @@
-# Debug product feed failure
+# Debug failed feed runbook
 
 Use this guide to investigate and fix a failed product feed during validation or ETL processing.
 Use this workflow during partner onboarding or when troubleshooting production ingestion issues.
@@ -20,29 +20,22 @@ In this guide, you will:
 4. Fix data issues
 5. Re-run processing and verify results
 
+!!! note "Operational troubleshooting"
+
+    Feed validation and ETL processing failures are commonly caused by schema inconsistencies, missing required fields, or invalid source data.
 
 ## Prerequisites
 
-- Base URL:
+| Requirement         | Description                                                         |
+| ------------------- | ------------------------------------------------------------------- |
+| Base URL (local)    | `http://localhost:8000`                                             |
+| Base URL (AWS)      | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
+| API key             | `x-api-key: demo-secret-key`                                        |
+| Completed operation | Uploaded feed (`feed_id`) or job (`job_id`)                         |
 
-  ```bash
-  http://localhost:8000
-  ```
+!!! tip "Preserve failed files"
 
-  or
-
-  ```bash
-  http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
-  ```
-
-- API key:
-
-  ```bash
-  x-api-key: demo-secret-key
-  ```
-
-- A previously uploaded feed (`feed_id`) or job (`job_id`)
-
+    Retaining the original uploaded CSV file can help compare corrected data against the initial failed ingestion attempt.
 
 ## 1. Identify the failed feed
 
@@ -103,6 +96,9 @@ curl -X GET "http://localhost:8000/jobs/JV00009" \
 - No records were inserted or updated
 - The issue likely affects the entire file (schema or required fields)
 
+!!! warning "High skipped counts"
+
+    Large skipped-record counts typically indicate schema-level or required-field issues affecting multiple rows within the uploaded feed.
 
 ## 3. Diagnose the failure
 
@@ -166,6 +162,9 @@ Deduplication uses:
 - Use unique SKUs for new products
 - Confirm whether updates are expected
 
+!!! note "Idempotent processing"
+
+    Existing product records are updated only when incoming feed data changes, reducing unnecessary database updates during recurring feed ingestion.
 
 ### Partial success
 
@@ -208,6 +207,10 @@ TV-002,LED TV,599.99
 ## 5. Re-run ETL processing
 
 After fixing the data, reprocess the feed.
+
+!!! tip "Safe reprocessing"
+
+    ETL processing can be safely re-run after correcting source data without creating duplicate product records.
 
 ### Re-run the existing job
 
@@ -280,6 +283,9 @@ When a feed is processed:
 
    - Sets job and feed status to `failed` or `completed`
 
+!!! note "Processing visibility"
+
+    Job status values and ETL summaries provide operational visibility into validation failures, skipped rows, and successful product updates.
 
 ## Summary
 

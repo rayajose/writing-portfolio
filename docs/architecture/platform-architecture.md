@@ -4,6 +4,12 @@ This page explains how the Commerce Integration API ingests, processes, stores, 
 
 The platform is designed around a job-based ingestion model that separates feed submission, processing, storage, and data access responsibilities.
 
+<div class="doc-meta">
+  <span>Operational workflows</span>
+  <span>Async processing</span>
+  <span>Data pipelines</span>
+  <span>Cloud-native services</span>
+</div>
 
 ## Platform goals
 

@@ -29,7 +29,7 @@ Use this endpoint to retrieve product records from uploaded partner feeds.
 
 Supports filtering, sorting, and cursor-based pagination.
 
-### What happens
+### Processing behavior
 
 - Retrieve product records from the database  
 - Apply filters, sorting, and pagination  
@@ -163,7 +163,7 @@ Returned when the request contains a `sort_by` value other than `product_id`.
 Use this endpoint to retrieve a single product record by `product_id` from uploaded partner feeds.
 
 
-### What happens
+### Processing behavior
 
 - Retrieve the product by its unique ID  
 - Return product details if the product exists  
@@ -261,7 +261,7 @@ Returned when the request contains a `product_id` not currently in the system.
 Returns all products associated with a specific feed.
 
 
-### What happens
+### Processing behavior
 
 - Retrieve all products associated with the specified feed ID   
 - Return product records when the feed exists  

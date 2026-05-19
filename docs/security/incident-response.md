@@ -30,6 +30,9 @@ This process applies to the following scenarios:
 - Structured recovery and post-incident analysis
 - Alignment with compliance requirements (e.g., PCI DSS practices)
 
+!!! note "Operational readiness"
+
+    Incident response procedures should be reviewed regularly to ensure alignment with current infrastructure, escalation paths, and security controls.
 
 ## Incident classification
 Use severity classifications to prioritize response activities, escalation paths, stakeholder communication, and remediation timelines.
@@ -60,6 +63,9 @@ Severity levels should be assigned based on the scope of impact, data sensitivit
 - Informational alerts
 - Non-impacting anomalies
 
+!!! warning "Severity escalation"
+
+    Incident severity may increase as additional information becomes available during investigation and containment activities.
 
 ## Roles and responsibilities
 
@@ -111,6 +117,9 @@ Common containment actions include:
 - Blocking malicious IP addresses
 - Disabling impacted integrations
 
+!!! tip "Containment priority"
+
+    Rapid containment should prioritize limiting active exposure and preventing additional system or data compromise.
 
 ### 4. Investigation
 
@@ -134,6 +143,9 @@ Common containment actions include:
 - Validate system integrity
 - Monitor for recurrence
 
+!!! note "Recovery validation"
+
+    Restored systems should be validated for operational integrity and monitored closely before normal operations fully resume.
 
 ### 7. Post-incident review
 
@@ -154,9 +166,9 @@ Common containment actions include:
 
 ### External communication
 
-- Notify stakeholders based on severity  
-- Provide regular status updates  
-- Maintain a centralized incident log  
+- Coordinate approved communication through designated stakeholders
+- Provide status updates appropriate to the severity and scope of impact
+- Ensure communication aligns with legal, regulatory, and compliance requirements  
 
 
 ## Data handling
@@ -175,6 +187,9 @@ Escalate immediately if:
 - Service disruption impacts critical functionality
 - Regulatory reporting may be required
 
+!!! danger "Regulated data exposure"
+
+    Potential exposure of regulated or sensitive data may require immediate escalation, legal review, and compliance notification procedures.
 
 ## Tools
 

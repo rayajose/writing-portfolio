@@ -22,7 +22,7 @@ Include the API key in each request:
 
 Use this endpoint to upload a CSV product feed, store the raw file in object storage, and create associated job records for processing.
 
-### What happens
+### Processing behavior
 
 - Validates file type (CSV only)
 - Validates CSV structure (header row required)
@@ -130,7 +130,7 @@ Returned when the request contains a `.csv` file missing the column headers `pro
 
 Use this endpoint to retrieve metadata for a specific feed, including pipeline status and raw file location.
 
-### What happens
+### Processing behavior
 
 - The system looks up the feed by `feed_id`
 - Returns feed metadata, including status, timestamps, and associated job information

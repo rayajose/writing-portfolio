@@ -62,7 +62,7 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 }
 ```
 
-### What happens
+### Processing behavior
 
 - The file is stored in the raw data layer (S3)
 - A validation job is created
@@ -91,7 +91,7 @@ curl -X POST "http://localhost:8000/jobs/JV00009/run" \
 }
 ```
 
-### What happens
+### Processing behavior
 
 During this step, the system:
 
@@ -168,5 +168,5 @@ Now that you’ve completed your first ingestion:
 ## Next steps
 
 - See [Ingest a product feed end-to-end](../api/ingest-product-feed.md) for a task-focused workflow
-- See [Debug product feed failure](../operations/debug-product-feed.md) to troubleshoot issues
+- See [Debug failed feed runbook](../operations/debug-product-feed.md) to troubleshoot issues
 - Explore [Products API](../api/products.md) for advanced queries

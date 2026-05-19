@@ -21,7 +21,7 @@ Include the API key in each request:
 
 Use this endpoint to create an order from one or more catalog products.
 
-### What happens
+### Processing behavior
 - The system creates a parent order with status created.
 - For each requested item, the system verifies that the product_id exists.
 - If the product is available, the system creates an order item with product details, quantity, unit price, and line total.
@@ -156,7 +156,7 @@ Returned when a requested product is not available.
 
 Use this endpoint to retrieve submitted orders.
 
-### What happens
+### Processing behavior
 
 - The system retrieves order IDs sorted by creation time.
 - For each order, the system retrieves associated order items.
@@ -237,7 +237,7 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 
 Use this endpoint to retrieve a specific order and its line items.
 
-### What happens
+### Processing behavior
 
 - The system looks up the order by order_id.
 - The system retrieves the order’s associated order items.

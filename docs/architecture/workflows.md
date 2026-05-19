@@ -2,7 +2,7 @@
 
 Use this guide to upload a partner feed, run ETL processing, retrieve product data, and create customer orders.
 
-## What happens
+## Processing behavior
 
 - Upload a feed
 - Create submission and validation jobs
@@ -35,7 +35,7 @@ curl -X POST "http://api.example.com/feeds/upload" \
 }
 ```
 
-### What happens
+### Processing behavior
 
 - CSV structure is validated
 - Raw file is stored in Amazon S3
@@ -78,7 +78,7 @@ curl -X POST "http://api.example.com/jobs/JV00001/run" \
   -H "x-api-key: demo-secret-key"
 ```
 
-### What happens
+### Processing behavior
 
 - Raw CSV is read from S3
 - Data is cleaned and normalized
@@ -211,7 +211,7 @@ curl -X POST "http://api.example.com/orders" \
 }
 ```
 
-### What happens
+### Processing behavior
 
 - The system validates that the requested product exists
 - Product availability is checked before order creation

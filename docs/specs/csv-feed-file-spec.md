@@ -26,6 +26,9 @@ CSV files must meet the following requirements:
 | Content type    | `text/csv`, `text/plain`, or `application/vnd.ms-excel` |
 | Required fields | `sku`, `product_name`                                   |
 
+!!! note "CSV compatibility"
+
+    CSV files generated from spreadsheet applications should be exported using UTF-8 encoding to avoid character and delimiter inconsistencies during ETL validation.
 
 ## Required columns
 
@@ -53,7 +56,7 @@ The following columns are recommended for complete product records:
 | `description`  | string  | No       | Product description                             |
 
 
-## Example CSV
+## Example feed
 
 ```csv
 sku,product_name,brand,category,price,currency,availability,description
@@ -63,7 +66,7 @@ SKU-1003,Laptop Stand,Generic,Office Accessories,39.99,USD,out_of_stock,Adjustab
 ```
 
 
-## What happens
+## Processing behavior
 
 - Validate CSV structure  
 - Store the raw file in Amazon S3  
@@ -85,6 +88,9 @@ During ETL processing, the system validates each row.
 | Row missing `product_name`                     | Row is skipped       |
 | Malformed CSV structure                        | Validation may fail  |
 
+!!! tip "Idempotent processing"
+
+    Existing product records are updated only when incoming feed data changes, reducing unnecessary database updates during recurring feed ingestion.
 
 ## Product uniqueness
 
@@ -93,7 +99,7 @@ Products are uniquely identified by the combination of:
 ```
 partner_name + sku
 ```
-This constraint prevents duplicate product ingestion for the same partner.
+This constraint prevents duplicate product ingestion for the same partner while allowing different partners to use identical SKU values independently.
 This also means two different partners may use the same SKU without conflict.
 
 

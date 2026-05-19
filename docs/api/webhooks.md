@@ -36,6 +36,9 @@ Webhook endpoints must meet the following requirements:
 - Return a `2xx` response within 10 seconds
 - Be publicly accessible by the Commerce Integration API
 
+!!! note "Public endpoint accessibility"
+
+    Webhook endpoints must be publicly reachable over HTTPS and capable of accepting inbound POST requests from the Commerce Integration API.
 
 ## Supported events
 
@@ -220,10 +223,17 @@ The Commerce Integration API delivers webhook events using HTTPS POST requests.
 - Endpoints must return a `2xx` response within 10 seconds
 - Non-success responses trigger automatic retries
 
+!!! warning "Delivery order"
+
+    Webhook event delivery order is not guaranteed. Consuming systems should not assume sequential processing across independent event types.
 
 ## Retry behavior
 
 Webhook delivery retries occur when the receiving endpoint returns a non-`2xx` response or fails to respond within the timeout window.
+
+!!! tip "Asynchronous processing"
+
+    Webhook endpoints should acknowledge requests quickly and process events asynchronously to avoid timeout-based retry behavior.
 
 ### Retry schedule
 
@@ -240,6 +250,10 @@ After the final retry attempt fails, the event delivery is marked as failed.
 ## Verify webhook signatures
 
 Webhook requests include a signature header that can be used to verify that requests originated from the Commerce Integration API.
+
+!!! danger "Signature validation"
+
+    Always validate webhook signatures before processing event payloads to prevent spoofed or unauthorized requests.
 
 ### Signature header
 
@@ -281,8 +295,15 @@ Webhook endpoints should support idempotent event processing.
 
 Because duplicate event deliveries may occur, consuming systems should track processed `event_id` values and ignore duplicate events.
 
+!!! warning "Duplicate events"
+
+    Duplicate webhook deliveries may occur during retry operations. Event consumers should track processed `event_id` values and ignore duplicates.
 
 ## Troubleshooting webhooks
+
+!!! note "Operational monitoring"
+
+    Production webhook integrations should log delivery failures, response codes, retry attempts, and signature validation failures for operational troubleshooting.
 
 ### Endpoint returns HTTP 500
 

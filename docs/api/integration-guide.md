@@ -70,6 +70,10 @@ Because ingestion occurs asynchronously, downstream systems should account for e
 
 Integrations should avoid tightly coupling downstream workflows to immediate catalog availability after feed submission.
 
+!!! note "Eventual consistency"
+
+    Product data may not be immediately available after feed upload because validation and ETL processing occur asynchronously.
+
 ## Scalability considerations
 
 The ingestion pipeline is designed to support scalable commerce data processing across multiple partner integrations and large product catalogs.
@@ -84,6 +88,10 @@ Key scalability characteristics include:
 - Decoupled storage and processing architecture
 
 Integrations should avoid assuming immediate consistency between feed upload and downstream catalog availability.
+
+!!! tip "Independent processing"
+
+    Validation, ETL, product retrieval, order creation, and analytics workflows are intentionally decoupled to support scalable ingestion operations.
 
 ## Integration design considerations
 
@@ -115,6 +123,10 @@ Recommended validations include:
 
 Pre-validation reduces failed jobs and minimizes unnecessary ETL processing.
 
+!!! warning "Pre-validation"
+
+    Performing validation before upload reduces failed ETL jobs and minimizes unnecessary processing overhead.
+
 ### Job monitoring strategy
 
 Because ingestion occurs asynchronously, integrations should monitor validation and ETL job status throughout processing.
@@ -125,6 +137,10 @@ Recommended practices include:
 - Logging failed jobs for operational review
 - Alerting on repeated validation or ETL failures
 - Tracking processing duration for large feeds
+
+!!! note "Operational visibility"
+
+    Validation and ETL job tracking provides operational visibility into ingestion progress, failures, and processing duration.
 
 ### Product retrieval strategy
 
@@ -149,6 +165,10 @@ During order creation:
 - Order totals are calculated from associated order items.
 
 This approach preserves order pricing independently from future catalog changes.
+
+!!! tip "Transactional consistency"
+
+    Product pricing is copied into order records during order creation to preserve historical transactional accuracy.
 
 ### Analytics and reporting
 
@@ -190,6 +210,10 @@ This behavior helps:
 - Minimize downstream synchronization overhead
 - Preserve accurate update history
 
+!!! note "Idempotent ETL behavior"
+
+    Existing products are updated only when incoming feed data changes, reducing unnecessary database writes during recurring ingestion workflows.
+
 ### Idempotent processing considerations
 
 Integrations should account for repeat uploads and retry scenarios.
@@ -225,6 +249,10 @@ Implementations should:
 - Retain source feed files for auditing and replay scenarios
 - Verify product availability before creating downstream orders
 
+!!! warning "Operational monitoring"
+
+    Production integrations should monitor validation failures, ETL processing issues, delayed jobs, and repeated ingestion failures.
+
 ### Troubleshooting workflows
 
 When troubleshooting failed processing:
@@ -236,7 +264,7 @@ When troubleshooting failed processing:
 5. Verify successful ETL completion before querying products.
 6. Verify product availability before creating orders.
 
-For additional troubleshooting guidance, see [Debug product feed failure](../operations/debug-product-feed.md).
+For additional troubleshooting guidance, see [Debug failed feed runbook](../operations/debug-product-feed.md).
 
 ## Related documentation
 
@@ -245,7 +273,7 @@ Use the following resources to implement and support partner catalog integration
 ### Tutorials and workflows
 
 - [Ingest a product feed end to end](ingest-product-feed.md)
-- [Debug product feed failure](../operations/debug-product-feed.md)
+- [Debug failed feed runbook](../operations/debug-product-feed.md)
 
 ### API reference
 
