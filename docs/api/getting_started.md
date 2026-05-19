@@ -27,7 +27,9 @@ x-api-key: demo-secret-key
 
 Requests without a valid API key return `401` or `403`.
 
-> Note: The API uses a demo API key for documentation and portfolio purposes. Production-style API access and additional credentials can be discussed upon request.
+!!! note "Demo authentication"
+
+    The API uses a demo API key for documentation and portfolio purposes. Production-style API access and additional credentials can be discussed upon request.
 
 ## Quickstart
 

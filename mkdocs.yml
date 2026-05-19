@@ -5,6 +5,8 @@ use_directory_urls: true
 
 theme:
   name: material
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
   language: en
   features:
     - navigation.tabs

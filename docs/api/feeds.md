@@ -31,7 +31,9 @@ Use this endpoint to upload a CSV product feed, store the raw file in object sto
 - Creates a submission job (JSxxxxx) and validation job (JVxxxxx)
 - Persists feed metadata for later retrieval
 
-> Note: Product data is **not ingested during upload**. Ingestion occurs during ETL processing.
+!!! note "Asynchronous ingestion"
+
+    Product data is not ingested during upload. Ingestion occurs during ETL processing workflows.
 
 
 ## Request body (multipart/form-data)

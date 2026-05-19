@@ -78,19 +78,43 @@ select {
   padding-right: 1.2rem;
 }
 
+.md-header__button.md-logo {
+  order: -1;
+
+  display: flex;
+  align-items: center;
+
+  margin-right: 0.65rem;
+  padding: 0;
+}
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.md-header__inner::before {
+  font-weight: 550;
+}
+
 .md-header__title {
   color: #4b5563;
   font-weight: 500;
   letter-spacing: 0;
 }
 
-.md-header__button.md-logo,
 .md-header__title {
   display: none;
 }
 
+.md-header__button.md-logo {
+  display: flex;
+  align-items: center;
+}
+
 .md-header__inner::before {
-  content: "</>  Ray Jose  /  Technical Writing Portfolio";
+  content: "Ray Jose  /  Systems Documentation Portfolio";
 
   display: flex;
   align-items: center;
@@ -100,11 +124,21 @@ select {
   color: #334155;
 
   font-size: 0.80rem;
-  font-weight: 500;
+  font-weight: 550;
   letter-spacing: 0.01em;
   line-height: 1;
 
   white-space: nowrap;
+}
+
+.md-header__title {
+  display: none;
+}
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  width: 1.15rem;
+  height: 1.15rem;
 }
 
 .md-header__source,
@@ -673,9 +707,6 @@ select {
     0 8px 24px rgba(15, 23, 42, 0.04);
 }
 
-/* API endpoint pill */
-
-
 /* Code */
 .md-typeset code,
 .md-typeset pre,
@@ -879,33 +910,36 @@ select {
 }
 
 /* Tables */
+
 .md-typeset table:not([class]) {
-  font-size: 0.72rem;
-  border: 1px solid #b0b0b0;
-  border-radius: 10px;
+  font-size: 0.7rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
   overflow: hidden;
   border-collapse: separate;
   border-spacing: 0;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
 }
 
 .md-typeset table:not([class]) th,
 .md-typeset table:not([class]) td {
-  padding: 0.7rem 0.9rem;
+  padding: 0.65rem 0.75rem;
   vertical-align: top;
 }
 
 .md-typeset table:not([class]) th {
+  background: #f8fafc;
   color: #334155;
-  background-color: #f8fafc;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  font-weight: 650;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
   border-bottom: 1px solid #cbd5e1;
   border-right: 1px solid #d7dde5;
 }
 
 .md-typeset table:not([class]) td {
   color: #475569;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #edf2f7;
   border-right: 1px solid #e2e8f0;
 }
 
@@ -915,39 +949,11 @@ select {
 }
 
 .md-typeset table:not([class]) tbody tr:nth-child(even) td {
-  background-color: #fafbfd;
+  background: #fafbfd;
 }
 
 .md-typeset table:not([class]) tr:hover td {
-  background-color: #fafbfd;
-}
-
-/* Table refinement */
-
-.md-typeset table:not([class]) {
-  font-size: 0.7rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
-}
-
-.md-typeset table:not([class]) th {
   background: #f8fafc;
-  color: #334155;
-  font-weight: 650;
-  font-size: 0.68rem;
-  letter-spacing: 0.02em;
-}
-
-.md-typeset table:not([class]) td {
-  border-top: 1px solid #edf2f7;
-}
-
-.md-typeset table:not([class]) th,
-.md-typeset table:not([class]) td {
-  padding: 0.65rem 0.75rem;
-  vertical-align: top;
 }
 
 .md-typeset table:not([class]) tr:hover td {
@@ -975,35 +981,54 @@ select {
 }
 
 /* Admonitions */
+
 .md-typeset .admonition,
 .md-typeset details {
-  border: 1px solid #e5e9ef;
-  border-radius: 10px;
-  box-shadow: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
   background-color: #fcfcfd;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  overflow: hidden;
 }
 
 .md-typeset .admonition-title,
 .md-typeset summary {
   background-color: #f3f5f8;
   border-bottom: 1px solid #e5e9ef;
-  font-weight: 600;
   color: #334155;
+  font-weight: 650;
+  font-size: 0.72rem;
+  letter-spacing: 0.01em;
 }
 
 .md-typeset .admonition.note,
 .md-typeset details.note {
-  border-left: 3px solid #4f46e5;
+  border-left: 4px solid #93c5fd;
 }
 
 .md-typeset .admonition.tip,
 .md-typeset details.tip {
-  border-left: 3px solid #2f6f5e;
+  border-left: 4px solid #86efac;
 }
 
 .md-typeset .admonition.warning,
 .md-typeset details.warning {
-  border-left: 3px solid #b45309;
+  border-left: 4px solid #fcd34d;
+}
+
+.md-typeset .admonition.danger,
+.md-typeset details.danger {
+  border-left: 4px solid #fca5a5;
+}
+
+/* Vertical rhythm refinement */
+
+.md-typeset .admonition,
+.md-typeset details,
+.diagram-card,
+.md-typeset table:not([class]) {
+  margin-top: 1.25rem;
+  margin-bottom: 1.4rem;
 }
 
 /* Copy-to-clipboard dialog */
@@ -1091,38 +1116,6 @@ select {
   color: #475569;
 }
 
-/* Admonition refinement */
-
-.md-typeset .admonition,
-.md-typeset details {
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
-  overflow: hidden;
-}
-
-.md-typeset .admonition-title,
-.md-typeset summary {
-  font-weight: 650;
-  font-size: 0.72rem;
-  letter-spacing: 0.01em;
-}
-
-.md-typeset .admonition.note {
-  border-left: 4px solid #93c5fd;
-}
-
-.md-typeset .admonition.tip {
-  border-left: 4px solid #86efac;
-}
-
-.md-typeset .admonition.warning {
-  border-left: 4px solid #fcd34d;
-}
-
-.md-typeset .admonition.danger {
-  border-left: 4px solid #fca5a5;
-}
 
 /* Global interaction polish */
 
