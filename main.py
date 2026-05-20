@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import feeds, jobs, products, health, analytics, orders
+from routers import feeds, jobs, products, health, analytics, orders, customers
 from db import init_db
 
 tags_metadata = [
@@ -22,13 +22,22 @@ tags_metadata = [
         "line item pricing, and order status tracking."
   },
   {
+    "name": "Customers",
+    "description": (
+        "Manage customer records and shipping addresses "
+        "used for order fulfillment workflows. "
+        "Customer data in this demo environment uses "
+        "fictional sample records only."
+    ),
+},
+  {
     "name": "Health",
     "description": "Check the operational status of the API and underlying services. Used for monitoring, automated health checks, and verifying system availability."
   },
   {
     "name": "Analytics",
     "description": "Retrieve aggregated metrics derived from catalog and order data, including sales trends, revenue share, and partner performance across the platform."
-  }
+  }  
 ]
 
 app = FastAPI(
@@ -70,3 +79,4 @@ app.include_router(products.router, tags=["Products"])
 app.include_router(health.router, tags=["Health"])
 app.include_router(analytics.router, tags=["Analytics"])
 app.include_router(orders.router, tags=["Orders"])
+app.include_router(customers.router, tags=["Customers"])

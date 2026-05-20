@@ -147,6 +147,34 @@ def init_db() -> None:
                 )
             """))
 
+            cur.execute(q("""
+                CREATE TABLE IF NOT EXISTS customers (
+                    customer_id TEXT PRIMARY KEY,
+                    first_name TEXT NOT NULL,
+                    last_name TEXT NOT NULL,
+                    email_encrypted TEXT NOT NULL,
+                    phone_encrypted TEXT,
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+                )
+            """))
+
+            cur.execute(q("""
+                CREATE TABLE IF NOT EXISTS customer_addresses (
+                    address_id TEXT PRIMARY KEY,
+                    customer_id TEXT NOT NULL,
+                    address_line1_encrypted TEXT NOT NULL,
+                    address_line2_encrypted TEXT,
+                    city TEXT NOT NULL,
+                    state TEXT NOT NULL,
+                    postal_code_encrypted TEXT NOT NULL,
+                    country TEXT NOT NULL DEFAULT 'US',
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (customer_id)
+                        REFERENCES customers(customer_id)
+                )
+            """))
+
             cur.execute(q(f"""
                 CREATE TABLE IF NOT EXISTS order_items (
                     order_item_id TEXT PRIMARY KEY,
@@ -272,6 +300,12 @@ def next_product_id_with_conn(conn) -> str:
 def next_order_id() -> str:
     return _next_id("OR")
 
+def next_customer_id() -> str:
+    return _next_id("CU")
+
+
+def next_address_id_with_conn(conn) -> str:
+    return _next_id_with_conn(conn, "AD")
 
 def next_order_item_id_with_conn(conn) -> str:
     return _next_id_with_conn(conn, "OI")

@@ -43,6 +43,7 @@ nav:
           - Jobs API: api/jobs.md
           - Products API: api/products.md
           - Orders API: api/orders.md
+          - Customers API: api/customers.md
           - Analytics API: api/analytics.md
           - Health API: api/health.md
           - Errors: api/errors.md
