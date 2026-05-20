@@ -1,6 +1,6 @@
 # API and integrations
 
-This section contains developer-focused documentation for the Commerce Integration API platform, including onboarding guidance, integration workflows, API reference documentation, tutorials, and operational implementation guides.
+This section contains developer-focused documentation for the **Commerce Integration API** platform, including onboarding guidance, integration workflows, API reference documentation, tutorials, and operational implementation guides.
 
 The platform demonstrates ingestion-driven commerce workflows using ETL processing, job-based execution, relational data modeling, and cloud-native deployment patterns.
 
