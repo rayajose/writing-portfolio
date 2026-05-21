@@ -3,32 +3,21 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 
+from db import get_connection, q
+from etl.process_feed import process_feed
 from schemas.common import ErrorResponse
 from schemas.jobs import JobResponse
-from db import get_connection, q, DB_TYPE
 from security import require_api_key
-from etl.process_feed import process_feed
 
 router = APIRouter(
     prefix="/jobs",
     tags=["Jobs"],
-    dependencies=[Depends(require_api_key)]
+    dependencies=[Depends(require_api_key)],
 )
-
-JOB_COLUMNS = [
-    "job_id",
-    "job_type",
-    "status",
-    "created_at",
-    "feed_id",
-    "message",
-]
 
 
 def job_row_to_dict(row):
-    if DB_TYPE == "sqlite":
-        return dict(row)
-    return dict(zip(JOB_COLUMNS, row))
+    return dict(row)
 
 
 @router.get(
@@ -45,7 +34,7 @@ def job_row_to_dict(row):
         "- completed\n"
         "- failed\n\n"
         "Use this endpoint to monitor processing progress and identify errors."
-    )
+    ),
 )
 def get_job(job_id: str):
     with get_connection() as conn:
@@ -61,7 +50,7 @@ def get_job(job_id: str):
                 FROM jobs
                 WHERE job_id = ?
             """),
-            (job_id,)
+            (job_id,),
         ).fetchone()
 
     if not job:
@@ -76,36 +65,42 @@ def get_job(job_id: str):
 
     return job_row_to_dict(job)
 
+
 @router.post(
     "/{job_id}/run",
     summary="Run a job",
-    description="Executes a validation job (ETL processing)."
+    description="Executes a validation job using ETL processing.",
 )
 def run_job(job_id: str):
     with get_connection() as conn:
         job = conn.execute(
             q("""
-                SELECT job_id, job_type, feed_id
+                SELECT
+                    job_id,
+                    job_type,
+                    feed_id
                 FROM jobs
                 WHERE job_id = ?
             """),
-            (job_id,)
+            (job_id,),
         ).fetchone()
 
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    job_id_value, job_type, feed_id = job
+    job_id_value = job["job_id"]
+    job_type = job["job_type"]
+    feed_id = job["feed_id"]
 
     if job_type != "validation":
         raise HTTPException(
             status_code=400,
-            detail="Only validation jobs can be run"
+            detail="Only validation jobs can be run",
         )
 
     process_feed(feed_id)
 
     return {
-        "job_id": job_id,
-        "status": "completed"
+        "job_id": job_id_value,
+        "status": "completed",
     }

@@ -65,9 +65,7 @@ def slugify(value: str) -> str:
 
 
 def feed_row_to_dict(row):
-    if DB_TYPE == "sqlite":
-        return dict(row)
-    return dict(zip(FEED_COLUMNS, row))
+    return dict(row)
 
 
 def update_feed_status(feed_id_value: str, status_value: str) -> None:
@@ -148,9 +146,7 @@ async def upload_feed(
         if reader.fieldnames is None:
             raise ValueError("CSV header row is missing.")
 
-        normalized_headers = {
-            header.strip() for header in reader.fieldnames if header
-        }
+        normalized_headers = {header.strip() for header in reader.fieldnames if header}
 
         required_headers = {"sku", "product_name"}
         missing_headers = required_headers - normalized_headers
