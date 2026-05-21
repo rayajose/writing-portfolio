@@ -79,20 +79,12 @@ def get_feed(feed_id_value: str) -> dict:
     if not feed:
         raise ValueError(f"Feed {feed_id_value} not found.")
 
-    if DB_TYPE == "sqlite":
-        feed = dict(feed)
-    else:
-        feed = {
-            "feed_id": feed[0],
-            "partner_name": feed[1],
-            "raw_file_s3_key": feed[2],
-            "raw_file_bucket": feed[3],
-        }
+    feed_dict = dict(feed)
 
-    if not feed["raw_file_s3_key"]:
+    if not feed_dict["raw_file_s3_key"]:
         raise ValueError(f"Feed {feed_id_value} does not have an S3 raw file key.")
 
-    return feed
+    return feed_dict
 
 
 def read_csv_from_s3(bucket: str, object_key: str) -> list[dict]:
@@ -109,27 +101,16 @@ def read_csv_from_s3(bucket: str, object_key: str) -> list[dict]:
     return list(reader)
 
 
-def row_has_changed(existing_product: dict | tuple, incoming_product: dict) -> bool:
-    if DB_TYPE == "sqlite":
-        existing_values = {
-            "product_name": existing_product["product_name"],
-            "description": existing_product["description"],
-            "brand": existing_product["brand"],
-            "category": existing_product["category"],
-            "price": existing_product["price"],
-            "currency": existing_product["currency"],
-            "availability": existing_product["availability"],
-        }
-    else:
-        existing_values = {
-            "product_name": existing_product[1],
-            "description": existing_product[2],
-            "brand": existing_product[3],
-            "category": existing_product[4],
-            "price": existing_product[5],
-            "currency": existing_product[6],
-            "availability": existing_product[7],
-        }
+def row_has_changed(existing_product: dict, incoming_product: dict) -> bool:
+    existing_values = {
+        "product_name": existing_product["product_name"],
+        "description": existing_product["description"],
+        "brand": existing_product["brand"],
+        "category": existing_product["category"],
+        "price": existing_product["price"],
+        "currency": existing_product["currency"],
+        "availability": existing_product["availability"],
+    }
 
     for field_name, incoming_value in incoming_product.items():
         if not values_match(existing_values[field_name], incoming_value):
@@ -189,11 +170,8 @@ def load_products(feed: dict, rows: list[dict]) -> dict:
             ).fetchone()
 
             if existing_product:
-                product_id = (
-                    existing_product["product_id"]
-                    if DB_TYPE == "sqlite"
-                    else existing_product[0]
-                )
+                existing_product = dict(existing_product)
+                product_id = existing_product["product_id"]
 
                 if not row_has_changed(existing_product, incoming_product):
                     summary["unchanged"] += 1
@@ -292,9 +270,7 @@ def process_feed(feed_id_value: str) -> None:
         summary = load_products(feed, rows)
 
         products_processed = (
-            summary["inserted"]
-            + summary["updated"]
-            + summary["unchanged"]
+            summary["inserted"] + summary["updated"] + summary["unchanged"]
         )
 
         message = (
