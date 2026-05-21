@@ -14,7 +14,9 @@ This client provides reusable methods for uploading feeds, checking jobs, and re
 
 - Wrap API endpoints in reusable methods  
 - Handle authentication headers  
-- Support filtering, sorting, and pagination  
+- Support filtering, sorting, and pagination
+- Support customer and order workflows
+- Handle transactional API interactions  
 - Raise exceptions for failed requests  
 
 
@@ -24,6 +26,7 @@ The client and example scripts are available in the repository:
 
 - `examples/sdk/client.py`
 - `examples/sdk/example_usage.py`
+- `examples/sdk/customer_workflow.py`
 
 These files demonstrate how to interact with the API using an SDK-style approach.
 
@@ -51,7 +54,7 @@ pip install requests
 ```python
 import requests
 
-class PartnerCatalogClient:
+class CommerceIntegrationClient:
     def __init__(self, base_url: str, api_key: str):
         self.base_url = base_url.rstrip("/")
         self.headers = {
@@ -120,13 +123,103 @@ class PartnerCatalogClient:
 
         response.raise_for_status()
         return response.json()
+        
+    def create_customer(
+        self,
+        first_name: str,
+        last_name: str,
+        email: str,
+        phone: str | None = None
+    ):
+        url = f"{self.base_url}/customers"
+
+        payload = {
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
+            "phone": phone
+        }
+
+        response = requests.post(
+            url,
+            headers=self.headers,
+            json=payload
+        )
+
+        response.raise_for_status()
+        return response.json()
+
+    def create_customer_address(
+        self,
+        customer_id: str,
+        address_line1: str,
+        city: str,
+        state: str,
+        postal_code: str,
+        address_line2: str | None = None,
+        country: str = "US"
+    ):
+        url = (
+            f"{self.base_url}/customers/"
+            f"{customer_id}/addresses"
+        )
+
+        payload = {
+            "address_line1": address_line1,
+            "address_line2": address_line2,
+            "city": city,
+            "state": state,
+            "postal_code": postal_code,
+            "country": country
+        }
+
+        response = requests.post(
+            url,
+            headers=self.headers,
+            json=payload
+        )
+
+        response.raise_for_status()
+        return response.json()
+
+    def create_order(
+        self,
+        partner_name: str,
+        items: list,
+        customer_reference: str | None = None,
+        customer_id: str | None = None,
+        shipping_address_id: str | None = None
+    ):
+        url = f"{self.base_url}/orders"
+
+        payload = {
+            "partner_name": partner_name,
+            "customer_reference": customer_reference,
+            "customer_id": customer_id,
+            "shipping_address_id": shipping_address_id,
+            "items": items
+        }
+
+        payload = {
+            k: v for k, v in payload.items()
+            if v is not None
+        }
+
+        response = requests.post(
+            url,
+            headers=self.headers,
+            json=payload
+        )
+
+        response.raise_for_status()
+        return response.json()
 ```
 
 
 ## Usage example
 
 ```python
-client = PartnerCatalogClient(
+client = CommerceIntegrationClient(
     base_url="http://127.0.0.1:8000",
     api_key="demo-secret-key"
 )
@@ -155,6 +248,32 @@ products = client.get_products(limit=5)
 print(products)
 ```
 
+## Create a customer
+
+```python
+customer = client.create_customer(
+    first_name="Alex",
+    last_name="Morgan",
+    email="alex.morgan@example.com",
+    phone="555-0101"
+)
+
+print(customer)
+```
+
+## Create a shipping address
+
+```python
+address = client.create_customer_address(
+    customer_id="CU00001",
+    address_line1="123 Example Street",
+    city="Seattle",
+    state="WA",
+    postal_code="98101"
+)
+
+print(address)
+```
 
 ## Filter and sort products
 
@@ -170,6 +289,24 @@ products = client.get_products(
 print(products)
 ```
 
+## Create an order
+
+```python
+order = client.create_order(
+    partner_name="Running Warehouse",
+    customer_reference="ORDER-1001",
+    customer_id="CU00001",
+    shipping_address_id="AD00001",
+    items=[
+        {
+            "product_id": "PR00001",
+            "quantity": 1
+        }
+    ]
+)
+
+print(order)
+```
 
 ## Cursor-based pagination
 Use cursor-based pagination to retrieve large result sets.
@@ -192,6 +329,12 @@ if next_cursor:
 ## Error handling
 
 The client uses `response.raise_for_status()` to raise exceptions for HTTP errors.
+
+The SDK can also surface validation errors related to:
+
+- Missing customer records
+- Invalid shipping addresses
+- Product availability conflicts
 
 ```python
 import requests
@@ -226,4 +369,16 @@ The script will retrieve product data from the API and print the response.
 
 ## Additional details
 
-This client is intentionally lightweight and not distributed as a standalone package. You can extend it with retries, logging, or custom error handling.
+This client is intentionally lightweight and not distributed as a standalone package.
+
+You can extend it with:
+
+- Retries
+- Structured logging
+- Custom error handling
+- OAuth authentication
+- Request tracing
+- Async processing support
+- SDK packaging workflows
+
+Customer-sensitive API responses return masked values and do not expose encrypted database fields directly.

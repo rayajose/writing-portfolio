@@ -10,6 +10,8 @@ class OrderItemCreate(BaseModel):
 class OrderCreateRequest(BaseModel):
     partner_name: str
     customer_reference: Optional[str] = None
+    customer_id: Optional[str] = None
+    shipping_address_id: Optional[str] = None
     items: List[OrderItemCreate]
 
 
@@ -21,6 +23,8 @@ class OrderItemResponse(BaseModel):
     quantity: int
     unit_price: Optional[float] = None
     line_total: Optional[float] = None
+    customer_id: Optional[str] = None
+    shipping_address_id: Optional[str] = None
 
 
 class OrderResponse(BaseModel):

@@ -1,6 +1,6 @@
 # Webhook integration guide
 
-Use webhooks to receive event notifications when feed processing, validation, job execution, and order fulfillment activity changes in the Commerce Integration API.
+Use webhooks to receive asynchronous event notifications for ingestion processing, validation workflows, customer-linked order activity, fulfillment processing, and operational lifecycle events in the Commerce Integration API.
 
 Webhooks allow partner systems to receive asynchronous updates without continuously polling the API for status changes.
 
@@ -9,6 +9,7 @@ Webhooks allow partner systems to receive asynchronous updates without continuou
   <span>Event driven</span>
   <span>JSON payloads</span>
   <span>HTTPS</span>
+  <span>Transactional workflows</span>
 </div>
 
 ## How webhooks work
@@ -16,7 +17,7 @@ Webhooks allow partner systems to receive asynchronous updates without continuou
 Webhook integrations follow this general workflow:
 
 1. Configure a webhook endpoint in your partner system.
-2. The Commerce Integration API sends HTTPS POST requests when subscribed events occur.
+2. The Commerce Integration API sends HTTPS POST requests when subscribed operational or transactional events occur.
 3. Your endpoint processes the event payload.
 4. Your endpoint returns a successful `2xx` HTTP response.
 5. Failed deliveries are retried automatically.
@@ -50,6 +51,8 @@ Webhook endpoints must meet the following requirements:
 | `job.completed`               | Triggered when a processing job completes successfully  |
 | `job.failed`                  | Triggered when a processing job fails                   |
 | `order.created`               | Triggered when an order is created                      |
+| `customer.created`            | Triggered when a customer record is created             |
+| `customer.address.created`    | Triggered when a customer shipping address is created   |
 | `order.fulfillment.queued`    | Triggered when an order fulfillment job is queued       |
 | `order.fulfillment.completed` | Triggered when order fulfillment completes successfully |
 | `order.fulfillment.failed`    | Triggered when order fulfillment fails                  |
@@ -181,9 +184,39 @@ Triggered when a processing job fails.
 | `message`  | Failure message        |
 
 
+## Customer created event
+
+Triggered when a customer record is created successfully.
+
+### Example payload
+
+```json
+{
+  "event_id": "evt_01JX92ABCH",
+  "event_type": "customer.created",
+  "occurred_at": "2026-05-15T19:10:11Z",
+  "data": {
+    "customer_id": "CU00021",
+    "first_name": "Alex",
+    "last_name": "Morgan",
+    "email_masked": "al***@example.com"
+  }
+}
+```
+
+### Data fields
+
+| Field          | Description          |
+| -------------- | -------------------- |
+| `customer_id`  | Customer identifier  |
+| `first_name`   | Customer first name  |
+| `last_name`    | Customer last name   |
+| `email_masked` | Masked email address |
+
 ## Order fulfillment completed event
 
-Triggered when order fulfillment completes successfully.
+- Triggered when order fulfillment completes successfully.
+- Fulfillment events may be associated with customer-linked orders
 
 ### Example payload
 
@@ -219,6 +252,7 @@ The Commerce Integration API delivers webhook events using HTTPS POST requests.
 
 - Delivery order is not guaranteed
 - Duplicate event deliveries may occur
+- Sensitive customer data should never be included in webhook payloads
 - Events should be processed asynchronously by the receiving system
 - Endpoints must return a `2xx` response within 10 seconds
 - Non-success responses trigger automatic retries
@@ -249,7 +283,7 @@ After the final retry attempt fails, the event delivery is marked as failed.
 
 ## Verify webhook signatures
 
-Webhook requests include a signature header that can be used to verify that requests originated from the Commerce Integration API.
+Webhook requests include a signature header that can be used to verify that requests originated from the Commerce Integration API and were not modified during transmission.
 
 !!! danger "Signature validation"
 
@@ -270,6 +304,17 @@ X-Commerce-Signature: sha256=5f2c6ab4...
 
 Webhook signature validation helps prevent spoofed webhook requests.
 
+## Security considerations
+
+Webhook consumers should:
+
+- Validate webhook signatures before processing payloads
+- Avoid logging sensitive request data
+- Process events asynchronously
+- Restrict webhook secrets to authorized systems
+- Track processed `event_id` values to prevent duplicate processing
+
+Customer-sensitive values included in webhook payloads should remain masked.
 
 ## Respond to webhook requests
 
@@ -321,6 +366,16 @@ Verify that:
 - The raw request body is used during signature generation
 - The HMAC-SHA256 algorithm is configured correctly
 
+### Sensitive data exposure concerns
+
+Webhook payloads should expose masked customer-sensitive values only.
+
+Verify that:
+
+- Raw customer-sensitive fields are not logged
+- Customer-sensitive payload fields remain masked
+- Webhook logs exclude secrets and authentication data
+
 ### Events are delayed
 
 Temporary delivery delays may occur during retry operations or downstream processing interruptions.
@@ -331,4 +386,7 @@ Temporary delivery delays may occur during retry operations or downstream proces
 - [Feeds API](feeds.md)
 - [Jobs API](jobs.md)
 - [Orders API](orders.md)
+- [Customers API](customers.md)
+- [Customer data handling policy](../security/customer-data-handling-policy.md)
+- [Encryption policy](../security/encryption-policy.md)
 - [Integrate with the Commerce Integration API](integration-guide.md)

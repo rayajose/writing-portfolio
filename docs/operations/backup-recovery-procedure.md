@@ -18,6 +18,7 @@ The purpose of this procedure is to:
 - Support recovery from processing failures
 - Preserve raw feed data for replay workflows
 - Protect processed product and order data
+- Protect customer and shipping address records
 - Support operational troubleshooting
 - Reduce data loss risk
 - Maintain traceability across recovery activities
@@ -29,7 +30,7 @@ This procedure applies to:
 
 - Uploaded feed files
 - Feed and job metadata
-- Product and order records
+- Product, customer, address, and order records
 - ETL processing summaries
 - PostgreSQL database resources
 - Amazon S3 raw feed storage
@@ -40,14 +41,16 @@ This procedure applies to:
 
 The platform separates recoverable data across raw and processed storage layers.
 
-| Data type       | Storage location | Recovery purpose                     |
-| --------------- | ---------------- | ------------------------------------ |
-| Raw feed files  | Amazon S3        | Feed replay and reprocessing         |
-| Product records | PostgreSQL       | Product catalog restoration          |
-| Order records   | PostgreSQL       | Order history restoration            |
-| Feed metadata   | PostgreSQL       | Ingestion traceability               |
-| Job metadata    | PostgreSQL       | Processing recovery and auditability |
-| ETL summaries   | PostgreSQL       | Troubleshooting and verification     |
+| Data type                | Storage location | Recovery purpose                     |
+| ------------------------ | ---------------- | ------------------------------------ |
+| Raw feed files           | Amazon S3        | Feed replay and reprocessing         |
+| Product records          | PostgreSQL       | Product catalog restoration          |
+| Customer records         | PostgreSQL       | Customer workflow restoration        |
+| Customer address records | PostgreSQL       | Shipping workflow restoration        |
+| Order records            | PostgreSQL       | Order history restoration            |
+| Feed metadata            | PostgreSQL       | Ingestion traceability               |
+| Job metadata             | PostgreSQL       | Processing recovery and auditability |
+| ETL summaries            | PostgreSQL       | Troubleshooting and verification     |
 
 
 ## Raw feed recovery
@@ -75,6 +78,8 @@ PostgreSQL stores processed application data and operational metadata.
 Database recovery planning should account for:
 
 - Product records
+- Customer records
+- Customer address records
 - Order records
 - Feed records
 - Job records
@@ -134,6 +139,17 @@ Use this workflow when processed records do not match expected feed results.
 5. Reprocess the feed if needed.
 6. Validate product query results after reprocessing.
 
+### Customer workflow recovery
+
+Use this workflow when customer or shipping workflows become inconsistent or unavailable.
+
+1. Confirm database connectivity.
+2. Verify customer and address records exist.
+3. Confirm encryption configuration is available.
+4. Verify `PII_ENCRYPTION_KEY` environment configuration.
+5. Validate customer API responses.
+6. Confirm masked response behavior.
+7. Validate associated order workflows.
 
 ## Replay workflow
 
@@ -173,6 +189,9 @@ Verification activities include:
 - Confirm job status is `completed`
 - Review ETL processing summary
 - Validate product records
+- Validate customer records
+- Validate shipping address records
+- Confirm masked customer response behavior
 - Validate order records when applicable
 - Confirm analytics endpoints return expected results
 - Confirm no unexpected duplicate records were created
@@ -184,6 +203,8 @@ Recovery workflows should preserve data integrity across ingestion and processin
 
 Important considerations include:
 
+- Referential integrity between customers, addresses, and orders
+- Preservation of encrypted customer-sensitive fields
 - Product uniqueness by partner and SKU
 - Idempotent feed reprocessing
 - Controlled ETL execution
@@ -237,6 +258,7 @@ The platform follows these recovery principles:
 - Validate recovery outcomes through API responses
 - Maintain traceability across recovery activities
 - Avoid duplicate processing side effects
+- Preserve customer-sensitive data protections during recovery
 - Verify system health after recovery
 
 
@@ -246,5 +268,8 @@ The platform follows these recovery principles:
 - [Deployment change procedure](deployment-change-procedure.md)
 - [Debug failed feed runbook](debug-product-feed.md)
 - [Data retention and handling policy](../security/data-retention-policy.md)
-- [Logging and monitoring standard](../security/logging-monitoring-standard.md)
+- [Logging and monitoring policy](../security/logging-monitoring-policy.md)
+- [Customers API](../api/customers.md)
+- [Encryption policy](../security/encryption-policy.md)
+- [Customer data handling policy](../security/customer-data-handling-policy.md)
 - [Platform architecture and operational flow](../architecture/platform-architecture.md)

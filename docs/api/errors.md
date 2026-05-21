@@ -24,8 +24,9 @@ Errors may occur in the following situations:
 
 - Missing or invalid API key
 - Invalid request data (for example, malformed CSV)
-- Resource not found (feed, job, product, or order does not exist)
+- Resource not found (feed, job, product, customer, address, or order does not exist)
 - Product availability conflicts during order creation
+- Invalid customer or shipping address references
 - ETL processing failure
 - Database or infrastructure issues
 
@@ -103,6 +104,22 @@ Returned when a requested resource does not exist.
 }
 ```
 
+#### Example: Customer not found
+
+```json
+{
+  "detail": "Customer CU99999 not found."
+}
+```
+
+#### Example: Address not found
+
+```json
+{
+  "detail": "Address AD99999 not found."
+}
+```
+
 #### Example: Order not found
 
 ```json
@@ -148,6 +165,22 @@ Returned when the request is syntactically valid but fails business rules.
 ```json
 {
   "detail": "Order must contain at least one item."
+}
+```
+
+#### Example: Invalid customer reference
+
+```json
+{
+  "detail": "Customer not found: CU99999"
+}
+```
+
+#### Example: Invalid shipping address reference
+
+```json
+{
+  "detail": "Shipping address not found: AD99999"
 }
 ```
 
@@ -223,6 +256,7 @@ Returned when an unexpected server-side error occurs.
 - S3 access or object retrieval failure
 - Unhandled application exception
 - Misconfigured environment variables
+- Missing encryption key configuration
 
 #### Example
 
@@ -241,13 +275,20 @@ Returned when an unexpected server-side error occurs.
 - Orders use transactional validation before persistence
 - Resource identifiers follow structured formats:
 
-  - `FDxxxxx` → Feed
-  - `JSxxxxx` → Submission Job
-  - `JVxxxxx` → Validation Job
-  - `PRxxxxx` → Product
-  - `ORxxxxx` → Order
-  - `OIxxxxx` → Order Item
+| Prefix    | Resource         |
+| --------- | ---------------- |
+| `FDxxxxx` | Feed             |
+| `JSxxxxx` | Submission Job   |
+| `JVxxxxx` | Validation Job   |
+| `CUxxxxx` | Customer         |
+| `ADxxxxx` | Customer Address |
+| `PRxxxxx` | Product          |
+| `ORxxxxx` | Order            |
+| `OIxxxxx` | Order Item       |
 
+
+- Customer-sensitive values are not exposed in error responses
+- Encrypted database values are never returned directly through API errors
 - Errors are predictable and human-readable to support debugging
 
 ## Related documentation
@@ -255,5 +296,6 @@ Returned when an unexpected server-side error occurs.
 - [Feeds API](feeds.md)
 - [Jobs API](jobs.md)
 - [Products API](products.md)
+- [Customers API](customers.md)
 - [Orders API](orders.md)
 - [Analytics API](analytics.md)

@@ -9,6 +9,7 @@ Use this guide to upload a partner feed, run ETL processing, retrieve product da
 - Run ETL processing
 - Store products in the database
 - Retrieve products through the API
+- Create fictional customer and shipping address records
 - Create transactional orders
 - Retrieve analytics and reporting data
 
@@ -142,6 +143,73 @@ curl -H "x-api-key: demo-secret-key" \
 }
 ```
 
+## Create customer and shipping records
+
+This workflow shows how to create fictional customer and shipping address records before creating an order.
+
+### Step 1: Create a customer
+
+```bash
+curl -X POST "http://api.example.com/customers" \
+  -H "x-api-key: demo-secret-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "first_name": "Alex",
+    "last_name": "Morgan",
+    "email": "alex.morgan@example.com",
+    "phone": "555-0101"
+  }'
+```
+
+### Example response
+
+```json
+{
+  "customer_id": "CU00001",
+  "first_name": "Alex",
+  "last_name": "Morgan",
+  "email_masked": "al***@example.com",
+  "phone_masked": "***-***-0101"
+}
+```
+
+### Processing behavior
+
+- Sensitive customer fields are encrypted before storage
+- API responses return masked customer values
+- Customer records are persisted in PostgreSQL
+
+### Step 2: Create a shipping address
+
+```bash
+curl -X POST "http://api.example.com/customers/CU00001/addresses" \
+  -H "x-api-key: demo-secret-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "address_line1": "123 Example Street",
+    "city": "Seattle",
+    "state": "WA",
+    "postal_code": "98101"
+  }'
+```
+
+### Example response
+
+```json
+{
+  "address_id": "AD00001",
+  "customer_id": "CU00001",
+  "address_line1_masked": "123 ***",
+  "postal_code_masked": "***01"
+}
+```
+
+### Processing behavior
+
+- Address fields are encrypted before storage
+- API responses return masked address values
+- Shipping address records are linked to customers
+
 ## Create an order
 
 This workflow shows how to create an order using products previously loaded into the catalog.
@@ -178,6 +246,8 @@ curl -X POST "http://api.example.com/orders" \
   -d '{
     "partner_name": "Acme Corp",
     "customer_reference": "ORDER-1001",
+    "customer_id": "CU00001",
+    "shipping_address_id": "AD00001",
     "items": [
       {
         "product_id": "PR00001",
@@ -194,6 +264,8 @@ curl -X POST "http://api.example.com/orders" \
   "order_id": "OR00001",
   "partner_name": "Acme Corp",
   "customer_reference": "ORDER-1001",
+  "customer_id": "CU00001",
+  "shipping_address_id": "AD00001",
   "status": "created",
   "total_amount": 99.98,
   "currency": "USD",
@@ -215,6 +287,7 @@ curl -X POST "http://api.example.com/orders" \
 
 - The system validates that the requested product exists
 - Product availability is checked before order creation
+- Customer and shipping records can be associated with the order
 - Product pricing is copied into each order item
 - Line totals are calculated for each item
 - The order total is calculated from all order items
@@ -273,8 +346,14 @@ Run ETL
 Query
   → Products become available via /products
 
+Customer Workflows
+  → Create customer records via /customers
+  → Encrypt sensitive customer data
+  → Create shipping addresses
+
 Order Processing
   → Create orders via /orders
+  → Link customers and shipping addresses
   → Store transactional order and order item data
 
 Analytics
@@ -290,22 +369,30 @@ Analytics
 - Product updates are change-detected (no blind updates)
 - Reprocessing is idempotent
 - Product data is only available after ETL completes
+- Customer-sensitive fields are encrypted before storage
+- API responses return masked customer and address values
 - Orders use transactional relational modeling
 - Product pricing is preserved at order creation time
 - IDs follow structured formats:
 
-  - `FDxxxxx` → Feed
-  - `JSxxxxx` → Submission Job
-  - `JVxxxxx` → Validation Job
-  - `PRxxxxx` → Product
-  - `ORxxxxx` → Order
-  - `OIxxxxx` → Order Item
+| Prefix    | Resource         |
+| --------- | ---------------- |
+| `FDxxxxx` | Feed             |
+| `JSxxxxx` | Submission Job   |
+| `JVxxxxx` | Validation Job   |
+| `PRxxxxx` | Product          |
+| `CUxxxxx` | Customer         |
+| `ADxxxxx` | Customer Address |
+| `ORxxxxx` | Order            |
+| `OIxxxxx` | Order Item       |
 
 ## Additional details
 
 - ETL processing is currently synchronous
 - Designed to support asynchronous execution in the future
 - Validation includes both structure and transformation readiness
+- Customer-sensitive fields use field-level encryption
+- Orders can optionally reference customer and shipping address records
 - Orders and order items are persisted in PostgreSQL using foreign key relationships
 
 ## Related documentation
@@ -313,6 +400,7 @@ Analytics
 - [Feeds API](../api/feeds.md)
 - [Jobs API](../api/jobs.md)
 - [Products API](../api/products.md)
+- [Customers API](../api/customers.md)
 - [Orders API](../api/orders.md)
 - [Analytics API](../api/analytics.md)
 - [Errors](../api/errors.md)

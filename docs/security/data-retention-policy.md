@@ -279,8 +279,8 @@ The platform follows the following data handling principles:
 ## Related documentation
 
 - [Security and compliance](index.md)
-- [API access control and authentication policy](api-access-control.md)
-- [Logging and monitoring standard](logging-monitoring-standard.md)
+- [API access control policy](api-access-control-policy.md)
+- [Logging and monitoring policy](logging-monitoring-policy.md)
 - [Incident response plan](incident-response.md)
 - [Operations](../operations/index.md)
 - [Platform architecture and operational flow](../architecture/platform-architecture.md)

@@ -1,15 +1,15 @@
-# Logging and monitoring standard
+# Logging and monitoring policy
 
 This document defines logging, monitoring, and operational traceability practices for the Commerce Integration API platform.
 
-The standard establishes operational visibility requirements supporting troubleshooting, workflow traceability, incident investigation, and ingestion monitoring across API, ETL, and infrastructure workflows.
+The policy establishes operational visibility requirements supporting troubleshooting, workflow traceability, incident investigation, and ingestion monitoring across API, ETL, and infrastructure workflows.
 
 The practices described in this document reflect operational patterns commonly used in enterprise SaaS and integration environments.
 
 
 ## Purpose
 
-The purpose of this standard is to:
+The purpose of this policy is to:
 
 - Support operational visibility across ingestion workflows
 - Improve troubleshooting and failure analysis capabilities
@@ -21,7 +21,7 @@ The purpose of this standard is to:
 
 ## Scope
 
-This standard applies to:
+This policy applies to:
 
 - API request processing workflows
 - Feed ingestion operations
@@ -291,7 +291,7 @@ The platform follows the following operational monitoring principles:
 ## Related documentation
 
 - [Security and compliance](index.md)
-- [API access control and authentication policy](api-access-control.md)
+- [API access control policy](api-access-control-policy.md)
 - [Incident response plan](incident-response.md)
 - [Operations](../operations/index.md)
 - [Architecture and deployment](../architecture/index.md)

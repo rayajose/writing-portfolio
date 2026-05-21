@@ -32,6 +32,8 @@ def _get_order_with_items(conn, order_id: str) -> dict | None:
                     order_id,
                     partner_name,
                     customer_reference,
+                    customer_id,
+                    shipping_address_id,
                     status,
                     total_amount,
                     currency,
@@ -67,6 +69,8 @@ def _get_order_with_items(conn, order_id: str) -> dict | None:
             "order_id": order["order_id"],
             "partner_name": order["partner_name"],
             "customer_reference": order["customer_reference"],
+            "customer_id": order["customer_id"],
+            "shipping_address_id": order["shipping_address_id"],
             "status": order["status"],
             "total_amount": order["total_amount"],
             "currency": order["currency"],
@@ -111,15 +115,19 @@ def create_order(request: OrderCreateRequest):
                     order_id,
                     partner_name,
                     customer_reference,
+                    customer_id,
+                    shipping_address_id,
                     status,
                     currency
                 )
-                VALUES (?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
             """),
             (
                 order_id,
                 request.partner_name,
                 request.customer_reference,
+                request.customer_id,
+                request.shipping_address_id,
                 "created",
                 currency,
             ),
@@ -187,15 +195,17 @@ def create_order(request: OrderCreateRequest):
                 ),
             )
 
-            order_items.append({
-                "order_item_id": order_item_id,
-                "product_id": product["product_id"],
-                "sku": product["sku"],
-                "product_name": product["product_name"],
-                "quantity": request_item.quantity,
-                "unit_price": unit_price,
-                "line_total": line_total,
-            })
+            order_items.append(
+                {
+                    "order_item_id": order_item_id,
+                    "product_id": product["product_id"],
+                    "sku": product["sku"],
+                    "product_name": product["product_name"],
+                    "quantity": request_item.quantity,
+                    "unit_price": unit_price,
+                    "line_total": line_total,
+                }
+            )
 
         cur.execute(
             q("""
@@ -216,6 +226,8 @@ def create_order(request: OrderCreateRequest):
             "order_id": order_id,
             "partner_name": request.partner_name,
             "customer_reference": request.customer_reference,
+            "customer_id": request.customer_id,
+            "shipping_address_id": request.shipping_address_id,
             "status": "created",
             "total_amount": total_amount,
             "currency": currency,
@@ -241,13 +253,11 @@ def list_orders():
     cur = conn.cursor()
 
     try:
-        rows = cur.execute(
-            q("""
+        rows = cur.execute(q("""
                 SELECT order_id
                 FROM orders
                 ORDER BY created_at DESC, order_id DESC
-            """)
-        ).fetchall()
+            """)).fetchall()
 
         orders = []
 

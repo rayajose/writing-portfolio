@@ -17,15 +17,16 @@ The Commerce Integration API supports a common integration workflow:
 4. Process the feed through the ETL pipeline.
 5. Store product data.
 6. Query product data.
-7. Create and retrieve order data.
-8. Retrieve analytics.
+7. Create fictional customer records and shipping addresses.
+8. Create and retrieve order data.
+9. Retrieve analytics.
 
 
 ## When to use this guide
 
 Use this guide to design, implement, or document a repeatable commerce data integration workflow.
 
-This guide explains how the major integration components work together, including feed preparation, asynchronous validation, ETL processing, product retrieval, order creation, and analytics.
+This guide explains how the major integration components work together, including feed preparation, asynchronous validation, ETL processing, product retrieval, customer management workflows, order creation, and analytics.
 
 For a step-by-step walkthrough of a single feed upload, see [Ingest a product feed end to end](ingest-product-feed.md).
 
@@ -34,6 +35,7 @@ For complete endpoint details, see the related API reference pages:
 - [Feeds API](feeds.md)
 - [Jobs API](jobs.md)
 - [Products API](products.md)
+- [Customers API](customers.md)
 - [Orders API](orders.md)
 - [Analytics API](analytics.md)
 
@@ -48,8 +50,9 @@ When a partner uploads a feed:
 3. A validation job checks the file structure and required fields.
 4. An ETL process transforms and loads valid product data into the product catalog.
 5. Products become available through query endpoints.
-6. Orders can be created from catalog products.
-7. Analytics endpoints aggregate order and revenue data.
+6. Fictional customer and shipping address records can be created.
+7. Orders can be created from catalog products and linked customer records.
+8. Analytics endpoints aggregate order and revenue data.
 
 <div class="diagram-card" markdown="1">
 ![Integration architecture](../api/screenshots/integration-architecture.svg)
@@ -170,6 +173,26 @@ This approach preserves order pricing independently from future catalog changes.
 
     Product pricing is copied into order records during order creation to preserve historical transactional accuracy.
 
+### Customer and shipping workflows
+
+Customer and shipping address records support order fulfillment and transactional workflows.
+
+The following sensitive customer fields are encrypted before storage.:
+
+- Email addresses
+- Phone numbers
+- Street addresses
+- Postal codes
+
+
+API responses return masked values instead of raw sensitive values.
+
+This behavior demonstrates field-level encryption and controlled exposure of PII-like data within commerce integration workflows.
+
+!!! note "Masked API responses"
+
+    Customer-sensitive values are masked in API responses and encrypted at rest within the database.
+
 ### Analytics and reporting
 
 Analytics endpoints can support:
@@ -180,7 +203,7 @@ Analytics endpoints can support:
 - Feed processing reconciliation
 - Order volume and sales trend analysis
 
-Analytics endpoints aggregate sales and revenue data from submitted orders and processed catalog records.
+Analytics endpoints aggregate sales and revenue data from submitted orders, processed catalog records, and customer-linked transactional workflows.
 
 ## ETL processing behavior
 
@@ -228,15 +251,16 @@ Because feed ingestion is asynchronous, failures may occur after a successful up
 
 ### Common failure scenarios
 
-| Scenario                 | Description                                                  |
-| ------------------------ | ------------------------------------------------------------ |
-| Invalid CSV format       | The uploaded file does not meet CSV formatting requirements. |
-| Missing required headers | Required fields such as `sku` or `product_name` are missing. |
-| Invalid product data     | Product rows contain malformed or unsupported values.        |
-| ETL processing failure   | An internal processing error prevents product ingestion.     |
-| Product unavailable      | A requested product cannot be used to create an order.       |
-| Missing order resource   | A requested order does not exist.                            |
-| Authentication failure   | The request does not include a valid API key.                |
+| Scenario                  | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| Invalid CSV format        | The uploaded file does not meet CSV formatting requirements. |
+| Missing required headers  | Required fields such as `sku` or `product_name` are missing. |
+| Invalid product data      | Product rows contain malformed or unsupported values.        |
+| ETL processing failure    | An internal processing error prevents product ingestion.     |
+| Product unavailable       | A requested product cannot be used to create an order.       |
+| Missing order resource    | A requested order does not exist.                            |
+| Missing customer resource | A referenced customer or shipping address does not exist.    |
+| Authentication failure    | The request does not include a valid API key.                |
 
 ### Recommended operational practices
 
@@ -247,6 +271,7 @@ Implementations should:
 - Retry failed uploads when appropriate
 - Alert on repeated processing failures
 - Retain source feed files for auditing and replay scenarios
+- Avoid logging raw customer-sensitive values
 - Verify product availability before creating downstream orders
 
 !!! warning "Operational monitoring"

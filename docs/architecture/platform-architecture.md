@@ -20,6 +20,8 @@ The platform is designed to:
 - Provide operational visibility through job tracking
 - Enable repeatable ETL processing
 - Support troubleshooting and feed reprocessing
+- Support customer and order fulfillment workflows
+- Demonstrate field-level encryption and masked API responses
 - Expose processed product and analytics data through APIs
 
 
@@ -27,14 +29,14 @@ The platform is designed to:
 
 The Commerce Integration API consists of the following core layers:
 
-| Layer                | Responsibility                                               |
-| -------------------- | ------------------------------------------------------------ |
-| API layer            | Handles HTTP requests and integration workflows              |
-| Raw data layer       | Stores uploaded partner feed files in Amazon S3              |
-| Processing layer     | Executes validation and ETL workflows                        |
-| Data layer           | Stores normalized product and operational data in PostgreSQL |
-| Analytics layer      | Provides aggregated reporting and operational metrics        |
-| Infrastructure layer | Hosts and routes application traffic through AWS services    |
+| Layer                | Responsibility                                                                 |
+| -------------------- | ------------------------------------------------------------------------------ |
+| API layer            | Handles HTTP requests and integration workflows                                |
+| Raw data layer       | Stores uploaded partner feed files in Amazon S3                                |
+| Processing layer     | Executes validation and ETL workflows                                          |
+| Data layer           | Stores normalized product, customer, order, and operational data in PostgreSQL |
+| Analytics layer      | Provides aggregated reporting and operational metrics                          |
+| Infrastructure layer | Hosts and routes application traffic through AWS services                      |
 
 
 ## High-level architecture
@@ -82,6 +84,29 @@ Clients retrieve processed product and analytics data through API endpoints.
 
 Read operations operate on processed PostgreSQL data. Because ingestion and processing are separate workflows, read operations may reflect the last completed ETL run until processing completes.
 
+### Customer and order workflows
+
+Customer and shipping address records support transactional order workflows.
+
+Sensitive customer fields including:
+
+- Email addresses
+- Phone numbers
+- Street addresses
+- Postal codes
+
+are encrypted before storage.
+
+API responses return masked values instead of raw sensitive values.
+
+Orders can optionally reference:
+
+```text
+customer_id
+shipping_address_id
+```
+
+This design demonstrates field-level encryption and controlled exposure of PII-like data within commerce transaction workflows.
 
 ## Job lifecycle
 
@@ -101,6 +126,7 @@ The platform tracks:
 
 - Feed identifiers
 - Job identifiers
+- Customer and order identifiers
 - Processing status
 - ETL execution summaries
 - Validation results
@@ -165,13 +191,16 @@ Core tables include:
 - `feeds`
 - `jobs`
 - `products`
+- `customers`
+- `customer_addresses`
 - `orders`
+- `order_items`
 - `id_counters`
 
 
 ## Analytics workflows
 
-The analytics layer provides aggregated reporting across processed order and product data.
+The analytics layer provides aggregated reporting across processed product, customer-linked order, and transactional workflow data.
 
 Example analytics include:
 
@@ -190,6 +219,7 @@ Analytics endpoints operate exclusively on processed PostgreSQL data.
 
 - Invalid rows are skipped during processing
 - Validation issues appear in ETL summaries
+- Invalid customer or shipping references can prevent downstream order creation
 - Feed processing continues for valid rows when possible
 
 ### Processing failures
@@ -240,6 +270,16 @@ This provides:
 - Operational accountability
 - Troubleshooting context
 
+### Encrypt customer-sensitive data
+
+Customer-sensitive fields are encrypted before storage and masked in API responses.
+
+This supports:
+
+- Reduced exposure of sensitive values
+- Safer operational logging practices
+- Demonstration of compliance-oriented API behavior
+- Separation of transactional and customer-sensitive workflows
 
 ## Related documentation
 

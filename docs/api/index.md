@@ -2,18 +2,19 @@
 
 This section contains developer-focused documentation for the **Commerce Integration API** platform, including onboarding guidance, integration workflows, API reference documentation, tutorials, and operational implementation guides.
 
-The platform demonstrates ingestion-driven commerce workflows using ETL processing, job-based execution, relational data modeling, and cloud-native deployment patterns.
+The platform demonstrates ingestion-driven commerce workflows using ETL processing, job-based execution, customer and order management workflows, relational data modeling, field-level encryption, and cloud-native deployment patterns.
 
 <div class="doc-meta">
   <span>REST APIs</span>
   <span>ETL workflows</span>
   <span>Async processing</span>
+  <span>Transactional workflows</span>
   <span>Developer platform</span>
 </div>
 
 ### Platform overview
 
-High-level documentation describing the platform architecture, ingestion model, ETL processing workflows, order management capabilities, analytics services, and core system concepts.
+High-level documentation describing the platform architecture, ingestion model, ETL processing workflows, customer and order workflows, analytics services, security controls, and core system concepts.
 
 Related documentation:
 
@@ -23,7 +24,7 @@ Related documentation:
 
 ### Integration workflows
 
-Documentation covering partner onboarding flows, ingestion patterns, webhook integrations, and end-to-end processing workflows.
+Documentation covering partner onboarding flows, ingestion patterns, webhook integrations, customer-linked transactional workflows, and end-to-end processing workflows.
 
 Related documentation:
 
@@ -34,7 +35,7 @@ Related documentation:
 
 ### Tutorials and operational guidance
 
-Guided walkthroughs and operational documentation supporting implementation, troubleshooting, and workflow validation.
+Guided walkthroughs and operational documentation supporting ingestion processing, customer and order workflows, troubleshooting, replay operations, and workflow validation.
 
 Related documentation:
 
@@ -53,6 +54,7 @@ Related documentation:
 - [Jobs API](jobs.md)
 - [Products API](products.md)
 - [Orders API](orders.md)
+- [Customers API](customers.md)
 - [Analytics API](analytics.md)
 - [Health API](health.md)
 - [Errors](errors.md)
@@ -60,17 +62,29 @@ Related documentation:
 
 ### SDKs and specifications
 
-Supporting implementation resources including SDK usage guidance and feed formatting specifications.
+Supporting implementation resources including SDK usage guidance, customer and order workflow examples, and feed formatting specifications.
 
 Related documentation:
 
 - [Python SDK guide](sdk-python.md)
 - [CSV feed file specification](../specs/csv-feed-file-spec.md)
 
+### Security and compliance
+
+Security-oriented documentation covering authentication, encryption, customer-sensitive data handling, operational logging, and compliance-oriented platform controls.
+
+Related documentation:
+
+- [Security and compliance overview](../security/index.md)
+- [API access control policy](../security/api-access-control-policy.md)
+- [Encryption policy](../security/encryption-policy.md)
+- [Customer data handling policy](../security/customer-data-handling-policy.md)
+- [Secrets management policy](../security/secrets-management-policy.md)
+- [Secure software development lifecycle (SSDLC) policy](../security/ssdlc-policy.md)
 
 ### Supporting materials
 
-Supplementary documentation, visual references, and supporting implementation resources.
+Supplementary documentation, visual references, operational recovery procedures, and supporting implementation resources.
 
 Related documentation:
 

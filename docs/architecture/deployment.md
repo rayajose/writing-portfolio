@@ -1,6 +1,6 @@
 # Deployment guide
 
-This page explains how to deploy the Commerce Integration API to AWS using a containerized architecture.
+This page explains how to deploy the Commerce Integration API to AWS using a containerized, cloud-native architecture supporting ingestion, ETL processing, customer workflows, transactional order processing, and analytics services.
 
 The application and its documentation are maintained in a single repository (`writing-portfolio`). The API is deployed using Docker and AWS (ECS, RDS, S3), while documentation is published through GitHub Pages.
 
@@ -21,7 +21,7 @@ The Commerce Integration API is deployed using the following AWS services:
 - Amazon ECR container image registry (`partner-catalog-api`)
 - Amazon ECS (Fargate) serverless container orchestration
 - Application Load Balancer (ALB) for public HTTP access and traffic routing
-- Amazon RDS (PostgreSQL) for processed product data
+- Amazon RDS (PostgreSQL) for processed product, customer, and transactional data
 - Amazon S3 for raw uploaded feed storage
 
 The source code and documentation are maintained in the `writing-portfolio` repository. AWS resources continue to use the original application naming convention (`partner-catalog-api`).
@@ -152,6 +152,7 @@ Optional:
 - Serves as the raw system of record
 - Supports ETL extraction and transformation workflows
 - Enables feed reprocessing and auditability
+- Preserves replay capability for downstream transactional workflows
 
 
 ## Environment variables
@@ -169,6 +170,13 @@ DB_USER=postgres
 DB_PASSWORD=<secured>
 ```
 
+### Security configuration
+
+```bash
+API_KEY=<secured>
+PII_ENCRYPTION_KEY=<secured>
+```
+
 ### Optional S3 configuration
 
 ```bash
@@ -179,6 +187,8 @@ S3_RAW_BUCKET=partner-catalog-raw-rayj
 
 - Defines the S3 bucket used for raw feed storage
 - Used by the ETL pipeline to locate uploaded feed files
+- `PII_ENCRYPTION_KEY` supports field-level encryption for customer-sensitive data
+- Secrets should be externalized and never committed to source control
 - Can be externalized for different deployment environments
 
 
@@ -188,12 +198,30 @@ S3_RAW_BUCKET=partner-catalog-raw-rayj
 - The application uses the AWS SDK (`boto3`) during ETL processing
 - ETL processing is triggered through the Jobs API (`POST /jobs/{job_id}/run`)
 - ETL compares incoming data against existing records to avoid unnecessary updates
+- Product records support downstream customer and order workflows
 - Raw uploaded feed files remain available for ETL reprocessing, troubleshooting, and auditability workflows
 - ECS tasks require network access to S3
 
 !!! note "IAM permissions"
 
     IAM permissions for Amazon S3 access are required in a production environment and are only partially configured in this demo deployment.
+
+## Customer workflow considerations
+
+Customer-sensitive workflows use field-level encryption for selected database fields including:
+
+- Email addresses
+- Phone numbers
+- Street addresses
+- Postal codes
+
+Customer API responses expose masked values instead of raw sensitive values.
+
+Deployment environments must ensure:
+
+- `PII_ENCRYPTION_KEY` is configured
+- Secrets remain externalized from source code
+- Operational logs avoid sensitive customer data
 
 ## Deployment workflow
 
@@ -258,6 +286,7 @@ This workflow explains how to scale down ECS services and pause database resourc
 
 - ALB performs HTTP health checks against `/health`
 - The container must start successfully and establish database connectivity
+- Encryption configuration must be available during application startup
 - Failed health checks result in automatic task replacement by ECS
 
 !!! warning "Health check dependency"
@@ -321,6 +350,23 @@ psycopg.errors.ConnectionTimeout
 
 - Add the ECS security group to the RDS inbound rules for port 5432
 
+### Missing encryption key configuration
+
+#### Error
+
+```text
+RuntimeError: PII_ENCRYPTION_KEY environment variable is not set.
+```
+
+#### Cause
+
+- Encryption configuration missing from ECS task definition
+
+#### Resolution
+
+- Add `PII_ENCRYPTION_KEY` to ECS task environment configuration
+- Redeploy ECS tasks
+- Verify application startup completes successfully
 
 ## Cost considerations
 
@@ -346,6 +392,8 @@ AWS resources retain the original application naming convention (`partner-catalo
 
 - Database schema initialization occurs at application startup (`init_db()`)
 - The database must be reachable for the container to start successfully
+- Customer-sensitive fields are encrypted before database persistence
+- Customer API responses expose masked values only
 - Single-task deployments may experience brief downtime during deployments
 - ETL processing is executed on demand through the Jobs API
 - Product data is persisted to PostgreSQL only after ETL completes
@@ -365,5 +413,15 @@ AWS resources retain the original application naming convention (`partner-catalo
 !!! tip "Safe reprocessing"
 
     ETL change-detection logic prevents duplicate product updates when previously processed feeds are re-executed.
+
+## Operational security considerations
+
+Deployment environments should:
+
+- Restrict database access to authorized infrastructure components
+- Protect API keys and encryption secrets
+- Avoid logging customer-sensitive values
+- Restrict access to raw uploaded feed data
+- Separate development and production credentials
 
 For deployment evidence, see [Screenshots](../api/screenshots.md).

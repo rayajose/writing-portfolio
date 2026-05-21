@@ -6,6 +6,7 @@ Use this API to create and retrieve customer orders.
 - Retrieve order details and line items
 - List submitted orders
 - Track order status and calculated totals
+- Associate orders with fictional customer and shipping address records
 
 ## Authentication
 
@@ -23,17 +24,21 @@ Use this endpoint to create an order from one or more catalog products.
 
 ### Processing behavior
 - The system creates a parent order with status created.
+- Orders can optionally reference customer and shipping address records.
+- Customer and shipping records are stored separately from order line items.
 - For each requested item, the system verifies that the product_id exists.
 - If the product is available, the system creates an order item with product details, quantity, unit price, and line total.
 - The system calculates the order total and updates the order record.
 
 ### Request body
 
-| Field                | Type   | Required | Description                                   |
-| -------------------- | ------ | -------- | --------------------------------------------- |
-| `partner_name`       | string | Yes      | Name of the partner associated with the order |
-| `customer_reference` | string | No       | External customer or order reference          |
-| `items`              | array  | Yes      | List of products to include in the order      |
+| Field                 | Type   | Required | Description                                   |
+| --------------------- | ------ | -------- | --------------------------------------------- |
+| `partner_name`        | string | Yes      | Name of the partner associated with the order |
+| `customer_reference`  | string | No       | External customer or order reference          |
+| `customer_id`         | string | No       | Customer identifier (`CUxxxxx`)               |
+| `shipping_address_id` | string | No       | Shipping address identifier (`ADxxxxx`)       |
+| `items`               | array  | Yes      | List of products to include in the order      |
 
 ### Item fields
 
@@ -58,6 +63,8 @@ curl -X POST http://api.example.com/orders \
   -d '{
     "partner_name": "RayTech Corp.",
     "customer_reference": "CUST-1001",
+    "customer_id": "CU00001",
+    "shipping_address_id": "AD00001",
     "items": [
       {
         "product_id": "PR00001",
@@ -79,6 +86,8 @@ curl -X POST http://api.example.com/orders \
   "order_id": "OR00001",
   "partner_name": "RayTech Corp.",
   "customer_reference": "CUST-1001",
+  "customer_id": "CU00001",
+  "shipping_address_id": "AD00001",
   "status": "created",
   "total_amount": 10.99,
   "currency": "USD",
@@ -101,15 +110,17 @@ curl -X POST http://api.example.com/orders \
 </div>
 
 ### Response fields
-| Field                | Type   | Description                          |
-| -------------------- | ------ | ------------------------------------ |
-| `order_id`           | string | Unique order identifier (`ORxxxxx`)  |
-| `partner_name`       | string | Partner associated with the order    |
-| `customer_reference` | string | External customer or order reference |
-| `status`             | string | Order status                         |
-| `total_amount`       | number | Total amount for all order items     |
-| `currency`           | string | Currency code                        |
-| `items`              | array  | Line items included in the order     |
+| Field                 | Type   | Description                            |
+| --------------------- | ------ | -------------------------------------- |
+| `order_id`            | string | Unique order identifier (`ORxxxxx`)    |
+| `partner_name`        | string | Partner associated with the order      |
+| `customer_reference`  | string | External customer or order reference   |
+| `customer_id`         | string | Associated customer identifier         |
+| `shipping_address_id` | string | Associated shipping address identifier |
+| `status`              | string | Order status                           |
+| `total_amount`        | number | Total amount for all order items       |
+| `currency`            | string | Currency code                          |
+| `items`               | array  | Line items included in the order       |
 
 ### Error responses
 
@@ -349,6 +360,8 @@ Returned when the request contains an `order_id` not currently in the system.
 - Order totals are calculated from order item line totals.
 - Product details such as sku, product_name, and unit_price are - - copied into the order item at order creation time.
 - The current implementation creates orders with status created.
+- Orders can optionally reference customer and shipping address records.
+- Customer and shipping records are maintained separately from transactional order items.
 
 
 ## Related documentation

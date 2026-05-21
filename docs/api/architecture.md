@@ -32,6 +32,9 @@ The Commerce Integration API is a layered platform designed to:
 - Execute ETL processing to transform and load data
 - Persist normalized product and order data in PostgreSQL
 - Expose product, order, and analytics data through queryable endpoints
+- Manage fictional customer and shipping address records
+- Encrypt customer-sensitive fields before storage
+- Return masked customer data in API responses
 
 The system models a production-style ingestion architecture with separate API, processing, storage, and analytics concerns.
 
@@ -47,6 +50,11 @@ The system models a production-style ingestion architecture with separate API, p
 | Data access layer           | `db.py`                              | Manages database operations         |
 | Storage layer               | Amazon S3, PostgreSQL                | Stores raw and processed data       |
 
+## High level architecture
+
+<div class="diagram-card" markdown="1">
+![High-level system architecture](../api/screenshots/high-level-system-architecture.svg)
+</div>
 
 ## API layer
 
@@ -68,6 +76,9 @@ Example endpoints include:
 - `POST /jobs/{job_id}/run`
 - `GET /products`
 - `POST /orders`
+- `POST /customers`
+- `GET /customers/{customer_id}`
+- `POST /customers/{customer_id}/addresses`
 - `GET /analytics/*`
 
 
@@ -82,6 +93,8 @@ Responsibilities include:
 - Job status updates
 - Pipeline coordination
 - Analytics query handling
+- Customer data encryption and masking
+- Customer and shipping address workflow handling
 
 The ETL implementation extracts raw feed data, validates and normalizes records, and loads processed records into PostgreSQL.
 
@@ -128,10 +141,17 @@ PostgreSQL stores normalized and queryable data.
 
 Core tables include:
 
+Core tables include:
+
 - `feeds`
 - `jobs`
 - `products`
+- `customers`
+- `customer_addresses`
 - `orders`
+- `order_items`
+- `fulfillment_jobs`
+- `shipments`
 - `id_counters`
 
 
@@ -177,7 +197,7 @@ The write path handles feed submission and ETL processing.
 The read path serves processed product, order, and analytics data.
 
 - Product data is retrieved through `/products`
-- Order data is retrieved through order endpoints
+- Customer and order data is retrieved through customer and order endpoints
 - Aggregated insights are retrieved through `/analytics/*`
 - Read operations operate on processed PostgreSQL data
 
@@ -188,12 +208,18 @@ Because ingestion and ETL processing are separate workflows, read operations may
 
 The API uses structured identifiers to support traceability.
 
-| Prefix | Resource       | Example   |
-| ------ | -------------- | --------- |
-| `FD`   | Feed           | `FD00001` |
-| `JS`   | Submission job | `JS00001` |
-| `JV`   | Validation job | `JV00001` |
-| `PR`   | Product        | `PR00001` |
+| Prefix | Resource         | Example   |
+| ------ | ---------------- | --------- |
+| `FD`   | Feed             | `FD00001` |
+| `JS`   | Submission job   | `JS00001` |
+| `JV`   | Validation job   | `JV00001` |
+| `PR`   | Product          | `PR00001` |
+| `CU`   | Customer         | `CU00001` |
+| `AD`   | Customer address | `AD00001` |
+| `OR`   | Order            | `OR00001` |
+| `OI`   | Order item       | `OI00001` |
+| `JF`   | Fulfillment job  | `JF00001` |
+| `SH`   | Shipment         | `SH00001` |
 
 Identifiers are generated using a database-backed counter.
 
@@ -229,7 +255,7 @@ For job lifecycle behavior, see [Platform architecture and operational flow](../
 
 ## Analytics layer
 
-The analytics layer provides aggregated reporting and operational insights derived from processed product and order data.
+The analytics layer provides aggregated reporting and operational insights derived from processed product, customer-linked order, and transactional data.
 
 Responsibilities include:
 
@@ -333,6 +359,16 @@ The Products API uses cursor-based pagination to support scalable retrieval of l
 
 This avoids the performance limitations associated with large offset-based queries.
 
+### Field-level customer data protection
+
+Customer-sensitive fields are encrypted before storage and masked in API responses.
+
+This supports:
+
+- Reduced exposure of sensitive values
+- Safer API response behavior
+- Clear separation between stored sensitive data and public response models
+- Compliance-oriented documentation and implementation patterns
 
 ## Future enhancements
 
@@ -356,6 +392,7 @@ Potential architecture enhancements include:
 - [Jobs API](../api/jobs.md)
 - [Products API](../api/products.md)
 - [Orders API](../api/orders.md)
+- [Customers API](../api/customers.md)
 - [Analytics API](../api/analytics.md)
 - [Errors](../api/errors.md)
 

@@ -82,6 +82,23 @@ Authentication failures return:
 
 Authentication validation occurs before protected operations are executed.
 
+## Customer workflow protections
+
+Customer and shipping workflows require authenticated API access.
+
+Protected customer workflow endpoints include:
+
+- `POST /customers`
+- `GET /customers/{customer_id}`
+- `POST /customers/{customer_id}/addresses`
+- `GET /customers/addresses/{address_id}`
+
+Orders can optionally reference customer and shipping address records using:
+
+```text
+customer_id
+shipping_address_id
+```
 
 ## API key management
 
@@ -182,6 +199,22 @@ Job states include:
 
 This supports operational troubleshooting and ingestion visibility across asynchronous processing workflows.
 
+## Logging restrictions
+
+Operational logs should avoid storing:
+
+- Raw customer-sensitive values
+- Encrypted customer fields
+- Encryption keys
+- Authentication secrets
+- Database credentials
+
+Operational logs should use structured identifiers instead, such as:
+
+- `CUxxxxx`
+- `ADxxxxx`
+- `ORxxxxx`
+- `OIxxxxx`
 
 ## Credential handling requirements
 
@@ -194,6 +227,18 @@ Credentials and operational secrets should be handled securely throughout develo
 - Operational secrets should not be embedded directly in application source code
 - Access to deployment configuration should be restricted to authorized operators
 
+## Customer-sensitive data protection
+
+The following customer-sensitive fields are encrypted before storage and masked in API responses.
+
+- Email addresses
+- Phone numbers
+- Street addresses
+- Postal codes
+
+
+
+Encrypted database values are not exposed through standard customer API responses.
 
 ## Incident handling considerations
 

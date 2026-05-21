@@ -101,6 +101,8 @@ curl -X POST "http://localhost:8000/orders" \
   -d '{
     "partner_name": "Acme Corp",
     "customer_reference": "ORDER-1001",
+    "customer_id": "CU00001",
+    "shipping_address_id": "AD00001",
     "items": [
       {
         "product_id": "PR00001",
@@ -117,6 +119,8 @@ curl -X POST "http://localhost:8000/orders" \
   "order_id": "OR00001",
   "partner_name": "Acme Corp",
   "customer_reference": "ORDER-1001",
+  "customer_id": "CU00001",
+  "shipping_address_id": "AD00001",
   "status": "created",
   "total_amount": 159.98,
   "currency": "USD",
@@ -137,20 +141,6 @@ curl -X POST "http://localhost:8000/orders" \
 ## Understand the workflow
 
 Product data becomes available only after ingestion and ETL processing complete.
-
-Typical workflow:
-
-```text
-Upload feed
-  → Validate
-  → Transform
-  → Load catalog data
-  → Query products
-  → Create orders
-  → Generate analytics
-```
-
-## Ingestion and order flow
 
 <div class="diagram-card" markdown="1">
 ![Ingestion and order flow](../api/screenshots/ingestion-order-flow.svg)
@@ -210,16 +200,19 @@ The API uses standard HTTP status codes.
 
 ## Resource identifiers
 
-The platform uses structured identifiers for feeds, jobs, products, and orders.
+The platform uses structured identifiers for feeds, jobs, customers, products, addresses, orders, and fulfillment workflows.
 
-| Prefix    | Resource       |
-| --------- | -------------- |
-| `FDxxxxx` | Feed           |
-| `JSxxxxx` | Submission Job |
-| `JVxxxxx` | Validation Job |
-| `PRxxxxx` | Product        |
-| `ORxxxxx` | Order          |
-| `OIxxxxx` | Order Item     |
+| Prefix    | Resource         |
+| --------- | ---------------- |
+| `FDxxxxx` | Feed             |
+| `JSxxxxx` | Submission Job   |
+| `JVxxxxx` | Validation Job   |
+| `JFxxxxx` | Fulfillment Job  |
+| `CUxxxxx` | Customer         |
+| `ADxxxxx` | Customer Address |
+| `PRxxxxx` | Product          |
+| `ORxxxxx` | Order            |
+| `OIxxxxx` | Order Item       |
 
 ## Next steps
 
@@ -227,6 +220,7 @@ The platform uses structured identifiers for feeds, jobs, products, and orders.
 - Use [Feeds API](feeds.md) to manage uploads
 - Use [Jobs API](jobs.md) to track processing
 - Use [Products API](products.md) to query catalog data
+- Use [Customers API](customers.md) to create fictional customers and shipping addresses
 - Use [Orders API](orders.md) to create and retrieve order data
 - Use [Analytics API](analytics.md) to analyze sales and revenue
 - See [Debug failed feed runbook](../operations/debug-product-feed.md) to troubleshoot

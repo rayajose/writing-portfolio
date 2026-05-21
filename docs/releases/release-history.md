@@ -4,6 +4,52 @@ This page documents notable platform, API, infrastructure, and documentation cha
 
 The release history reflects the evolution of the platform from an initial ingestion prototype into a cloud-deployed commerce integration system supporting ETL processing, operational workflows, analytics services, and security-oriented documentation.
 
+## Version 1.1.0
+
+Introduced customer management workflows, field-level encryption, masked API responses, and customer-linked order support.
+
+### Added
+
+- Customers API for fictional customer record management
+- Customer shipping address workflows
+- Field-level encryption for:
+  - Email addresses
+  - Phone numbers
+  - Street addresses
+  - Postal codes
+- Masked API response handling for customer-sensitive fields
+- Customer identifier format:
+
+```text
+CUxxxxx
+```
+
+- Customer address identifier format:
+
+```text
+ADxxxxx
+```
+
+- Customer-to-order association support:
+  - `customer_id`
+  - `shipping_address_id`
+- Customer API regression test coverage
+- Encryption helper utilities and masking utilities
+
+### Changed
+
+- Expanded Orders API to support customer and shipping address references
+- Updated relational order schema to support customer-linked workflows
+- Enhanced Swagger/OpenAPI documentation for customer resources
+- Improved platform security modeling for PII-like data handling
+- Expanded documentation coverage for security-oriented API behavior
+
+### Fixed
+
+- Improved handling of sensitive customer data in API responses
+- Prevented encrypted database values from being exposed through customer endpoints
+- Improved test environment configuration for encryption-enabled workflows
+
 
 ## Version 1.0.0
 

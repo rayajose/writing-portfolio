@@ -4,18 +4,16 @@
 
 This page describes the primary operational resources used within the Commerce Integration API.
 
-Feeds, jobs, and products represent the core entities that model the ingestion lifecycle, from partner feed submission through asynchronous ETL processing and normalized product persistence.
+Feeds, jobs, products, customers, addresses, and orders represent the core operational entities that model ingestion, transactional processing, customer workflows, and analytics activities across the platform.
 
 These resources provide operational visibility, traceability, and structured relationships across the ingestion platform.
 
 
 ## Resource relationships
 
-```mermaid
-flowchart LR
-    Feed --> ValidationJob
-    ValidationJob --> Product
-```
+<div class="diagram-card" markdown="1">
+![Resource relationships](../api/screenshots/resource-relationships.svg)
+</div>
 
 ### Resource lifecycle
 
@@ -23,7 +21,9 @@ flowchart LR
 2. The system creates processing jobs.
 3. ETL workflows validate and transform ingestion data.
 4. Products are normalized and stored for retrieval.
-5. Operational metadata retained for troubleshooting and auditing.
+5. Customers and shipping addresses may be created.
+6. Orders are created from catalog products.
+7. Operational metadata retained for troubleshooting and auditing.
 
 
 ## Feed
@@ -60,7 +60,7 @@ Feeds serve as the operational entry point for asynchronous validation and ETL w
 
 A job represents an asynchronous processing task executed by the ingestion platform.
 
-Jobs provide operational visibility into ingestion, validation, transformation, and ETL execution workflows.
+Jobs provide operational visibility into ingestion, validation, transformation, ETL execution, and fulfillment workflows.
 
 ### Job fields
 
@@ -75,10 +75,11 @@ Jobs provide operational visibility into ingestion, validation, transformation, 
 
 ### Job types
 
-| Type         | Description                                    |
-| ------------ | ---------------------------------------------- |
-| `submission` | Feed upload processing                         |
-| `validation` | ETL processing (`Validate → Transform → Load`) |
+| Type          | Description                                    |
+| ------------- | ---------------------------------------------- |
+| `submission`  | Feed upload processing                         |
+| `validation`  | ETL processing (`Validate → Transform → Load`) |
+| `fulfillment` | Order fulfillment processing (`JFxxxxx`)       |
 
 ### Operational states
 
@@ -127,17 +128,92 @@ Products are generated during ETL processing and stored for querying, analytics,
 - Existing records evaluated for change detection
 - Products queryable independently from originating feeds
 
+## Customer
+
+A customer represents a fictional transactional entity associated with order workflows.
+
+Customer records support customer-linked order processing and shipping workflows.
+
+### Customer fields
+
+| Field          | Description                            |
+| -------------- | -------------------------------------- |
+| `customer_id`  | Unique customer identifier (`CUxxxxx`) |
+| `first_name`   | Customer first name                    |
+| `last_name`    | Customer last name                     |
+| `email_masked` | Masked email address                   |
+| `phone_masked` | Masked phone number                    |
+
+### Operational details
+
+- Customer-sensitive fields encrypted before storage
+- API responses return masked values
+- Customer records support downstream order workflows
+- Customer identifiers support operational traceability
+
+## Customer address
+
+A customer address represents a shipping or delivery location associated with a customer.
+
+### Address fields
+
+| Field                  | Description                           |
+| ---------------------- | ------------------------------------- |
+| `address_id`           | Unique address identifier (`ADxxxxx`) |
+| `customer_id`          | Associated customer identifier        |
+| `address_line1_masked` | Masked address field                  |
+| `postal_code_masked`   | Masked postal code                    |
+| `city`                 | City                                  |
+| `state`                | State or province                     |
+| `country`              | Country                               |
+
+### Operational details
+
+- Address-sensitive fields encrypted before storage
+- Address records linked to customer workflows
+- API responses expose masked values only
+- Address records support downstream order workflows
+
+## Order
+
+An order represents a transactional purchase request created from catalog products.
+
+Orders may optionally reference customer and shipping address records.
+
+### Order fields
+
+| Field                 | Description                            |
+| --------------------- | -------------------------------------- |
+| `order_id`            | Unique order identifier (`ORxxxxx`)    |
+| `customer_id`         | Associated customer identifier         |
+| `shipping_address_id` | Associated shipping address identifier |
+| `partner_name`        | Partner associated with the order      |
+| `status`              | Current order status                   |
+| `total_amount`        | Calculated order total                 |
+| `currency`            | Currency code                          |
+
+### Operational details
+
+- Orders created transactionally
+- Product pricing preserved at order creation time
+- Orders may reference customer and shipping records
+- Order items persisted separately from order metadata
 
 ## Identifier structure
 
 All operational resources use structured identifiers to support consistency and traceability across ingestion workflows.
 
-| Prefix | Resource       | Example   |
-| ------ | -------------- | --------- |
-| `FD`   | Feed           | `FD00001` |
-| `JS`   | Submission Job | `JS00001` |
-| `JV`   | Validation Job | `JV00001` |
-| `PR`   | Product        | `PR00001` |
+| Prefix | Resource         | Example   |
+| ------ | ---------------- | --------- |
+| `FD`   | Feed             | `FD00001` |
+| `JS`   | Submission Job   | `JS00001` |
+| `JV`   | Validation Job   | `JV00001` |
+| `JF`   | Fulfillment Job  | `JF00001` |
+| `PR`   | Product          | `PR00001` |
+| `CU`   | Customer         | `CU00001` |
+| `AD`   | Customer Address | `AD00001` |
+| `OR`   | Order            | `OR00001` |
+| `OI`   | Order Item       | `OI00001` |
 
 ### Identifier characteristics
 
@@ -169,6 +245,8 @@ Normalization workflows include:
 - Structural consistency checks
 - Duplicate prevention
 - Change detection processing
+- Customer-sensitive field protection
+- Transactional relational consistency
 
 ### Traceability
 
@@ -176,6 +254,8 @@ Operational metadata retained throughout ingestion lifecycle includes:
 
 - Feed identifiers
 - Job lifecycle states
+- Customer identifiers
+- Order identifiers
 - ETL summaries
 - Raw file storage references
 - Processing timestamps
@@ -189,4 +269,7 @@ This metadata supports troubleshooting, auditing, and operational analysis.
 - [Integration Guide](../api/integration-guide.md)
 - [Feeds API](../api/feeds.md)
 - [Jobs API](../api/jobs.md)
+- [Customers API](../api/customers.md)
+- [Orders API](../api/orders.md)
+- [Security and compliance](../security/index.md)
 - [Products API](../api/products.md)

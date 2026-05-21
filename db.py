@@ -99,11 +99,7 @@ def init_db() -> None:
                 )
             """))
 
-            product_price_type = (
-                "DOUBLE PRECISION"
-                if DB_TYPE == "postgres"
-                else "REAL"
-            )
+            product_price_type = "DOUBLE PRECISION" if DB_TYPE == "postgres" else "REAL"
 
             cur.execute(q(f"""
                 CREATE TABLE IF NOT EXISTS products (
@@ -128,23 +124,23 @@ def init_db() -> None:
                 ON products (partner_name, sku)
             """))
 
-            amount_type = (
-                "DOUBLE PRECISION"
-                if DB_TYPE == "postgres"
-                else "REAL"
-            )
+            amount_type = "DOUBLE PRECISION" if DB_TYPE == "postgres" else "REAL"
 
             cur.execute(q(f"""
                 CREATE TABLE IF NOT EXISTS orders (
                     order_id TEXT PRIMARY KEY,
                     partner_name TEXT NOT NULL,
                     customer_reference TEXT,
+                    customer_id TEXT,
+                    shipping_address_id TEXT,
                     status TEXT NOT NULL DEFAULT 'created',
                     total_amount {amount_type},
                     currency TEXT DEFAULT 'USD',
                     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-                    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
-                )
+                    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+                    FOREIGN KEY (shipping_address_id) REFERENCES customer_addresses(address_id)
+            )
             """))
 
             cur.execute(q("""
@@ -300,12 +296,14 @@ def next_product_id_with_conn(conn) -> str:
 def next_order_id() -> str:
     return _next_id("OR")
 
+
 def next_customer_id() -> str:
     return _next_id("CU")
 
 
 def next_address_id_with_conn(conn) -> str:
     return _next_id_with_conn(conn, "AD")
+
 
 def next_order_item_id_with_conn(conn) -> str:
     return _next_id_with_conn(conn, "OI")

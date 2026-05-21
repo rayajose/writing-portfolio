@@ -32,7 +32,8 @@ Before starting, confirm the following:
 - Create submission and validation jobs  
 - Validate and process data through ETL  
 - Store products in the database  
-- Make products available via the API  
+- Make products available via the API
+- Support downstream customer and order workflows  
 
 
 ## Procedure
@@ -136,6 +137,7 @@ curl -H "x-api-key: <api-key>" \
 - Products are returned for the correct partner
 - Key fields (SKU, name, price, availability) are populated
 - Record counts align with ETL summary
+- Products are available for downstream order workflows
 
 
 ## Decision points
@@ -169,6 +171,8 @@ After successful onboarding:
 - Feed status is `validated`
 - Data is persisted in the system
 - Partner can perform subsequent updates via feed re-submission
+- Products become available for customer-linked order workflows
+- Product data becomes queryable through analytics endpoints
 
 
 ## Additional details
@@ -177,10 +181,21 @@ After successful onboarding:
 - Product uniqueness is enforced by `(partner_name, sku)`
 - Updates are only counted when actual data changes occur
 - Raw files are stored for traceability and reprocessing
+- Feed ingestion supports downstream transactional order workflows
+- Product records may later be associated with customer-linked orders
 
+## Operational security considerations
+
+- API access requires authenticated requests using `x-api-key`
+- Raw uploaded files should remain restricted to authorized operational workflows
+- Customer-sensitive workflows are handled separately from ingestion processing
+- Operational logs should avoid storing sensitive credentials or secrets
 
 ## Related documentation
 
 - [API Overview](../api/index.md)
 - [Workflows](../architecture/workflows.md)
-- [Products Endpoint](../api/products.md)
+- [Customers API](../api/customers.md)
+- [Orders API](../api/orders.md)
+- [Security and compliance](../security/index.md)
+- [Products API](../api/products.md)
