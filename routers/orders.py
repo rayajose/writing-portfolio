@@ -255,7 +255,7 @@ def list_orders():
         rows = cur.execute(q("""
                 SELECT order_id
                 FROM orders
-                ORDER BY created_at DESC, order_id DESC
+                ORDER BY order_id DESC
             """)).fetchall()
 
         orders = []
