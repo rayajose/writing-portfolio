@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from schemas.customers import (
     CustomerAddressCreate,
@@ -7,17 +7,20 @@ from schemas.customers import (
     CustomerResponse,
 )
 
+from security import require_api_key
+
 from services.customers import (
     create_customer,
     create_customer_address,
     get_customer,
     get_customer_address,
+    list_customers,
 )
 
-from security import require_api_key
-
 router = APIRouter(
-    prefix="/customers", tags=["Customers"], dependencies=[Depends(require_api_key)]
+    prefix="/customers",
+    tags=["Customers"],
+    dependencies=[Depends(require_api_key)],
 )
 
 
@@ -29,6 +32,11 @@ def post_customer(customer: CustomerCreate):
         email_encrypted=customer.email,
         phone_encrypted=customer.phone,
     )
+
+
+@router.get("", response_model=list[CustomerResponse])
+def read_customers():
+    return list_customers()
 
 
 @router.get("/{customer_id}", response_model=CustomerResponse)
