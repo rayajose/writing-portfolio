@@ -28,6 +28,16 @@ Cloud-native commerce integration platform demonstrating feed ingestion, ETL pro
 </div>
 
 
+## Training and enablement
+
+Implementation-focused onboarding and operational training documentation designed to support partner integrations, feed ingestion workflows, troubleshooting procedures, and production support readiness.
+
+- Guided onboarding tutorials
+- Step-by-step implementation workflows
+- Operational troubleshooting procedures
+- Integration readiness documentation
+- Workflow validation and support guidance
+
 ### [API & developer documentation](api/index.md)
 
 REST APIs, ingestion workflows, customer and order workflows, async processing, analytics services, SDK guidance, and developer enablement documentation.

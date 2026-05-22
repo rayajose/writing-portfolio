@@ -24,59 +24,49 @@ extra_css:
 nav:
   - Home: index.md
 
-  - API & Integrations:
+  - Tutorials:
+      - Your first feed ingestion: tutorials/first-feed.md
 
-      - Overview: api/index.md
+  - How-to guides:
+      - Ingest a product feed end-to-end: api/ingest-product-feed.md
+      - Debug failed feed runbook: operations/debug-product-feed.md
+
+  - Architecture & concepts:
+      - Platform overview: api/index.md
       - Get started: api/getting_started.md
       - Integration guide: api/integration-guide.md
       - Webhook integration guide: api/webhooks.md
-
-      - Tutorials:
-          - Your first feed ingestion: tutorials/first-feed.md
-
-      - How-to guides:
-          - Ingest a product feed end-to-end: api/ingest-product-feed.md
-
-      - API reference:
-          - Overview: api/api-reference.md
-          - Feeds API: api/feeds.md
-          - Jobs API: api/jobs.md
-          - Products API: api/products.md
-          - Orders API: api/orders.md
-          - Customers API: api/customers.md
-          - Analytics API: api/analytics.md
-          - Health API: api/health.md
-          - Errors: api/errors.md
-
-      - SDKs:
-          - Python SDK guide: api/sdk-python.md
-
-      - Specifications:
-          - CSV feed file specification: specs/csv-feed-file-spec.md
-
-      - Supporting materials:
-          - Resources: api/resources.md
-          - Screenshots: api/screenshots.md
-
-  - Architecture & Deployment:
-
-      - Overview: architecture/index.md
       - Platform architecture and operational flow: architecture/platform-architecture.md
       - System architecture: api/architecture.md
       - Workflows: architecture/workflows.md
-      - Deployment guide: architecture/deployment.md
+
+  - API reference:
+      - Overview: api/api-reference.md
+      - Feeds API: api/feeds.md
+      - Jobs API: api/jobs.md
+      - Products API: api/products.md
+      - Orders API: api/orders.md
+      - Customers API: api/customers.md
+      - Analytics API: api/analytics.md
+      - Health API: api/health.md
+      - Errors: api/errors.md
+
+  - SDKs:
+      - Python SDK guide: api/sdk-python.md
+
+  - Specifications:
+      - CSV feed file specification: specs/csv-feed-file-spec.md
 
   - Operations:
-
       - Overview: operations/index.md
-      - Partner onboarding SOP: operations/onboarding.md
-      - Deployment change procedure: operations/deployment-change-procedure.md
-      - Backup and recovery runbook: operations/backup-recovery-procedure.md
-      - Debug failed feed runbook: operations/debug-product-feed.md
-      
+      - SOPs: 
+        - Partner onboarding SOP: operations/onboarding.md
+        - Deployment change procedure: operations/deployment-change-procedure.md
+      - Runbooks:
+        - Debug failed feed runbook: operations/debug-product-feed.md
+        - Backup and recovery runbook: operations/backup-recovery-procedure.md
 
-  - Security & Compliance:
-
+  - Security:
       - Overview: security/index.md
       - Incident response plan: security/incident-response.md
       - API access control policy: security/api-access-control-policy.md
@@ -88,11 +78,19 @@ nav:
       - Secrets management policy: security/secrets-management-policy.md
       - Secure software development lifecycle (SSDLC) policy: security/ssdlc-policy.md
 
-  - Releases:
-  
+  - Release notes:
       - Release history: releases/release-history.md
 
-  - About: about.md
+  - Supporting materials:
+      - Deployment:
+          - Overview: architecture/index.md
+          - Deployment guide: architecture/deployment.md
+          - Screenshots: api/screenshots.md
+
+      - Resources:
+          - System Resource Model: api/resources.md
+
+  - Professional profile: professional-profile.md
 
 markdown_extensions:
   - admonition
