@@ -30,8 +30,7 @@ def create_customer(
 
         try:
             cur.execute(
-                q(
-                    """
+                q("""
                     INSERT INTO customers (
                         customer_id,
                         first_name,
@@ -40,8 +39,7 @@ def create_customer(
                         phone_encrypted
                     )
                     VALUES (?, ?, ?, ?, ?)
-                """
-                ),
+                """),
                 (
                     customer_id,
                     first_name,
@@ -65,8 +63,7 @@ def get_customer(customer_id: str) -> dict | None:
 
         try:
             cur.execute(
-                q(
-                    """
+                q("""
                     SELECT
                         customer_id,
                         first_name,
@@ -77,8 +74,7 @@ def get_customer(customer_id: str) -> dict | None:
                         updated_at
                     FROM customers
                     WHERE customer_id = ?
-                """
-                ),
+                """),
                 (customer_id,),
             )
 
@@ -89,18 +85,73 @@ def get_customer(customer_id: str) -> dict | None:
 
             customer = dict(row)
 
-            decrypted_email = decrypt_pii(customer["email_encrypted"])
+            try:
+                decrypted_email = decrypt_pii(customer["email_encrypted"])
+            except Exception:
+                decrypted_email = customer["email_encrypted"]
 
-            decrypted_phone = decrypt_pii(customer["phone_encrypted"])
+            try:
+                decrypted_phone = decrypt_pii(customer["phone_encrypted"])
+            except Exception:
+                decrypted_phone = customer["phone_encrypted"]
 
             customer["email_masked"] = mask_email(decrypted_email)
-
             customer["phone_masked"] = mask_phone(decrypted_phone)
 
             customer.pop("email_encrypted", None)
             customer.pop("phone_encrypted", None)
 
             return customer
+
+        finally:
+            cur.close()
+
+
+def list_customers():
+    with get_connection() as conn:
+        cur = conn.cursor()
+
+        try:
+            cur.execute(q("""
+                    SELECT
+                        customer_id,
+                        first_name,
+                        last_name,
+                        email_encrypted,
+                        phone_encrypted,
+                        created_at,
+                        updated_at
+                    FROM customers
+                    ORDER BY customer_id
+                """))
+
+            rows = cur.fetchall()
+
+            customers = []
+
+            for row in rows:
+                customer = dict(row)
+
+                try:
+                    decrypted_email = decrypt_pii(customer["email_encrypted"])
+                except Exception:
+                    decrypted_email = customer["email_encrypted"]
+
+                try:
+                    decrypted_phone = decrypt_pii(customer["phone_encrypted"])
+                except Exception:
+                    decrypted_phone = customer["phone_encrypted"]
+
+                customer["email_masked"] = mask_email(decrypted_email)
+
+                customer["phone_masked"] = mask_phone(decrypted_phone)
+
+                customer.pop("email_encrypted", None)
+                customer.pop("phone_encrypted", None)
+
+                customers.append(customer)
+
+            return customers
 
         finally:
             cur.close()
@@ -120,13 +171,11 @@ def create_customer_address(
 
         try:
             cur.execute(
-                q(
-                    """
+                q("""
                     SELECT customer_id
                     FROM customers
                     WHERE customer_id = ?
-                """
-                ),
+                """),
                 (customer_id,),
             )
 
@@ -136,8 +185,7 @@ def create_customer_address(
             address_id = next_address_id_with_conn(conn)
 
             cur.execute(
-                q(
-                    """
+                q("""
                     INSERT INTO customer_addresses (
                         address_id,
                         customer_id,
@@ -149,8 +197,7 @@ def create_customer_address(
                         country
                     )
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """
-                ),
+                """),
                 (
                     address_id,
                     customer_id,
@@ -179,8 +226,7 @@ def get_customer_address(
 
         try:
             cur.execute(
-                q(
-                    """
+                q("""
                     SELECT
                         address_id,
                         customer_id,
@@ -193,8 +239,7 @@ def get_customer_address(
                         created_at
                     FROM customer_addresses
                     WHERE address_id = ?
-                """
-                ),
+                """),
                 (address_id,),
             )
 

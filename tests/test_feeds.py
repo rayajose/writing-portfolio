@@ -1,22 +1,32 @@
-import sys
-from pathlib import Path
-
 from fastapi.testclient import TestClient
-
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(PROJECT_ROOT))
 
 from main import app
 
 client = TestClient(app)
 
-HEADERS = {"x-api-key": "demo-secret-key"}
 
-
-def test_get_feed_not_found():
+def test_get_customers_returns_200():
     response = client.get(
-        "/feeds/FD99999",
-        headers=HEADERS,
+        "/customers",
+        headers={"x-api-key": "test-api-key"},
     )
 
-    assert response.status_code == 404
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
+
+
+def test_get_customer_by_id_returns_200():
+    response = client.get(
+        "/customers/CU00001",
+        headers={"x-api-key": "test-api-key"},
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["customer_id"] == "CU00001"
+    assert "email_masked" in data
+    assert "phone_masked" in data
+    assert "email_encrypted" not in data
+    assert "phone_encrypted" not in data

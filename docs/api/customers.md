@@ -104,6 +104,80 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
+## `GET /customers`
+
+Use this endpoint to retrieve all fictional customer records.
+
+### Processing behavior
+
+- The system retrieves all customer records currently stored in the platform.
+- Sensitive values are decrypted internally only long enough to create masked response fields.
+- The response does not return encrypted values or raw sensitive values.
+- Results are returned ordered by customer identifier.
+
+### Request and response
+
+<div class="api-example-grid">
+
+<div>
+
+<h3>Request</h3>
+
+```bash
+curl -X GET http://api.example.com/customers \
+  -H "accept: application/json" \
+  -H "x-api-key: demo-secret-key"
+```
+
+</div>
+
+<div>
+
+<h3>Response</h3>
+
+```json
+[
+  {
+    "customer_id": "CU00001",
+    "first_name": "Alex",
+    "last_name": "Morgan",
+    "email_masked": "al***@example.com",
+    "phone_masked": "***-***-0101",
+    "created_at": "2026-05-20 13:15:30",
+    "updated_at": "2026-05-20 13:15:30"
+  }
+]
+```
+
+</div>
+
+</div>
+
+### Response fields
+
+| Field          | Type   | Description                                        |
+| -------------- | ------ | -------------------------------------------------- |
+| `customer_id`  | string | Unique customer identifier (`CUxxxxx`)             |
+| `first_name`   | string | Customer first name                                |
+| `last_name`    | string | Customer last name                                 |
+| `email_masked` | string | Masked email address returned for display use      |
+| `phone_masked` | string | Masked phone number returned for display use       |
+| `created_at`   | string | Date and time the customer record was created      |
+| `updated_at`   | string | Date and time the customer record was last updated |
+
+### Error responses
+
+#### 401 Unauthorized
+
+Returned when the request is missing or includes an invalid `x-api-key` header.
+
+```json
+{
+  "detail": "Invalid or missing API key"
+}
+```
+
+
 ## `GET /customers/{customer_id}`
 
 Use this endpoint to retrieve a specific fictional customer record.
