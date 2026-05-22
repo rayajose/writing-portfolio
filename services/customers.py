@@ -157,6 +157,38 @@ def list_customers():
             cur.close()
 
 
+def list_customer_orders(customer_id: str):
+    with get_connection() as conn:
+        cur = conn.cursor()
+
+        try:
+            cur.execute(
+                q("""
+                    SELECT
+                        order_id,
+                        customer_id,
+                        customer_reference,
+                        shipping_address_id,
+                        status,
+                        currency,
+                        total_amount,
+                        created_at,
+                        updated_at
+                    FROM orders
+                    WHERE customer_id = ?
+                    ORDER BY created_at DESC
+                """),
+                (customer_id,),
+            )
+
+            rows = cur.fetchall()
+
+            return [dict(row) for row in rows]
+
+        finally:
+            cur.close()
+
+
 def create_customer_address(
     customer_id: str,
     address_line1_encrypted: str,

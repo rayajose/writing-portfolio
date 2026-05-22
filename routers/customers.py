@@ -15,6 +15,7 @@ from services.customers import (
     get_customer,
     get_customer_address,
     list_customers,
+    list_customer_orders,
 )
 
 router = APIRouter(
@@ -37,6 +38,16 @@ def post_customer(customer: CustomerCreate):
 @router.get("", response_model=list[CustomerResponse])
 def read_customers():
     return list_customers()
+
+
+@router.get("/{customer_id}/orders")
+def read_customer_orders(customer_id: str):
+    customer = get_customer(customer_id)
+
+    if customer is None:
+        raise HTTPException(status_code=404, detail="Customer not found")
+
+    return list_customer_orders(customer_id)
 
 
 @router.get("/{customer_id}", response_model=CustomerResponse)

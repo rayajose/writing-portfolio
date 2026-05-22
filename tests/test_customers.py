@@ -75,3 +75,23 @@ def test_create_customer_address():
     assert body["postal_code_masked"] == "***01"
     assert "address_line1_encrypted" not in body
     assert "postal_code_encrypted" not in body
+
+
+def test_get_customers_returns_200():
+    response = client.get(
+        "/customers",
+        headers=HEADERS,
+    )
+
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
+
+
+def test_get_customer_orders_returns_200():
+    response = client.get(
+        "/customers/CU00001/orders",
+        headers=HEADERS,
+    )
+
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)

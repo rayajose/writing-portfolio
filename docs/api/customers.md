@@ -177,6 +177,99 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
+## `GET /customers/{customer_id}/orders`
+
+Use this endpoint to retrieve all orders associated with a fictional customer record.
+
+### Processing behavior
+
+- The system verifies that the customer exists.
+- The system retrieves all orders associated with the specified `customer_id`.
+- Results are returned ordered by newest order first.
+- The response supports customer-centric order history and fulfillment workflow visibility.
+- If the customer does not exist, the system returns a not found response.
+
+### Path parameters
+
+| Name          | Type   | Required | Description                            |
+| ------------- | ------ | -------- | -------------------------------------- |
+| `customer_id` | string | Yes      | Unique customer identifier (`CUxxxxx`) |
+
+### Request and response
+
+<div class="api-example-grid">
+
+<div>
+
+<h3>Request</h3>
+
+```bash
+curl -X GET http://api.example.com/customers/CU00001/orders \
+  -H "accept: application/json" \
+  -H "x-api-key: demo-secret-key"
+```
+
+</div>
+
+<div>
+
+<h3>Response</h3>
+
+```json
+[
+  {
+    "order_id": "OR00001",
+    "customer_id": "CU00001",
+    "customer_reference": "WEB-ORDER-1001",
+    "shipping_address_id": "AD00001",
+    "status": "completed",
+    "currency": "USD",
+    "total_amount": 149.99,
+    "created_at": "2026-05-22 10:15:30",
+    "updated_at": "2026-05-22 10:15:30"
+  }
+]
+```
+
+</div>
+
+</div>
+
+### Response fields
+
+| Field                 | Type   | Description                                     |
+| --------------------- | ------ | ----------------------------------------------- |
+| `order_id`            | string | Unique order identifier (`ORxxxxx`)             |
+| `customer_id`         | string | Customer associated with the order              |
+| `customer_reference`  | string | External or client-facing order reference       |
+| `shipping_address_id` | string | Shipping address associated with the order      |
+| `status`              | string | Current order status                            |
+| `currency`            | string | Currency associated with the order total        |
+| `total_amount`        | number | Total order amount                              |
+| `created_at`          | string | Date and time the order record was created      |
+| `updated_at`          | string | Date and time the order record was last updated |
+
+### Error responses
+
+#### 401 Unauthorized
+
+Returned when the request is missing or includes an invalid `x-api-key` header.
+
+```json
+{
+  "detail": "Invalid or missing API key"
+}
+```
+
+#### 404 Not found
+
+Returned when the request contains a `customer_id` not currently in the system.
+
+```json
+{
+  "detail": "Customer not found"
+}
+```
 
 ## `GET /customers/{customer_id}`
 
