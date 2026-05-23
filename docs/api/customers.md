@@ -17,7 +17,7 @@ Include the API key in each request:
 -H "x-api-key: YOUR_API_KEY"
 ```
 
-## `POST /customers`
+## <span class="api-endpoint api-endpoint--post">POST /customers</span>
 
 Use this endpoint to create a fictional customer record.
 
@@ -104,7 +104,7 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-## `GET /customers`
+## <span class="api-endpoint api-endpoint--get">GET /customers</span>
 
 Use this endpoint to retrieve all fictional customer records.
 
@@ -177,7 +177,7 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-## `GET /customers/{customer_id}/orders`
+## <span class="api-endpoint api-endpoint--get">GET /customers/{customer_id}/orders</span>
 
 Use this endpoint to retrieve all orders associated with a fictional customer record.
 
@@ -271,7 +271,7 @@ Returned when the request contains a `customer_id` not currently in the system.
 }
 ```
 
-## `GET /customers/{customer_id}`
+## <span class="api-endpoint api-endpoint--get">GET /customers/{customer_id}</span>
 
 Use this endpoint to retrieve a specific fictional customer record.
 
@@ -358,7 +358,7 @@ Returned when the request contains a `customer_id` not currently in the system.
 }
 ```
 
-## `POST /customers/{customer_id}/addresses`
+## <span class="api-endpoint api-endpoint--post">POST /customers/{customer_id}/addresses</span>
 
 Use this endpoint to create a shipping address for a fictional customer.
 
@@ -467,7 +467,7 @@ Returned when the request contains a `customer_id` not currently in the system.
 }
 ```
 
-## `GET /customers/addresses/{address_id}`
+## <span class="api-endpoint api-endpoint--get">GET /customers/addresses/{address_id}</span>
 
 Use this endpoint to retrieve a specific customer shipping address.
 

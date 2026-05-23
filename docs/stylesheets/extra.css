@@ -344,7 +344,7 @@ select {
   margin-bottom: 1.15rem;
 }
 
-/* API endpoint pills headings */
+/* API endpoint pill headings */
 .md-typeset h2 code,
 .md-typeset h3 code {
   display: inline-block;
@@ -363,6 +363,34 @@ select {
   color: #3730a3;
 
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+/* Default endpoint block */
+
+.api-endpoint {
+  display: inline-block;
+  padding: 0.45rem 0.85rem;
+  border-radius: 10px;
+  font-family: var(--md-code-font-family);
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+/* GET */
+
+.api-endpoint--get {
+  color: #1d4ed8;
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+/* POST */
+
+.api-endpoint--post {
+  color: #166534;
+  background-color: #f0fdf4;
+  border-color: #bbf7d0;
 }
 
 .md-typeset h2 code:hover,

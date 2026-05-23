@@ -1,4 +1,4 @@
-# Release history
+# Release notes
 
 This page documents notable platform, API, infrastructure, and documentation changes for the Commerce Integration API project.
 

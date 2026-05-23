@@ -8,7 +8,7 @@ Use this API to verify the operational status of the system and its core depende
 
 > This endpoint is lightweight and intended for frequent use by load balancers and monitoring systems.
 
-## `GET /health`
+## <span class="api-endpoint api-endpoint--get">GET /health</span>
 
 Use this endpoint to retrieve the current health status of the API and its database connection.
 

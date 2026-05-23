@@ -18,7 +18,7 @@ Include the API key in each request:
 ```
 
 
-## `GET /analytics/sales-by-partner`
+## <span class="api-endpoint api-endpoint--get">GET /analytics/sales-by-partner</span>
 
 Use this endpoint to retrieve total units and revenue by partner.
 
@@ -88,7 +88,7 @@ curl -X 'GET' \
 
 
 
-## `GET /analytics/sales-over-time`
+## <span class="api-endpoint api-endpoint--get">GET /analytics/sales-over-time</span>
 
 Use this endpoint to retrieve time-based sales metrics.
 
@@ -203,7 +203,7 @@ Returned when request validation fails  for invalid `grain` value.
 ```
 
 
-## `GET /analytics/revenue-share`
+## <span class="api-endpoint api-endpoint--get">GET /analytics/revenue-share</span>
 
 Use this endpoint to retrieve each partner’s percentage contribution to total revenue.
 

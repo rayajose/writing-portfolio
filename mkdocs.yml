@@ -27,11 +27,11 @@ nav:
   - Tutorials:
       - Your first feed ingestion: tutorials/first-feed.md
 
-  - How-to guides:
+  - How-to:
       - Ingest a product feed end-to-end: api/ingest-product-feed.md
       - Debug failed feed runbook: operations/debug-product-feed.md
 
-  - Architecture & concepts:
+  - Architecture:
       - Platform overview: api/index.md
       - Get started: api/getting_started.md
       - Integration guide: api/integration-guide.md
@@ -54,9 +54,6 @@ nav:
   - SDKs:
       - Python SDK guide: api/sdk-python.md
 
-  - Specifications:
-      - CSV feed file specification: specs/csv-feed-file-spec.md
-
   - Operations:
       - Overview: operations/index.md
       - SOPs: 
@@ -66,7 +63,7 @@ nav:
         - Debug failed feed runbook: operations/debug-product-feed.md
         - Backup and recovery runbook: operations/backup-recovery-procedure.md
 
-  - Security:
+  - Security policies:
       - Overview: security/index.md
       - Incident response plan: security/incident-response.md
       - API access control policy: security/api-access-control-policy.md
@@ -78,19 +75,16 @@ nav:
       - Secrets management policy: security/secrets-management-policy.md
       - Secure software development lifecycle (SSDLC) policy: security/ssdlc-policy.md
 
-  - Release notes:
-      - Release history: releases/release-history.md
+  - Release notes: releases/release-history.md
 
-  - Supporting materials:
-      - Deployment:
-          - Overview: architecture/index.md
-          - Deployment guide: architecture/deployment.md
-          - Screenshots: api/screenshots.md
+  - Resources:
+      - System Resource Model: api/resources.md
+      - Architecture and deployment: architecture/index.md
+      - Deployment guide: architecture/deployment.md
+      - Screenshots: api/screenshots.md
+      - CSV feed file specification: specs/csv-feed-file-spec.md
 
-      - Resources:
-          - System Resource Model: api/resources.md
-
-  - Professional profile: professional-profile.md
+  - Profile: professional-profile.md
 
 markdown_extensions:
   - admonition

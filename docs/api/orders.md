@@ -18,7 +18,7 @@ Include the API key in each request:
 -H "x-api-key: YOUR_API_KEY"
 ```
 
-## `POST /orders`
+## <span class="api-endpoint api-endpoint--post">POST /orders`</span>
 
 Use this endpoint to create an order from one or more catalog products.
 
@@ -163,7 +163,7 @@ Returned when a requested product is not available.
 }
 ```
 
-## `GET /orders`
+## <span class="api-endpoint api-endpoint--get">GET /orders</span>
 
 Use this endpoint to retrieve submitted orders.
 
@@ -244,7 +244,7 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-## `GET /orders/{order_id}`
+## <span class="api-endpoint api-endpoint--get">GET /orders/{order_id}</span>
 
 Use this endpoint to retrieve a specific order and its line items.
 
