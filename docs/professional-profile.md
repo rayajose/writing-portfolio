@@ -1,4 +1,4 @@
-# Professional profile
+# Profile
 
 ## Ray Jose
 
