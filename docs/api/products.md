@@ -1,4 +1,4 @@
-# Products API
+# Products
 
 Use this API to retrieve product data from partner catalog feeds.
 

@@ -9,7 +9,6 @@ In this tutorial, you will:
 3. Retrieve ingested products
 4. Validate ingestion results
 
----
 
 ## Before you begin
 
@@ -22,7 +21,6 @@ You need the following:
 | API key          | `x-api-key: YOUR_API_KEY`                                           |
 | CSV file         | See [CSV feed file specification](../specs/csv-feed-file-spec.md)   |
 
----
 
 ## Step 1: Understand product feeds
 
@@ -35,7 +33,6 @@ Each row represents a product record. At minimum, the system requires:
 
 When a feed is uploaded, the system stores the raw file and creates validation jobs before product data becomes available in the catalog.
 
----
 
 ## Step 2: Upload the feed
 
@@ -78,7 +75,6 @@ After uploading the feed:
 - Feed processing is queued
 - Products are not yet available in the catalog
 
----
 
 ## Step 3: Run ETL processing
 
@@ -119,7 +115,6 @@ During processing, the system:
 
 Products become available for querying only after processing completes successfully.
 
----
 
 ## Step 4: Retrieve products
 
@@ -167,7 +162,6 @@ After retrieving products:
 - Feed ingestion completed successfully
 - Product records were loaded into PostgreSQL
 
----
 
 ## Understand the ingestion pipeline
 
@@ -180,7 +174,6 @@ The ingestion workflow consists of four stages:
 | Transformation | Converts CSV rows into normalized product records |
 | Load           | Inserts or updates products in PostgreSQL         |
 
----
 
 ## Troubleshoot common issues
 
@@ -200,7 +193,6 @@ To resolve this issue:
 - Confirm column headers are present
 - Validate delimiter formatting
 
----
 
 ### Missing required fields
 
@@ -217,7 +209,6 @@ To resolve this issue:
 - Ensure all required fields are included
 - Verify each product row contains valid values
 
----
 
 ### Feed processing failed
 
@@ -237,7 +228,6 @@ To resolve this issue:
 - Correct the source CSV file
 - Re-upload the feed
 
----
 
 ## Next steps
 

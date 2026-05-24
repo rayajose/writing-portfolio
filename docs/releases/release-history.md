@@ -4,6 +4,26 @@ This page documents notable platform, API, infrastructure, and documentation cha
 
 The release history reflects the evolution of the platform from an initial ingestion prototype into a cloud-deployed commerce integration system supporting ETL processing, operational workflows, analytics services, and security-oriented documentation.
 
+## Version 1.2.0
+
+This release expands transactional retrieval capabilities by adding customer-specific order history support and related API documentation updates.
+
+### Added
+
+- Added `GET /customers/{customer_id}/orders` endpoint
+- Added customer-specific order retrieval support
+- Added customer order history responses
+- Added customer-based order query examples to API documentation
+
+### Changed
+
+- Expanded Orders API capabilities to support customer-centric retrieval workflows
+- Improved relational retrieval of orders and associated order items
+
+### Fixed
+
+- Improved order retrieval consistency for downstream analytics and reporting workflows
+
 ## Version 1.1.0
 
 Introduced customer management workflows, field-level encryption, masked API responses, and customer-linked order support.

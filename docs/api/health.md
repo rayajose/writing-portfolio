@@ -1,4 +1,4 @@
-# Health API
+# Health
 
 Use this API to verify the operational status of the system and its core dependencies.
 

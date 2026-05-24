@@ -1,4 +1,4 @@
-# Customers API
+# Customers
 
 Use this API to create and retrieve fictional customer records and shipping addresses used for order fulfillment workflows.
 
@@ -6,6 +6,7 @@ Use this API to create and retrieve fictional customer records and shipping addr
 - Store customer contact and address fields using field-level encryption
 - Return masked customer data in API responses
 - Create and retrieve customer shipping addresses
+
 
 ## Authentication
 
@@ -17,16 +18,18 @@ Include the API key in each request:
 -H "x-api-key: YOUR_API_KEY"
 ```
 
+
 ## <span class="api-endpoint api-endpoint--post">POST /customers</span>
 
-Use this endpoint to create a fictional customer record.
+Create a fictional customer record.
 
 ### Processing behavior
 
-- The system creates a customer record with a unique customer identifier.
-- Sensitive fields such as email address and phone number are encrypted before storage.
-- The API response returns masked customer data instead of raw sensitive values.
-- The current implementation is intended for demo and documentation purposes only and does not store real customer PII.
+- Creates a customer record with a unique customer identifier
+- Encrypts sensitive fields such as email address and phone number before storage
+- Returns masked customer data instead of raw sensitive values
+- Uses fictional sample data for demonstration purposes only
+
 
 ### Request body
 
@@ -36,6 +39,7 @@ Use this endpoint to create a fictional customer record.
 | `last_name`  | string | Yes      | Customer last name     |
 | `email`      | string | Yes      | Customer email address |
 | `phone`      | string | No       | Customer phone number  |
+
 
 ### Request and response
 
@@ -80,6 +84,7 @@ curl -X POST http://api.example.com/customers \
 
 </div>
 
+
 ### Response fields
 
 | Field          | Type   | Description                                        |
@@ -91,6 +96,7 @@ curl -X POST http://api.example.com/customers \
 | `phone_masked` | string | Masked phone number returned for display use       |
 | `created_at`   | string | Date and time the customer record was created      |
 | `updated_at`   | string | Date and time the customer record was last updated |
+
 
 ### Error responses
 
@@ -104,16 +110,18 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
+
 ## <span class="api-endpoint api-endpoint--get">GET /customers</span>
 
-Use this endpoint to retrieve all fictional customer records.
+Retrieve all fictional customer records.
 
 ### Processing behavior
 
-- The system retrieves all customer records currently stored in the platform.
-- Sensitive values are decrypted internally only long enough to create masked response fields.
-- The response does not return encrypted values or raw sensitive values.
-- Results are returned ordered by customer identifier.
+- Retrieves all customer records stored in the platform
+- Decrypts sensitive values only long enough to create masked response fields
+- Does not return encrypted values or raw sensitive values
+- Returns results ordered by customer identifier
+
 
 ### Request and response
 
@@ -153,6 +161,7 @@ curl -X GET http://api.example.com/customers \
 
 </div>
 
+
 ### Response fields
 
 | Field          | Type   | Description                                        |
@@ -164,6 +173,7 @@ curl -X GET http://api.example.com/customers \
 | `phone_masked` | string | Masked phone number returned for display use       |
 | `created_at`   | string | Date and time the customer record was created      |
 | `updated_at`   | string | Date and time the customer record was last updated |
+
 
 ### Error responses
 
@@ -177,23 +187,26 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
+
 ## <span class="api-endpoint api-endpoint--get">GET /customers/{customer_id}/orders</span>
 
-Use this endpoint to retrieve all orders associated with a fictional customer record.
+Retrieve all orders associated with a fictional customer record.
 
 ### Processing behavior
 
-- The system verifies that the customer exists.
-- The system retrieves all orders associated with the specified `customer_id`.
-- Results are returned ordered by newest order first.
-- The response supports customer-centric order history and fulfillment workflow visibility.
-- If the customer does not exist, the system returns a not found response.
+- Verifies that the customer exists
+- Retrieves all orders associated with the specified `customer_id`
+- Returns results ordered by newest order first
+- Supports customer-centric order history and fulfillment visibility
+- Returns a not found response if the customer does not exist
+
 
 ### Path parameters
 
 | Name          | Type   | Required | Description                            |
 | ------------- | ------ | -------- | -------------------------------------- |
 | `customer_id` | string | Yes      | Unique customer identifier (`CUxxxxx`) |
+
 
 ### Request and response
 
@@ -235,19 +248,21 @@ curl -X GET http://api.example.com/customers/CU00001/orders \
 
 </div>
 
+
 ### Response fields
 
-| Field                 | Type   | Description                                     |
-| --------------------- | ------ | ----------------------------------------------- |
-| `order_id`            | string | Unique order identifier (`ORxxxxx`)             |
-| `customer_id`         | string | Customer associated with the order              |
-| `customer_reference`  | string | External or client-facing order reference       |
-| `shipping_address_id` | string | Shipping address associated with the order      |
-| `status`              | string | Current order status                            |
-| `currency`            | string | Currency associated with the order total        |
-| `total_amount`        | number | Total order amount                              |
-| `created_at`          | string | Date and time the order record was created      |
-| `updated_at`          | string | Date and time the order record was last updated |
+| Field                 | Type   | Description                                |
+| --------------------- | ------ | ------------------------------------------ |
+| `order_id`            | string | Unique order identifier (`ORxxxxx`)        |
+| `customer_id`         | string | Customer associated with the order         |
+| `customer_reference`  | string | External or client-facing order reference  |
+| `shipping_address_id` | string | Shipping address associated with the order |
+| `status`              | string | Current order status                       |
+| `currency`            | string | Currency associated with the order total   |
+| `total_amount`        | number | Total order amount                         |
+| `created_at`          | string | Date and time the order was created        |
+| `updated_at`          | string | Date and time the order was last updated   |
+
 
 ### Error responses
 
@@ -261,7 +276,7 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 404 Not found
+#### 404 Not Found
 
 Returned when the request contains a `customer_id` not currently in the system.
 
@@ -271,22 +286,25 @@ Returned when the request contains a `customer_id` not currently in the system.
 }
 ```
 
+
 ## <span class="api-endpoint api-endpoint--get">GET /customers/{customer_id}</span>
 
-Use this endpoint to retrieve a specific fictional customer record.
+Retrieve a specific fictional customer record.
 
 ### Processing behavior
 
-- The system looks up the customer by `customer_id`.
-- Sensitive values are decrypted internally only long enough to create masked response fields.
-- The response does not return encrypted values or raw sensitive values.
-- If the customer does not exist, the system returns a not found response.
+- Looks up the customer by `customer_id`
+- Decrypts sensitive values only long enough to create masked response fields
+- Does not return encrypted values or raw sensitive values
+- Returns a not found response if the customer does not exist
+
 
 ### Path parameters
 
 | Name          | Type   | Required | Description                            |
 | ------------- | ------ | -------- | -------------------------------------- |
 | `customer_id` | string | Yes      | Unique customer identifier (`CUxxxxx`) |
+
 
 ### Request and response
 
@@ -324,6 +342,7 @@ curl -X GET http://api.example.com/customers/CU00001 \
 
 </div>
 
+
 ### Response fields
 
 | Field          | Type   | Description                                        |
@@ -335,6 +354,7 @@ curl -X GET http://api.example.com/customers/CU00001 \
 | `phone_masked` | string | Masked phone number returned for display use       |
 | `created_at`   | string | Date and time the customer record was created      |
 | `updated_at`   | string | Date and time the customer record was last updated |
+
 
 ### Error responses
 
@@ -348,7 +368,7 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 404 Not found
+#### 404 Not Found
 
 Returned when the request contains a `customer_id` not currently in the system.
 
@@ -358,22 +378,25 @@ Returned when the request contains a `customer_id` not currently in the system.
 }
 ```
 
+
 ## <span class="api-endpoint api-endpoint--post">POST /customers/{customer_id}/addresses</span>
 
-Use this endpoint to create a shipping address for a fictional customer.
+Create a shipping address for a fictional customer.
 
 ### Processing behavior
 
-- The system verifies that the customer exists.
-- The system creates a shipping address associated with the customer.
-- Sensitive address fields are encrypted before storage.
-- The API response returns masked address fields instead of raw sensitive values.
+- Verifies that the customer exists
+- Creates a shipping address associated with the customer
+- Encrypts sensitive address fields before storage
+- Returns masked address fields instead of raw sensitive values
+
 
 ### Path parameters
 
 | Name          | Type   | Required | Description                            |
 | ------------- | ------ | -------- | -------------------------------------- |
 | `customer_id` | string | Yes      | Unique customer identifier (`CUxxxxx`) |
+
 
 ### Request body
 
@@ -385,6 +408,7 @@ Use this endpoint to create a shipping address for a fictional customer.
 | `state`         | string | Yes      | State or region              |
 | `postal_code`   | string | Yes      | Postal or ZIP code           |
 | `country`       | string | No       | Country code. Defaults to US |
+
 
 ### Request and response
 
@@ -432,6 +456,7 @@ curl -X POST http://api.example.com/customers/CU00001/addresses \
 
 </div>
 
+
 ### Response fields
 
 | Field                  | Type   | Description                                  |
@@ -445,6 +470,7 @@ curl -X POST http://api.example.com/customers/CU00001/addresses \
 | `country`              | string | Country code                                 |
 | `created_at`           | string | Date and time the address record was created |
 
+
 ### Error responses
 
 #### 401 Unauthorized
@@ -457,7 +483,7 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 404 Not found
+#### 404 Not Found
 
 Returned when the request contains a `customer_id` not currently in the system.
 
@@ -467,22 +493,25 @@ Returned when the request contains a `customer_id` not currently in the system.
 }
 ```
 
+
 ## <span class="api-endpoint api-endpoint--get">GET /customers/addresses/{address_id}</span>
 
-Use this endpoint to retrieve a specific customer shipping address.
+Retrieve a specific customer shipping address.
 
 ### Processing behavior
 
-- The system looks up the shipping address by `address_id`.
-- Sensitive address values are decrypted internally only long enough to create masked response fields.
-- The response does not return encrypted values or raw sensitive address values.
-- If the address does not exist, the system returns a not found response.
+- Looks up the shipping address by `address_id`
+- Decrypts sensitive address values only long enough to create masked response fields
+- Does not return encrypted values or raw sensitive address values
+- Returns a not found response if the address does not exist
+
 
 ### Path parameters
 
 | Name         | Type   | Required | Description                           |
 | ------------ | ------ | -------- | ------------------------------------- |
 | `address_id` | string | Yes      | Unique address identifier (`ADxxxxx`) |
+
 
 ### Request and response
 
@@ -521,6 +550,7 @@ curl -X GET http://api.example.com/customers/addresses/AD00001 \
 
 </div>
 
+
 ### Response fields
 
 | Field                  | Type   | Description                                  |
@@ -534,6 +564,7 @@ curl -X GET http://api.example.com/customers/addresses/AD00001 \
 | `country`              | string | Country code                                 |
 | `created_at`           | string | Date and time the address record was created |
 
+
 ### Error responses
 
 #### 401 Unauthorized
@@ -546,7 +577,7 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 404 Not found
+#### 404 Not Found
 
 Returned when the request contains an `address_id` not currently in the system.
 
@@ -556,25 +587,28 @@ Returned when the request contains an `address_id` not currently in the system.
 }
 ```
 
+
 ## Security behavior
 
-- Customer data in this demo environment uses fictional sample records only.
-- Email, phone, street address, and postal code values are encrypted before storage.
-- API responses return masked values instead of raw sensitive data.
-- Encrypted database fields are not exposed in normal API responses.
-- Payment card data is not collected or stored by this API.
+- Customer data uses fictional sample records only
+- Email, phone, street address, and postal code values are encrypted before storage
+- API responses return masked values instead of raw sensitive data
+- Encrypted database fields are not exposed in API responses
+- Payment card data is not collected or stored by this API
+
 
 ## Additional details
 
-- Customers use the `CUxxxxx` identifier format.
-- Customer addresses use the `ADxxxxx` identifier format.
-- Customer records can be associated with order workflows in later implementation phases.
-- The current implementation demonstrates field-level encryption and masked response handling for PII-like data.
-- This API is intended for portfolio demonstration and should not be used with real customer PII without additional production controls.
+- Customers use the `CUxxxxx` identifier format
+- Customer addresses use the `ADxxxxx` identifier format
+- Customer records can be associated with order workflows in later implementation phases
+- The current implementation demonstrates field-level encryption and masked response handling for PII-like data
+- This API is intended for portfolio demonstration purposes and should not be used with real customer PII without additional production controls
+
 
 ## Related documentation
 
-- [Orders API](orders.md)
-- [Products API](products.md)
-- [Analytics API](analytics.md)
+- [Orders](orders.md)
+- [Products](products.md)
+- [Analytics](analytics.md)
 - [Errors](errors.md)

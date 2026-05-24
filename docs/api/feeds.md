@@ -1,4 +1,4 @@
-# Feeds API
+# Feeds
 
 Use this API to upload product feeds, store raw data, and process them through the validation and ETL pipeline.
 

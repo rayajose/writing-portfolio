@@ -9,7 +9,6 @@ In this tutorial, you will:
 3. Retrieve the order
 4. Validate pricing and totals
 
----
 
 ## Before you begin
 
@@ -23,7 +22,6 @@ If products are not yet available in the catalog, complete the following tutoria
 
 - [Upload your first product feed](first-feed.md)
 
----
 
 ## Workflow overview
 
@@ -31,7 +29,6 @@ If products are not yet available in the catalog, complete the following tutoria
 ![Create and retrieve order](../api/screenshots/create-retrieve-order-workflow.svg)
 </div>
 
----
 
 ## Step 1: Retrieve products
 
@@ -142,7 +139,6 @@ curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Sho
 }
 ```
 
----
 
 ## Step 2: Select products
 
@@ -153,7 +149,6 @@ Use the following products for this tutorial.
 | HOKA Clifton 9 | PR00179    | 1        |
 | On Cloudrunner | PR00182    | 1        |
 
----
 
 ## Step 3: Create an order
 
@@ -243,8 +238,6 @@ curl -X POST "http://localhost:8000/orders" \
 }
 ```
 
----
-
 ## Step 4: Retrieve the order
 
 Retrieve the order to validate stored order data and pricing.
@@ -300,7 +293,6 @@ curl -X GET "http://localhost:8000/orders/OR00039"
 }
 ```
 
----
 
 ## Validate order behavior
 
@@ -315,7 +307,6 @@ After creating the order, validate the following behavior.
 | Order total            | Sum of all line totals                   |
 | Relational persistence | Orders and order items stored separately |
 
----
 
 ## Validate historical pricing
 
@@ -330,7 +321,6 @@ Example workflow:
 
 This behavior preserves historical transaction accuracy.
 
----
 
 ## Troubleshoot common issues
 
@@ -350,7 +340,6 @@ To resolve this issue:
 - Confirm the product ID is correct
 - Retrieve products again before creating the order
 
----
 
 ### Product out of stock
 
@@ -376,7 +365,6 @@ Example query:
 GET /products?partner_name=GoFasters&category=Running%20Shoes&availability=in_stock
 ```
 
----
 
 ### Invalid quantity
 
@@ -392,7 +380,6 @@ To resolve this issue:
 
 - Ensure all quantities are positive integers
 
----
 
 ### Empty order items
 
@@ -408,7 +395,6 @@ To resolve this issue:
 
 - Include at least one item in the request body
 
----
 
 ## Related documentation
 

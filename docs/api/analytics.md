@@ -1,10 +1,10 @@
-# Analytics API
+# Analytics
 
-Use this API to expose read-only endpoints for aggregated insights.
+Use this API to retrieve aggregated sales and revenue insights.
 
 - Retrieve aggregated sales and revenue metrics across partners
 - Analyze product and order data through precomputed summaries
-- Support reporting and dashboards with queryable analytics endpoints
+- Support reporting and dashboard integrations through analytics endpoints
 
 
 ## Authentication
@@ -20,18 +20,18 @@ Include the API key in each request:
 
 ## <span class="api-endpoint api-endpoint--get">GET /analytics/sales-by-partner</span>
 
-Use this endpoint to retrieve total units and revenue by partner.
+Retrieve total units sold and revenue by partner.
 
 ### Processing behavior
 
-- The system aggregates order data grouped by `partner_name`
-- Calculates total units sold and total revenue per partner
-- Returns a list of partners sorted by total revenue (highest first)
+- Aggregates order data by `partner_name`
+- Calculates total units sold and revenue per partner
+- Returns partners sorted by highest revenue
 
 
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 <div>
 
 <h3>Request</h3>
@@ -78,24 +78,23 @@ curl -X 'GET' \
 
 ### Response fields
 
-| Field            | Type    | Description                                     |
-| ---------------- | ------- | ----------------------------------------------- |
-| `analytics_type` | string  | Type of analytics returned (`sales_by_partner`) |
-| `results`        | array   | List of aggregated sales results by partner     |
-| `partner_name`   | string  | Name of the partner                             |
-| `units_sold`     | integer | Total number of units sold for the partner      |
-| `total_sales`    | string  | Total revenue for the partner (currency value)  |
-
+| Field            | Type             | Description                                     |
+| ---------------- | ---------------- | ----------------------------------------------- |
+| `analytics_type` | string           | Type of analytics returned (`sales_by_partner`) |
+| `results`        | array            | List of aggregated sales results by partner     |
+| `partner_name`   | string           | Name of the partner                             |
+| `units_sold`     | integer          | Total number of units sold for the partner      |
+| `total_sales`    | string (decimal) | Total revenue for the partner                   |
 
 
 ## <span class="api-endpoint api-endpoint--get">GET /analytics/sales-over-time</span>
 
-Use this endpoint to retrieve time-based sales metrics.
+Retrieve sales metrics aggregated over time.
 
 ### Processing behavior
 
-- The system aggregates order data over time based on the specified `grain`
-- Calculates total units sold and total revenue for each time interval
+- Aggregates order data over time based on the specified `grain`
+- Calculates total units sold and revenue for each time interval
 - Returns results grouped and ordered chronologically
 
 
@@ -105,12 +104,12 @@ Use this endpoint to retrieve time-based sales metrics.
 | ------- | ------ | -------- | ---------------------------------------------------- |
 | `grain` | string | No       | Time interval for aggregation (`daily` or `monthly`) |
 
-Defaults to `daily` if `grain` parameter is not sent with the request.
+Defaults to `daily`.
 
 
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 <div>
 
 <h3>Request</h3>
@@ -158,20 +157,20 @@ curl -X 'GET' \
 
 ### Response fields
 
-| Field            | Type    | Description                                                 |
-| ---------------- | ------- | ----------------------------------------------------------- |
-| `analytics_type` | string  | Type of analytics returned (`sales_over_time`)              |
-| `grain`          | string  | Time interval used for aggregation (`daily` or `monthly`)   |
-| `results`        | array   | List of aggregated sales results by time period             |
-| `sales_period`   | string  | Time period for the aggregation (format depends on `grain`) |
-| `units_sold`     | integer | Total number of units sold during the period                |
-| `total_sales`    | string  | Total revenue for the period (currency value)               |
-
+| Field            | Type             | Description                                                 |
+| ---------------- | ---------------- | ----------------------------------------------------------- |
+| `analytics_type` | string           | Type of analytics returned (`sales_over_time`)              |
+| `grain`          | string           | Time interval used for aggregation (`daily` or `monthly`)   |
+| `results`        | array            | List of aggregated sales results by time period             |
+| `sales_period`   | string           | Time period for the aggregation (format depends on `grain`) |
+| `units_sold`     | integer          | Total number of units sold during the period                |
+| `total_sales`    | string (decimal) | Total revenue for the period                                |
 
 
 ### Error responses
 
 #### 401 Unauthorized
+
 Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ```json
@@ -180,8 +179,9 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 422 Unprocessable entity
-Returned when request validation fails  for invalid `grain` value.
+#### 422 Unprocessable Entity
+
+Returned when request validation fails for an invalid `grain` value.
 
 ```json
 {
@@ -202,21 +202,20 @@ Returned when request validation fails  for invalid `grain` value.
 }
 ```
 
-
 ## <span class="api-endpoint api-endpoint--get">GET /analytics/revenue-share</span>
 
-Use this endpoint to retrieve each partner’s percentage contribution to total revenue.
+Retrieve each partner’s percentage contribution to total revenue.
 
 ### Processing behavior
 
-- The system aggregates total revenue by `partner_name`
+- Aggregates total revenue by `partner_name`
 - Calculates each partner’s percentage contribution relative to overall revenue
 - Returns results sorted by highest revenue contribution
 
 
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 <div>
 
 <h3>Request</h3>
@@ -246,7 +245,7 @@ curl -X 'GET' \
     {
       "partner_name": "Tronics",
       "total_revenue": "11750.86",
-      "revenue_pct": 29.9
+      "revenue_pct": 29.90
     },
     {
       "partner_name": "Joyeria Reina",
@@ -263,13 +262,13 @@ curl -X 'GET' \
 
 ### Response fields
 
-| Field            | Type   | Description                                            |
-| ---------------- | ------ | ------------------------------------------------------ |
-| `analytics_type` | string | Type of analytics returned (`revenue_share`)           |
-| `results`        | array  | List of revenue share results by partner               |
-| `partner_name`   | string | Name of the partner                                    |
-| `total_revenue`  | string | Total revenue generated by the partner                 |
-| `revenue_pct`    | number | Percentage of total revenue contributed by the partner |
+| Field            | Type             | Description                                            |
+| ---------------- | ---------------- | ------------------------------------------------------ |
+| `analytics_type` | string           | Type of analytics returned (`revenue_share`)           |
+| `results`        | array            | List of revenue share results by partner               |
+| `partner_name`   | string           | Name of the partner                                    |
+| `total_revenue`  | string (decimal) | Total revenue generated by the partner                 |
+| `revenue_pct`    | number (decimal) | Percentage of total revenue contributed by the partner |
 
 
 ### Error responses
@@ -287,13 +286,13 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ## Additional details
 
-- Metrics are computed from processed product and order data  
-- Aggregations are optimized for read-heavy workloads  
-- Results are exposed through API endpoints for external consumption
+- Metrics are computed from processed product and order data
+- Analytics responses are generated from precomputed aggregation queries
+- Analytics data is available through API endpoints
 
 
 ## Related documentation
 
 - [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)
-- [Products API](products.md)
+- [Products](products.md)

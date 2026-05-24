@@ -1,4 +1,4 @@
-# Jobs API
+# Jobs
 
 Use this API to retrieve job status and run validation jobs for ETL processing.
 

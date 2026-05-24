@@ -1,4 +1,4 @@
-# Orders API
+# Orders
 
 Use this API to create and retrieve customer orders.
 
