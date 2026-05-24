@@ -6,6 +6,7 @@ This policy defines encryption requirements and implementation guidance for prot
 
 The policy supports secure handling of PII-like data, operational security controls, and compliance-oriented application design.
 
+
 ## Scope
 
 This policy applies to:
@@ -17,15 +18,17 @@ This policy applies to:
 - Application configuration secrets
 - Operational workflows handling restricted data
 
+
 ## Encryption objectives
 
 The platform uses encryption to:
 
 - Reduce exposure of sensitive values
 - Protect customer-related data at rest
-- Support safer API response handling
+- Support secure API response handling
 - Demonstrate secure application design patterns
 - Support operational security best practices
+
 
 ## Field-level encryption
 
@@ -38,6 +41,7 @@ Encrypted fields currently include:
 - Street addresses
 - Postal codes
 
+
 ## Encryption implementation
 
 The current implementation uses:
@@ -49,6 +53,7 @@ The current implementation uses:
 | Encryption mechanism | Fernet symmetric encryption |
 | Key source           | Environment variable        |
 | Response protection  | Masked API responses        |
+
 
 ## Key management
 
@@ -66,6 +71,7 @@ Example environment variable:
 PII_ENCRYPTION_KEY
 ```
 
+
 ## API response behavior
 
 Encrypted database values are not returned directly through customer API responses.
@@ -81,6 +87,7 @@ al***@example.com
 
 This reduces accidental disclosure of customer-sensitive information.
 
+
 ## Logging restrictions
 
 Operational logs must not contain:
@@ -90,6 +97,7 @@ Operational logs must not contain:
 - Encryption keys
 - Database credentials
 - Authentication secrets
+
 
 ## Operational guidance
 
@@ -101,6 +109,7 @@ Systems handling encrypted fields should:
 - Protect environment configuration files
 - Rotate secrets periodically in production environments
 
+
 ## Development guidance
 
 Development and test environments should:
@@ -110,9 +119,10 @@ Development and test environments should:
 - Avoid hardcoded encryption keys
 - Separate development and production secrets
 
+
 ## Production considerations
 
-A production implementation would typically additionally include:
+Production implementations would typically additionally include:
 
 - Centralized secrets management
 - Automated key rotation
@@ -121,6 +131,7 @@ A production implementation would typically additionally include:
 - Audit logging
 - Role-based access control
 - Infrastructure-level encryption controls
+
 
 ## Compliance-oriented behaviors
 
@@ -132,15 +143,17 @@ The current implementation demonstrates the following compliance-oriented design
 - Controlled API authentication
 - Restricted operational logging
 
+
 ## Security limitations
 
 The current implementation is intended for demonstration and portfolio purposes only.
 
 The platform is not intended to process real regulated customer data without additional production-grade controls, legal review, and compliance validation.
 
+
 ## Related documentation
 
 - [Data classification policy](data-classification-policy.md)
 - [API access control and authentication policy](api-access-control-policy.md)
-- [Customers API](../api/customers.md)
+- [Customers](../api/customers.md)
 - [Platform architecture and operational flow](../architecture/platform-architecture.md)

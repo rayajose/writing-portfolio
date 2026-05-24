@@ -9,7 +9,7 @@ The practices described in this document reflect operational patterns commonly u
 
 ## Purpose
 
-The purpose of this policy is to:
+This policy is intended to:
 
 - Support operational visibility across ingestion workflows
 - Improve troubleshooting and failure analysis capabilities
@@ -71,6 +71,7 @@ Operational workflows are tracked through:
 
 The platform tracks ingestion and ETL workflows using explicit job resources.
 
+
 ### Job states
 
 | Status      | Description                        |
@@ -124,6 +125,7 @@ Tracked ETL processing results include:
 - Validation failures
 - Processing completion status
 
+
 ### ETL processing result categories
 
 | Result    | Description                |
@@ -160,6 +162,7 @@ product_name
 
 Operational visibility extends to supporting infrastructure components.
 
+
 ### ECS monitoring
 
 Operational monitoring should support visibility into:
@@ -169,6 +172,7 @@ Operational monitoring should support visibility into:
 - Task restarts
 - Deployment status
 
+
 ### Database monitoring
 
 Monitoring considerations include:
@@ -177,6 +181,7 @@ Monitoring considerations include:
 - Query failures
 - Processing interruptions
 - Operational availability
+
 
 ### Storage monitoring
 
@@ -192,6 +197,7 @@ Monitoring considerations include:
 
 Operational failures should support traceable investigation and recovery workflows.
 
+
 ### Processing failures
 
 Processing failures may include:
@@ -201,6 +207,7 @@ Processing failures may include:
 - Database connectivity issues
 - Infrastructure interruptions
 - Deployment-related failures
+
 
 ### Investigation workflows
 
@@ -248,6 +255,7 @@ Traceability objectives include:
 
 ## Monitoring responsibilities
 
+
 ### Platform administrators
 
 Responsible for:
@@ -257,6 +265,7 @@ Responsible for:
 - Operational availability oversight
 - Recovery coordination
 
+
 ### Integration operators
 
 Responsible for:
@@ -265,6 +274,7 @@ Responsible for:
 - Reviewing validation failures
 - Investigating ETL processing issues
 - Coordinating replay workflows
+
 
 ### Developers
 
@@ -278,7 +288,7 @@ Responsible for:
 
 ## Logging and monitoring principles
 
-The platform follows the following operational monitoring principles:
+The platform follows these operational monitoring principles:
 
 - Maintain traceability across ingestion workflows
 - Preserve operational visibility during failures

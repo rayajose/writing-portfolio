@@ -6,6 +6,7 @@ This policy defines how data is classified, protected, stored, transmitted, and 
 
 The policy supports operational consistency, security-oriented design, and protection of customer-sensitive information.
 
+
 ## Scope
 
 This policy applies to:
@@ -18,6 +19,7 @@ This policy applies to:
 - Analytics workflows
 - Documentation and support operations
 
+
 ## Classification levels
 
 | Classification | Description                                                           | Examples                            |
@@ -26,6 +28,7 @@ This policy applies to:
 | Internal       | Operational information intended for internal use                     | ETL logs, deployment metadata       |
 | Confidential   | Sensitive operational or customer-related information                 | Order records, customer identifiers |
 | Restricted     | Highly sensitive information requiring additional protection controls | Encrypted customer-sensitive fields |
+
 
 ## Restricted data types
 
@@ -39,6 +42,7 @@ The following data elements are classified as restricted:
 - Encryption keys
 - Database credentials
 
+
 ## Confidential data types
 
 The following data elements are classified as confidential:
@@ -48,6 +52,7 @@ The following data elements are classified as confidential:
 - Feed processing history
 - Internal analytics data
 - Operational monitoring data
+
 
 ## Public data types
 
@@ -59,11 +64,14 @@ The following data may be publicly accessible:
 - Architecture diagrams
 - Deployment screenshots intended for portfolio use
 
+
 ## Data protection requirements
+
 
 ### Public data
 
 Public data may be disclosed externally without additional restrictions.
+
 
 ### Internal data
 
@@ -73,6 +81,7 @@ Internal data should:
 - Avoid public exposure when possible
 - Be retained according to operational requirements
 
+
 ### Confidential data
 
 Confidential data must:
@@ -81,6 +90,7 @@ Confidential data must:
 - Avoid unnecessary disclosure
 - Be retained only for required operational purposes
 - Be restricted to authorized workflows
+
 
 ### Restricted data
 
@@ -92,6 +102,7 @@ Restricted data must:
 - Be protected through authentication controls
 - Never be committed to source control
 - Be stored only in approved systems
+
 
 ## Storage requirements
 
@@ -108,6 +119,7 @@ Sensitive data must not be stored in:
 - Public documentation
 - Unprotected local files
 
+
 ## Logging requirements
 
 Operational logs must not contain:
@@ -121,10 +133,11 @@ Operational logs must not contain:
 Logs should instead contain:
 
 - Structured identifiers
-- Job IDs
-- Feed IDs
-- Order IDs
+- Job identifiers
+- Feed identifiers
+- Order identifiers
 - Processing status information
+
 
 ## API handling requirements
 
@@ -134,6 +147,7 @@ Systems exposing confidential or restricted data must:
 - Validate request inputs
 - Return masked customer-sensitive values
 - Avoid exposing encrypted database fields directly
+
 
 ## Encryption requirements
 
@@ -146,14 +160,16 @@ Current encrypted field examples include:
 - Street addresses
 - Postal codes
 
+
 ## Retention considerations
 
 Data retention periods should align with:
 
 - Operational requirements
 - Troubleshooting requirements
-- Audit-oriented traceability needs
+- Audit-oriented traceability requirements
 - Business reporting requirements
+
 
 ## Compliance considerations
 
@@ -167,6 +183,7 @@ This platform demonstrates compliance-oriented design patterns including:
 
 The current implementation is intended for fictional portfolio demonstration data only.
 
+
 ## Responsibilities
 
 Developers and operators are responsible for:
@@ -177,10 +194,11 @@ Developers and operators are responsible for:
 - Protecting authentication secrets and encryption keys
 - Maintaining operational security controls
 
+
 ## Related documentation
 
 - [API access control and authentication policy](api-access-control-policy.md)
 - [Data retention policy](data-retention-policy.md)
 - [Incident response plan](incident-response.md)
-- [Customers API](../api/customers.md)
+- [Customers](../api/customers.md)
 - [Platform architecture and operational flow](../architecture/platform-architecture.md)

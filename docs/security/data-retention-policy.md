@@ -13,9 +13,10 @@ The practices described in this document reflect operational patterns commonly u
   <span>Governance</span>
 </div>
 
+
 ## Purpose
 
-The purpose of this policy is to:
+This policy is intended to:
 
 - Define retention practices for raw and processed platform data
 - Support operational traceability and replay workflows
@@ -134,20 +135,20 @@ Replay workflows operate on raw feed files retained in Amazon S3.
 
 Operational data should be handled according to platform access control and operational security requirements.
 
-### Handling requirements
+Data handling requirements include:
 
-- Raw uploaded data should remain restricted to authorized operational workflows
-- Operational metadata should remain traceable throughout ingestion processing
-- Processed records should remain consistent with ETL processing outcomes
-- Data modifications should occur through controlled application workflows
-- Replay and recovery activities should preserve operational traceability
+- Restricting raw uploaded data to authorized operational workflows
+- Maintaining operational traceability throughout ingestion processing
+- Keeping processed records consistent with ETL processing outcomes
+- Performing data modifications through controlled application workflows
+- Preserving operational traceability during replay and recovery activities
 
 
 ## Data integrity protections
 
 The platform implements processing behaviors intended to preserve ingestion consistency and operational integrity.
 
-### Integrity protections
+Integrity protections include:
 
 - Product uniqueness validation
 - Change detection during ETL processing
@@ -175,6 +176,7 @@ Retained ETL summary information includes:
 - Validation failures
 - Processing completion status
 
+
 ### ETL processing result categories
 
 | Result    | Description                |
@@ -197,6 +199,7 @@ Operational considerations include:
 - Replay support
 - Recovery workflows
 - Operational auditability
+
 
 ### PostgreSQL
 
@@ -228,6 +231,7 @@ Related access control requirements are documented in the API access control and
 
 The platform separates raw and processed data responsibilities across ingestion workflows.
 
+
 ### Raw data lifecycle
 
 Raw feed files are retained independently from processed application records.
@@ -238,6 +242,7 @@ This supports:
 - Recovery workflows
 - Historical ingestion traceability
 - Operational auditing
+
 
 ### Processed data lifecycle
 
@@ -266,7 +271,7 @@ Operational recovery workflows depend on preserved feed metadata, job metadata, 
 
 ## Data handling principles
 
-The platform follows the following data handling principles:
+The platform follows these data handling principles:
 
 - Separate raw and processed operational data
 - Preserve replay and recovery capabilities

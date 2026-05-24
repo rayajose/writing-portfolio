@@ -6,6 +6,7 @@ This policy defines requirements for securely handling secrets, credentials, enc
 
 The policy establishes operational practices supporting secure application configuration, restricted credential exposure, and protection of customer-sensitive workflows.
 
+
 ## Scope
 
 This policy applies to:
@@ -27,6 +28,7 @@ Applicable platform components include:
 - Deployment workflows
 - Local development environments
 
+
 ## Security objectives
 
 The platform implements secrets management practices designed to:
@@ -37,6 +39,7 @@ The platform implements secrets management practices designed to:
 - Separate configuration from application code
 - Protect customer-sensitive workflows
 - Demonstrate compliance-oriented operational practices
+
 
 ## Managed secret types
 
@@ -50,6 +53,7 @@ The following values are considered operational secrets:
 | AWS credentials           | AWS access configuration         |
 | Environment configuration | Deployment environment values    |
 
+
 ## Secret storage requirements
 
 Secrets must:
@@ -59,6 +63,7 @@ Secrets must:
 - Be restricted to authorized operational environments
 - Be protected from public disclosure
 - Never appear in public documentation examples
+
 
 ## Environment configuration
 
@@ -77,6 +82,7 @@ AWS_REGION
 S3_RAW_BUCKET
 ```
 
+
 ## Source control restrictions
 
 Secrets must never be:
@@ -87,6 +93,7 @@ Secrets must never be:
 - Included in screenshots or debugging output
 
 Files containing secrets should be excluded through `.gitignore` configuration where appropriate.
+
 
 ## Encryption key handling
 
@@ -106,6 +113,7 @@ PII_ENCRYPTION_KEY
 
 to support field-level encryption for customer-sensitive fields.
 
+
 ## Development environment guidance
 
 Development environments should:
@@ -115,6 +123,7 @@ Development environments should:
 - Separate development and production configuration
 - Avoid sharing operational credentials
 - Protect local `.env` files
+
 
 ## Production environment considerations
 
@@ -133,6 +142,7 @@ Example production solutions may include:
 - AWS Systems Manager Parameter Store
 - Dedicated key management systems
 
+
 ## Logging restrictions
 
 Operational logs must not contain:
@@ -150,6 +160,7 @@ Operational troubleshooting should instead use:
 - Processing status information
 - Operational timestamps
 
+
 ## Access restrictions
 
 Access to operational secrets should follow least privilege principles.
@@ -160,6 +171,7 @@ Examples include:
 - Restricting deployment credentials to authorized administrators
 - Limiting infrastructure modification access
 - Separating development and production credentials
+
 
 ## Incident handling considerations
 
@@ -173,6 +185,7 @@ Response activities may include:
 - Reviewing access history
 - Validating infrastructure configuration
 
+
 ## Compliance-oriented behaviors
 
 The platform demonstrates the following compliance-oriented practices:
@@ -183,6 +196,7 @@ The platform demonstrates the following compliance-oriented practices:
 - Field-level encryption
 - Restricted operational logging
 - Separation of code and secrets
+
 
 ## Limitations
 
@@ -196,6 +210,7 @@ Production environments handling real regulated customer data would require addi
 - Production-grade IAM controls
 - Dedicated compliance review
 
+
 ## Responsibilities
 
 ### Developers
@@ -207,6 +222,7 @@ Responsible for:
 - Preventing secret exposure in source code
 - Following secure development practices
 
+
 ### Operators
 
 Responsible for:
@@ -216,6 +232,7 @@ Responsible for:
 - Restricting infrastructure access
 - Supporting secure deployment workflows
 
+
 ### Administrators
 
 Responsible for:
@@ -224,6 +241,7 @@ Responsible for:
 - Rotating secrets when required
 - Maintaining secure infrastructure configuration
 - Supporting operational access controls
+
 
 ## Related documentation
 
