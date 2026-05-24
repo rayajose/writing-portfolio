@@ -1,4 +1,4 @@
-# Backup and recovery runbook
+# Backup and recovery
 
 This procedure defines backup, recovery, replay, and operational restoration workflows for the Commerce Integration API platform.
 
