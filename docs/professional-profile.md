@@ -2,7 +2,7 @@
 
 ## Ray Jose
 
-Senior Technical Writer with 15+ years of experience documenting enterprise systems, integration platforms, operational workflows, and security/compliance environments.
+Senior Technical Writer with extensive experience documenting enterprise systems, integration platforms, operational workflows, and security/compliance environments.
 
 My background spans integration platforms, structured documentation systems, operational workflows, and large-scale technical environments. I’ve worked closely with engineering, product, operations, and security teams to document systems that support real-world implementation, troubleshooting, partner enablement, and operational reliability.
 
@@ -18,7 +18,7 @@ More recently, I’ve focused on expanding hands-on experience with modern API d
 
 ## Experience Highlights
 
-- 15+ years of technical writing across enterprise and regulated environments  
+- Extensive technical writing across enterprise and regulated environments  
 - Led PCI DSS audit documentation and security policy development  
 - Supported partner onboarding and B2B integrations across large-scale e-commerce platforms  
 - Defined product data standards and integration requirements for catalogs supporting integrations exceeding **1M+ records**  
