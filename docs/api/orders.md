@@ -58,7 +58,7 @@ Use this endpoint to create an order from one or more catalog products.
 ```bash
 curl -X POST http://api.example.com/orders \
   -H "accept: application/json" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "partner_name": "RayTech Corp.",
@@ -184,7 +184,7 @@ Use this endpoint to retrieve submitted orders.
 ```bash
 curl -X GET http://api.example.com/orders \
   -H "accept: application/json" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>
@@ -272,7 +272,7 @@ Use this endpoint to retrieve a specific order and its line items.
 ```bash
 curl -X GET http://api.example.com/orders/OR00001 \
   -H "accept: application/json" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>

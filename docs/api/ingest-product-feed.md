@@ -20,7 +20,7 @@ In this guide, you will:
 | ----------------- | ------------------------------------------------------------------- |
 | Base URL (local)  | `http://localhost:8000`                                             |
 | Base URL (AWS)    | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
-| API key           | `x-api-key: demo-secret-key`                                        |
+| API key           | `x-api-key: YOUR_API_KEY`                                           |
 | Valid .`csv` file | see  [CSV feed file specification](../specs/csv-feed-file-spec.md)  |
 
 ### Feed file specification
@@ -38,7 +38,7 @@ To upload a product feed, do the following:
 
 ```bash
 curl -X POST "http://api.example.com/feeds/upload" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -F "file=@electronics_catalog.csv" \
   -F "partner_name=Tronics"
 ```
@@ -61,7 +61,7 @@ Run the GET /feeds/{feed_id} endpoint using the `feed_id` captured in previous s
 ```bash
 curl --request GET \
   --url http://api.example.com/feeds/FD00021 \
-  --header 'x-api-key: demo-secret-key'
+  --header 'x-api-key: YOUR_API_KEY'
 ```
 
 ### Example response
@@ -99,7 +99,7 @@ Run the GET /products endpoint using the `feed_id` from step 1 (FD00021) as a qu
 
 ```bash
 curl -X GET "http://api.example.com/products?feed_id=FD00021" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 **Example response**

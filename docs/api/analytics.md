@@ -40,7 +40,7 @@ Use this endpoint to retrieve total units and revenue by partner.
 curl -X 'GET' \
   'http://api.example.com/analytics/sales-by-partner' \
   -H 'accept: application/json' \
-  -H 'x-api-key: demo-secret-key'
+  -H 'x-api-key: YOUR_API_KEY'
 ```
 
 </div>
@@ -119,7 +119,7 @@ Defaults to `daily` if `grain` parameter is not sent with the request.
 curl -X 'GET' \
   'http://api.example.com/analytics/sales-over-time?grain=daily' \
   -H 'accept: application/json' \
-  -H 'x-api-key: demo-secret-key'
+  -H 'x-api-key: YOUR_API_KEY'
 ```
 
 </div>
@@ -225,7 +225,7 @@ Use this endpoint to retrieve each partner’s percentage contribution to total 
 curl -X 'GET' \
   'http://api.example.com/analytics/revenue-share' \
   -H 'accept: application/json' \
-  -H 'x-api-key: demo-secret-key'
+  -H 'x-api-key: YOUR_API_KEY'
 ```
 
 </div>

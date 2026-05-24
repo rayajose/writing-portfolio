@@ -22,7 +22,7 @@ You need:
 | ----------------- | ------------------------------------------------------------------- |
 | Base URL (local)  | `http://localhost:8000`                                             |
 | Base URL (AWS)    | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
-| API key           | `x-api-key: demo-secret-key`                                        |
+| API key           | `x-api-key: YOUR_API_KEY`                                           |
 | Valid .`csv` file | see  [CSV feed file specification](../specs/csv-feed-file-spec.md)  |
 
 
@@ -46,7 +46,7 @@ Upload your CSV file to create a new feed.
 
 ```bash
 curl -X POST "http://localhost:8000/feeds/upload" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -F "file=@electronics_catalog.csv" \
   -F "partner_name=Tronics"
 ```
@@ -79,7 +79,7 @@ Process the feed to validate and transform the data.
 
 ```bash
 curl -X POST "http://localhost:8000/jobs/JV00009/run" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 ### Response
@@ -111,7 +111,7 @@ Query the API to confirm that products were ingested.
 
 ```bash
 curl -X GET "http://localhost:8000/products?limit=5" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 ### Response

@@ -48,7 +48,7 @@ Use this endpoint to retrieve the status and metadata for a job.
 curl -X 'GET' \
   'http://api.example.com/jobs/JV00012' \
   -H 'accept: application/json' \
-  -H 'x-api-key: demo-secret-key'
+  -H 'x-api-key: YOUR_API_KEY'
 ```
 
 </div>
@@ -139,7 +139,7 @@ Use this endpoint to start a validation job and trigger ETL processing.
 
 ```bash
 curl -X POST http://api.example.com/jobs/JV00001/run \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>

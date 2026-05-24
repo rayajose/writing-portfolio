@@ -53,7 +53,7 @@ Use this endpoint to upload a CSV product feed, store the raw file in object sto
 
 ```bash
 curl -X POST http://api.example.com/feeds/upload \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -F "partner_name=Acme Corp" \
   -F "file=@sample_catalog.csv"
 ```
@@ -159,7 +159,7 @@ Use this endpoint to retrieve metadata for a specific feed, including pipeline s
 curl -X 'GET' \
   'http://api.example.com/feeds/FD00003' \
   -H 'accept: application/json' \
-  -H 'x-api-key: demo-secret-key'
+  -H 'x-api-key: YOUR_API_KEY'
 ```
 
 </div>

@@ -48,7 +48,7 @@ Use this endpoint to create a fictional customer record.
 ```bash
 curl -X POST http://api.example.com/customers \
   -H "accept: application/json" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "first_name": "Alex",
@@ -126,7 +126,7 @@ Use this endpoint to retrieve all fictional customer records.
 ```bash
 curl -X GET http://api.example.com/customers \
   -H "accept: application/json" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>
@@ -206,7 +206,7 @@ Use this endpoint to retrieve all orders associated with a fictional customer re
 ```bash
 curl -X GET http://api.example.com/customers/CU00001/orders \
   -H "accept: application/json" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>
@@ -299,7 +299,7 @@ Use this endpoint to retrieve a specific fictional customer record.
 ```bash
 curl -X GET http://api.example.com/customers/CU00001 \
   -H "accept: application/json" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>
@@ -397,7 +397,7 @@ Use this endpoint to create a shipping address for a fictional customer.
 ```bash
 curl -X POST http://api.example.com/customers/CU00001/addresses \
   -H "accept: application/json" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "address_line1": "123 Example Street",
@@ -495,7 +495,7 @@ Use this endpoint to retrieve a specific customer shipping address.
 ```bash
 curl -X GET http://api.example.com/customers/addresses/AD00001 \
   -H "accept: application/json" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>

@@ -44,7 +44,7 @@ Submit the product feed using the upload endpoint.
 
 ```bash
 curl -X POST "http://api.example.com/feeds/upload" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -F "partner_name=Acme Corp" \
   -F "file=@sample_catalog.csv"
 ```

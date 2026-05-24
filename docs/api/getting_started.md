@@ -22,7 +22,7 @@ Use the Commerce Integration API to upload product feeds, process them through a
 Include your API key in every request:
 
 ```text
-x-api-key: demo-secret-key
+x-api-key: YOUR_API_KEY
 ```
 
 Requests without a valid API key return `401` or `403`.
@@ -39,7 +39,7 @@ Use this minimal workflow to ingest catalog data, query products, and create an 
 
 ```bash
 curl -X POST "http://localhost:8000/feeds/upload" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -F "file=@electronics_catalog.csv" \
   -F "partner_name=Tronics"
 ```
@@ -58,14 +58,14 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 
 ```bash
 curl -X POST "http://localhost:8000/jobs/JV00001/run" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 ### 3. Query products
 
 ```bash
 curl -X GET "http://localhost:8000/products?limit=5" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 ### Example response
@@ -96,7 +96,7 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 
 ```bash
 curl -X POST "http://localhost:8000/orders" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "partner_name": "Acme Corp",

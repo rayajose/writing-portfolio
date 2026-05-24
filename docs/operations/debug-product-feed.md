@@ -30,7 +30,7 @@ In this guide, you will:
 | ------------------- | ------------------------------------------------------------------- |
 | Base URL (local)    | `http://localhost:8000`                                             |
 | Base URL (AWS)      | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
-| API key             | `x-api-key: demo-secret-key`                                        |
+| API key             | `x-api-key: YOUR_API_KEY`                                           |
 | Completed operation | Uploaded feed (`feed_id`) or job (`job_id`)                         |
 
 !!! tip "Preserve failed files"
@@ -45,7 +45,7 @@ Retrieve the feed to confirm its status.
 
 ```bash
 curl -X GET "http://localhost:8000/feeds/FD00009" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 ### Response
@@ -77,7 +77,7 @@ Get ETL processing results for the associated job.
 
 ```bash
 curl -X GET "http://localhost:8000/jobs/JV00009" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 ### Response
@@ -216,14 +216,14 @@ After fixing the data, reprocess the feed.
 
 ```bash
 curl -X POST "http://localhost:8000/jobs/JV00009/run" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 ### Upload a new feed
 
 ```bash
 curl -X POST "http://localhost:8000/feeds/upload" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -F "file=@corrected_catalog.csv" \
   -F "partner_name=Tronics"
 ```
@@ -235,7 +235,7 @@ Retrieve the job again to confirm successful ETL processing.
 
 ```bash
 curl -X GET "http://localhost:8000/jobs/JV00009" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 ### Successful response

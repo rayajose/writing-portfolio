@@ -1,4 +1,4 @@
-# Commerce Integration API platform overview
+#  Platform overview - Commerce Integration API
 
 The Commerce Integration API is a commerce data ingestion, catalog management, and analytics platform designed to support recurring partner retailer product feeds and downstream order workflows.
 

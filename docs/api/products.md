@@ -78,7 +78,7 @@ GET /products?limit=5&cursor=PR00010
 curl -X 'GET' \
   'http://api.example.com/products?limit=10&order=asc' \
   -H 'accept: application/json' \
-  -H 'x-api-key: demo-secret-key'
+  -H 'x-api-key: YOUR_API_KEY'
 ```
 
 </div>
@@ -187,7 +187,7 @@ Use this endpoint to retrieve a single product record by `product_id` from uploa
 curl -X 'GET' \
   'http://api.example.com/products/PR00001' \
   -H 'accept: application/json' \
-  -H 'x-api-key: demo-secret-key'
+  -H 'x-api-key: YOUR_API_KEY'
 ```
 
 </div>
@@ -286,7 +286,7 @@ Returns all products associated with a specific feed.
 curl -X 'GET' \
   'http://api.example.com/products/by-feed/FD00002' \
   -H 'accept: application/json' \
-  -H 'x-api-key: demo-secret-key'
+  -H 'x-api-key: YOUR_API_KEY'
 ```
 
 </div>

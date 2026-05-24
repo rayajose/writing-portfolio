@@ -21,7 +21,7 @@ This workflow shows the full ingestion pipeline from raw upload to queryable pro
 
 ```bash
 curl -X POST "http://api.example.com/feeds/upload" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -F "partner_name=Acme Corp" \
   -F "file=@sample_catalog.csv"
 ```
@@ -49,14 +49,14 @@ curl -X POST "http://api.example.com/feeds/upload" \
 ### Step 2: Check submission job
 
 ```bash
-curl -H "x-api-key: demo-secret-key" \
+curl -H "x-api-key: YOUR_API_KEY" \
   "http://api.example.com/jobs/JS00001"
 ```
 
 ### Step 3: Check validation job
 
 ```bash
-curl -H "x-api-key: demo-secret-key" \
+curl -H "x-api-key: YOUR_API_KEY" \
   "http://api.example.com/jobs/JV00001"
 ```
 
@@ -76,7 +76,7 @@ curl -H "x-api-key: demo-secret-key" \
 
 ```bash
 curl -X POST "http://api.example.com/jobs/JV00001/run" \
-  -H "x-api-key: demo-secret-key"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 ### Processing behavior
@@ -92,7 +92,7 @@ curl -X POST "http://api.example.com/jobs/JV00001/run" \
 ### Step 5: Verify feed processing
 
 ```bash
-curl -H "x-api-key: demo-secret-key" \
+curl -H "x-api-key: YOUR_API_KEY" \
   "http://api.example.com/feeds/FD00001"
 ```
 
@@ -117,7 +117,7 @@ curl -H "x-api-key: demo-secret-key" \
 ### Step 6: Query products
 
 ```bash
-curl -H "x-api-key: demo-secret-key" \
+curl -H "x-api-key: YOUR_API_KEY" \
   "http://api.example.com/products?limit=5"
 ```
 
@@ -151,7 +151,7 @@ This workflow shows how to create fictional customer and shipping address record
 
 ```bash
 curl -X POST "http://api.example.com/customers" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "first_name": "Alex",
@@ -183,7 +183,7 @@ curl -X POST "http://api.example.com/customers" \
 
 ```bash
 curl -X POST "http://api.example.com/customers/CU00001/addresses" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "address_line1": "123 Example Street",
@@ -217,7 +217,7 @@ This workflow shows how to create an order using products previously loaded into
 ### Step 1: Retrieve products
 
 ```bash
-curl -H "x-api-key: demo-secret-key" \
+curl -H "x-api-key: YOUR_API_KEY" \
   "http://api.example.com/products?limit=5"
 ```
 
@@ -241,7 +241,7 @@ curl -H "x-api-key: demo-secret-key" \
 
 ```bash
 curl -X POST "http://api.example.com/orders" \
-  -H "x-api-key: demo-secret-key" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "partner_name": "Acme Corp",
@@ -296,7 +296,7 @@ curl -X POST "http://api.example.com/orders" \
 ### Step 3: Retrieve the order
 
 ```bash
-curl -H "x-api-key: demo-secret-key" \
+curl -H "x-api-key: YOUR_API_KEY" \
   "http://api.example.com/orders/OR00001"
 ```
 

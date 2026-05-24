@@ -26,6 +26,7 @@ nav:
 
   - Tutorials:
       - Your first feed ingestion: tutorials/first-feed.md
+      - Create and retrieve an order: tutorials/create-and-retrieve-order.md
 
   - How-to:
       - Ingest a product feed end-to-end: api/ingest-product-feed.md
