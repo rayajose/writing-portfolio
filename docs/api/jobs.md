@@ -2,10 +2,9 @@
 
 Use this API to retrieve job status and run validation jobs for ETL processing.
 
-
 - Retrieve job details and track processing status
 - Trigger validation jobs for uploaded feeds
-- Monitor ETL execution and results
+- Monitor ETL execution and processing results
 
 
 ## Authentication
@@ -18,41 +17,40 @@ Include the API key in each request:
 -H "x-api-key: YOUR_API_KEY"
 ```
 
-##  <span class="api-endpoint api-endpoint--get">GET /jobs/{job_id}</span>
 
-Use this endpoint to retrieve the status and metadata for a job.
+## <span class="api-endpoint api-endpoint--get">GET /jobs/{job_id}</span>
+
+Retrieve status and metadata for a job.
 
 ### Processing behavior
 
-- The system looks up the job by `job_id`
-- Returns job metadata including type, status, associated `feed_id`, and timestamps
-- If the job has completed, includes the ETL result summary (for validation jobs)
+- Looks up the job by `job_id`
+- Returns job metadata including job type, status, associated `feed_id`, and timestamps
+- Returns ETL processing summary details for completed validation jobs
 
 
 ### Path parameters
 
-| Name     | Type   | Required | Description                                |
-| -------- | ------ | -------- | ------------------------------------------ |
-| `job_id` | string | Yes      | Unique job identifier (JSxxxxx or JVxxxxx) |
+| Name     | Type   | Required | Description                                    |
+| -------- | ------ | -------- | ---------------------------------------------- |
+| `job_id` | string | Yes      | Unique job identifier (`JSxxxxx` or `JVxxxxx`) |
 
 
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 
 <div>
 
 <h3>Request</h3>
 
 ```bash
-curl -X 'GET' \
-  'http://api.example.com/jobs/JV00012' \
-  -H 'accept: application/json' \
-  -H 'x-api-key: YOUR_API_KEY'
+curl -X GET http://api.example.com/jobs/JV00012 \
+  -H "accept: application/json" \
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>
-
 
 <div>
 
@@ -76,15 +74,16 @@ curl -X 'GET' \
 
 | Field      | Type   | Description                                             |
 | ---------- | ------ | ------------------------------------------------------- |
-| `job_id`   | string | Unique job identifier (JSxxxxx or JVxxxxx)              |
-| `feed_id`  | string | Associated feed ID                                      |
+| `job_id`   | string | Unique job identifier (`JSxxxxx` or `JVxxxxx`)          |
+| `feed_id`  | string | Associated feed identifier                              |
 | `status`   | string | Job status (`queued`, `running`, `completed`, `failed`) |
-| `job_type` | string | UTC timestamp when job was created                      |
+| `job_type` | string | Job type (`submission` or `validation`)                 |
 
 
 ### Error responses
 
 #### 401 Unauthorized
+
 Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ```json
@@ -93,8 +92,9 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 404 Not found
-Returned when the request contains a `job_id` not currently in system.
+#### 404 Not Found
+
+Returned when the request contains a `job_id` not currently in the system.
 
 ```json
 {
@@ -109,33 +109,32 @@ Returned when the request contains a `job_id` not currently in system.
 
 ## <span class="api-endpoint api-endpoint--post">POST /jobs/{job_id}/run</span>
 
-Use this endpoint to start a validation job and trigger ETL processing.
+Run a validation job and trigger ETL processing.
 
 ### Processing behavior
 
-- Only **validation jobs (JVxxxxx)** can be executed
-- Triggers ETL pipeline:
-  - Reads raw CSV from S3
-  - Cleans and validates data
-  - Loads products into PostgreSQL
-  - Detects changes and avoids unnecessary updates
-- Updates job status and message with ETL results summary
+- Allows execution of validation jobs only (`JVxxxxx`)
+- Reads raw CSV data from object storage
+- Cleans and validates product data
+- Loads products into PostgreSQL
+- Detects changes and avoids unnecessary updates
+- Updates job status and ETL processing summary details
 
 
 ### Path parameters
 
-| Name     | Type   | Required | Description                     |
-| -------- | ------ | -------- | ------------------------------- |
-| `job_id` | string | Yes      | Unique job identifier (JVxxxxx) |
+| Name     | Type   | Required | Description                       |
+| -------- | ------ | -------- | --------------------------------- |
+| `job_id` | string | Yes      | Unique job identifier (`JVxxxxx`) |
 
 
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 
 <div>
 
-<h3>Example request</h3>
+<h3>Request</h3>
 
 ```bash
 curl -X POST http://api.example.com/jobs/JV00001/run \
@@ -144,10 +143,9 @@ curl -X POST http://api.example.com/jobs/JV00001/run \
 
 </div>
 
-
 <div>
 
-<h3>Example response</h3>
+<h3>Response</h3>
 
 ```json
 {
@@ -165,13 +163,14 @@ curl -X POST http://api.example.com/jobs/JV00001/run \
 
 | Field    | Type   | Description                                             |
 | -------- | ------ | ------------------------------------------------------- |
-| `job_id` | string | Unique job identifier (JVxxxxx)                         |
+| `job_id` | string | Unique job identifier (`JVxxxxx`)                       |
 | `status` | string | Job status (`queued`, `running`, `completed`, `failed`) |
 
 
 ### Error responses
 
 #### 401 Unauthorized
+
 Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ```json
@@ -180,8 +179,9 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 400 Bad request
-Returned when the request is malformed or contains a submission job id.
+#### 400 Bad Request
+
+Returned when the request is malformed or contains a submission job identifier.
 
 ```json
 {
@@ -189,8 +189,9 @@ Returned when the request is malformed or contains a submission job id.
 }
 ```
 
-#### 404 Not found
-Returned when the request contains a `job_id` not currently in system.
+#### 404 Not Found
+
+Returned when the request contains a `job_id` not currently in the system.
 
 ```json
 {
@@ -198,15 +199,20 @@ Returned when the request contains a `job_id` not currently in system.
 }
 ```
 
+
 ## Additional details
 
-- Job processing is asynchronous. Jobs move through `queued` → `running` → `completed` or `failed`, and status must be polled via `GET /jobs/{job_id}`.
-- Only validation jobs (`JVxxxxx`) can be executed via the API. Each job is tied to a single `feed_id` and is idempotent at the feed level (re-running processes the same feed data).
+- Job processing is asynchronous
+- Jobs move through `queued` → `running` → `completed` or `failed`
+- Poll `GET /jobs/{job_id}` to monitor processing status
+- Only validation jobs (`JVxxxxx`) can be executed through the API
+- Each job is associated with a single `feed_id`
+- Re-running a validation job processes the same feed data
 
 
 ## Related documentation
 
-- [Feeds API](feeds.md)
-- [Products API](products.md)
+- [Feeds](feeds.md)
+- [Products](products.md)
 - [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)

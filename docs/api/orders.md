@@ -8,6 +8,7 @@ Use this API to create and retrieve customer orders.
 - Track order status and calculated totals
 - Associate orders with fictional customer and shipping address records
 
+
 ## Authentication
 
 All endpoints in this resource require a valid `x-api-key` header.
@@ -18,17 +19,20 @@ Include the API key in each request:
 -H "x-api-key: YOUR_API_KEY"
 ```
 
+
 ## <span class="api-endpoint api-endpoint--post">POST /orders</span>
 
-Use this endpoint to create an order from one or more catalog products.
+Create an order from one or more catalog products.
 
 ### Processing behavior
-- The system creates a parent order with status created.
-- Orders can optionally reference customer and shipping address records.
-- Customer and shipping records are stored separately from order line items.
-- For each requested item, the system verifies that the product_id exists.
-- If the product is available, the system creates an order item with product details, quantity, unit price, and line total.
-- The system calculates the order total and updates the order record.
+
+- Creates a parent order with status `created`
+- Optionally associates customer and shipping address records with the order
+- Stores customer and shipping records separately from transactional order items
+- Verifies that each requested `product_id` exists
+- Creates order items for available products
+- Calculates order totals and updates the order record
+
 
 ### Request body
 
@@ -38,7 +42,8 @@ Use this endpoint to create an order from one or more catalog products.
 | `customer_reference`  | string | No       | External customer or order reference          |
 | `customer_id`         | string | No       | Customer identifier (`CUxxxxx`)               |
 | `shipping_address_id` | string | No       | Shipping address identifier (`ADxxxxx`)       |
-| `items`               | array  | Yes      | List of products to include in the order      |
+| `items`               | array  | Yes      | List of products included in the order        |
+
 
 ### Item fields
 
@@ -47,9 +52,10 @@ Use this endpoint to create an order from one or more catalog products.
 | `product_id` | string  | Yes      | Product identifier (`PRxxxxx`)              |
 | `quantity`   | integer | Yes      | Quantity to order. Must be greater than `0` |
 
+
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 
 <div>
 
@@ -75,7 +81,6 @@ curl -X POST http://api.example.com/orders \
 ```
 
 </div>
-
 
 <div>
 
@@ -109,7 +114,9 @@ curl -X POST http://api.example.com/orders \
 
 </div>
 
+
 ### Response fields
+
 | Field                 | Type   | Description                            |
 | --------------------- | ------ | -------------------------------------- |
 | `order_id`            | string | Unique order identifier (`ORxxxxx`)    |
@@ -122,9 +129,10 @@ curl -X POST http://api.example.com/orders \
 | `currency`            | string | Currency code                          |
 | `items`               | array  | Line items included in the order       |
 
+
 ### Error responses
 
-#### 400 Bad request
+#### 400 Bad Request
 
 Returned when the order does not contain any items.
 
@@ -135,6 +143,7 @@ Returned when the order does not contain any items.
 ```
 
 #### 401 Unauthorized
+
 Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ```json
@@ -143,7 +152,7 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 404 Not found
+#### 404 Not Found
 
 Returned when a requested product does not exist.
 
@@ -163,19 +172,21 @@ Returned when a requested product is not available.
 }
 ```
 
+
 ## <span class="api-endpoint api-endpoint--get">GET /orders</span>
 
-Use this endpoint to retrieve submitted orders.
+Retrieve submitted orders.
 
 ### Processing behavior
 
-- The system retrieves order IDs sorted by creation time.
-- For each order, the system retrieves associated order items.
-- The response returns a count and list of orders.
+- Retrieves orders sorted by creation time
+- Retrieves associated order items for each order
+- Returns order counts and order details
+
 
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 
 <div>
 
@@ -188,7 +199,6 @@ curl -X GET http://api.example.com/orders \
 ```
 
 </div>
-
 
 <div>
 
@@ -225,6 +235,7 @@ curl -X GET http://api.example.com/orders \
 
 </div>
 
+
 ### Response fields
 
 | Field   | Type    | Description                    |
@@ -236,6 +247,7 @@ curl -X GET http://api.example.com/orders \
 ### Error responses
 
 #### 401 Unauthorized
+
 Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ```json
@@ -244,15 +256,17 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
+
 ## <span class="api-endpoint api-endpoint--get">GET /orders/{order_id}</span>
 
-Use this endpoint to retrieve a specific order and its line items.
+Retrieve a specific order and its line items.
 
 ### Processing behavior
 
-- The system looks up the order by order_id.
-- The system retrieves the order’s associated order items.
-- If the order does not exist, the system returns a not found response.
+- Looks up the order by `order_id`
+- Retrieves associated order items
+- Returns a not found response if the order does not exist
+
 
 ### Path parameters
 
@@ -263,7 +277,7 @@ Use this endpoint to retrieve a specific order and its line items.
 
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 
 <div>
 
@@ -276,7 +290,6 @@ curl -X GET http://api.example.com/orders/OR00001 \
 ```
 
 </div>
-
 
 <div>
 
@@ -308,6 +321,7 @@ curl -X GET http://api.example.com/orders/OR00001 \
 
 </div>
 
+
 ### Response fields
 
 | Field                | Type   | Description                          |
@@ -319,6 +333,7 @@ curl -X GET http://api.example.com/orders/OR00001 \
 | `total_amount`       | number | Total amount for all order items     |
 | `currency`           | string | Currency code                        |
 | `items`              | array  | Line items included in the order     |
+
 
 ### Order item fields
 
@@ -332,9 +347,11 @@ curl -X GET http://api.example.com/orders/OR00001 \
 | `unit_price`    | number  | Product price at order creation          |
 | `line_total`    | number  | Unit price multiplied by quantity        |
 
+
 ### Error responses
 
 #### 401 Unauthorized
+
 Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ```json
@@ -343,7 +360,7 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 404 Not found
+#### 404 Not Found
 
 Returned when the request contains an `order_id` not currently in the system.
 
@@ -353,20 +370,21 @@ Returned when the request contains an `order_id` not currently in the system.
 }
 ```
 
+
 ## Additional details
 
-- Orders use the ORxxxxx identifier format.
-- Order items use the OIxxxxx identifier format.
-- Order totals are calculated from order item line totals.
-- Product details such as sku, product_name, and unit_price are - - copied into the order item at order creation time.
-- The current implementation creates orders with status created.
-- Orders can optionally reference customer and shipping address records.
-- Customer and shipping records are maintained separately from transactional order items.
+- Orders use the `ORxxxxx` identifier format
+- Order items use the `OIxxxxx` identifier format
+- Order totals are calculated from order item line totals
+- Product details such as `sku`, `product_name`, and `unit_price` are copied into order items at order creation time
+- New orders are created with status `created`
+- Orders can optionally reference customer and shipping address records
+- Customer and shipping records are maintained separately from transactional order items
 
 
 ## Related documentation
 
-- [Feeds API](feeds.md)
-- [Products API](products.md)
-- [Analytics API](analytics.md)
+- [Feeds](feeds.md)
+- [Products](products.md)
+- [Analytics](analytics.md)
 - [Errors](errors.md)

@@ -1,8 +1,8 @@
 # Feeds
 
-Use this API to upload product feeds, store raw data, and process them through the validation and ETL pipeline.
+Use this API to upload product feeds, store raw feed data, and process feeds through validation and ETL workflows.
 
-- Upload feed files for ingestion into the platform
+- Upload product feed files for ingestion into the platform
 - Store and track raw feed data and metadata
 - Trigger and monitor validation and ETL processing workflows
 
@@ -20,15 +20,14 @@ Include the API key in each request:
 
 ## <span class="api-endpoint api-endpoint--post">POST /feeds/upload</span>
 
-Use this endpoint to upload a CSV product feed, store the raw file in object storage, and create associated job records for processing.
+Upload a CSV product feed and create associated processing jobs.
 
 ### Processing behavior
 
-- Validates file type (CSV only)
-- Validates CSV structure (header row required)
-- Validates CSV structure (requires `product_name` and `sku` headers)
-- Stores raw file in object storage
-- Creates a submission job (JSxxxxx) and validation job (JVxxxxx)
+- Validates file type (`.csv` only)
+- Validates CSV structure and required headers
+- Stores the raw file in object storage
+- Creates submission (`JSxxxxx`) and validation (`JVxxxxx`) job records
 - Persists feed metadata for later retrieval
 
 !!! note "Asynchronous ingestion"
@@ -36,17 +35,17 @@ Use this endpoint to upload a CSV product feed, store the raw file in object sto
     Product data is not ingested during upload. Ingestion occurs during ETL processing workflows.
 
 
-## Request body (multipart/form-data)
+## Request body (`multipart/form-data`)
 
 | Field          | Type   | Required | Description                  |
 | -------------- | ------ | -------- | ---------------------------- |
-| `partner_name` | string | yes      | Name of the partner          |
-| `file`         | file   | yes      | CSV file containing products |
+| `partner_name` | string | Yes      | Name of the partner          |
+| `file`         | file   | Yes      | CSV file containing products |
 
 
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 <div>
 
 <h3>Request</h3>
@@ -78,11 +77,11 @@ curl -X POST http://api.example.com/feeds/upload \
 
 ### Response fields
 
-| Field     | Type   | Description                        |
-| --------- | ------ | ---------------------------------- |
-| `feed_id` | string | Unique feed identifier             |
-| `status`  | string | Feed upload status  (`processing`) |
-| `job_id`  | string | Unique job identifier (JSxxxxx)    |
+| Field     | Type   | Description                           |
+| --------- | ------ | ------------------------------------- |
+| `feed_id` | string | Unique feed identifier                |
+| `status`  | string | Feed upload status (`processing`)     |
+| `job_id`  | string | Submission job identifier (`JSxxxxx`) |
 
 
 ### Error responses
@@ -97,69 +96,71 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 400 Bad request
-Returned when the request contains a file formant other than `.csv`.
+#### 400 Bad Request
+
+Returned when the request contains a file format other than `.csv`.
 
 ```json
-{ 
+{
   "detail": "Only CSV uploads are supported at this time."
 }
 ```
 
 Returned when the request contains an empty `.csv` file.
+
 ```json
-{ 
+{
   "detail": "Uploaded file is empty."
 }
 ```
 
-Returned when the request contains a `.csv` file not UTF-8 encoded.
+Returned when the request contains a `.csv` file that is not UTF-8 encoded.
+
 ```json
-{ 
+{
   "detail": "CSV file must be UTF-8 encoded."
 }
 ```
 
-Returned when the request contains a `.csv` file missing the column headers `product_name` or `sku`. Both are required.
+Returned when the request contains a `.csv` file missing the required `product_name` or `sku` headers.
+
 ```json
-{ 
+{
   "detail": "Invalid CSV file: Missing required CSV headers: product_name, sku"
 }
 ```
 
 
-## <span class="api-endpoint api-endpoint--get">GET /feeds/{feed_id}</span> 
+## <span class="api-endpoint api-endpoint--get">GET /feeds/{feed_id}</span>
 
-Use this endpoint to retrieve metadata for a specific feed, including pipeline status and raw file location.
+Retrieve metadata for a specific feed.
 
 ### Processing behavior
 
-- The system looks up the feed by `feed_id`
-- Returns feed metadata, including status, timestamps, and associated job information
-- Includes raw file storage details such as object storage bucket and object key
-- If the feed does not exist, a `404 Not Found` response is returned
-
+- Looks up the feed by `feed_id`
+- Returns feed metadata, timestamps, and associated job information
+- Includes object storage details for the raw uploaded file
+- Returns a `404 Not Found` response if the feed does not exist
 
 
 ### Path parameters
 
-| Name      | Type   | Required | Description                      |
-| --------- | ------ | -------- | -------------------------------- |
-| `feed_id` | string | Yes      | Unique feed identifier (FDxxxxx) |
+| Name      | Type   | Required | Description                        |
+| --------- | ------ | -------- | ---------------------------------- |
+| `feed_id` | string | Yes      | Unique feed identifier (`FDxxxxx`) |
 
 
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 <div>
 
 <h3>Request</h3>
 
 ```bash
-curl -X 'GET' \
-  'http://api.example.com/feeds/FD00003' \
-  -H 'accept: application/json' \
-  -H 'x-api-key: YOUR_API_KEY'
+curl -X GET http://api.example.com/feeds/FD00003 \
+  -H "accept: application/json" \
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>
@@ -189,24 +190,26 @@ curl -X 'GET' \
 
 
 ### Response fields
+
 | Field                | Type   | Description                                             |
 | -------------------- | ------ | ------------------------------------------------------- |
-| `feed_id`            | string | Unique feed identifier (FDxxxxx)                        |
+| `feed_id`            | string | Unique feed identifier (`FDxxxxx`)                      |
 | `partner_name`       | string | Partner that submitted the feed                         |
 | `file_name`          | string | Original uploaded file name                             |
 | `content_type`       | string | MIME type of the uploaded file                          |
 | `status`             | string | Feed upload status (`uploaded`)                         |
 | `uploaded_at`        | string | UTC timestamp of upload                                 |
-| `validation_job_id`  | string | Validation job ID (JVxxxxx)                             |
+| `validation_job_id`  | string | Validation job identifier (`JVxxxxx`)                   |
 | `validation_status`  | string | Job status (`queued`, `running`, `completed`, `failed`) |
-| `validation_message` | string | Human-readable ETL result summary                       |
-| `raw_file_s3_key`    | string | S3 object key for raw feed                              |
-| `raw_file_bucket`    | string | S3 bucket storing raw file                              |
+| `validation_message` | string | Human-readable ETL processing summary                   |
+| `raw_file_s3_key`    | string | Object storage key for the raw feed                     |
+| `raw_file_bucket`    | string | Object storage bucket storing the raw feed              |
 
 
 ### Error responses
 
 #### 401 Unauthorized
+
 Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ```json
@@ -215,8 +218,9 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 404 Not found
-Returned when the request contains a `feed_id` not currently in system.
+#### 404 Not Found
+
+Returned when the request contains a `feed_id` not currently in the system.
 
 ```json
 {
@@ -224,17 +228,19 @@ Returned when the request contains a `feed_id` not currently in system.
 }
 ```
 
+
 ## Additional details
 
-* Feed processing is asynchronous. Uploading a feed does not immediately make product data available.
-* Use the `validation_status` field to track ETL progress (`queued`, `running`, `completed`, `failed`).
-* Product data becomes queryable only after validation and ETL processing complete successfully.
-* Feed IDs (`FDxxxxx`) and job IDs (`JSxxxxx`, `JVxxxxx`) follow fixed formats for traceability across the system.
+- Feed processing is asynchronous
+- Uploading a feed does not immediately make product data available
+- Use `validation_status` to track ETL processing progress
+- Product data becomes queryable only after validation and ETL processing complete successfully
+- Feed IDs (`FDxxxxx`) and job IDs (`JSxxxxx`, `JVxxxxx`) use fixed formats for system traceability
 
 
 ## Related documentation
 
 - [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)
-- [Products API](products.md)
-- [Jobs API](jobs.md)
+- [Products](products.md)
+- [Jobs](jobs.md)

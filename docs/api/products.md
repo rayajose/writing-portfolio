@@ -2,14 +2,14 @@
 
 Use this API to retrieve product data from partner catalog feeds.
 
-- Retrieve all products across partners
+- Retrieve products across partners
 - Filter products by multiple attributes
-- Sort results by supported fields
+- Sort results using supported fields
 - Paginate results using `limit` and `cursor`
-- Retrieve a single product by ID
+- Retrieve individual product records by ID
 
 > Product data becomes available only after ETL processing completes.
-> See [Workflows](../architecture/workflows.md) for the full ingestion process.
+> See [Workflows](../architecture/workflows.md) for the full ingestion workflow.
 
 
 ## Authentication
@@ -25,31 +25,31 @@ Include the API key in each request:
 
 ## <span class="api-endpoint api-endpoint--get">GET /products</span>
 
-Use this endpoint to retrieve product records from uploaded partner feeds.
+Retrieve product records from uploaded partner feeds.
 
 Supports filtering, sorting, and cursor-based pagination.
 
 ### Processing behavior
 
-- Retrieve product records from the database  
-- Apply filters, sorting, and pagination  
-- Return results with an optional `next_cursor`  
+- Retrieves product records from the database
+- Applies filters, sorting, and pagination
+- Returns results with an optional `next_cursor` value
 
 
 ### Query parameters
 
-| Name           | Type   | Required | Description                                                                   |
-| -------------- | ------ | -------- | ----------------------------------------------------------------------------- |
-| `partner_name` | string | No       | Partner name filter                                                           |
-| `feed_id`      | string | No       | Filter by feed ID                                                             |
-| `sku`          | string | No       | Filter by SKU                                                                 |
-| `brand`        | string | No       | Filter by brand                                                               |
-| `category`     | string | No       | Filter by category                                                            |
-| `availability` | string | No       | Filter by availability                                                        |
-| `limit`        | int    | No       | Number of results to return (default: 10, max: 100)                           |
-| `cursor`       | string | No       | Cursor for pagination. Use the `next_cursor` value from the previous response |
-| `sort_by`      | string | No       | Field to sort by (created_at, price, product_name, brand, category)           |
-| `order`        | string | No       | Sort direction (`asc` [ascending], `desc` [descending], default: `desc`)      |
+| Name           | Type    | Required | Description                                                             |
+| -------------- | ------- | -------- | ----------------------------------------------------------------------- |
+| `partner_name` | string  | No       | Filter by partner name                                                  |
+| `feed_id`      | string  | No       | Filter by feed identifier                                               |
+| `sku`          | string  | No       | Filter by SKU                                                           |
+| `brand`        | string  | No       | Filter by brand                                                         |
+| `category`     | string  | No       | Filter by category                                                      |
+| `availability` | string  | No       | Filter by availability                                                  |
+| `limit`        | integer | No       | Number of results to return. Default: `10`. Maximum: `100`              |
+| `cursor`       | string  | No       | Pagination cursor from the previous response                            |
+| `sort_by`      | string  | No       | Sort field (`created_at`, `price`, `product_name`, `brand`, `category`) |
+| `order`        | string  | No       | Sort direction (`asc` or `desc`). Defaults to `desc`                    |
 
 
 #### Sorting examples
@@ -69,16 +69,15 @@ GET /products?limit=5&cursor=PR00010
 
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 <div>
 
 <h3>Request</h3>
 
 ```bash
-curl -X 'GET' \
-  'http://api.example.com/products?limit=10&order=asc' \
-  -H 'accept: application/json' \
-  -H 'x-api-key: YOUR_API_KEY'
+curl -X GET http://api.example.com/products?limit=10&order=asc \
+  -H "accept: application/json" \
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>
@@ -116,16 +115,17 @@ curl -X 'GET' \
 
 ### Response fields
 
-| Field         | Type   | Description                                  |
-| ------------- | ------ | -------------------------------------------- |
-| `count`       | int    | Number of items returned in the current page |
-| `items`       | array  | List of product objects                      |
-| `next_cursor` | string | Cursor for next page (if more results exist) |
+| Field         | Type    | Description                                  |
+| ------------- | ------- | -------------------------------------------- |
+| `count`       | integer | Number of items returned in the current page |
+| `items`       | array   | List of product objects                      |
+| `next_cursor` | string  | Cursor for the next page of results          |
 
 
 ### Error responses
 
 #### 401 Unauthorized
+
 Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ```json
@@ -134,8 +134,11 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 400 Bad request
-Returned when the request contains an invalid `sort_by` value. Allowed values are `product_id`, `price`, `product_name`, `brand`, `category`, or `created_at`.
+#### 400 Bad Request
+
+Returned when the request contains an invalid `sort_by` value.
+
+Allowed values are `product_id`, `price`, `product_name`, `brand`, `category`, and `created_at`.
 
 ```json
 {
@@ -143,14 +146,18 @@ Returned when the request contains an invalid `sort_by` value. Allowed values ar
 }
 ```
 
-Returned when the request contains `order` value for sort direction. Allowed values are `asc` or `desc`.
+Returned when the request contains an invalid `order` value.
+
+Allowed values are `asc` and `desc`.
+
 ```json
 {
   "detail": "Invalid order value. Allowed values: asc, desc."
 }
 ```
 
-Returned when the request contains a `sort_by` value other than `product_id`.
+Returned when cursor pagination is used with a `sort_by` value other than `product_id`.
+
 ```json
 {
   "detail": "Cursor pagination is currently supported only with sort_by=product_id."
@@ -160,34 +167,33 @@ Returned when the request contains a `sort_by` value other than `product_id`.
 
 ## <span class="api-endpoint api-endpoint--get">GET /products/{product_id}</span>
 
-Use this endpoint to retrieve a single product record by `product_id` from uploaded partner feeds.
-
+Retrieve a single product record by `product_id`.
 
 ### Processing behavior
 
-- Retrieve the product by its unique ID  
-- Return product details if the product exists  
-- Return an error if the product is not found
+- Retrieves the product by unique identifier
+- Returns product details when the product exists
+- Returns a not found response if the product does not exist
+
 
 ### Path parameters
 
-| Name         | Type   | Required | Description                       |
-| ------------ | ------ | -------- | --------------------------------- |
-| `product_id` | string | Yes      | Unique identifier for the product |
+| Name         | Type   | Required | Description                           |
+| ------------ | ------ | -------- | ------------------------------------- |
+| `product_id` | string | Yes      | Unique product identifier (`PRxxxxx`) |
 
 
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 <div>
 
 <h3>Request</h3>
 
 ```bash
-curl -X 'GET' \
-  'http://api.example.com/products/PR00001' \
-  -H 'accept: application/json' \
-  -H 'x-api-key: YOUR_API_KEY'
+curl -X GET http://api.example.com/products/PR00001 \
+  -H "accept: application/json" \
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>
@@ -219,25 +225,26 @@ curl -X 'GET' \
 
 ### Response fields
 
-| Field          | Type   | Description                                        |
-| -------------- | ------ | -------------------------------------------------- |
-| `product_id`   | string | Unique identifier for the product (PRxxxxx)        |
-| `feed_id`      | string | Identifier of the feed that produced the product   |
-| `partner_name` | string | Name of the partner that supplied the product      |
-| `sku`          | string | Partner-defined SKU (may be null)                  |
-| `product_name` | string | Display name of the product                        |
-| `description`  | string | Product description (may be null)                  |
-| `brand`        | string | Product brand (may be null)                        |
-| `category`     | string | Product category (may be null)                     |
-| `price`        | number | Product price (may be null)                        |
-| `currency`     | string | Currency code (e.g., USD) (may be null)            |
-| `availability` | string | Availability status (e.g., in_stock) (may be null) |
-| `created_at`   | string | UTC timestamp when the product was created         |
+| Field          | Type   | Description                                 |
+| -------------- | ------ | ------------------------------------------- |
+| `product_id`   | string | Unique product identifier (`PRxxxxx`)       |
+| `feed_id`      | string | Feed identifier associated with the product |
+| `partner_name` | string | Name of the partner supplying the product   |
+| `sku`          | string | Partner-defined SKU (may be `null`)         |
+| `product_name` | string | Product display name                        |
+| `description`  | string | Product description (may be `null`)         |
+| `brand`        | string | Product brand (may be `null`)               |
+| `category`     | string | Product category (may be `null`)            |
+| `price`        | number | Product price (may be `null`)               |
+| `currency`     | string | Currency code such as `USD` (may be `null`) |
+| `availability` | string | Product availability status (may be `null`) |
+| `created_at`   | string | UTC timestamp when the product was created  |
 
 
 ### Error responses
 
 #### 401 Unauthorized
+
 Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ```json
@@ -246,7 +253,8 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
-#### 404 Not found
+#### 404 Not Found
+
 Returned when the request contains a `product_id` not currently in the system.
 
 ```json
@@ -258,35 +266,33 @@ Returned when the request contains a `product_id` not currently in the system.
 
 ## <span class="api-endpoint api-endpoint--get">GET /products/by-feed/{feed_id}</span>
 
-Returns all products associated with a specific feed.
-
+Retrieve all products associated with a specific feed.
 
 ### Processing behavior
 
-- Retrieve all products associated with the specified feed ID   
-- Return product records when the feed exists  
-- Return an error if the feed is not found
+- Retrieves products associated with the specified `feed_id`
+- Returns product records when the feed exists
+- Returns an empty result set when no products are associated with the feed
 
 
 ### Path parameters
 
-| Name      | Type   | Required | Description                    |
-| --------- | ------ | -------- | ------------------------------ |
-| `feed_id` | string | Yes      | Unique identifier for the feed |
+| Name      | Type   | Required | Description                        |
+| --------- | ------ | -------- | ---------------------------------- |
+| `feed_id` | string | Yes      | Unique feed identifier (`FDxxxxx`) |
 
 
 ### Request and response
 
-<div  class="api-example-grid">
+<div class="api-example-grid">
 <div>
 
 <h3>Request</h3>
 
 ```bash
-curl -X 'GET' \
-  'http://api.example.com/products/by-feed/FD00002' \
-  -H 'accept: application/json' \
-  -H 'x-api-key: YOUR_API_KEY'
+curl -X GET http://api.example.com/products/by-feed/FD00002 \
+  -H "accept: application/json" \
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>
@@ -323,13 +329,13 @@ curl -X 'GET' \
 
 ### Response fields
 
-| Field         | Type   | Description                                  |
-| ------------- | ------ | -------------------------------------------- |
-| `count`       | int    | Number of items returned in the current page |
-| `items`       | array  | List of product objects                      |
-| `next_cursor` | string | Cursor for next page (if more results exist) |
+| Field         | Type    | Description                                  |
+| ------------- | ------- | -------------------------------------------- |
+| `count`       | integer | Number of items returned in the current page |
+| `items`       | array   | List of product objects                      |
+| `next_cursor` | string  | Cursor for the next page of results          |
 
-If the specified `feed_id` has no associated products or not valid, the response returns count: 0 and an empty items array.
+If the specified `feed_id` has no associated products, the response returns `count: 0` and an empty `items` array.
 
 ```json
 {
@@ -342,6 +348,7 @@ If the specified `feed_id` has no associated products or not valid, the response
 ### Error responses
 
 #### 401 Unauthorized
+
 Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ```json
@@ -354,9 +361,9 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 ## Additional details
 
 - Product data is sourced from partner CSV feeds processed through the ETL pipeline
-- Products are **not available until ETL processing completes**
+- Products are not available until ETL processing completes
 - Raw feed data is stored in Amazon S3 and transformed before loading into PostgreSQL
-- Not all fields are guaranteed to be populated for every product
+- Not all product fields are guaranteed to be populated
 - Results are ordered by `created_at` in descending order by default unless overridden
 - Cursor-based pagination uses `product_id` for efficient traversal of large datasets
 
@@ -365,5 +372,5 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 
 - [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)
-- [Feeds API](feeds.md)
-- [Jobs API](jobs.md)
+- [Feeds](feeds.md)
+- [Jobs](jobs.md)
