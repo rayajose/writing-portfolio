@@ -1,7 +1,8 @@
 # Python SDK guide
 
 Use this guide to interact with the Commerce Integration API using a lightweight Python client.
-This client provides reusable methods for uploading feeds, checking jobs, and retrieving product data without writing raw HTTP requests.
+
+The client provides reusable methods for feed ingestion, job monitoring, product retrieval, customer workflows, and transactional order creation without requiring raw HTTP request handling.
 
 <div class="doc-meta">
   <span>Python SDK</span>
@@ -10,25 +11,28 @@ This client provides reusable methods for uploading feeds, checking jobs, and re
   <span>Automation workflows</span>
 </div>
 
-## What the client does
 
-- Wrap API endpoints in reusable methods  
-- Handle authentication headers  
-- Support filtering, sorting, and pagination
-- Support customer and order workflows
-- Handle transactional API interactions  
-- Raise exceptions for failed requests  
+## What the client provides
+
+The client supports:
+
+- Reusable API client methods
+- Authentication header management
+- Filtering, sorting, and pagination
+- Customer and order workflows
+- Transactional API interactions
+- Standard HTTP exception handling
 
 
 ## Example files
 
-The client and example scripts are available in the repository:
+The repository includes the following SDK examples:
 
 - `examples/sdk/client.py`
 - `examples/sdk/example_usage.py`
 - `examples/sdk/customer_workflow.py`
 
-These files demonstrate how to interact with the API using an SDK-style approach.
+These files demonstrate SDK-style interaction patterns for the Commerce Integration API.
 
 
 ## Authentication
@@ -37,7 +41,7 @@ Include an API key in all requests using the `x-api-key` header.
 
 ```python
 headers = {
-    "x-api-key": "demo-secret-key"
+    "x-api-key": "YOUR_API_KEY"
 }
 ```
 
@@ -53,6 +57,7 @@ pip install requests
 
 ```python
 import requests
+
 
 class CommerceIntegrationClient:
     def __init__(self, base_url: str, api_key: str):
@@ -113,7 +118,10 @@ class CommerceIntegrationClient:
             "cursor": cursor
         }
 
-        params = {k: v for k, v in params.items() if v is not None}
+        params = {
+            k: v for k, v in params.items()
+            if v is not None
+        }
 
         response = requests.get(
             url,
@@ -123,7 +131,7 @@ class CommerceIntegrationClient:
 
         response.raise_for_status()
         return response.json()
-        
+
     def create_customer(
         self,
         first_name: str,
@@ -216,12 +224,12 @@ class CommerceIntegrationClient:
 ```
 
 
-## Usage example
+## Upload a feed
 
 ```python
 client = CommerceIntegrationClient(
     base_url="http://127.0.0.1:8000",
-    api_key="demo-secret-key"
+    api_key="YOUR_API_KEY"
 )
 
 response = client.upload_feed(
@@ -237,6 +245,7 @@ print(response)
 
 ```python
 job = client.get_job("JS00001")
+
 print(job)
 ```
 
@@ -245,8 +254,10 @@ print(job)
 
 ```python
 products = client.get_products(limit=5)
+
 print(products)
 ```
+
 
 ## Create a customer
 
@@ -260,6 +271,7 @@ customer = client.create_customer(
 
 print(customer)
 ```
+
 
 ## Create a shipping address
 
@@ -275,6 +287,7 @@ address = client.create_customer_address(
 print(address)
 ```
 
+
 ## Filter and sort products
 
 ```python
@@ -288,6 +301,7 @@ products = client.get_products(
 
 print(products)
 ```
+
 
 ## Create an order
 
@@ -308,7 +322,9 @@ order = client.create_order(
 print(order)
 ```
 
+
 ## Cursor-based pagination
+
 Use cursor-based pagination to retrieve large result sets.
 
 ```python
@@ -341,9 +357,11 @@ import requests
 
 try:
     products = client.get_products(limit=5)
+
 except requests.exceptions.HTTPError as error:
     print(f"Request failed: {error}")
 ```
+
 
 ## Run the example locally
 
@@ -364,14 +382,15 @@ Run the example:
 ```bash
 python example_usage.py
 ```
-The script will retrieve product data from the API and print the response.
+
+The example retrieves product data from the API and prints the response.
 
 
 ## Additional details
 
-This client is intentionally lightweight and not distributed as a standalone package.
+This client is intentionally lightweight and is not distributed as a standalone package.
 
-You can extend it with:
+You can extend the client with:
 
 - Retries
 - Structured logging
@@ -382,3 +401,15 @@ You can extend it with:
 - SDK packaging workflows
 
 Customer-sensitive API responses return masked values and do not expose encrypted database fields directly.
+
+
+## Related documentation
+
+- [Get started](getting_started.md)
+- [Integration guide](integration-guide.md)
+- [Feeds](feeds.md)
+- [Jobs](jobs.md)
+- [Products](products.md)
+- [Customers](customers.md)
+- [Orders](orders.md)
+- [Analytics](analytics.md)

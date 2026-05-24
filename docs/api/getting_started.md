@@ -1,6 +1,6 @@
 # Get started
 
-Use the Commerce Integration API to upload product feeds, process them through an ETL pipeline, query normalized catalog data, and create transactional orders.
+Use the Commerce Integration API to upload product feeds, process them through ETL workflows, query normalized catalog data, and create transactional orders.
 
 <div class="doc-meta">
   <span>API v1</span>
@@ -8,6 +8,7 @@ Use the Commerce Integration API to upload product feeds, process them through a
   <span>CSV upload</span>
   <span>ETL workflow</span>
 </div>
+
 
 ## Base URLs
 
@@ -17,32 +18,36 @@ Use the Commerce Integration API to upload product feeds, process them through a
 | AWS        | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com`                                                                                                         |
 | Swagger UI | <a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank">http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs</a> |
 
+
 ## Authenticate requests
 
-Include your API key in every request:
+Include your API key in each request:
 
 ```text
 x-api-key: YOUR_API_KEY
 ```
 
-Requests without a valid API key return `401` or `403`.
+Requests without a valid API key return `401 Unauthorized` or `403 Forbidden`.
 
 !!! note "Demo authentication"
 
     The API uses a demo API key for documentation and portfolio purposes. Production-style API access and additional credentials can be discussed upon request.
 
+
 ## Quickstart
 
-Use this minimal workflow to ingest catalog data, query products, and create an order.
+Use this workflow to ingest catalog data, query products, and create an order.
+
 
 ### 1. Upload a feed
 
 ```bash
-curl -X POST "http://localhost:8000/feeds/upload" \
+curl -X POST http://localhost:8000/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
   -F "file=@electronics_catalog.csv" \
   -F "partner_name=Tronics"
 ```
+
 
 ### Example response
 
@@ -54,19 +59,22 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 }
 ```
 
+
 ### 2. Run ETL processing
 
 ```bash
-curl -X POST "http://localhost:8000/jobs/JV00001/run" \
+curl -X POST http://localhost:8000/jobs/JV00001/run \
   -H "x-api-key: YOUR_API_KEY"
 ```
+
 
 ### 3. Query products
 
 ```bash
-curl -X GET "http://localhost:8000/products?limit=5" \
+curl -X GET http://localhost:8000/products?limit=5 \
   -H "x-api-key: YOUR_API_KEY"
 ```
+
 
 ### Example response
 
@@ -92,10 +100,11 @@ curl -X GET "http://localhost:8000/products?limit=5" \
 }
 ```
 
+
 ### 4. Create an order
 
 ```bash
-curl -X POST "http://localhost:8000/orders" \
+curl -X POST http://localhost:8000/orders \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -111,6 +120,7 @@ curl -X POST "http://localhost:8000/orders" \
     ]
   }'
 ```
+
 
 ### Example response
 
@@ -138,6 +148,7 @@ curl -X POST "http://localhost:8000/orders" \
 }
 ```
 
+
 ## Understand the workflow
 
 Product data becomes available only after ingestion and ETL processing complete.
@@ -146,16 +157,19 @@ Product data becomes available only after ingestion and ETL processing complete.
 ![Ingestion and order flow](../api/screenshots/ingestion-order-flow.svg)
 </div>
 
+
 ## Use query parameters
 
-Use query parameters to filter, sort, and paginate results returned by the API.
+Use query parameters to filter, sort, and paginate API results.
+
 
 ### Pagination
 
-| Parameter | Description                               |
-| --------- | ----------------------------------------- |
-| `limit`   | Number of results (default: 10, max: 100) |
-| `cursor`  | Cursor for the next page                  |
+| Parameter | Description                                      |
+| --------- | ------------------------------------------------ |
+| `limit`   | Number of results. Default: `10`. Maximum: `100` |
+| `cursor`  | Cursor for the next page of results              |
+
 
 ### Filtering
 
@@ -167,28 +181,31 @@ Use query parameters to filter, sort, and paginate results returned by the API.
 | `category`     | Filter by category     |
 | `availability` | Filter by availability |
 
+
 ### Sorting
 
-| Parameter | Description                                              |
-| --------- | -------------------------------------------------------- |
-| `sort_by` | Field to sort by (`price`, `created_at`, `product_name`) |
-| `order`   | `asc` or `desc`                                          |
+| Parameter | Description                                        |
+| --------- | -------------------------------------------------- |
+| `sort_by` | Sort field (`price`, `created_at`, `product_name`) |
+| `order`   | Sort direction (`asc` or `desc`)                   |
+
 
 ## Handle errors
 
 The API uses standard HTTP status codes.
 
-| Status | Meaning                       |
-| ------ | ----------------------------- |
-| `200`  | Request successful            |
-| `201`  | Resource created successfully |
-| `400`  | Invalid request               |
-| `401`  | Missing API key               |
-| `403`  | Invalid API key               |
-| `404`  | Resource not found            |
-| `409`  | Request conflict              |
-| `422`  | Validation failure            |
-| `500`  | Server error                  |
+| Status | Meaning                        |
+| ------ | ------------------------------ |
+| `200`  | Request completed successfully |
+| `201`  | Resource created successfully  |
+| `400`  | Invalid request                |
+| `401`  | Missing API key                |
+| `403`  | Invalid API key                |
+| `404`  | Resource not found             |
+| `409`  | Request conflict               |
+| `422`  | Validation failure             |
+| `500`  | Internal server error          |
+
 
 ### Example error
 
@@ -198,6 +215,7 @@ The API uses standard HTTP status codes.
 }
 ```
 
+
 ## Resource identifiers
 
 The platform uses structured identifiers for feeds, jobs, customers, products, addresses, orders, and fulfillment workflows.
@@ -205,22 +223,23 @@ The platform uses structured identifiers for feeds, jobs, customers, products, a
 | Prefix    | Resource         |
 | --------- | ---------------- |
 | `FDxxxxx` | Feed             |
-| `JSxxxxx` | Submission Job   |
-| `JVxxxxx` | Validation Job   |
-| `JFxxxxx` | Fulfillment Job  |
+| `JSxxxxx` | Submission job   |
+| `JVxxxxx` | Validation job   |
+| `JFxxxxx` | Fulfillment job  |
 | `CUxxxxx` | Customer         |
-| `ADxxxxx` | Customer Address |
+| `ADxxxxx` | Customer address |
 | `PRxxxxx` | Product          |
 | `ORxxxxx` | Order            |
-| `OIxxxxx` | Order Item       |
+| `OIxxxxx` | Order item       |
+
 
 ## Next steps
 
 - Follow [Ingest a product feed end-to-end](ingest-product-feed.md)
-- Use [Feeds API](feeds.md) to manage uploads
-- Use [Jobs API](jobs.md) to track processing
-- Use [Products API](products.md) to query catalog data
-- Use [Customers API](customers.md) to create fictional customers and shipping addresses
-- Use [Orders API](orders.md) to create and retrieve order data
-- Use [Analytics API](analytics.md) to analyze sales and revenue
-- See [Debug failed feed runbook](../operations/debug-product-feed.md) to troubleshoot
+- Use [Feeds](feeds.md) to manage uploads
+- Use [Jobs](jobs.md) to track processing
+- Use [Products](products.md) to query catalog data
+- Use [Customers](customers.md) to create fictional customers and shipping addresses
+- Use [Orders](orders.md) to create and retrieve order data
+- Use [Analytics](analytics.md) to analyze sales and revenue
+- See [Debug failed feed runbook](../operations/debug-product-feed.md) for troubleshooting workflows

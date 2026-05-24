@@ -1,6 +1,6 @@
 # API reference
 
-Use this section to explore API endpoints, transactional workflows, request formats, authentication requirements, and response models across the Commerce Integration API platform.
+Use this section to explore API endpoints, transactional workflows, authentication requirements, request formats, and response models across the Commerce Integration API platform.
 
 <div class="doc-meta">
   <span>REST API</span>
@@ -10,33 +10,41 @@ Use this section to explore API endpoints, transactional workflows, request form
   <span>Transactional workflows</span>
 </div>
 
-### [Feeds API](feeds.md)
 
-Upload and manage partner product feeds. Feeds are ingested, validated, transformed through ETL workflows, and tracked through asynchronous processing pipelines before products become available for transactional and analytics workflows.
+### [Feeds](feeds.md)
 
-### [Jobs API](jobs.md)
+Upload and manage partner product feeds. Feed workflows support ingestion, validation, ETL processing, and asynchronous job tracking before products become available through transactional and analytics workflows.
 
-Monitor asynchronous processing jobs for ingestion, validation, ETL execution, and fulfillment workflows. Jobs expose execution status, operational metadata, and troubleshooting details.
 
-### [Products API](products.md)
+### [Jobs](jobs.md)
 
-Query the centralized product catalog using filtering, sorting, and cursor-based pagination to access normalized partner product data used by downstream order and analytics workflows.
+Monitor asynchronous processing jobs for ingestion, validation, ETL execution, and fulfillment workflows. Jobs expose execution status, operational metadata, and ETL processing results.
 
-### [Customers API](customers.md)
+
+### [Products](products.md)
+
+Retrieve normalized product catalog data using filtering, sorting, and cursor-based pagination. Product records are sourced from processed partner feeds and support downstream order and analytics workflows.
+
+
+### [Customers](customers.md)
 
 Create and retrieve fictional customer and shipping address records used by transactional order workflows. Customer-sensitive fields are encrypted before storage and returned as masked values in API responses.
 
-### [Orders API](orders.md)
 
-Create and retrieve customer orders and associated order items. The Orders API supports transactional order creation using catalog products, calculated order totals, and line item pricing.
+### [Orders](orders.md)
 
-### [Health API](health.md)
+Create and retrieve customer orders and associated order items. Order workflows support transactional order creation, calculated totals, and line item pricing derived from catalog products.
 
-Check the operational status of the API, database connectivity, and supporting infrastructure services. Used for monitoring, automated health checks, and deployment verification workflows.
 
-### [Analytics API](analytics.md)
+### [Health](health.md)
 
-Retrieve aggregated metrics derived from product, order, and transactional workflow data, including sales trends, revenue share, and partner performance analytics across the platform.
+Retrieve operational health status for the API and database connection. Health workflows support monitoring, automated health checks, and deployment validation.
+
+
+### [Analytics](analytics.md)
+
+Retrieve aggregated metrics derived from product, order, and transactional workflow data, including sales trends, revenue share, and partner performance analytics.
+
 
 ## Security and operational behavior
 

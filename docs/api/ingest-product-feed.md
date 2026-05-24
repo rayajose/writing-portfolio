@@ -1,4 +1,4 @@
-# Ingest a product feed end-to-End
+# Ingest a product feed end-to-end
 
 This guide shows how to upload, process, and verify a partner product feed using the Commerce Integration API.
 
@@ -21,29 +21,31 @@ In this guide, you will:
 | Base URL (local)  | `http://localhost:8000`                                             |
 | Base URL (AWS)    | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
 | API key           | `x-api-key: YOUR_API_KEY`                                           |
-| Valid .`csv` file | see  [CSV feed file specification](../specs/csv-feed-file-spec.md)  |
+| Valid `.csv` file | See [CSV feed file specification](../specs/csv-feed-file-spec.md)   |
+
 
 ### Feed file specification
 
-For complete CSV formatting rules, supported fields, validation requirements, and file constraints, see the [CSV Feed File Specification](../specs/csv-feed-file-spec.md).
+For complete CSV formatting rules, supported fields, validation requirements, and file constraints, see the [CSV feed file specification](../specs/csv-feed-file-spec.md).
+
 
 ## 1. Upload a product feed
 
-To upload a product feed, do the following:
+Run the `POST /feeds/upload` endpoint to submit the product `.csv` file.
 
-- Run the POST /feeds/upload endpoint to submit the product `.csv` file.
-- Note the `feed_id` value in the response for use in the next step. In the example the `feed_id` is FD00021.
+Record the `feed_id` value from the response for use in the next step. In this example, the `feed_id` is `FD00021`.
 
-**Example request**
+### Example request
 
 ```bash
-curl -X POST "http://api.example.com/feeds/upload" \
+curl -X POST http://api.example.com/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
   -F "file=@electronics_catalog.csv" \
   -F "partner_name=Tronics"
 ```
 
-**Example response**
+
+### Example response
 
 ```json
 {
@@ -53,16 +55,20 @@ curl -X POST "http://api.example.com/feeds/upload" \
 }
 ```
 
+
 ## 2. Review processing results
-Run the GET /feeds/{feed_id} endpoint using the `feed_id` captured in previous step, FD00021.
+
+Run the `GET /feeds/{feed_id}` endpoint using the `feed_id` from the previous step.
+
+In this example, the `feed_id` is `FD00021`.
 
 ### Example request
 
 ```bash
-curl --request GET \
-  --url http://api.example.com/feeds/FD00021 \
-  --header 'x-api-key: YOUR_API_KEY'
+curl -X GET http://api.example.com/feeds/FD00021 \
+  -H "x-api-key: YOUR_API_KEY"
 ```
+
 
 ### Example response
 
@@ -82,27 +88,31 @@ curl --request GET \
 }
 ```
 
-### Interpret the results
-Review the following values from the `validation_message` field in the response.
 
-- **Processed**: Total rows evaluated
+### Interpret the results
+
+Review the following values from the `validation_message` field:
+
+- **Products processed**: Total rows evaluated
 - **Inserted**: New products created
-- **Updated**: Existing products with changed data (for example, price or availability)
+- **Updated**: Existing products with changed data, such as price or availability
 - **Unchanged**: Existing products with no changes
 - **Skipped**: Invalid rows or rows missing required fields
 
 
-## 3. Verify Products
-Run the GET /products endpoint using the `feed_id` from step 1 (FD00021) as a query parameter.
+## 3. Verify products
 
-**Example request**
+Run the `GET /products` endpoint using the `feed_id` from step 1 (`FD00021`) as a query parameter.
+
+### Example request
 
 ```bash
 curl -X GET "http://api.example.com/products?feed_id=FD00021" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
-**Example response**
+
+### Example response
 
 ```json
 {
@@ -110,7 +120,7 @@ curl -X GET "http://api.example.com/products?feed_id=FD00021" \
   "items": [
     {
       "product_id": "PR00145",
-      "feed_id": "FD00019",
+      "feed_id": "FD00021",
       "partner_name": "Test",
       "sku": "RS1001",
       "product_name": "Nike Air Zoom Pegasus 40",
@@ -124,7 +134,7 @@ curl -X GET "http://api.example.com/products?feed_id=FD00021" \
     },
     {
       "product_id": "PR00146",
-      "feed_id": "FD00019",
+      "feed_id": "FD00021",
       "partner_name": "Test",
       "sku": "RS1002",
       "product_name": "Adidas Ultraboost 22",
@@ -140,6 +150,7 @@ curl -X GET "http://api.example.com/products?feed_id=FD00021" \
 }
 ```
 
+
 ### Optional filters
 
 Use query parameters to refine results:
@@ -153,6 +164,8 @@ Use query parameters to refine results:
 
 ## Related documentation
 
+- [Feeds](feeds.md)
+- [Jobs](jobs.md)
+- [Products](products.md)
+- [CSV feed file specification](../specs/csv-feed-file-spec.md)
 - [Debug failed feed runbook](../operations/debug-product-feed.md)
-
-

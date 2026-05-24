@@ -1,6 +1,6 @@
 # System architecture
 
-This page explains the implementation architecture of the Commerce Integration API, including system components, application layers, storage boundaries, and key design decisions.
+This page describes the implementation architecture of the Commerce Integration API, including system components, application layers, storage boundaries, and core design decisions.
 
 For a higher-level operational view of ingestion, job execution, traceability, and recovery workflows, see [Platform architecture and operational flow](../architecture/platform-architecture.md).
 
@@ -10,6 +10,7 @@ For a higher-level operational view of ingestion, job execution, traceability, a
   <span>ETL processing</span>
   <span>Platform design</span>
 </div>
+
 
 ## Architecture principles
 
@@ -41,20 +42,21 @@ The system models a production-style ingestion architecture with separate API, p
 
 ## Architecture layers
 
+| Layer                         | Implementation                       | Responsibility                      |
+| ----------------------------- | ------------------------------------ | ----------------------------------- |
+| Client                        | curl, Postman, Swagger UI            | Sends API requests                  |
+| API layer                     | FastAPI routers                      | Handles HTTP requests and responses |
+| Application and service layer | ETL, S3 integration, analytics logic | Coordinates processing workflows    |
+| Data access layer             | `db.py`                              | Manages database operations         |
+| Storage layer                 | Amazon S3, PostgreSQL                | Stores raw and processed data       |
 
-| Layer                       | Implementation                       | Responsibility                      |
-| --------------------------- | ------------------------------------ | ----------------------------------- |
-| Client                      | curl, Postman, Swagger UI            | Sends API requests                  |
-| API layer                   | FastAPI routers                      | Handles HTTP requests and responses |
-| Application / service layer | ETL, S3 integration, analytics logic | Coordinates processing workflows    |
-| Data access layer           | `db.py`                              | Manages database operations         |
-| Storage layer               | Amazon S3, PostgreSQL                | Stores raw and processed data       |
 
-## High level architecture
+## High-level architecture
 
 <div class="diagram-card" markdown="1">
 ![High-level system architecture](../api/screenshots/high-level-system-architecture.svg)
 </div>
+
 
 ## API layer
 
@@ -118,6 +120,7 @@ The application supports local and deployed database configurations, with Postgr
 
 The storage layer separates raw ingestion data from processed application data.
 
+
 ### Amazon S3
 
 Amazon S3 stores raw uploaded feed files.
@@ -135,11 +138,10 @@ S3 supports:
 - Auditability
 - Operational recovery
 
+
 ### PostgreSQL
 
 PostgreSQL stores normalized and queryable data.
-
-Core tables include:
 
 Core tables include:
 
@@ -160,8 +162,9 @@ Core tables include:
 The feed ingestion workflow stores the raw file, creates operational metadata, and initializes processing jobs.
 
 <div class="diagram-card" markdown="1">
- ![Feed ingestion data flow](../api/screenshots/feed-ingestion-data-flow.svg) 
+![Feed ingestion data flow](../api/screenshots/feed-ingestion-data-flow.svg)
 </div>
+
 
 ## ETL processing data flow
 
@@ -171,6 +174,7 @@ ETL processing reads raw feed data from S3, transforms it, and updates processed
 ![ETL processing data flow](../api/screenshots/etl-processing-data-flow.svg)
 </div>
 
+
 ## Product query data flow
 
 Product query operations read from processed PostgreSQL data.
@@ -179,9 +183,11 @@ Product query operations read from processed PostgreSQL data.
 ![Product query data flow](../api/screenshots/product-query-data-flow.svg)
 </div>
 
+
 ## Read and write paths
 
 The system separates ingestion workflows from query workflows.
+
 
 ### Write path
 
@@ -191,6 +197,7 @@ The write path handles feed submission and ETL processing.
 - Raw data is stored in S3
 - Processing is tracked through jobs
 - Processed data is loaded into PostgreSQL
+
 
 ### Read path
 
@@ -228,6 +235,7 @@ Identifiers are generated using a database-backed counter.
 
 Each feed submission creates job resources used to track processing activity.
 
+
 ### Submission job
 
 The submission job tracks feed upload processing.
@@ -235,6 +243,7 @@ The submission job tracks feed upload processing.
 ```text
 JSxxxxx
 ```
+
 
 ### Validation job
 
@@ -320,6 +329,7 @@ This approach:
 
 ## Design decisions
 
+
 ### Separation of concerns
 
 The system separates routing, processing, persistence, and storage responsibilities.
@@ -331,16 +341,18 @@ This improves:
 - Operational clarity
 - Future extensibility
 
+
 ### Raw and processed data separation
 
-S3 stores raw feed files, while PostgreSQL stores normalized queryable data.
+Amazon S3 stores raw feed files, while PostgreSQL stores normalized queryable data.
 
 This enables:
 
 - Reprocessing
 - Auditing
 - Recovery workflows
-- Clean separation between ingestion and serving layers
+- Clear separation between ingestion and serving layers
+
 
 ### Controlled job execution
 
@@ -353,11 +365,13 @@ This supports:
 - Troubleshooting
 - Future migration to queue-based processing
 
+
 ### Cursor-based pagination
 
 The Products API uses cursor-based pagination to support scalable retrieval of large product datasets.
 
 This avoids the performance limitations associated with large offset-based queries.
+
 
 ### Field-level customer data protection
 
@@ -369,6 +383,7 @@ This supports:
 - Safer API response behavior
 - Clear separation between stored sensitive data and public response models
 - Compliance-oriented documentation and implementation patterns
+
 
 ## Future enhancements
 
@@ -388,12 +403,12 @@ Potential architecture enhancements include:
 - [Platform architecture and operational flow](../architecture/platform-architecture.md)
 - [Workflows](../architecture/workflows.md)
 - [Deployment guide](../architecture/deployment.md)
-- [Feeds API](../api/feeds.md)
-- [Jobs API](../api/jobs.md)
-- [Products API](../api/products.md)
-- [Orders API](../api/orders.md)
-- [Customers API](../api/customers.md)
-- [Analytics API](../api/analytics.md)
+- [Feeds](../api/feeds.md)
+- [Jobs](../api/jobs.md)
+- [Products](../api/products.md)
+- [Orders](../api/orders.md)
+- [Customers](../api/customers.md)
+- [Analytics](../api/analytics.md)
 - [Errors](../api/errors.md)
 
 For deployment evidence, see [Screenshots](../api/screenshots.md).
