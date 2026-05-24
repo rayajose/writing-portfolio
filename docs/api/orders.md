@@ -18,7 +18,7 @@ Include the API key in each request:
 -H "x-api-key: YOUR_API_KEY"
 ```
 
-## <span class="api-endpoint api-endpoint--post">POST /orders`</span>
+## <span class="api-endpoint api-endpoint--post">POST /orders</span>
 
 Use this endpoint to create an order from one or more catalog products.
 

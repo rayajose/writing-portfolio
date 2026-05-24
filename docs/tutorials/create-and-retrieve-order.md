@@ -159,7 +159,7 @@ Use the following products for this tutorial.
 
 Create an order using product IDs and quantities.
 
-For request schema details and response definitions, see the [Create order](../api/orders.md#create-order) endpoint documentation.
+For request schema details and response definitions, see the [Create order](../api/orders.md#post-orders) endpoint documentation.
 
 ### Request
 
@@ -249,7 +249,7 @@ curl -X POST "http://localhost:8000/orders" \
 
 Retrieve the order to validate stored order data and pricing.
 
-For endpoint details, see the [Get order](../api/orders.md#get-order) endpoint documentation.
+For endpoint details, see the [Get order](../api/orders.md#get-orders) endpoint documentation.
 
 ### Request
 

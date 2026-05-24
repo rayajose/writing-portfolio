@@ -1,48 +1,55 @@
-# Your first feed ingestion
+# Upload your first product feed
 
-In this tutorial, you will upload a product feed, process it through the system, and retrieve product data.
+Upload a product feed, process it through the ingestion pipeline, and retrieve product data from the catalog.
 
-This tutorial is designed for first-time users. It introduces the core workflow and explains what happens at each step.
+In this tutorial, you will:
 
+1. Upload a product feed
+2. Run ETL processing
+3. Retrieve ingested products
+4. Validate ingestion results
 
-## What you’ll learn
-
-By the end of this tutorial, you will understand:
-
-- What a product feed is
-- How the ingestion pipeline works
-- How product data becomes available in the API
-
+---
 
 ## Before you begin
 
-You need:
+You need the following:
 
-| Requirement       | Description                                                         |
-| ----------------- | ------------------------------------------------------------------- |
-| Base URL (local)  | `http://localhost:8000`                                             |
-| Base URL (AWS)    | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
-| API key           | `x-api-key: YOUR_API_KEY`                                           |
-| Valid .`csv` file | see  [CSV feed file specification](../specs/csv-feed-file-spec.md)  |
+| Requirement      | Description                                                         |
+| ---------------- | ------------------------------------------------------------------- |
+| Base URL (local) | `http://localhost:8000`                                             |
+| Base URL (AWS)   | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
+| API key          | `x-api-key: YOUR_API_KEY`                                           |
+| CSV file         | See [CSV feed file specification](../specs/csv-feed-file-spec.md)   |
 
+---
 
-## Step 1: Understand what a feed is
+## Step 1: Understand product feeds
 
-A **product feed** is a CSV file that contains product data from a partner.
+A product feed is a CSV file containing product data provided by a partner.
 
-Each row represents a product. At minimum, the system requires:
+Each row represents a product record. At minimum, the system requires:
 
-- `sku` (unique identifier per partner)
+- `sku`
 - `product_name`
 
-When you upload a feed, the system does not immediately make products available. Instead, it stores the raw file and prepares it for processing.
+When a feed is uploaded, the system stores the raw file and creates validation jobs before product data becomes available in the catalog.
 
+---
 
 ## Step 2: Upload the feed
 
-Upload your CSV file to create a new feed.
+Upload a CSV file to create a new feed.
+
+For endpoint details and request parameters, see the [Upload feed](../api/feeds.md#post-feedsupload) endpoint documentation.
 
 ### Request
+
+```http
+POST /feeds/upload
+```
+
+### Example request
 
 ```bash
 curl -X POST "http://localhost:8000/feeds/upload" \
@@ -51,7 +58,7 @@ curl -X POST "http://localhost:8000/feeds/upload" \
   -F "partner_name=Tronics"
 ```
 
-### Response
+### Example response
 
 ```json
 {
@@ -62,27 +69,37 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 }
 ```
 
-### Processing behavior
+### Validate upload behavior
 
-- The file is stored in the raw data layer (S3)
+After uploading the feed:
+
+- The raw CSV file is stored in Amazon S3
 - A validation job is created
-- The system queues the feed for processing
+- Feed processing is queued
+- Products are not yet available in the catalog
 
-At this point, the data is not yet available for querying.
-
+---
 
 ## Step 3: Run ETL processing
 
-Process the feed to validate and transform the data.
+Run the validation job to process the uploaded feed.
+
+For endpoint details, see the [Run job](../api/jobs.md#post-jobsjob_idrun) endpoint documentation.
 
 ### Request
+
+```http
+POST /jobs/{job_id}/run
+```
+
+### Example request
 
 ```bash
 curl -X POST "http://localhost:8000/jobs/JV00009/run" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
-### Response
+### Example response
 
 ```json
 {
@@ -91,30 +108,39 @@ curl -X POST "http://localhost:8000/jobs/JV00009/run" \
 }
 ```
 
-### Processing behavior
+### Validate processing behavior
 
-During this step, the system:
+During processing, the system:
 
-- Validates the CSV structure
+- Validates CSV structure
 - Checks required fields
 - Transforms rows into product records
-- Inserts or updates products in the database
+- Inserts or updates products in PostgreSQL
 
-Only after this step completes can you query product data.
+Products become available for querying only after processing completes successfully.
 
+---
 
 ## Step 4: Retrieve products
 
-Query the API to confirm that products were ingested.
+Retrieve products from the catalog to confirm ingestion completed successfully.
+
+For filters, sorting options, and pagination behavior, see the [Get products](../api/products.md#get-products) endpoint documentation.
 
 ### Request
 
+```http
+GET /products?partner_name=Tronics&limit=5
+```
+
+### Example request
+
 ```bash
-curl -X GET "http://localhost:8000/products?limit=5" \
+curl -X GET "http://localhost:8000/products?partner_name=Tronics&limit=5" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
-### Response
+### Example response
 
 ```json
 {
@@ -122,51 +148,99 @@ curl -X GET "http://localhost:8000/products?limit=5" \
   "items": [
     {
       "product_id": "PR00001",
+      "partner_name": "Tronics",
       "sku": "TV-001",
-      "product_name": "4K Smart TV"
+      "product_name": "4K Smart TV",
+      "category": "Electronics",
+      "price": 799.99,
+      "availability": "in_stock"
     }
   ]
 }
 ```
 
-### What this means
+### Validate ingestion results
 
-- Products are now available in the catalog
-- The ingestion pipeline completed successfully
+After retrieving products:
 
+- Product data is available in the catalog
+- Feed ingestion completed successfully
+- Product records were loaded into PostgreSQL
 
-## How the system processes your data
+---
 
-The ingestion workflow follows four stages:
+## Understand the ingestion pipeline
 
-1. **Raw**
+The ingestion workflow consists of four stages:
 
-   - Stores the original CSV file
+| Stage          | Description                                       |
+| -------------- | ------------------------------------------------- |
+| Raw            | Stores the original CSV file                      |
+| Validation     | Validates structure and required fields           |
+| Transformation | Converts CSV rows into normalized product records |
+| Load           | Inserts or updates products in PostgreSQL         |
 
-2. **Validation**
+---
 
-   - Checks structure and required fields
+## Troubleshoot common issues
 
-3. **Transformation**
+### Invalid CSV structure
 
-   - Converts CSV rows into product records
+Example response:
 
-4. **Load**
+```json
+{
+  "detail": "Invalid CSV format"
+}
+```
 
-   - Inserts or updates products in the database
+To resolve this issue:
 
+- Verify the file uses CSV format
+- Confirm column headers are present
+- Validate delimiter formatting
 
-## What to try next
+---
 
-Now that you’ve completed your first ingestion:
+### Missing required fields
 
-- Use filters to query specific products
-- Upload a larger or more complex feed
-- Introduce invalid data to see how validation behaves
+Example response:
 
+```json
+{
+  "detail": "Missing required field: sku"
+}
+```
+
+To resolve this issue:
+
+- Ensure all required fields are included
+- Verify each product row contains valid values
+
+---
+
+### Feed processing failed
+
+Example response:
+
+```json
+{
+  "job_id": "JV00009",
+  "status": "failed"
+}
+```
+
+To resolve this issue:
+
+- Retrieve job details
+- Review validation errors
+- Correct the source CSV file
+- Re-upload the feed
+
+---
 
 ## Next steps
 
-- See [Ingest a product feed end-to-end](../api/ingest-product-feed.md) for a task-focused workflow
-- See [Debug failed feed runbook](../operations/debug-product-feed.md) to troubleshoot issues
-- Explore [Products API](../api/products.md) for advanced queries
+- See [Ingest a product feed end-to-end](../api/ingest-product-feed.md) for a workflow-focused guide
+- See [Debug failed feed](../operations/debug-product-feed.md) for troubleshooting procedures
+- Explore the [Products API reference](../api/products.md) for advanced queries

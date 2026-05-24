@@ -1,4 +1,4 @@
-# Debug failed feed runbook
+# Debug failed feed
 
 Use this guide to investigate and fix a failed product feed during validation or ETL processing.
 Use this workflow during partner onboarding or when troubleshooting production ingestion issues.
