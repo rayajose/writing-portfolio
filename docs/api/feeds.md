@@ -35,7 +35,7 @@ Upload a CSV product feed and create associated processing jobs.
     Product data is not ingested during upload. Ingestion occurs during ETL processing workflows.
 
 
-## Request body (`multipart/form-data`)
+## Request body (multipart/form-data)
 
 | Field          | Type   | Required | Description                  |
 | -------------- | ------ | -------- | ---------------------------- |
