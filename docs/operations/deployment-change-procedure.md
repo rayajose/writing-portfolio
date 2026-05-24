@@ -1,20 +1,20 @@
 # Deployment change procedure
 
-This procedure defines the operational workflow for planning, validating, deploying, and verifying application changes for the Commerce Integration API platform.
+This procedure defines the workflow for planning, validating, deploying, and verifying application changes for the Commerce Integration API platform.
 
-The procedure supports controlled deployment activities across application, infrastructure, and operational workflows while reducing operational risk during production-style changes.
+The procedure supports controlled deployment activities across application, infrastructure, and operational workflows while reducing deployment-related risk.
 
 
 ## Purpose
 
-The purpose of this procedure is to:
+This procedure is intended to:
 
 - Standardize deployment workflows
-- Reduce deployment-related operational risk
+- Reduce deployment-related risk
 - Support repeatable release procedures
-- Provide rollback and recovery guidance
-- Improve operational visibility during deployments
-- Ensure deployment verification activities are consistently performed
+- Provide rollback guidance
+- Improve deployment visibility
+- Ensure deployment verification activities are completed consistently
 
 
 ## Scope
@@ -32,7 +32,7 @@ This procedure applies to:
 
 ## Deployment architecture overview
 
-The Commerce Integration API is deployed using the following AWS services:
+The Commerce Integration API is deployed using:
 
 - Amazon ECS (Fargate)
 - Amazon ECR
@@ -47,12 +47,12 @@ Application containers are deployed through ECS services using Docker images sto
 
 Before deployment:
 
-- Application changes must be validated locally
-- Docker image builds must complete successfully
-- Required environment variables must be verified
-- Database schema changes must be reviewed
-- Operational impacts must be evaluated
-- Existing services must be confirmed healthy
+- Validate application changes locally
+- Verify Docker image builds complete successfully
+- Confirm required environment variables
+- Review database schema changes
+- Evaluate operational impact
+- Confirm existing services are healthy
 
 
 ## Local validation workflow
@@ -68,13 +68,15 @@ Recommended validation activities include:
 - Job execution testing
 - Order and analytics validation
 
-Example local startup:
+
+### Example local startup
 
 ```bash
 uvicorn main:app --reload
 ```
 
-Example validation endpoints:
+
+### Example validation endpoints
 
 ```text
 /health
@@ -86,6 +88,7 @@ Example validation endpoints:
 
 ## Build and publish workflow
 
+
 ### Authenticate to Amazon ECR
 
 ```bash
@@ -93,11 +96,13 @@ aws ecr get-login-password --region us-east-2 \
 | docker login --username AWS --password-stdin 792233688886.dkr.ecr.us-east-2.amazonaws.com
 ```
 
+
 ### Build Docker image
 
 ```bash
 docker build -t partner-catalog-api .
 ```
+
 
 ### Tag Docker image
 
@@ -105,6 +110,7 @@ docker build -t partner-catalog-api .
 docker tag partner-catalog-api:latest \
 792233688886.dkr.ecr.us-east-2.amazonaws.com/partner-catalog-api:latest
 ```
+
 
 ### Push Docker image
 
@@ -117,6 +123,7 @@ docker push 792233688886.dkr.ecr.us-east-2.amazonaws.com/partner-catalog-api:lat
 
 Deploy updated application images through the ECS service configuration.
 
+
 ### Deployment steps
 
 1. Open the ECS service
@@ -124,6 +131,7 @@ Deploy updated application images through the ECS service configuration.
 3. Update the service
 4. Enable **Force new deployment**
 5. Deploy the updated task set
+
 
 ### Deployment behavior
 
@@ -136,17 +144,19 @@ Deploy updated application images through the ECS service configuration.
 
 Validate deployment success after rollout completes.
 
+
 ### Verification activities
 
 - Confirm ECS tasks reach healthy status
 - Confirm ALB target health status
-- Verify `/health` endpoint response
+- Verify `/health` endpoint responses
 - Validate Swagger UI accessibility
 - Validate database connectivity
 - Execute representative API requests
 - Confirm ETL processing functionality
 
-Example verification endpoint:
+
+### Example verification endpoint
 
 ```text
 /health
@@ -155,9 +165,9 @@ Example verification endpoint:
 
 ## Database change considerations
 
-Database schema changes should be validated carefully before deployment.
+Validate database schema changes carefully before deployment.
 
-Operational considerations include:
+Consider:
 
 - Backward compatibility
 - ETL processing impact
@@ -165,12 +175,13 @@ Operational considerations include:
 - Analytics query compatibility
 - Order workflow compatibility
 
-Schema changes should be validated locally before updating deployed environments.
+Validate schema changes locally before updating deployed environments.
 
 
 ## Deployment failure handling
 
-Deployment failures should trigger operational investigation and recovery procedures.
+Deployment failures should trigger investigation and recovery procedures.
+
 
 ### Common deployment failures
 
@@ -191,16 +202,16 @@ If deployment validation fails:
 - Review deployment configuration
 - Confirm database accessibility
 - Verify image integrity
-- Redeploy previous known-good configuration if required
+- Redeploy the previous known-good configuration if required
 
-Rollback procedures should prioritize restoration of application availability and processing stability.
+Rollback procedures should prioritize restoring application availability and processing stability.
 
 
 ## Operational monitoring during deployment
 
-Deployment activities should be monitored throughout rollout and validation workflows.
+Monitor deployment activity throughout rollout and validation workflows.
 
-Monitoring activities include:
+Recommended monitoring activities include:
 
 - ECS task state monitoring
 - ALB health check monitoring
@@ -209,7 +220,8 @@ Monitoring activities include:
 - Database connectivity verification
 
 
-## Deployment responsibilities
+## Responsibilities
+
 
 ### Platform administrators
 
@@ -220,6 +232,7 @@ Responsible for:
 - Deployment validation
 - Rollback coordination
 
+
 ### Developers
 
 Responsible for:
@@ -228,6 +241,7 @@ Responsible for:
 - Docker image preparation
 - Local testing
 - Change verification
+
 
 ### Integration operators
 
@@ -241,7 +255,7 @@ Responsible for:
 
 ## Deployment principles
 
-The platform follows the following deployment principles:
+The platform follows these deployment principles:
 
 - Validate locally before deployment
 - Use controlled deployment workflows

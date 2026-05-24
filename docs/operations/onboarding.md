@@ -7,43 +7,46 @@ This page defines the process for onboarding a new partner product feed into the
 
 ## Scope
 
-This process applies to the following scenarios:
+This process applies to:
 
 - New partner integrations
 - Initial product feed ingestion
 - Validation and activation of partner data
 
-It is intended for use by operations teams, integration engineers, and support personnel.
+This process is intended for operations teams, integration engineers, and support personnel.
 
 
 ## Preconditions
 
 Before starting, confirm the following:
 
-- Partner has provided a valid CSV product feed
-- Required fields are present (minimum: `sku`, `product_name`)
-- API access is available (API key configured)
-- Target environment is identified (test or production)
+- The partner has provided a valid CSV product feed
+- Required fields are present (`sku` and `product_name` minimum)
+- API access is available
+- The target environment is identified (`test` or `production`)
 
 
-## Processing behavior
+## Workflow overview
 
-- Upload a partner feed  
-- Create submission and validation jobs  
-- Validate and process data through ETL  
-- Store products in the database  
-- Make products available via the API
-- Support downstream customer and order workflows  
+The onboarding workflow performs the following operations:
+
+- Upload a partner feed
+- Create submission and validation jobs
+- Validate and process feed data through ETL workflows
+- Store normalized products in PostgreSQL
+- Make products available through the API
+- Support downstream customer and order workflows
 
 
 ## Procedure
 
-### Step 1: Upload partner feed
+
+### Step 1. Upload a partner feed
 
 Submit the product feed using the upload endpoint.
 
 ```bash
-curl -X POST "http://api.example.com/feeds/upload" \
+curl -X POST http://api.example.com/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
   -F "partner_name=Acme Corp" \
   -F "file=@sample_catalog.csv"
@@ -56,7 +59,8 @@ curl -X POST "http://api.example.com/feeds/upload" \
 - A submission job (`JSxxxxx`) is created
 - A validation job (`JVxxxxx`) is queued
 
-Example response:
+
+### Example response
 
 ```json
 {
@@ -67,44 +71,53 @@ Example response:
 ```
 
 
-### Step 2: Verify feed registration
+### Step 2. Verify feed registration
 
-Retrieve the feed to confirm it was successfully registered.
+Retrieve the feed to confirm successful registration.
 
 ```bash
-curl -H "x-api-key: YOUR_API_KEY" \
-  "http://api.example.com/feeds/FD00010"
+curl -X GET http://api.example.com/feeds/FD00010 \
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 
 ### Validation checks
 
+Verify that:
+
 - `status` is `uploaded` or `validating`
 - `validation_job_id` is present
-- `partner_name` and `file_name` should match input
+- `partner_name` and `file_name` match the uploaded feed
 
 
-### Step 3: Monitor validation job
+### Step 3. Monitor validation job
 
-Check the status of the validation job.
+Retrieve the validation job status.
 
 ```bash
-curl -H "x-api-key: YOUR_API_KEY" \
-  "http://api.example.com/jobs/JV00010"
+curl -X GET http://api.example.com/jobs/JV00010 \
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 
 ### Expected status flow
 
-- `queued` → `running` → `completed`
-- If errors occur: `failed`
+```text
+queued → running → completed
+```
+
+If processing fails, the job status becomes:
+
+```text
+failed
+```
 
 
-### Step 4: Review validation results
+### Step 4. Review validation results
 
-Once the job is `completed`, review the ETL summary.
+After the job reaches `completed`, review the ETL summary.
 
-Example:
+### Example response
 
 ```json
 {
@@ -114,88 +127,103 @@ Example:
 ```
 
 
-### What the results mean
+### Result definitions
 
-- **Inserted**: New products added
-- **Updated**: Existing products modified (data changes detected)
-- **Unchanged**: No changes from existing records
-- **Skipped**: Invalid rows (missing required fields or malformed data)
+| Result    | Description                                    |
+| --------- | ---------------------------------------------- |
+| Inserted  | New products added                             |
+| Updated   | Existing products updated because data changed |
+| Unchanged | Existing products matched incoming data        |
+| Skipped   | Invalid rows or rows missing required fields   |
 
 
-### Step 5: Validate product availability
+### Step 5. Verify product availability
 
-Confirm that products are accessible via the API.
+Confirm that products are accessible through the API.
 
 ```bash
-curl -H "x-api-key: YOUR_API_KEY" \
-  "http://api.example.com/products?partner_name=<partner_name>"
+curl -X GET \
+  "http://api.example.com/products?partner_name=Acme%20Corp" \
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 
 ### Validation checks
 
+Verify that:
+
 - Products are returned for the correct partner
-- Key fields (SKU, name, price, availability) are populated
-- Record counts align with ETL summary
+- Key fields are populated
+- Record counts align with the ETL summary
 - Products are available for downstream order workflows
 
 
 ## Decision points
 
-### If validation fails
 
-- Review the error message from the job response
-- Check CSV format and required fields
-- Correct issues and re-upload feed
+### Validation failed
 
+If validation fails:
 
-### If high skip count
-
-- Inspect skipped rows for missing or invalid data
-- Confirm required fields (`sku`, `product_name`) are present
-- Coordinate with partner to correct source data
+1. Review the job response error message
+2. Verify CSV formatting and required fields
+3. Correct feed issues
+4. Re-upload the feed
 
 
-### If products not returned
+### High skipped-row count
 
-- Confirm ETL job completed successfully
-- Verify filters in product query
-- Check database connectivity or ingestion logs
+If the skipped count is unexpectedly high:
+
+1. Inspect skipped rows for invalid or missing values
+2. Verify required fields such as `sku` and `product_name`
+3. Coordinate with the partner to correct source data
+
+
+### Products not returned
+
+If products are not returned through the API:
+
+1. Confirm that ETL processing completed successfully
+2. Verify product query filters
+3. Review ingestion logs and database connectivity
 
 
 ## Results
 
 After successful onboarding:
 
-- Partner products are available via `/products` endpoint
+- Partner products are available through the `/products` endpoint
 - Feed status is `validated`
-- Data is persisted in the system
-- Partner can perform subsequent updates via feed re-submission
-- Products become available for customer-linked order workflows
-- Product data becomes queryable through analytics endpoints
+- Product data is persisted in PostgreSQL
+- Partners can submit future feed updates
+- Products are available for downstream order workflows
+- Product data is queryable through analytics endpoints
 
 
 ## Additional details
 
-- Re-running validation on the same feed should not create duplicates
-- Product uniqueness is enforced by `(partner_name, sku)`
-- Updates are only counted when actual data changes occur
-- Raw files are stored for traceability and reprocessing
+- Re-running validation on the same feed does not create duplicate products
+- Product uniqueness is enforced using `(partner_name, sku)`
+- Products are updated only when data changes are detected
+- Raw uploaded files are retained for replay and troubleshooting workflows
 - Feed ingestion supports downstream transactional order workflows
 - Product records may later be associated with customer-linked orders
 
-## Operational security considerations
+
+## Security considerations
 
 - API access requires authenticated requests using `x-api-key`
-- Raw uploaded files should remain restricted to authorized operational workflows
-- Customer-sensitive workflows are handled separately from ingestion processing
-- Operational logs should avoid storing sensitive credentials or secrets
+- Raw uploaded files should remain restricted to authorized workflows
+- Customer-sensitive workflows are separated from ingestion workflows
+- Operational logs should avoid storing credentials or secrets
+
 
 ## Related documentation
 
-- [API Overview](../api/index.md)
-- [Workflows](../architecture/workflows.md)
-- [Customers API](../api/customers.md)
-- [Orders API](../api/orders.md)
+- [API and integrations](../api/index.md)
+- [Integration guide](../api/integration-guide.md)
+- [Products](../api/products.md)
+- [Customers](../api/customers.md)
+- [Orders](../api/orders.md)
 - [Security and compliance](../security/index.md)
-- [Products API](../api/products.md)

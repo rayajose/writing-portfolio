@@ -58,8 +58,9 @@ nav:
   - Operations:
       - Overview: operations/index.md
       - SOPs: 
-        - Partner onboarding SOP: operations/onboarding.md
+        - Partner onboarding: operations/onboarding.md
         - Deployment change procedure: operations/deployment-change-procedure.md
+        - Edge gateway deployment guide: operations/edge-gateway-guide.md
       - Runbooks:
         - Debug failed feed runbook: operations/debug-product-feed.md
         - Backup and recovery runbook: operations/backup-recovery-procedure.md
