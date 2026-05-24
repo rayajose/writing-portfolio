@@ -2,7 +2,7 @@
 
 This document defines authentication, authorization, and operational access control requirements for the Commerce Integration API platform.
 
-The policy documents security controls supporting API authentication, operational accountability, infrastructure access restrictions, and traceability across ingestion and processing workflows.
+The policy describes security controls supporting API authentication, operational accountability, infrastructure access restrictions, and traceability across ingestion and processing workflows.
 
 The controls described in this document reflect operational practices commonly used in enterprise SaaS and integration environments.
 
@@ -16,7 +16,7 @@ The controls described in this document reflect operational practices commonly u
 
 ## Purpose
 
-The purpose of this policy is to:
+This policy is intended to:
 
 - Define authentication and access control requirements
 - Restrict unauthorized access to platform resources
@@ -36,7 +36,8 @@ This policy applies to:
 - Operational administration activities
 - Supporting AWS infrastructure components
 
-Applicable infrastructure includes:
+
+### Applicable infrastructure
 
 - Amazon ECS (Fargate)
 - Amazon RDS (PostgreSQL)
@@ -61,17 +62,19 @@ The platform implements access control and authentication practices designed to 
 
 The Commerce Integration API uses API key–based authentication for protected endpoints.
 
+
 ### API authentication requirements
 
 All API endpoints except `/health` require a valid API key.
 
-Authentication credentials are supplied using the request header:
+Authentication credentials are supplied using the following request header:
 
 ```text
-x-api-key: <api-key>
+x-api-key: YOUR_API_KEY
 ```
 
 Requests without valid credentials are rejected.
+
 
 ### Authentication failure behavior
 
@@ -82,16 +85,21 @@ Authentication failures return:
 
 Authentication validation occurs before protected operations are executed.
 
+
 ## Customer workflow protections
 
 Customer and shipping workflows require authenticated API access.
 
-Protected customer workflow endpoints include:
+
+### Protected customer workflow endpoints
 
 - `POST /customers`
 - `GET /customers/{customer_id}`
 - `POST /customers/{customer_id}/addresses`
 - `GET /customers/addresses/{address_id}`
+
+
+### Customer and shipping references
 
 Orders can optionally reference customer and shipping address records using:
 
@@ -100,16 +108,19 @@ customer_id
 shipping_address_id
 ```
 
+
 ## API key management
 
 API keys are used to restrict access to authorized integration workflows.
+
 
 ### API key handling requirements
 
 - API keys must not be committed to source control
 - API keys must not be embedded in client-side applications
 - Credentials should be stored using environment variables or secured configuration mechanisms
-- Demo credentials must remain logically separated from production-oriented credentials
+- Demo credentials should remain logically separated from production-oriented credentials
+
 
 ### Credential distribution
 
@@ -121,6 +132,7 @@ Access to production-oriented credentials should follow least privilege principl
 ## Authorization and access control
 
 Access to operational systems and infrastructure components is restricted according to operational responsibility.
+
 
 ### Operational access principles
 
@@ -138,17 +150,20 @@ Examples include:
 
 Infrastructure access controls are implemented through AWS networking and service configuration.
 
+
 ### Amazon RDS access restrictions
 
 - PostgreSQL is not publicly accessible
 - Database access is restricted through security group configuration
 - ECS tasks act as the trusted source for database connectivity
 
+
 ### Amazon S3 access restrictions
 
 - Raw uploaded feed files are stored in Amazon S3
 - Access to raw ingestion data should be restricted through IAM policies and operational controls
 - Raw feed retention supports operational traceability and replay workflows
+
 
 ### ECS and deployment access
 
@@ -161,19 +176,21 @@ Infrastructure access controls are implemented through AWS networking and servic
 
 The platform supports separation between local, development, and production-oriented environments.
 
-Environment separation practices include:
+
+### Environment separation practices
 
 - Environment-specific configuration values
 - Environment-specific credentials
 - Independent infrastructure configuration
 - Separation of local and deployed operational workflows
 
-Demo API credentials used in documentation are not intended to represent production credentials.
+Demo API credentials used in documentation examples are not intended to represent production credentials.
 
 
 ## Logging and operational traceability
 
 The platform maintains operational metadata supporting troubleshooting, workflow visibility, and audit-oriented traceability.
+
 
 ### Operational metadata
 
@@ -186,11 +203,12 @@ The platform tracks:
 - Validation results
 - Feed processing timestamps
 
+
 ### Job lifecycle tracking
 
 Operational workflows are tracked through explicit job resources.
 
-Job states include:
+Supported job states include:
 
 - `queued`
 - `running`
@@ -198,6 +216,7 @@ Job states include:
 - `failed`
 
 This supports operational troubleshooting and ingestion visibility across asynchronous processing workflows.
+
 
 ## Logging restrictions
 
@@ -209,16 +228,18 @@ Operational logs should avoid storing:
 - Authentication secrets
 - Database credentials
 
-Operational logs should use structured identifiers instead, such as:
+Operational logs should use structured identifiers instead, including:
 
 - `CUxxxxx`
 - `ADxxxxx`
 - `ORxxxxx`
 - `OIxxxxx`
 
+
 ## Credential handling requirements
 
 Credentials and operational secrets should be handled securely throughout development and deployment workflows.
+
 
 ### Credential management practices
 
@@ -227,35 +248,37 @@ Credentials and operational secrets should be handled securely throughout develo
 - Operational secrets should not be embedded directly in application source code
 - Access to deployment configuration should be restricted to authorized operators
 
+
 ## Customer-sensitive data protection
 
-The following customer-sensitive fields are encrypted before storage and masked in API responses.
+The following customer-sensitive fields are encrypted before storage and masked in API responses:
 
 - Email addresses
 - Phone numbers
 - Street addresses
 - Postal codes
 
-
-
 Encrypted database values are not exposed through standard customer API responses.
+
 
 ## Incident handling considerations
 
 Authentication failures, operational access issues, and processing anomalies should be investigated according to established operational procedures.
 
-Operational response activities may include:
 
-- Reviewing job execution history
-- Investigating failed processing workflows
-- Reviewing deployment activity
-- Validating operational configuration state
-- Coordinating recovery procedures
+### Operational response activities
+
+- Review job execution history
+- Investigate failed processing workflows
+- Review deployment activity
+- Validate operational configuration state
+- Coordinate recovery procedures
 
 Related operational recovery procedures are documented in the incident response plan.
 
 
 ## Roles and responsibilities
+
 
 ### Platform administrators
 
@@ -266,6 +289,7 @@ Responsible for:
 - Credential management
 - Operational configuration management
 
+
 ### Integration operators
 
 Responsible for:
@@ -274,6 +298,7 @@ Responsible for:
 - Validation coordination
 - Operational troubleshooting
 - Processing workflow monitoring
+
 
 ### Developers
 

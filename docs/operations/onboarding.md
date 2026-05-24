@@ -72,7 +72,7 @@ Example response:
 Retrieve the feed to confirm it was successfully registered.
 
 ```bash
-curl -H "x-api-key: <api-key>" \
+curl -H "x-api-key: YOUR_API_KEY" \
   "http://api.example.com/feeds/FD00010"
 ```
 
@@ -89,7 +89,7 @@ curl -H "x-api-key: <api-key>" \
 Check the status of the validation job.
 
 ```bash
-curl -H "x-api-key: <api-key>" \
+curl -H "x-api-key: YOUR_API_KEY" \
   "http://api.example.com/jobs/JV00010"
 ```
 
@@ -127,7 +127,7 @@ Example:
 Confirm that products are accessible via the API.
 
 ```bash
-curl -H "x-api-key: <api-key>" \
+curl -H "x-api-key: YOUR_API_KEY" \
   "http://api.example.com/products?partner_name=<partner_name>"
 ```
 

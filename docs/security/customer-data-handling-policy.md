@@ -8,6 +8,7 @@ The policy establishes controls for storing, processing, masking, and protecting
 
 The current implementation is intended for fictional demonstration data only.
 
+
 ## Scope
 
 This policy applies to:
@@ -27,6 +28,7 @@ Applicable platform components include:
 - ETL and analytics workflows
 - Operational logging systems
 
+
 ## Customer-sensitive data types
 
 The following data elements are considered customer-sensitive:
@@ -38,6 +40,7 @@ The following data elements are considered customer-sensitive:
 
 These values are treated as restricted operational data.
 
+
 ## Data handling objectives
 
 The platform implements customer data handling controls designed to:
@@ -45,8 +48,9 @@ The platform implements customer data handling controls designed to:
 - Reduce exposure of sensitive values
 - Demonstrate field-level encryption
 - Prevent accidental disclosure through API responses
-- Support safer operational logging behavior
+- Support secure operational logging practices
 - Demonstrate compliance-oriented API design
+
 
 ## Encryption requirements
 
@@ -58,12 +62,13 @@ The current implementation uses:
 - Fernet symmetric encryption
 - Environment-managed encryption keys
 
-Encrypted fields currently include:
+The following fields are encrypted before storage:
 
 - Email addresses
 - Phone numbers
 - Street addresses
 - Postal codes
+
 
 ## API response requirements
 
@@ -78,7 +83,8 @@ al***@example.com
 ***01
 ```
 
-Encrypted database values are not exposed directly through customer endpoints.
+Encrypted database values are not exposed through standard customer API responses.
+
 
 ## Logging restrictions
 
@@ -89,12 +95,13 @@ Operational logs must not contain:
 - Encryption keys
 - Authentication secrets
 
-Operational workflows should instead reference:
+Operational workflows should instead reference structured identifiers such as:
 
 - Customer identifiers
 - Address identifiers
 - Order identifiers
 - Job identifiers
+
 
 ## Identifier strategy
 
@@ -106,6 +113,7 @@ Customer workflows use structured identifiers.
 | `ADxxxxx` | Customer address |
 | `ORxxxxx` | Order            |
 | `OIxxxxx` | Order item       |
+
 
 ## Storage requirements
 
@@ -121,6 +129,7 @@ Approved storage systems include:
 - PostgreSQL
 - Approved cloud infrastructure services
 
+
 ## Access requirements
 
 Customer workflows require authenticated API access using:
@@ -130,6 +139,7 @@ x-api-key
 ```
 
 Unauthorized requests must be rejected.
+
 
 ## Development requirements
 
@@ -147,6 +157,7 @@ Example fictional customer records may use:
 - Placeholder phone numbers
 - Non-real shipping addresses
 
+
 ## Operational considerations
 
 Operational support activities should:
@@ -155,6 +166,7 @@ Operational support activities should:
 - Restrict database access to authorized personnel
 - Protect environment configuration files
 - Follow secure logging practices
+
 
 ## Compliance-oriented behaviors
 
@@ -165,6 +177,7 @@ The current implementation demonstrates:
 - Separation of customer and transactional workflows
 - Restricted operational logging
 - Authenticated API access
+
 
 ## Limitations
 
@@ -180,6 +193,7 @@ Production implementations handling real regulated customer data would require a
 - TLS enforcement
 - Production security monitoring
 
+
 ## Responsibilities
 
 ### Developers
@@ -191,6 +205,7 @@ Responsible for:
 - Maintaining encryption workflows
 - Preserving masking behavior
 
+
 ### Operators
 
 Responsible for:
@@ -198,6 +213,7 @@ Responsible for:
 - Protecting operational systems
 - Restricting infrastructure access
 - Maintaining secure operational workflows
+
 
 ### Administrators
 
@@ -207,10 +223,11 @@ Responsible for:
 - Managing infrastructure access
 - Supporting operational security controls
 
+
 ## Related documentation
 
 - [Data classification policy](data-classification-policy.md)
 - [Encryption policy](encryption-policy.md)
 - [API access control and authentication policy](api-access-control-policy.md)
-- [Customers API](../api/customers.md)
-- [Orders API](../api/orders.md)
+- [Customers](../api/customers.md)
+- [Orders](../api/orders.md)

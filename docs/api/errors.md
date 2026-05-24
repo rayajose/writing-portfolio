@@ -1,6 +1,6 @@
 # Errors
 
-Use this page to understand how the Commerce Integration API returns errors.
+Use this page to understand how the Commerce Integration API returns and handles errors.
 
 ## Error format
 
@@ -12,41 +12,46 @@ The API primarily uses FastAPI’s standard error response format.
 }
 ```
 
-### Fields
+
+### Response fields
 
 | Field    | Type   | Description              |
 | -------- | ------ | ------------------------ |
 | `detail` | string | Description of the error |
 
+
 ## Common error scenarios
 
-Errors may occur in the following situations:
+Errors can occur in the following situations:
 
 - Missing or invalid API key
-- Invalid request data (for example, malformed CSV)
-- Resource not found (feed, job, product, customer, address, or order does not exist)
+- Invalid request data, such as malformed CSV input
+- Requested resource does not exist
 - Product availability conflicts during order creation
 - Invalid customer or shipping address references
-- ETL processing failure
-- Database or infrastructure issues
+- ETL processing failures
+- Database or infrastructure failures
+
 
 ## Status codes
 
 | Status | Meaning                                                |
 | ------ | ------------------------------------------------------ |
-| 200    | Request completed successfully                         |
-| 201    | Resource created successfully                          |
-| 400    | Bad request (invalid input or business rule violation) |
-| 401    | Missing API key                                        |
-| 403    | Invalid API key                                        |
-| 404    | Requested resource not found                           |
-| 409    | Request conflict or unavailable resource               |
-| 422    | Request validation failed                              |
-| 500    | Internal server error                                  |
+| `200`  | Request completed successfully                         |
+| `201`  | Resource created successfully                          |
+| `400`  | Bad Request (`invalid input or business rule failure`) |
+| `401`  | Unauthorized (`missing API key`)                       |
+| `403`  | Forbidden (`invalid API key`)                          |
+| `404`  | Requested resource not found                           |
+| `409`  | Request conflict or unavailable resource               |
+| `422`  | Request validation failed                              |
+| `500`  | Internal server error                                  |
+
 
 ## Authentication errors
 
-These errors occur when a request is missing valid authentication credentials or includes an invalid API key.
+Authentication errors occur when a request is missing valid credentials or includes an invalid API key.
+
 
 ### 401 Unauthorized
 
@@ -60,6 +65,7 @@ Returned when the API key is missing.
 }
 ```
 
+
 ### 403 Forbidden
 
 Returned when the API key is invalid.
@@ -72,9 +78,11 @@ Returned when the API key is invalid.
 }
 ```
 
+
 ## Resource errors
 
-These errors occur when a requested resource cannot be found or does not exist in the system.
+Resource errors occur when a requested resource does not exist in the system.
+
 
 ### 404 Not Found
 
@@ -128,13 +136,15 @@ Returned when a requested resource does not exist.
 }
 ```
 
+
 ## Validation errors
 
-These errors occur when request data fails validation or does not meet required input rules.
+Validation errors occur when request data fails validation or violates business rules.
+
 
 ### 400 Bad Request
 
-Returned when the request is syntactically valid but fails business rules.
+Returned when the request is syntactically valid but fails business validation rules.
 
 #### Example: Unsupported file type
 
@@ -184,6 +194,7 @@ Returned when the request is syntactically valid but fails business rules.
 }
 ```
 
+
 ### 409 Conflict
 
 Returned when the request conflicts with the current resource state.
@@ -196,9 +207,12 @@ Returned when the request conflicts with the current resource state.
 }
 ```
 
+
 ### 422 Unprocessable Entity
 
-Returned when request data fails validation (handled by FastAPI).
+Returned when request data fails schema validation.
+
+FastAPI automatically generates these validation responses.
 
 #### Example
 
@@ -214,9 +228,11 @@ Returned when request data fails validation (handled by FastAPI).
 }
 ```
 
+
 ## Job execution errors
 
-These errors occur when job execution requests are invalid or when ETL processing fails.
+Job execution errors occur when job execution requests are invalid or when ETL processing fails.
+
 
 ### 400 Bad Request
 
@@ -230,7 +246,8 @@ Returned when attempting to execute an unsupported job type.
 }
 ```
 
-### 500 Internal Server Error (ETL failure)
+
+### 500 Internal Server Error
 
 Returned when ETL processing fails during job execution.
 
@@ -242,9 +259,11 @@ Returned when ETL processing fails during job execution.
 }
 ```
 
+
 ## Infrastructure errors
 
-These errors occur due to system-level failures affecting application availability or data access.
+Infrastructure errors occur when system-level failures affect application availability or data access.
+
 
 ### 500 Internal Server Error
 
@@ -253,10 +272,11 @@ Returned when an unexpected server-side error occurs.
 #### Example scenarios
 
 - Database connection failure
-- S3 access or object retrieval failure
+- Object storage access failure
 - Unhandled application exception
 - Misconfigured environment variables
 - Missing encryption key configuration
+
 
 #### Example
 
@@ -266,36 +286,39 @@ Returned when an unexpected server-side error occurs.
 }
 ```
 
+
 ## Error design
 
-- The API uses FastAPI’s built-in error handling for consistency and simplicity
+- The API uses FastAPI built-in error handling for consistency and simplicity
 - Most error responses use the `detail` field
-- Validation errors (`422`) use a structured list format defined by FastAPI
-- ETL-related errors are surfaced through job status messages and API responses
+- Validation errors (`422`) use the structured response format generated by FastAPI
+- ETL-related failures are surfaced through job status messages and API responses
 - Orders use transactional validation before persistence
-- Resource identifiers follow structured formats:
+- Resource identifiers follow structured formats
+- Customer-sensitive values are not exposed in error responses
+- Encrypted database values are never returned through API responses
+- Error messages are designed to be predictable and human-readable
+
+
+### Resource identifier formats
 
 | Prefix    | Resource         |
 | --------- | ---------------- |
 | `FDxxxxx` | Feed             |
-| `JSxxxxx` | Submission Job   |
-| `JVxxxxx` | Validation Job   |
+| `JSxxxxx` | Submission job   |
+| `JVxxxxx` | Validation job   |
 | `CUxxxxx` | Customer         |
-| `ADxxxxx` | Customer Address |
+| `ADxxxxx` | Customer address |
 | `PRxxxxx` | Product          |
 | `ORxxxxx` | Order            |
-| `OIxxxxx` | Order Item       |
+| `OIxxxxx` | Order item       |
 
-
-- Customer-sensitive values are not exposed in error responses
-- Encrypted database values are never returned directly through API errors
-- Errors are predictable and human-readable to support debugging
 
 ## Related documentation
 
-- [Feeds API](feeds.md)
-- [Jobs API](jobs.md)
-- [Products API](products.md)
-- [Customers API](customers.md)
-- [Orders API](orders.md)
-- [Analytics API](analytics.md)
+- [Feeds](feeds.md)
+- [Jobs](jobs.md)
+- [Products](products.md)
+- [Customers](customers.md)
+- [Orders](orders.md)
+- [Analytics](analytics.md)
