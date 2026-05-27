@@ -270,5 +270,5 @@ The platform follows these deployment principles:
 - [Operations](index.md)
 - [Deployment guide](../architecture/deployment.md)
 - [Platform architecture and operational flow](../architecture/platform-architecture.md)
-- [Debug failed feed runbook](debug-product-feed.md)
+- [Debug a product feed failure](debug-product-feed.md)
 - [Backup and recovery procedure](backup-recovery-procedure.md)

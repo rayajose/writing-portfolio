@@ -168,4 +168,4 @@ Use query parameters to refine results:
 - [Jobs](jobs.md)
 - [Products](products.md)
 - [CSV feed file specification](../specs/csv-feed-file-spec.md)
-- [Debug failed feed runbook](../operations/debug-product-feed.md)
+- [Debug a product feed failure](../operations/debug-product-feed.md)

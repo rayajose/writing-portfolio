@@ -232,5 +232,5 @@ To resolve this issue:
 ## Next steps
 
 - See [Ingest a product feed end-to-end](../api/ingest-product-feed.md) for a workflow-focused guide
-- See [Debug failed feed](../operations/debug-product-feed.md) for troubleshooting procedures
-- Explore the [Products API reference](../api/products.md) for advanced queries
+- See [Debug a product feed failure](../operations/debug-product-feed.md) for troubleshooting procedures
+- Explore the [Products](../api/products.md) API reference for advanced queries

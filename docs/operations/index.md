@@ -39,7 +39,7 @@ Documentation covering deployment workflows, infrastructure validation, operatio
 Related documentation:
 
 - [Deployment change procedure](deployment-change-procedure.md)
-- [Edge gateway deployment and service guide](edge-gateway-deployment-service-guide.md)
+- [Edge gateway deployment and service guide](edge-gateway-guide.md)
 - [Deployment guide](../architecture/deployment.md)
 
 
@@ -49,7 +49,7 @@ Documentation supporting validation failure analysis, ETL troubleshooting, faile
 
 Related documentation:
 
-- [Debug failed feed runbook](debug-product-feed.md)
+- [Debug a product feed failure](debug-product-feed.md)
 - [Backup and recovery procedure](backup-recovery-procedure.md)
 - [Incident response plan](../security/incident-response.md)
 

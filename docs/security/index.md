@@ -18,7 +18,7 @@ Documentation covering security incident handling, escalation procedures, contai
 Related documentation:
 
 - [Incident response plan](incident-response.md)
-- [Debug failed feed runbook](../operations/debug-product-feed.md)
+- [Debug a product feed failure](../operations/debug-product-feed.md)
 
 
 ### Secure operational practices

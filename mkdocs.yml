@@ -62,8 +62,8 @@ nav:
         - Deployment change procedure: operations/deployment-change-procedure.md
         - Edge gateway deployment guide: operations/edge-gateway-guide.md
       - Runbooks:
-        - Debug failed feed runbook: operations/debug-product-feed.md
-        - Backup and recovery runbook: operations/backup-recovery-procedure.md
+        - Debug a failed product feed: operations/debug-product-feed.md
+        - Backup and recovery: operations/backup-recovery-procedure.md
 
   - Security policies:
       - Overview: security/index.md

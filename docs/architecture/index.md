@@ -39,7 +39,7 @@ Documentation covering observability, replay workflows, failure handling, operat
 
 Related documentation:
 
-- [Debug failed feed runbook](../operations/debug-product-feed.md)
+- [Debug a product feed failure](../operations/debug-product-feed.md)
 - [Incident response plan](../security/incident-response.md)
 
 

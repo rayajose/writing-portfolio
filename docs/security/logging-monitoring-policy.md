@@ -306,4 +306,4 @@ The platform follows these operational monitoring principles:
 - [Operations](../operations/index.md)
 - [Architecture and deployment](../architecture/index.md)
 - [Platform architecture and operational flow](../architecture/platform-architecture.md)
-- [Debug failed feed runbook](../operations/debug-product-feed.md)
+- [Debug a product feed failure](../operations/debug-product-feed.md)

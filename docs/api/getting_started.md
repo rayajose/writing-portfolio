@@ -242,4 +242,4 @@ The platform uses structured identifiers for feeds, jobs, customers, products, a
 - Use [Customers](customers.md) to create fictional customers and shipping addresses
 - Use [Orders](orders.md) to create and retrieve order data
 - Use [Analytics](analytics.md) to analyze sales and revenue
-- See [Debug failed feed runbook](../operations/debug-product-feed.md) for troubleshooting workflows
+- See [Debug a product feed failure](../operations/debug-product-feed.md) for troubleshooting workflows

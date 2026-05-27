@@ -87,7 +87,7 @@ Initial production-style platform release introducing operational maturity, orde
 - Operational documentation:
   - Deployment change procedure
   - Backup and recovery procedure
-  - Debug failed feed runbook
+  - Debug a product feed failure
 - Security and compliance documentation:
   - API access control and authentication policy
   - Logging and monitoring standard

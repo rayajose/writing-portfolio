@@ -266,7 +266,7 @@ The platform follows these recovery principles:
 
 - [Operations](index.md)
 - [Deployment change procedure](deployment-change-procedure.md)
-- [Debug failed feed runbook](debug-product-feed.md)
+- [Debug a product feed failure](debug-product-feed.md)
 - [Data retention and handling policy](../security/data-retention-policy.md)
 - [Logging and monitoring policy](../security/logging-monitoring-policy.md)
 - [Customers API](../api/customers.md)

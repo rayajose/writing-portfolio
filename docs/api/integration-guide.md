@@ -279,7 +279,7 @@ When troubleshooting failed processing:
 5. Verify successful ETL completion
 6. Verify product availability before creating orders
 
-For troubleshooting procedures, see [Debug failed feed runbook](../operations/debug-product-feed.md).
+For troubleshooting procedures, see [Debug a product feed failure](../operations/debug-product-feed.md).
 
 
 ## Related documentation
@@ -288,7 +288,7 @@ For troubleshooting procedures, see [Debug failed feed runbook](../operations/de
 ### Tutorials and workflows
 
 - [Ingest a product feed end-to-end](ingest-product-feed.md)
-- [Debug failed feed runbook](../operations/debug-product-feed.md)
+- [Debug a product feed failure](../operations/debug-product-feed.md)
 
 
 ### API reference
