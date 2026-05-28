@@ -6,6 +6,8 @@ Use this API to create and retrieve fictional customer records and shipping addr
 - Store customer contact and address fields using field-level encryption
 - Return masked customer data in API responses
 - Create and retrieve customer shipping addresses
+- Delete one or more customer records when no orders reference the customer or related shipping addresses
+- Preserve order history by blocking customer deletion when orders depend on the customer record
 
 
 ## Authentication
@@ -187,6 +189,184 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
+## <span class="api-endpoint api-endpoint--delete">DELETE /customers</span>
+
+Delete multiple fictional customer records.
+
+### Processing behavior
+
+- Accepts a list of customer identifiers
+- Deletes each customer that is not referenced by existing orders
+- Deletes associated customer addresses only when they are not referenced by orders
+- Preserves order history by blocking deletion when an order references the customer or shipping address
+- Returns a per-customer result for deleted, failed, and not found records
+
+
+### Request body
+
+| Field          | Type  | Required | Description                            |
+| -------------- | ----- | -------- | -------------------------------------- |
+| `customer_ids` | array | Yes      | List of customer identifiers to delete |
+
+
+### Request and response
+
+<div class="api-example-grid">
+
+<div>
+
+<h3>Request</h3>
+
+```bash
+curl -X DELETE http://api.example.com/customers \
+  -H "accept: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customer_ids": [
+      "CU00001",
+      "CU00002",
+      "CU00003"
+    ]
+  }'
+```
+
+</div>
+
+<div> <h3>Response</h3>
+
+```json
+{
+  "deleted_count": 1,
+  "failed_count": 2,
+  "results": [
+    {
+      "customer_id": "CU00001",
+      "status": "deleted",
+      "message": "Customer CU00001 was successfully deleted"
+    },
+    {
+      "customer_id": "CU00002",
+      "status": "failed",
+      "message": "Customer cannot be deleted because existing orders reference this customer."
+    },
+    {
+      "customer_id": "CU00003",
+      "status": "not_found",
+      "message": "Customer not found"
+    }
+  ]
+}
+```
+</div>
+
+</div>
+
+### Response fields
+
+| Field           | Type   | Description                            |
+| --------------- | ------ | -------------------------------------- |
+| `deleted_count` | number | Number of customer records deleted     |
+| `failed_count`  | number | Number of customer records not deleted |
+| `results`       | array  | Per-customer deletion result details   |
+
+
+### Result fields
+
+| Field         | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `customer_id` | string | Customer identifier included in the request        |
+| `status`      | string | Result status: `deleted`, `failed`, or `not_found` |
+| `message`     | string | Human-readable deletion result message             |
+
+
+### Error responses
+
+#### 401 Unauthorized
+
+Returned when the request is missing or includes an invalid `x-api-key` header.
+
+```json
+{
+  "detail": "Invalid or missing API key"
+}
+```
+
+## <span class="api-endpoint api-endpoint--delete">DELETE /customers/{customer_id}</span>
+
+Delete a specific fictional customer record.
+
+### Processing behavior
+Looks up the customer by customer_id
+Deletes the customer when no existing orders reference the customer or related shipping addresses
+Deletes associated customer addresses only when they are not referenced by orders
+Preserves order history by blocking deletion when an order depends on the customer record
+Returns a confirmation message when deletion succeeds
+
+### Path parameters
+
+| Name          | Type   | Required | Description                            |
+| ------------- | ------ | -------- | -------------------------------------- |
+| `customer_id` | string | Yes      | Unique customer identifier (`CUxxxxx`) |
+
+### Request and response
+<div class="api-example-grid"> <div> <h3>Request</h3>
+
+```bash
+curl -X DELETE http://api.example.com/customers/CU00001 \
+  -H "accept: application/json" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</div> 
+
+<div> 
+
+<h3>Response</h3>
+
+```json
+{
+  "message": "Customer CU00001 was successfully deleted"
+}
+```
+
+</div> </div>
+
+### Response fields
+
+| Field     | Type   | Description                         |
+| --------- | ------ | ----------------------------------- |
+| `message` | string | Customer deletion confirmation text |
+
+### Error responses
+
+#### 401 Unauthorized
+
+Returned when the request is missing or includes an invalid `x-api-key` header.
+
+```json
+{
+  "detail": "Invalid or missing API key"
+}
+```
+
+#### 404 Not Found
+
+Returned when the request contains a customer_id not currently in the system.
+
+```json
+{
+  "detail": "Customer not found"
+}
+```
+#### 409 Conflict
+
+Returned when existing orders reference the customer or one of the customer’s shipping addresses.
+
+```json
+{
+  "detail": "Customer cannot be deleted because existing orders reference this customer."
+}
+```
 
 ## <span class="api-endpoint api-endpoint--get">GET /customers/{customer_id}/orders</span>
 

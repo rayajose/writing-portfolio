@@ -126,7 +126,6 @@ def list_customers():
                 """))
 
             rows = cur.fetchall()
-
             customers = []
 
             for row in rows:
@@ -143,7 +142,6 @@ def list_customers():
                     decrypted_phone = customer["phone_encrypted"]
 
                 customer["email_masked"] = mask_email(decrypted_email)
-
                 customer["phone_masked"] = mask_phone(decrypted_phone)
 
                 customer.pop("email_encrypted", None)
@@ -184,6 +182,67 @@ def list_customer_orders(customer_id: str):
             rows = cur.fetchall()
 
             return [dict(row) for row in rows]
+
+        finally:
+            cur.close()
+
+
+def delete_customer(customer_id: str) -> bool:
+    with get_connection() as conn:
+        cur = conn.cursor()
+
+        try:
+            cur.execute(
+                q("""
+                    SELECT customer_id
+                    FROM customers
+                    WHERE customer_id = ?
+                """),
+                (customer_id,),
+            )
+
+            if cur.fetchone() is None:
+                return False
+
+            cur.execute(
+                q("""
+                    SELECT 1
+                    FROM orders
+                    WHERE customer_id = ?
+                       OR shipping_address_id IN (
+                            SELECT address_id
+                            FROM customer_addresses
+                            WHERE customer_id = ?
+                       )
+                    LIMIT 1
+                """),
+                (customer_id, customer_id),
+            )
+
+            if cur.fetchone() is not None:
+                raise ValueError(
+                    "Customer cannot be deleted because existing orders reference this customer."
+                )
+
+            cur.execute(
+                q("""
+                    DELETE FROM customer_addresses
+                    WHERE customer_id = ?
+                """),
+                (customer_id,),
+            )
+
+            cur.execute(
+                q("""
+                    DELETE FROM customers
+                    WHERE customer_id = ?
+                """),
+                (customer_id,),
+            )
+
+            conn.commit()
+
+            return True
 
         finally:
             cur.close()
@@ -282,9 +341,17 @@ def get_customer_address(
 
             address = dict(row)
 
-            decrypted_address_line1 = decrypt_pii(address["address_line1_encrypted"])
+            try:
+                decrypted_address_line1 = decrypt_pii(
+                    address["address_line1_encrypted"]
+                )
+            except Exception:
+                decrypted_address_line1 = address["address_line1_encrypted"]
 
-            decrypted_postal_code = decrypt_pii(address["postal_code_encrypted"])
+            try:
+                decrypted_postal_code = decrypt_pii(address["postal_code_encrypted"])
+            except Exception:
+                decrypted_postal_code = address["postal_code_encrypted"]
 
             address["address_line1_masked"] = mask_address_line1(
                 decrypted_address_line1

@@ -39,3 +39,19 @@ class CustomerAddressResponse(BaseModel):
     postal_code_masked: str | None = None
     country: str
     created_at: str | None = None
+
+
+class CustomerDeleteRequest(BaseModel):
+    customer_ids: list[str]
+
+
+class CustomerDeleteResult(BaseModel):
+    customer_id: str
+    status: str
+    message: str
+
+
+class CustomerDeleteResponse(BaseModel):
+    deleted_count: int
+    failed_count: int
+    results: list[CustomerDeleteResult]

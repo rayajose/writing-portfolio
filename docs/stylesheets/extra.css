@@ -393,6 +393,14 @@ select {
   border-color: #bbf7d0;
 }
 
+/* DELETE */
+
+.api-endpoint--delete {
+  color: #991b1b;
+  background-color: #fef2f2;
+  border-color: #fecaca;
+}
+
 .md-typeset h2 code:hover,
 .md-typeset h3 code:hover {
   background: #e0e7ff;

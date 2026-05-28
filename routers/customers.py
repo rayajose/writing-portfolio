@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 
 from schemas.customers import (
     CustomerAddressCreate,
     CustomerAddressResponse,
     CustomerCreate,
+    CustomerDeleteRequest,
+    CustomerDeleteResponse,
     CustomerResponse,
 )
 
@@ -12,6 +14,7 @@ from security import require_api_key
 from services.customers import (
     create_customer,
     create_customer_address,
+    delete_customer,
     get_customer,
     get_customer_address,
     list_customers,
@@ -40,6 +43,54 @@ def read_customers():
     return list_customers()
 
 
+@router.delete("", response_model=CustomerDeleteResponse, status_code=200)
+def delete_customers(request: CustomerDeleteRequest):
+    results = []
+    deleted_count = 0
+    failed_count = 0
+
+    for customer_id in request.customer_ids:
+        try:
+            deleted = delete_customer(customer_id)
+
+        except ValueError as exc:
+            failed_count += 1
+            results.append(
+                {
+                    "customer_id": customer_id,
+                    "status": "failed",
+                    "message": str(exc),
+                }
+            )
+            continue
+
+        if not deleted:
+            failed_count += 1
+            results.append(
+                {
+                    "customer_id": customer_id,
+                    "status": "not_found",
+                    "message": "Customer not found",
+                }
+            )
+            continue
+
+        deleted_count += 1
+        results.append(
+            {
+                "customer_id": customer_id,
+                "status": "deleted",
+                "message": f"Customer {customer_id} was successfully deleted",
+            }
+        )
+
+    return {
+        "deleted_count": deleted_count,
+        "failed_count": failed_count,
+        "results": results,
+    }
+
+
 @router.get("/{customer_id}/orders")
 def read_customer_orders(customer_id: str):
     customer = get_customer(customer_id)
@@ -58,6 +109,23 @@ def read_customer(customer_id: str):
         raise HTTPException(status_code=404, detail="Customer not found")
 
     return customer
+
+
+@router.delete("/{customer_id}", status_code=200)
+def delete_customer_record(customer_id: str):
+    try:
+        deleted = delete_customer(customer_id)
+
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+    if not deleted:
+        raise HTTPException(
+            status_code=404,
+            detail="Customer not found",
+        )
+
+    return {"message": f"Customer {customer_id} was successfully deleted"}
 
 
 @router.post(
