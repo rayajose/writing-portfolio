@@ -89,7 +89,7 @@ def test_get_customers_returns_200():
 
 def test_get_customer_orders_returns_200():
     response = client.get(
-        "/customers/CU00001/orders",
+        "/customers/CU00021/orders",
         headers=HEADERS,
     )
 
