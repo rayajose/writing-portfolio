@@ -68,7 +68,7 @@ curl -X POST http://api.example.com/orders \
   -H "Content-Type: application/json" \
   -d '{
     "partner_name": "RayTech Corp.",
-    "customer_reference": "CUST-1001",
+    "customer_reference": "CR00001",
     "customer_id": "CU00001",
     "shipping_address_id": "AD00001",
     "items": [
@@ -90,9 +90,7 @@ curl -X POST http://api.example.com/orders \
 {
   "order_id": "OR00001",
   "partner_name": "RayTech Corp.",
-  "customer_reference": "CUST-1001",
-  "customer_id": "CU00001",
-  "shipping_address_id": "AD00001",
+  "customer_reference": "CR00001",
   "status": "created",
   "total_amount": 10.99,
   "currency": "USD",
@@ -104,7 +102,9 @@ curl -X POST http://api.example.com/orders \
       "product_name": "All Day IPA",
       "quantity": 1,
       "unit_price": 10.99,
-      "line_total": 10.99
+      "line_total": 10.99,
+      "customer_id": "CU00001",
+      "shipping_address_id": "AD00001"
     }
   ]
 }
@@ -211,7 +211,7 @@ curl -X GET http://api.example.com/orders \
     {
       "order_id": "OR00001",
       "partner_name": "RayTech Corp.",
-      "customer_reference": "CUST-1001",
+      "customer_reference": "CR00001",
       "status": "created",
       "total_amount": 10.99,
       "currency": "USD",
@@ -299,7 +299,7 @@ curl -X GET http://api.example.com/orders/OR00001 \
 {
   "order_id": "OR00001",
   "partner_name": "RayTech Corp.",
-  "customer_reference": "CUST-1001",
+  "customer_reference": "CR00001",
   "status": "created",
   "total_amount": 10.99,
   "currency": "USD",

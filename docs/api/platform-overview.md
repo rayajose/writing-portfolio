@@ -29,7 +29,7 @@ Build an end-to-end partner integration using feed ingestion, ETL processing, pr
 Guided walkthroughs demonstrating ingestion and processing workflows.
 
 
-### [How-to guides](ingest-product-feed.md)
+### [How-to guides](../how-to/ingest-product-feed.md)
 
 Task-oriented workflows covering ingestion, troubleshooting, and operational procedures.
 

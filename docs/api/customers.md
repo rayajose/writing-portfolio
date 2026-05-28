@@ -58,7 +58,7 @@ curl -X POST http://api.example.com/customers \
     "first_name": "Alex",
     "last_name": "Morgan",
     "email": "alex.morgan@example.com",
-    "phone": "555-0101"
+    "phone": "405-555-0101"
   }'
 ```
 
@@ -75,8 +75,8 @@ curl -X POST http://api.example.com/customers \
   "last_name": "Morgan",
   "email_masked": "al***@example.com",
   "phone_masked": "***-***-0101",
-  "created_at": "2026-05-20 13:15:30",
-  "updated_at": "2026-05-20 13:15:30"
+  "created_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "updated_at": "YYYY-MM-DDTHH:MM:SSZ"
 }
 ```
 
@@ -151,8 +151,8 @@ curl -X GET http://api.example.com/customers \
     "last_name": "Morgan",
     "email_masked": "al***@example.com",
     "phone_masked": "***-***-0101",
-    "created_at": "2026-05-20 13:15:30",
-    "updated_at": "2026-05-20 13:15:30"
+    "created_at": "YYYY-MM-DDTHH:MM:SSZ",
+    "updated_at": "YYYY-MM-DDTHH:MM:SSZ"
   }
 ]
 ```
@@ -238,8 +238,8 @@ curl -X GET http://api.example.com/customers/CU00001/orders \
     "status": "completed",
     "currency": "USD",
     "total_amount": 149.99,
-    "created_at": "2026-05-22 10:15:30",
-    "updated_at": "2026-05-22 10:15:30"
+    "created_at": "YYYY-MM-DDTHH:MM:SSZ",
+    "updated_at": "YYYY-MM-DDTHH:MM:SSZ"
   }
 ]
 ```
@@ -333,8 +333,8 @@ curl -X GET http://api.example.com/customers/CU00001 \
   "last_name": "Morgan",
   "email_masked": "al***@example.com",
   "phone_masked": "***-***-0101",
-  "created_at": "2026-05-20 13:15:30",
-  "updated_at": "2026-05-20 13:15:30"
+  "created_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "updated_at": "YYYY-MM-DDTHH:MM:SSZ"
 }
 ```
 
@@ -448,7 +448,7 @@ curl -X POST http://api.example.com/customers/CU00001/addresses \
   "state": "WA",
   "postal_code_masked": "***01",
   "country": "US",
-  "created_at": "2026-05-20 13:17:42"
+  "created_at": "YYYY-MM-DDTHH:MM:SSZ"
 }
 ```
 
@@ -542,7 +542,7 @@ curl -X GET http://api.example.com/customers/addresses/AD00001 \
   "state": "WA",
   "postal_code_masked": "***01",
   "country": "US",
-  "created_at": "2026-05-20 13:17:42"
+  "created_at": "YYYY-MM-DDTHH:MM:SSZ"
 }
 ```
 

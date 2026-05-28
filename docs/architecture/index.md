@@ -30,7 +30,7 @@ Related documentation:
 
 - [Workflows](workflows.md)
 - [Integration guide](../api/integration-guide.md)
-- [Ingest a product feed end-to-end](../api/ingest-product-feed.md)
+- [Ingest a product feed](../how-to/ingest-product-feed.md)
 
 
 ### Operational design

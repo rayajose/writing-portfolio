@@ -64,9 +64,9 @@ curl -X POST http://api.example.com/feeds/upload \
 
 ```json
 {
-  "feed_id": "FD00010",
+  "feed_id": "FD00001",
   "status": "processing",
-  "job_id": "JS00010"
+  "job_id": "JS00001"
 }
 ```
 

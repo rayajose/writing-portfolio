@@ -1,4 +1,4 @@
-# Ingest a product feed end-to-end
+# Ingest a product feed
 
 This guide shows how to upload, process, and verify a partner product feed using the Commerce Integration API.
 
@@ -49,8 +49,8 @@ curl -X POST http://api.example.com/feeds/upload \
 
 ```json
 {
-  "feed_id": "FD00021",
-  "job_id": "JS00021",
+  "feed_id": "FD00001",
+  "job_id": "JS00001",
   "status": "processing"
 }
 ```
@@ -74,12 +74,12 @@ curl -X GET http://api.example.com/feeds/FD00021 \
 
 ```json
 {
-  "feed_id": "FD00021",
+  "feed_id": "FD00001",
   "partner_name": "Joyeria Reina",
   "file_name": "test-only-sku-product_name.csv",
   "content_type": "text/csv",
   "status": "processed",
-  "uploaded_at": "2026-05-05T16:18:58.792011Z",
+  "uploaded_at": "YYYY-MM-DDTHH:MM:SSZ",
   "validation_job_id": "JV00021",
   "validation_status": "completed",
   "validation_message": "ETL processing completed. Products processed: 10. Inserted: 10. Updated: 0. Unchanged: 0. Skipped: 0.",
@@ -120,7 +120,7 @@ curl -X GET "http://api.example.com/products?feed_id=FD00021" \
   "items": [
     {
       "product_id": "PR00145",
-      "feed_id": "FD00021",
+      "feed_id": "FD00001",
       "partner_name": "Test",
       "sku": "RS1001",
       "product_name": "Nike Air Zoom Pegasus 40",
@@ -130,11 +130,11 @@ curl -X GET "http://api.example.com/products?feed_id=FD00021" \
       "price": 129.99,
       "currency": "USD",
       "availability": "In Stock",
-      "created_at": "2026-05-04T16:48:42.611576+00:00"
+      "created_at": "YYYY-MM-DDTHH:MM:SSZ"
     },
     {
       "product_id": "PR00146",
-      "feed_id": "FD00021",
+      "feed_id": "FD00001",
       "partner_name": "Test",
       "sku": "RS1002",
       "product_name": "Adidas Ultraboost 22",
@@ -144,7 +144,7 @@ curl -X GET "http://api.example.com/products?feed_id=FD00021" \
       "price": 189.99,
       "currency": "USD",
       "availability": "In Stock",
-      "created_at": "2026-05-04T16:48:42.611576+00:00"
+      "created_at": "YYYY-MM-DDTHH:MM:SSZ"
     }
   ]
 }
@@ -164,8 +164,8 @@ Use query parameters to refine results:
 
 ## Related documentation
 
-- [Feeds](feeds.md)
-- [Jobs](jobs.md)
-- [Products](products.md)
+- [Feeds](../api/feeds.md)
+- [Jobs](../api/jobs.md)
+- [Products](../api/products.md)
 - [CSV feed file specification](../specs/csv-feed-file-spec.md)
 - [Debug a product feed failure](../operations/debug-product-feed.md)

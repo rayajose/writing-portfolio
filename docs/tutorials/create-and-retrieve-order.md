@@ -65,7 +65,7 @@ curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Sho
     ...
     {
       "product_id": "PR00176",
-      "feed_id": "FD00023",
+      "feed_id": "FD00001",
       "partner_name": "GoFasters",
       "sku": "RS1002",
       "product_name": "Adidas Ultraboost 22",
@@ -75,11 +75,11 @@ curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Sho
       "price": 189.99,
       "currency": "USD",
       "availability": "in_stock",
-      "created_at": "2026-05-24T14:59:52.222676+00:00"
+      "created_at": "YYYY-MM-DDTHH:MM:SSZ"
     },
     {
       "product_id": "PR00177",
-      "feed_id": "FD00023",
+      "feed_id": "FD00001",
       "partner_name": "GoFasters",
       "sku": "RS1003",
       "product_name": "ASICS Gel-Nimbus 25",
@@ -89,11 +89,11 @@ curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Sho
       "price": 159.99,
       "currency": "USD",
       "availability": "in_stock",
-      "created_at": "2026-05-24T14:59:52.222676+00:00"
+      "created_at": "YYYY-MM-DDTHH:MM:SSZ"
     },
     {
       "product_id": "PR00178",
-      "feed_id": "FD00023",
+      "feed_id": "FD00001",
       "partner_name": "GoFasters",
       "sku": "RS1004",
       "product_name": "Brooks Ghost 15",
@@ -103,11 +103,11 @@ curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Sho
       "price": 139.99,
       "currency": "USD",
       "availability": "in_stock",
-      "created_at": "2026-05-24T14:59:52.222676+00:00"
+      "created_at": "YYYY-MM-DDTHH:MM:SSZ"
     },
     {
       "product_id": "PR00179",
-      "feed_id": "FD00023",
+      "feed_id": "FD00001",
       "partner_name": "GoFasters",
       "sku": "RS1005",
       "product_name": "HOKA Clifton 9",
@@ -117,12 +117,12 @@ curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Sho
       "price": 144.99,
       "currency": "USD",
       "availability": "in_stock",
-      "created_at": "2026-05-24T14:59:52.222676+00:00"
+      "created_at": "YYYY-MM-DDTHH:MM:SSZ"
     },
     ...
     {
       "product_id": "PR00182",
-      "feed_id": "FD00023",
+      "feed_id": "FD00001",
       "partner_name": "GoFasters",
       "sku": "RS1008",
       "product_name": "On Cloudrunner",
@@ -132,7 +132,7 @@ curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Sho
       "price": 149.99,
       "currency": "USD",
       "availability": "in_stock",
-      "created_at": "2026-05-24T14:59:52.222676+00:00"
+      "created_at": "YYYY-MM-DDTHH:MM:SSZ"
     }
     ...
   ]
@@ -167,6 +167,9 @@ POST /orders
 ```json
 {
     "partner_name": "GoFasters",
+    "customer_reference": "CR00001",
+    "customer_id": "CU00001",
+    "shipping_address_id": "AD00001",
     "items": [
       {
         "product_id": "PR00179",
@@ -188,6 +191,9 @@ curl -X POST "http://localhost:8000/orders" \
   -H "x-api-key: YOUR_API_KEY"
   -d '{
         "partner_name": "GoFasters",
+        "customer_reference": "CR00001",
+        "customer_id": "CU00001",
+        "shipping_address_id": "AD00001",
         "items": [
       {
           "product_id": "PR00179",
@@ -205,9 +211,9 @@ curl -X POST "http://localhost:8000/orders" \
 
 ```json
 {
-  "order_id": "OR00039",
+  "order_id": "OR00001",
   "partner_name": "GoFasters",
-  "customer_reference": null,
+  "customer_reference": "CR00001",
   "status": "created",
   "total_amount": 294.98,
   "currency": "USD",
@@ -220,8 +226,8 @@ curl -X POST "http://localhost:8000/orders" \
       "quantity": 1,
       "unit_price": 144.99,
       "line_total": 144.99,
-      "customer_id": null,
-      "shipping_address_id": null
+      "customer_id": "CU00001",
+      "shipping_address_id": "AD00001"
     },
     {
       "order_item_id": "OI00023",
@@ -231,8 +237,8 @@ curl -X POST "http://localhost:8000/orders" \
       "quantity": 1,
       "unit_price": 149.99,
       "line_total": 149.99,
-      "customer_id": null,
-      "shipping_address_id": null
+      "customer_id": "CU00001",
+      "shipping_address_id": "AD00001"
     }
   ]
 }
@@ -260,9 +266,9 @@ curl -X GET "http://localhost:8000/orders/OR00039"
 
 ```json
 {
-  "order_id": "OR00039",
+  "order_id": "OR00001",
   "partner_name": "GoFasters",
-  "customer_reference": null,
+  "customer_reference": "CR00001",
   "status": "created",
   "total_amount": 294.98,
   "currency": "USD",
@@ -275,8 +281,8 @@ curl -X GET "http://localhost:8000/orders/OR00039"
       "quantity": 1,
       "unit_price": 144.99,
       "line_total": 144.99,
-      "customer_id": null,
-      "shipping_address_id": null
+      "customer_id": "CU00001",
+      "shipping_address_id": "AD00001"
     },
     {
       "order_item_id": "OI00023",
@@ -286,8 +292,8 @@ curl -X GET "http://localhost:8000/orders/OR00039"
       "quantity": 1,
       "unit_price": 149.99,
       "line_total": 149.99,
-      "customer_id": null,
-      "shipping_address_id": null
+      "customer_id": "CU00001",
+      "shipping_address_id": "AD00001"
     }
   ]
 }

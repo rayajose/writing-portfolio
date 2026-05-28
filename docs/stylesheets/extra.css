@@ -810,11 +810,11 @@ select {
 }
 
 .api-example-grid>div:first-child {
-  background-color: #eff6ff;
+  background-color: #eef4f8;
 }
 
 .api-example-grid>div:last-child {
-  background-color: #f8fafc;
+  background-color: #e8f0f7;
 }
 
 /* Request/Response card headings */
@@ -857,14 +857,14 @@ select {
 .api-example-grid>div:first-child .highlight,
 .api-example-grid>div:first-child .highlight pre,
 .api-example-grid>div:first-child .highlight code {
-  background-color: #eff6ff !important;
+  background-color: #eef4f8 !important;
 }
 
 /* Response example */
 .api-example-grid>div:last-child .highlight,
 .api-example-grid>div:last-child .highlight pre,
 .api-example-grid>div:last-child .highlight code {
-  background-color: #f8fafc !important;
+  background-color: #e8f0f7 !important;
 }
 
 /* Wrap long lines only inside fenced code blocks */

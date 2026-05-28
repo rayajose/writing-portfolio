@@ -287,7 +287,7 @@ This supports:
 - [Workflows](workflows.md)
 - [Deployment guide](deployment.md)
 - [Integration guide](../api/integration-guide.md)
-- [Ingest a product feed end-to-end](../api/ingest-product-feed.md)
+- [Ingest a product feed](../how-to/ingest-product-feed.md)
 - [Debug a product feed failure](../operations/debug-product-feed.md)
 
 For deployment evidence, see [Screenshots](../api/screenshots.md).

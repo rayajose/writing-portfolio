@@ -65,9 +65,9 @@ curl -X POST http://api.example.com/feeds/upload \
 
 ```json
 {
-  "feed_id": "FD00003",
+  "feed_id": "FD00001",
   "status": "processing",
-  "job_id": "JS00003"
+  "job_id": "JS00001"
 }
 ```
 
@@ -158,7 +158,7 @@ Retrieve metadata for a specific feed.
 <h3>Request</h3>
 
 ```bash
-curl -X GET http://api.example.com/feeds/FD00003 \
+curl -X GET http://api.example.com/feeds/FD00001 \
   -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY"
 ```
@@ -171,13 +171,13 @@ curl -X GET http://api.example.com/feeds/FD00003 \
 
 ```json
 {
-  "feed_id": "FD00003",
+  "feed_id": "FD00001",
   "partner_name": "Acme Corp",
   "file_name": "sample_catalog.csv",
   "content_type": "text/csv",
   "status": "uploaded",
-  "uploaded_at": "2026-04-06T14:17:27+00:00",
-  "validation_job_id": "JV00003",
+  "uploaded_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "validation_job_id": "JV00001",
   "validation_status": "completed",
   "validation_message": "ETL processing completed. Products processed: 13. Inserted: 1. Updated: 0. Unchanged: 12. Skipped: 0.",
   "raw_file_s3_key": "raw/partners/acme/feeds/FD00001/sample_catalog.csv",

@@ -28,7 +28,7 @@ Operational workflows covering feed submission, validation processing, ETL execu
 
 Related documentation:
 
-- [Ingest a product feed end-to-end](../api/ingest-product-feed.md)
+- [Ingest a product feed](../how-to/ingest-product-feed.md)
 - [Workflows](../architecture/workflows.md)
 
 

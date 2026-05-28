@@ -31,7 +31,7 @@ Related documentation:
 
 - [Integration guide](integration-guide.md)
 - [Webhook integration guide](webhooks.md)
-- [Ingest a product feed end-to-end](ingest-product-feed.md)
+- [Ingest a product feed](../how-to/ingest-product-feed.md)
 
 
 ### Tutorials and operational guidance

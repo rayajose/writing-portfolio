@@ -31,7 +31,7 @@ Use this guide to design, implement, or document a repeatable commerce data inte
 
 This guide explains how ingestion, ETL, catalog retrieval, customer workflows, order processing, and analytics workflows interact across the platform.
 
-For a step-by-step walkthrough of a single feed upload, see [Ingest a product feed end-to-end](ingest-product-feed.md).
+For a step-by-step walkthrough of a single feed upload, see [Ingest a product feed](../how-to/ingest-product-feed.md).
 
 For complete endpoint details, see:
 
@@ -287,7 +287,7 @@ For troubleshooting procedures, see [Debug a product feed failure](../operations
 
 ### Tutorials and workflows
 
-- [Ingest a product feed end-to-end](ingest-product-feed.md)
+- [Ingest a product feed](../how-to/ingest-product-feed.md)
 - [Debug a product feed failure](../operations/debug-product-feed.md)
 
 

@@ -29,8 +29,10 @@ nav:
       - Create and retrieve an order: tutorials/create-and-retrieve-order.md
 
   - How-to:
-      - Ingest a product feed end-to-end: api/ingest-product-feed.md
-      - Debug failed feed runbook: operations/debug-product-feed.md
+      - Overview: how-to/index.md
+      - Ingest a product feed: how-to/ingest-product-feed.md
+      - Create a customer: how-to/create-customer.md
+      - Create an order: how-to/create-order.md
 
   - Architecture:
       - Platform overview: api/index.md
@@ -43,13 +45,13 @@ nav:
 
   - API reference:
       - Overview: api/api-reference.md
-      - Feeds API: api/feeds.md
-      - Jobs API: api/jobs.md
-      - Products API: api/products.md
-      - Orders API: api/orders.md
-      - Customers API: api/customers.md
-      - Analytics API: api/analytics.md
-      - Health API: api/health.md
+      - Feeds: api/feeds.md
+      - Jobs: api/jobs.md
+      - Products: api/products.md
+      - Orders: api/orders.md
+      - Customers: api/customers.md
+      - Analytics: api/analytics.md
+      - Health: api/health.md
       - Errors: api/errors.md
 
   - SDKs:
@@ -62,7 +64,7 @@ nav:
         - Deployment change procedure: operations/deployment-change-procedure.md
         - Edge gateway deployment guide: operations/edge-gateway-guide.md
       - Runbooks:
-        - Debug a failed product feed: operations/debug-product-feed.md
+        - Debug a product feed failure: operations/debug-product-feed.md
         - Backup and recovery: operations/backup-recovery-procedure.md
 
   - Security policies:

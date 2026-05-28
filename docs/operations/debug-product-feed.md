@@ -52,11 +52,11 @@ curl -X GET "http://localhost:8000/feeds/FD00009" \
 
 ```json
 {
-  "feed_id": "FD00009",
+  "feed_id": "FD00001",
   "partner_name": "Tronics",
   "file_name": "electronics_catalog.csv",
   "status": "failed",
-  "validation_job_id": "JV00009",
+  "validation_job_id": "JV00001",
   "validation_status": "failed",
   "validation_message": "Missing required field: sku"
 }
@@ -84,7 +84,7 @@ curl -X GET "http://localhost:8000/jobs/JV00009" \
 
 ```json
 {
-  "job_id": "JV00009",
+  "job_id": "JV00001",
   "status": "failed",
   "result": "Products processed: 10. Inserted: 0. Updated: 0. Unchanged: 0. Skipped: 10."
 }
@@ -242,7 +242,7 @@ curl -X GET "http://localhost:8000/jobs/JV00009" \
 
 ```json
 {
-  "job_id": "JV00009",
+  "job_id": "JV00001",
   "status": "completed",
   "result": "Products processed: 10. Inserted: 10. Updated: 0. Unchanged: 0. Skipped: 0."
 }

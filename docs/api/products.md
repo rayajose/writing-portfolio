@@ -102,7 +102,7 @@ curl -X GET http://api.example.com/products?limit=10&order=asc \
       "price": 999.0,
       "currency": "USD",
       "availability": "in_stock",
-      "created_at": "2026-04-08T12:00:00Z"
+      "created_at": "YYYY-MM-DDTHH:MM:SSZ"
     }
   ],
   "next_cursor": "PR00005"
@@ -215,7 +215,7 @@ curl -X GET http://api.example.com/products/PR00001 \
   "price": 999.0,
   "currency": "USD",
   "availability": "in_stock",
-  "created_at": "2026-04-08T12:00:00Z"
+  "created_at": "YYYY-MM-DDTHH:MM:SSZ"
 }
 ```
 
@@ -317,7 +317,7 @@ curl -X GET http://api.example.com/products/by-feed/FD00002 \
       "price": 899.99,
       "currency": "USD",
       "availability": "in_stock",
-      "created_at": "2026-04-08T12:00:00Z"
+      "created_at": "YYYY-MM-DDTHH:MM:SSZ"
     }
   ]
 }

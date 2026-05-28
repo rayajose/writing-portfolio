@@ -58,8 +58,8 @@ curl -X GET http://api.example.com/jobs/JV00012 \
 
 ```json
 {
-  "job_id": "JV00012",
-  "feed_id": "FD00012",
+  "job_id": "JV00001",
+  "feed_id": "FD00001",
   "status": "completed",
   "job_type": "validation"
 }

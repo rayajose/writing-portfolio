@@ -94,7 +94,7 @@ curl -X GET http://localhost:8000/products?limit=5 \
       "price": 79.99,
       "currency": "USD",
       "availability": "in_stock",
-      "created_at": "2026-04-15T10:00:00Z"
+      "created_at": "YYYY-MM-DDTHH:MM:SSZ"
     }
   ]
 }
@@ -109,7 +109,7 @@ curl -X POST http://localhost:8000/orders \
   -H "Content-Type: application/json" \
   -d '{
     "partner_name": "Acme Corp",
-    "customer_reference": "ORDER-1001",
+    "customer_reference": "CR00001",
     "customer_id": "CU00001",
     "shipping_address_id": "AD00001",
     "items": [
@@ -128,7 +128,7 @@ curl -X POST http://localhost:8000/orders \
 {
   "order_id": "OR00001",
   "partner_name": "Acme Corp",
-  "customer_reference": "ORDER-1001",
+  "customer_reference": "CR00001",
   "customer_id": "CU00001",
   "shipping_address_id": "AD00001",
   "status": "created",
@@ -235,7 +235,7 @@ The platform uses structured identifiers for feeds, jobs, customers, products, a
 
 ## Next steps
 
-- Follow [Ingest a product feed end-to-end](ingest-product-feed.md)
+- Follow [Ingest a product feed](../how-to/ingest-product-feed.md)
 - Use [Feeds](feeds.md) to manage uploads
 - Use [Jobs](jobs.md) to track processing
 - Use [Products](products.md) to query catalog data

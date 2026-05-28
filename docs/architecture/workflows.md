@@ -105,7 +105,7 @@ curl -H "x-api-key: YOUR_API_KEY" \
   "file_name": "sample_catalog.csv",
   "content_type": "text/csv",
   "status": "uploaded",
-  "uploaded_at": "2026-04-06T14:17:27+00:00",
+  "uploaded_at": "YYYY-MM-DDTHH:MM:SSZ",
   "validation_job_id": "JV00001",
   "validation_status": "completed",
   "validation_message": "ETL processing completed. Products processed: 13. Inserted: 1. Updated: 0. Unchanged: 12. Skipped: 0.",
@@ -136,7 +136,7 @@ curl -H "x-api-key: YOUR_API_KEY" \
       "price": 49.99,
       "currency": "USD",
       "availability": "in_stock",
-      "created_at": "2026-04-08T12:00:00Z"
+      "created_at": "YYYY-MM-DDTHH:MM:SSZ"
     }
   ],
   "next_cursor": "PR00005"
@@ -245,7 +245,7 @@ curl -X POST "http://api.example.com/orders" \
   -H "Content-Type: application/json" \
   -d '{
     "partner_name": "Acme Corp",
-    "customer_reference": "ORDER-1001",
+    "customer_reference": "CR00001",
     "customer_id": "CU00001",
     "shipping_address_id": "AD00001",
     "items": [
@@ -263,7 +263,7 @@ curl -X POST "http://api.example.com/orders" \
 {
   "order_id": "OR00001",
   "partner_name": "Acme Corp",
-  "customer_reference": "ORDER-1001",
+  "customer_reference": "CR00001",
   "customer_id": "CU00001",
   "shipping_address_id": "AD00001",
   "status": "created",

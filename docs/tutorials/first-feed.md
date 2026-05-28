@@ -59,9 +59,9 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 
 ```json
 {
-  "feed_id": "FD00009",
+  "feed_id": "FD00001",
   "status": "uploaded",
-  "validation_job_id": "JV00009",
+  "validation_job_id": "JV00001",
   "validation_status": "queued"
 }
 ```
@@ -99,7 +99,7 @@ curl -X POST "http://localhost:8000/jobs/JV00009/run" \
 
 ```json
 {
-  "job_id": "JV00009",
+  "job_id": "JV00001",
   "status": "completed"
 }
 ```
@@ -216,7 +216,7 @@ Example response:
 
 ```json
 {
-  "job_id": "JV00009",
+  "job_id": "JV00001",
   "status": "failed"
 }
 ```
@@ -231,6 +231,6 @@ To resolve this issue:
 
 ## Next steps
 
-- See [Ingest a product feed end-to-end](../api/ingest-product-feed.md) for a workflow-focused guide
+- See [Ingest a product feed](../how-to/ingest-product-feed.md) for a workflow-focused guide
 - See [Debug a product feed failure](../operations/debug-product-feed.md) for troubleshooting procedures
 - Explore the [Products](../api/products.md) API reference for advanced queries

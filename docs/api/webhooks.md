@@ -81,11 +81,11 @@ All webhook events use a common payload structure.
 {
   "event_id": "evt_01JX92ABCD",
   "event_type": "feed.validation.completed",
-  "occurred_at": "2026-05-15T18:22:11Z",
+  "occurred_at": "YYYY-MM-DDTHH:MM:SSZ",
   "data": {
-    "feed_id": "FD00021",
+    "feed_id": "FD00001",
     "partner_name": "RayTech Corp.",
-    "validation_job_id": "JV00021",
+    "validation_job_id": "JV00001",
     "status": "completed"
   }
 }
@@ -103,11 +103,11 @@ Triggered when feed validation completes successfully.
 {
   "event_id": "evt_01JX92ABCD",
   "event_type": "feed.validation.completed",
-  "occurred_at": "2026-05-15T18:22:11Z",
+  "occurred_at": "YYYY-MM-DDTHH:MM:SSZ",
   "data": {
-    "feed_id": "FD00021",
+    "feed_id": "FD00001",
     "partner_name": "RayTech Corp.",
-    "validation_job_id": "JV00021",
+    "validation_job_id": "JV00001",
     "status": "completed",
     "valid_records": 1250,
     "invalid_records": 3
@@ -139,11 +139,11 @@ Triggered when feed validation fails.
 {
   "event_id": "evt_01JX92ABCE",
   "event_type": "feed.validation.failed",
-  "occurred_at": "2026-05-15T18:30:42Z",
+  "occurred_at": "YYYY-MM-DDTHH:MM:SSZ",
   "data": {
-    "feed_id": "FD00022",
+    "feed_id": "FD00001",
     "partner_name": "RayTech Corp.",
-    "validation_job_id": "JV00022",
+    "validation_job_id": "JV00001",
     "status": "failed",
     "error_message": "Required column 'sku' missing from CSV file."
   }
@@ -173,7 +173,7 @@ Triggered when a processing job fails.
 {
   "event_id": "evt_01JX92ABCF",
   "event_type": "job.failed",
-  "occurred_at": "2026-05-15T18:41:03Z",
+  "occurred_at": "YYYY-MM-DDTHH:MM:SSZ",
   "data": {
     "job_id": "JS00031",
     "job_type": "etl_processing",
@@ -205,7 +205,7 @@ Triggered when a customer record is created successfully.
 {
   "event_id": "evt_01JX92ABCH",
   "event_type": "customer.created",
-  "occurred_at": "2026-05-15T19:10:11Z",
+  "occurred_at": "YYYY-MM-DDTHH:MM:SSZ",
   "data": {
     "customer_id": "CU00021",
     "first_name": "Alex",
@@ -239,7 +239,7 @@ Fulfillment events may be associated with customer-linked orders.
 {
   "event_id": "evt_01JX92ABCG",
   "event_type": "order.fulfillment.completed",
-  "occurred_at": "2026-05-15T19:02:55Z",
+  "occurred_at": "YYYY-MM-DDTHH:MM:SSZ",
   "data": {
     "order_id": "OR00014",
     "fulfillment_job_id": "JF00014",
