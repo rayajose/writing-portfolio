@@ -4,7 +4,7 @@ from main import app
 
 client = TestClient(app)
 
-HEADERS = {"x-api-key": "demo-secret-key"}
+HEADERS = {"x-api-key": "test-api-key"}
 
 
 def test_get_customers_returns_200():
