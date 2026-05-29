@@ -1,4 +1,4 @@
-# Deployment change procedure
+# Application deployment procedure
 
 This procedure defines the workflow for planning, validating, deploying, and verifying application changes for the Commerce Integration API platform.
 
@@ -92,8 +92,8 @@ uvicorn main:app --reload
 ### Authenticate to Amazon ECR
 
 ```bash
-aws ecr get-login-password --region us-east-2 \
-| docker login --username AWS --password-stdin 792233688886.dkr.ecr.us-east-2.amazonaws.com
+aws ecr get-login-password --region <aws-region> \
+| docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com
 ```
 
 
@@ -108,14 +108,14 @@ docker build -t partner-catalog-api .
 
 ```bash
 docker tag partner-catalog-api:latest \
-792233688886.dkr.ecr.us-east-2.amazonaws.com/partner-catalog-api:latest
+<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/partner-catalog-api:latest
 ```
 
 
 ### Push Docker image
 
 ```bash
-docker push 792233688886.dkr.ecr.us-east-2.amazonaws.com/partner-catalog-api:latest
+docker push <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/partner-catalog-api:latest
 ```
 
 

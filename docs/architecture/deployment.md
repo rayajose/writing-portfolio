@@ -1,8 +1,8 @@
 # Deployment guide
 
-This page explains how to deploy the Commerce Integration API to AWS using a containerized, cloud-native architecture supporting ingestion, ETL processing, customer workflows, transactional order processing, and analytics services.
+This page explains how to deploy the Commerce Integration API to AWS using a containerized, cloud-native architecture supporting feed ingestion, ETL processing, customer management, order workflows, analytics services, and operational monitoring.
 
-The application and its documentation are maintained in a single repository (`writing-portfolio`). The API is deployed using Docker and AWS (ECS, RDS, S3), while documentation is published through GitHub Pages.
+The application and its documentation are maintained in a single repository (`writing-portfolio`). The API is deployed using Docker and AWS services, while documentation is published through GitHub Pages.
 
 For visual confirmation of the deployed environment, see [Screenshots](../api/screenshots.md).
 
@@ -18,13 +18,13 @@ For visual confirmation of the deployed environment, see [Screenshots](../api/sc
 The Commerce Integration API is deployed using the following AWS services:
 
 - FastAPI application runtime packaged as a Docker container
-- Amazon ECR container image registry (`partner-catalog-api`)
+- Amazon ECR container image registry (`<ecr-repository>`)
 - Amazon ECS (Fargate) serverless container orchestration
 - Application Load Balancer (ALB) for public HTTP access and traffic routing
-- Amazon RDS (PostgreSQL) for processed product, customer, and transactional data
+- Amazon RDS (PostgreSQL) for product catalog, customer, order, fulfillment, and analytics data
 - Amazon S3 for raw uploaded feed storage
 
-The source code and documentation are maintained in the `writing-portfolio` repository. AWS resources continue to use the original application naming convention (`partner-catalog-api`).
+The source code and documentation are maintained in the `writing-portfolio` repository. AWS resources continue to use the original application naming convention (`<ecr-repository>`).
 
 !!! note "Single repository model"
 
@@ -35,15 +35,16 @@ The source code and documentation are maintained in the `writing-portfolio` repo
 ### Image URI
 
 ```text
-792233688886.dkr.ecr.us-east-2.amazonaws.com/partner-catalog-api:latest
+<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/<ecr-repository>:v1.3.0
 ```
+
+Versioned image tags are used for deployments. The `latest` tag is maintained for convenience and rollback scenarios.
 
 ### Container port
 
 ```text
 8000
 ```
-
 
 ## ECS service configuration
 
@@ -77,7 +78,6 @@ subnet-07a21f9409bffa8e9
 Enabled
 ```
 
-
 ## ECS security group
 
 ```text
@@ -89,13 +89,12 @@ sg-00778f0b6fabbf1af
 - Allows outbound traffic to RDS and external services
 - Serves as the trusted source for database access
 
-
 ## Load balancer (ALB)
 
 ### DNS name
 
 ```text
-http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
+http://<application-load-balancer-dns-name>-1398338240.<aws-region>.elb.amazonaws.com
 ```
 
 ### Listener
@@ -107,7 +106,6 @@ http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com
 - Protocol: HTTP
 - Port: 8000
 - Health check path: `/health`
-
 
 ## Database (RDS PostgreSQL)
 
@@ -152,8 +150,7 @@ Optional:
 - Serves as the raw system of record
 - Supports ETL extraction and transformation workflows
 - Enables feed reprocessing and auditability
-- Preserves replay capability for downstream transactional workflows
-
+- Preserves replay capability for downstream workflows
 
 ## Environment variables
 
@@ -189,8 +186,7 @@ S3_RAW_BUCKET=partner-catalog-raw-rayj
 - Used by the ETL pipeline to locate uploaded feed files
 - `PII_ENCRYPTION_KEY` supports field-level encryption for customer-sensitive data
 - Secrets should be externalized and never committed to source control
-- Can be externalized for different deployment environments
-
+- Configuration can be externalized for different deployment environments
 
 ## S3 and ETL integration
 
@@ -199,12 +195,12 @@ S3_RAW_BUCKET=partner-catalog-raw-rayj
 - ETL processing is triggered through the Jobs API (`POST /jobs/{job_id}/run`)
 - ETL compares incoming data against existing records to avoid unnecessary updates
 - Product records support downstream customer and order workflows
-- Raw uploaded feed files remain available for ETL reprocessing, troubleshooting, and auditability workflows
+- Raw uploaded feed files remain available for reprocessing, troubleshooting, and auditability
 - ECS tasks require network access to S3
 
 !!! note "IAM permissions"
 
-    IAM permissions for Amazon S3 access are required in a production environment and are only partially configured in this demo deployment.
+    IAM permissions for Amazon S3 access are required in a production environment and are only partially configured in this demonstration deployment.
 
 ## Customer workflow considerations
 
@@ -217,6 +213,16 @@ Customer-sensitive workflows use field-level encryption for selected database fi
 
 Customer API responses expose masked values instead of raw sensitive values.
 
+Customer lifecycle workflows support:
+
+- Customer creation
+- Customer retrieval
+- Customer order history retrieval
+- Customer deletion
+- Bulk customer deletion
+
+Customer deletion operations preserve historical order integrity by preventing deletion of customers or shipping addresses referenced by existing orders.
+
 Deployment environments must ensure:
 
 - `PII_ENCRYPTION_KEY` is configured
@@ -228,41 +234,55 @@ Deployment environments must ensure:
 ### 1. Authenticate to ECR
 
 ```bash
-aws ecr get-login-password --region us-east-2 \
-| docker login --username AWS --password-stdin 792233688886.dkr.ecr.us-east-2.amazonaws.com
+aws ecr get-login-password --region <aws-region> \
+| docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com
 ```
 
 ### 2. Build the image
 
+Replace the version number as appropriate for the release.
+
 ```bash
-docker build -t partner-catalog-api .
+docker build -t <ecr-repository>:v1.3.0 .
 ```
 
 ### 3. Tag the image
 
 ```bash
-docker tag partner-catalog-api:latest \
-792233688886.dkr.ecr.us-east-2.amazonaws.com/partner-catalog-api:latest
+docker tag <ecr-repository>:v1.3.0 \
+<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/<ecr-repository>:v1.3.0
 ```
 
-### 4. Push the image
+### 4. Push the versioned image
 
 ```bash
-docker push 792233688886.dkr.ecr.us-east-2.amazonaws.com/partner-catalog-api:latest
+docker push \
+<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/<ecr-repository>:v1.3.0
 ```
 
-### 5. Deploy to ECS
+### 5. Update the latest tag
 
-Deploy the updated image through the ECS service:
+```bash
+docker tag <ecr-repository>:v1.3.0 \
+<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/<ecr-repository>:latest
 
-1. Update the ECS service
-2. Enable **Force new deployment**
+docker push \
+<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/<ecr-repository>:latest
+```
+
+### 6. Deploy to ECS
+
+1. Register a new ECS task definition revision.
+2. Update the container image tag if using versioned images.
+3. Update the ECS service to use the new task definition revision.
+4. Enable **Force new deployment**.
+5. Deploy.
 
 !!! tip "Rolling deployments"
 
     ECS rolling deployments allow updated containers to replace running tasks with minimal operational interruption.
 
-## Start / Stop workflow (cost control)
+## Start / stop workflow (cost control)
 
 This workflow explains how to scale down ECS services and pause database resources to reduce AWS costs when the system is not in use.
 
@@ -280,7 +300,6 @@ This workflow explains how to scale down ECS services and pause database resourc
 3. ECS → Service → Update
 4. Set **Desired tasks = 1**
 5. Deploy
-
 
 ## Health check behavior
 
@@ -314,7 +333,6 @@ CannotPullContainerError
 - Verify the image tag
 - Confirm the image was successfully pushed to ECR
 
-
 ### Container exits immediately
 
 #### Symptom
@@ -332,7 +350,6 @@ Exit code 1
 
 - Verify environment variables
 - Confirm RDS accessibility from ECS
-
 
 ### Database connection timeout
 
@@ -360,11 +377,11 @@ RuntimeError: PII_ENCRYPTION_KEY environment variable is not set.
 
 #### Cause
 
-- Encryption configuration missing from ECS task definition
+- Encryption configuration missing from the ECS task definition
 
 #### Resolution
 
-- Add `PII_ENCRYPTION_KEY` to ECS task environment configuration
+- Add `PII_ENCRYPTION_KEY` to ECS task configuration
 - Redeploy ECS tasks
 - Verify application startup completes successfully
 
@@ -373,7 +390,7 @@ RuntimeError: PII_ENCRYPTION_KEY environment variable is not set.
 This deployment incurs cost from the following AWS services:
 
 - ECS Fargate
-- RDS
+- Amazon RDS
 - Application Load Balancer
 
 ### Cost reduction strategies
@@ -386,7 +403,7 @@ This deployment incurs cost from the following AWS services:
 
     Amazon RDS automatically restarts temporarily stopped database instances after approximately seven days.
 
-AWS resources retain the original application naming convention (`partner-catalog-api`).
+AWS resources retain the original application naming convention (`<ecr-repository>`).
 
 ## Operational notes
 
@@ -394,6 +411,8 @@ AWS resources retain the original application naming convention (`partner-catalo
 - The database must be reachable for the container to start successfully
 - Customer-sensitive fields are encrypted before database persistence
 - Customer API responses expose masked values only
+- Customer deletion operations enforce referential integrity checks before deleting customer and address records
+- Bulk customer deletion workflows provide per-record success and failure reporting
 - Single-task deployments may experience brief downtime during deployments
 - ETL processing is executed on demand through the Jobs API
 - Product data is persisted to PostgreSQL only after ETL completes

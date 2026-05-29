@@ -45,6 +45,8 @@ The onboarding workflow performs the following operations:
 
 Submit the product feed using the upload endpoint.
 
+For endpoint details, request parameters, response fields, and error handling information, see [POST /feeds/upload](../api/feeds.md#post-feedsupload).
+
 ```bash
 curl -X POST http://api.example.com/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
@@ -75,6 +77,8 @@ curl -X POST http://api.example.com/feeds/upload \
 
 Retrieve the feed to confirm successful registration.
 
+For endpoint details, request parameters, response fields, and error handling information, see [GET /feeds/{feed_id}](../api/feeds.md#get-feedsfeed_id).
+
 ```bash
 curl -X GET http://api.example.com/feeds/FD00010 \
   -H "x-api-key: YOUR_API_KEY"
@@ -93,6 +97,8 @@ Verify that:
 ### Step 3. Monitor validation job
 
 Retrieve the validation job status.
+
+For endpoint details, request parameters, response fields, and error handling information, see [GET /jobs/{job_id}](../api/jobs.md#get-jobsjob_id).
 
 ```bash
 curl -X GET http://api.example.com/jobs/JV00010 \
@@ -117,6 +123,8 @@ failed
 
 After the job reaches `completed`, review the ETL summary.
 
+For response field descriptions, see [GET /feeds/{feed_id}, Response fields](../api/feeds.md#response-fields_1).
+
 ### Example response
 
 ```json
@@ -139,7 +147,9 @@ After the job reaches `completed`, review the ETL summary.
 
 ### Step 5. Verify product availability
 
-Confirm that products are accessible through the API.
+Confirm that products are accessible through the API. Use the `partner_name` parameter.
+
+For endpoint details, request parameters, response fields, and error handling information, see [GET /products](../api/products.md#get-products).
 
 ```bash
 curl -X GET \

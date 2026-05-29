@@ -61,8 +61,8 @@ nav:
       - Overview: operations/index.md
       - SOPs: 
         - Partner onboarding: operations/onboarding.md
-        - Deployment change procedure: operations/deployment-change-procedure.md
-        - Edge gateway deployment guide: operations/edge-gateway-guide.md
+        - Application deployment procedure: operations/deployment-change-procedure.md
+        - Database change procedure: operations/database-change-procedure.md
       - Runbooks:
         - Debug a product feed failure: operations/debug-product-feed.md
         - Backup and recovery: operations/backup-recovery-procedure.md
@@ -81,10 +81,11 @@ nav:
 
   - Release notes: releases/release-history.md
 
-  - Resources:
+  - Supporting materials:
       - System Resource Model: api/resources.md
       - Architecture and deployment: architecture/index.md
       - Deployment guide: architecture/deployment.md
+      - Edge gateway deployment guide: operations/edge-gateway-guide.md
       - Screenshots: api/screenshots.md
       - CSV feed file specification: specs/csv-feed-file-spec.md
 
