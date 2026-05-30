@@ -1,4 +1,4 @@
-# Data retention and handling policy
+# Data retention and handling
 
 This document defines data retention, storage handling, and operational recovery practices for the Commerce Integration API platform.
 

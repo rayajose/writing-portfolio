@@ -69,15 +69,15 @@ nav:
 
   - Security policies:
       - Overview: security/index.md
-      - Incident response plan: security/incident-response.md
-      - API access control policy: security/api-access-control-policy.md
-      - Customer data handling policy: security/customer-data-handling-policy.md
-      - Data classification policy: security/data-classification-policy.md
-      - Data retention and handling policy: security/data-retention-policy.md
-      - Encryption policy: security/encryption-policy.md
-      - Logging and monitoring policy: security/logging-monitoring-policy.md
-      - Secrets management policy: security/secrets-management-policy.md
-      - Secure software development lifecycle (SSDLC) policy: security/ssdlc-policy.md
+      - Incident response: security/incident-response.md
+      - API access control: security/api-access-control-policy.md
+      - Customer data handling: security/customer-data-handling-policy.md
+      - Data classification: security/data-classification-policy.md
+      - Data retention and handling: security/data-retention-policy.md
+      - Encryption: security/encryption-policy.md
+      - Logging and monitoring: security/logging-monitoring-policy.md
+      - Secrets management: security/secrets-management-policy.md
+      - Secure software development lifecycle (SSDLC): security/ssdlc-policy.md
 
   - Release notes: releases/release-history.md
 

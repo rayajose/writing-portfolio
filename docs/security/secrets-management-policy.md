@@ -1,4 +1,4 @@
-# Secrets management policy
+# Secrets management
 
 ## Purpose
 

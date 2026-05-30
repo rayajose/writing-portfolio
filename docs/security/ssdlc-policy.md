@@ -1,4 +1,4 @@
-# Secure software development lifecycle (SSDLC) policy
+# Secure software development lifecycle (SSDLC)
 
 ## Purpose
 

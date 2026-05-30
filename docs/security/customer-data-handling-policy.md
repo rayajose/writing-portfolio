@@ -1,4 +1,4 @@
-# Customer data handling policy
+# Customer data handling
 
 ## Purpose
 

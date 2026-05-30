@@ -1,4 +1,4 @@
-# Logging and monitoring policy
+# Logging and monitoring
 
 This document defines logging, monitoring, and operational traceability practices for the Commerce Integration API platform.
 

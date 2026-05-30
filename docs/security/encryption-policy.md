@@ -1,4 +1,4 @@
-# Encryption policy
+# Encryption
 
 ## Purpose
 

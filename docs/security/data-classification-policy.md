@@ -1,4 +1,4 @@
-# Data classification policy
+# Data classification
 
 ## Purpose
 

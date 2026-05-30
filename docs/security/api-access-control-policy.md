@@ -1,4 +1,4 @@
-# API access control and authentication policy
+# API access control and authentication
 
 This document defines authentication, authorization, and operational access control requirements for the Commerce Integration API platform.
 
