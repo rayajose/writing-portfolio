@@ -35,12 +35,12 @@ For a step-by-step walkthrough of a single feed upload, see [Ingest a product fe
 
 For complete endpoint details, see:
 
-- [Feeds](feeds.md)
-- [Jobs](jobs.md)
-- [Products](products.md)
-- [Customers](customers.md)
-- [Orders](orders.md)
-- [Analytics](analytics.md)
+- [Feeds](../api/feeds.md)
+- [Jobs](../api/jobs.md)
+- [Products](../api/products.md)
+- [Customers](../api/customers.md)
+- [Orders](../api/orders.md)
+- [Analytics](../api/analytics.md)
 
 
 ## Integration architecture
@@ -289,15 +289,6 @@ For troubleshooting procedures, see [Debug a product feed failure](../operations
 
 - [Ingest a product feed](../how-to/ingest-product-feed.md)
 - [Debug a product feed failure](../operations/debug-product-feed.md)
-
-
-### API reference
-
-- [Feeds](feeds.md)
-- [Jobs](jobs.md)
-- [Products](products.md)
-- [Orders](orders.md)
-- [Analytics](analytics.md)
 
 
 ### Specifications and architecture

@@ -336,4 +336,4 @@ The monitoring platform tracks:
 ## Related documentation
 
 - [System architecture and operational flow](../architecture/index.md)
-- [Integration guide](../api/integration-guide.md)
+- [Integration guide](../architecture/integration-guide.md)

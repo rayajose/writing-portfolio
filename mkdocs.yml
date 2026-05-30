@@ -25,6 +25,7 @@ nav:
   - Home: index.md
 
   - Tutorials:
+      - Overview: tutorials/index.md
       - Your first feed ingestion: tutorials/first-feed.md
       - Create and retrieve an order: tutorials/create-and-retrieve-order.md
 
@@ -34,28 +35,28 @@ nav:
       - Create a customer: how-to/create-customer.md
       - Create an order: how-to/create-order.md
 
-  - Architecture:
-      - Platform overview: api/index.md
-      - Get started: api/getting_started.md
-      - Integration guide: api/integration-guide.md
-      - Webhook integration guide: api/webhooks.md
+  - Architecture and concepts:
+      - Overview: architecture/index.md
+      - Get started: architecture/getting_started.md
+      - Integration guide: architecture/integration-guide.md
+      - Webhook integration guide: architecture/webhooks.md
       - Platform architecture and operational flow: architecture/platform-architecture.md
-      - System architecture: api/architecture.md
+      - System architecture: architecture/architecture.md
       - Workflows: architecture/workflows.md
 
   - API reference:
-      - Overview: api/api-reference.md
+      - Overview: api/index.md
       - Feeds: api/feeds.md
       - Jobs: api/jobs.md
       - Products: api/products.md
-      - Orders: api/orders.md
       - Customers: api/customers.md
-      - Analytics: api/analytics.md
-      - Health: api/health.md
+      - Orders: api/orders.md
+      - Health: api/health.md      
+      - Analytics: api/analytics.md     
       - Errors: api/errors.md
 
-  - SDKs:
-      - Python SDK guide: api/sdk-python.md
+  #- SDKs:
+      #- Python SDK guide: sdk/sdk-python.md
 
   - Operations:
       - Overview: operations/index.md
@@ -83,8 +84,7 @@ nav:
 
   - Supporting materials:
       - System Resource Model: api/resources.md
-      - Architecture and deployment: architecture/index.md
-      - Deployment guide: architecture/deployment.md
+      # - Deployment guide: architecture/deployment.md
       - Edge gateway deployment guide: operations/edge-gateway-guide.md
       - Screenshots: api/screenshots.md
       - CSV feed file specification: specs/csv-feed-file-spec.md

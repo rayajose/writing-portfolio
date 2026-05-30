@@ -416,9 +416,9 @@ Production webhook integrations should log delivery failures, response codes, re
 ## Related documentation
 
 - [Integration guide](integration-guide.md)
-- [Feeds](feeds.md)
-- [Jobs](jobs.md)
-- [Orders](orders.md)
-- [Customers](customers.md)
+- [Feeds](../api/feeds.md)
+- [Jobs](../api/jobs.md)
+- [Orders](../api/orders.md)
+- [Customers](../api/customers.md)
 - [Customer data handling policy](../security/customer-data-handling-policy.md)
 - [Encryption policy](../security/encryption-policy.md)

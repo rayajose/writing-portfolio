@@ -37,9 +37,9 @@ Documentation supporting common API interaction patterns, request validation wor
 
 Related documentation:
 
-* [Integration guide](../api/integration-guide.md)
-* [Webhook integration guide](../api/webhooks.md)
-* [API reference](../api/api-reference.md)
+* [Integration guide](../architecture/integration-guide.md)
+* [Webhook integration guide](../architecture/webhooks.md)
+* [API reference](../api/index.md)
 
 ## Documentation focus areas
 

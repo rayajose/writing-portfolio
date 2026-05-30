@@ -405,11 +405,11 @@ Customer-sensitive API responses return masked values and do not expose encrypte
 
 ## Related documentation
 
-- [Get started](getting_started.md)
-- [Integration guide](integration-guide.md)
-- [Feeds](feeds.md)
-- [Jobs](jobs.md)
-- [Products](products.md)
-- [Customers](customers.md)
-- [Orders](orders.md)
-- [Analytics](analytics.md)
+- [Get started](../architecture/getting_started.md)
+- [Integration guide](../architecture/integration-guide.md)
+- [Feeds](../api/feeds.md)
+- [Jobs](../api/jobs.md)
+- [Products](../api/products.md)
+- [Customers](../api/customers.md)
+- [Orders](../api/orders.md)
+- [Analytics](../api/analytics.md)

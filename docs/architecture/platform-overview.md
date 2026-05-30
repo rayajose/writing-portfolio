@@ -34,7 +34,7 @@ Guided walkthroughs demonstrating ingestion and processing workflows.
 Task-oriented workflows covering ingestion, troubleshooting, and operational procedures.
 
 
-### [API reference](api-reference.md)
+### [API reference](../api/index.md)
 
 Endpoint definitions, request and response models, parameters, authentication requirements, and error handling documentation.
 

@@ -288,8 +288,8 @@ This metadata supports troubleshooting, auditing, and operational analysis.
 
 ## Related documentation
 
-- [System architecture](../architecture/index.md)
-- [Integration guide](../api/integration-guide.md)
+- [Architecture and concepts](../architecture/index.md)
+- [Integration guide](../architecture/architecture.md)
 - [Feeds](../api/feeds.md)
 - [Jobs](../api/jobs.md)
 - [Customers](../api/customers.md)

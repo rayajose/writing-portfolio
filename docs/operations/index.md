@@ -19,7 +19,7 @@ Documentation covering partner onboarding procedures, integration setup, feed va
 Related documentation:
 
 - [Partner feed onboarding](onboarding.md)
-- [Integration guide](../api/integration-guide.md)
+- [Integration guide](../architecture/integration-guide.md)
 
 
 ### Ingestion and processing operations
@@ -70,6 +70,6 @@ This documentation demonstrates operational content patterns commonly used in en
 
 ## Related documentation
 
-- [API and integrations](../api/index.md)
+<!--- [API and integrations](../api/index.md)-->
 - [Architecture and deployment](../architecture/index.md)
 - [Security and compliance](../security/index.md)

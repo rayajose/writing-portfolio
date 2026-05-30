@@ -407,4 +407,4 @@ To resolve this issue:
 - [Products API](../api/products.md)
 - [Orders API](../api/orders.md)
 - [Analytics API](../api/analytics.md)
-- [Platform overview](../api/platform-overview.md)
+- [Platform overview](../architecture/platform-overview.md)

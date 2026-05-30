@@ -1,4 +1,4 @@
-# Architecture and deployment
+# Architecture and concepts
 
 This section documents the system architecture, processing workflows, integration patterns, and operational design of the Commerce Integration API platform.
 
@@ -18,9 +18,8 @@ Documentation covering platform architecture, ingestion workflows, ETL processin
 Related documentation:
 
 - [Platform architecture and operational flow](platform-architecture.md)
-- [System architecture](../api/architecture.md)
-- [Deployment guide](deployment.md)
-
+- [System architecture](architecture.md)
+- [Platform overview](platform-overview.md)
 
 ### Processing workflows
 
@@ -29,7 +28,7 @@ Documentation describing ingestion workflows, job execution behavior, ETL proces
 Related documentation:
 
 - [Workflows](workflows.md)
-- [Integration guide](../api/integration-guide.md)
+- [Integration guide](integration-guide.md)
 - [Ingest a product feed](../how-to/ingest-product-feed.md)
 
 
@@ -42,9 +41,22 @@ Related documentation:
 - [Debug a product feed failure](../operations/debug-product-feed.md)
 - [Incident response plan](../security/incident-response.md)
 
+## Documentation focus areas
+
+This documentation demonstrates architecture-oriented content patterns commonly used in enterprise API and platform environments:
+
+- System architecture and service relationships
+- Data flow and processing pipelines
+- Integration and communication patterns
+- Event-driven and asynchronous processing
+- Cloud-native platform design
+- ETL and data transformation workflows
+- Operational observability and traceability
+- Architecture visualization and workflow modeling
+
 
 ## Related documentation
 
-- [API and integrations](../api/index.md)
+# - [API and integrations](../api/index.md)
 - [Operations](../operations/index.md)
 - [Security and compliance](../security/index.md)

@@ -283,10 +283,10 @@ This supports:
 
 ## Related documentation
 
-- [System architecture](../api/architecture.md)
+- [System architecture](architecture.md)
 - [Workflows](workflows.md)
 - [Deployment guide](deployment.md)
-- [Integration guide](../api/integration-guide.md)
+- [Integration guide](integration-guide.md)
 - [Ingest a product feed](../how-to/ingest-product-feed.md)
 - [Debug a product feed failure](../operations/debug-product-feed.md)
 

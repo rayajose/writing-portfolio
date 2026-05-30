@@ -1,95 +1,62 @@
-# API and integrations
+# API reference
 
-This section contains developer-focused documentation for the Commerce Integration API platform, including onboarding guidance, integration workflows, API reference documentation, tutorials, and operational implementation guides.
-
-The platform demonstrates ingestion-driven commerce workflows using ETL processing, job-based execution, customer and order management workflows, relational data modeling, field-level encryption, and cloud-native deployment patterns.
+Use this section to explore API endpoints, transactional workflows, authentication requirements, request formats, and response models across the Commerce Integration API platform.
 
 <div class="doc-meta">
-  <span>REST APIs</span>
-  <span>ETL workflows</span>
-  <span>Async processing</span>
+  <span>REST API</span>
+  <span>OpenAPI</span>
+  <span>Pagination</span>
+  <span>Filtering</span>
   <span>Transactional workflows</span>
-  <span>Developer platform</span>
 </div>
 
 
-### Platform overview
+### [Feeds](feeds.md)
 
-High-level documentation describing platform architecture, ingestion workflows, ETL processing, customer and order workflows, analytics services, security controls, and core system concepts.
-
-Related documentation:
-
-- [Platform overview](platform-overview.md)
-- [Get started](getting_started.md)
+Upload and manage partner product feeds. Feed workflows support ingestion, validation, ETL processing, and asynchronous job tracking before products become available through transactional and analytics workflows.
 
 
-### Integration workflows
+### [Jobs](jobs.md)
 
-Documentation covering partner onboarding, ingestion patterns, webhook integrations, customer-linked transactional workflows, and end-to-end processing workflows.
-
-Related documentation:
-
-- [Integration guide](integration-guide.md)
-- [Webhook integration guide](webhooks.md)
-- [Ingest a product feed](../how-to/ingest-product-feed.md)
+Monitor asynchronous processing jobs for ingestion, validation, ETL execution, and fulfillment workflows. Jobs expose execution status, operational metadata, and ETL processing results.
 
 
-### Tutorials and operational guidance
+### [Products](products.md)
 
-Guided walkthroughs and operational documentation supporting ingestion processing, customer and order workflows, troubleshooting, replay operations, and workflow validation.
-
-Related documentation:
-
-- [Your first feed ingestion](../tutorials/first-feed.md)
-- [Debug a failed feed](../operations/debug-product-feed.md)
+Retrieve normalized product catalog data using filtering, sorting, and cursor-based pagination. Product records are sourced from processed partner feeds and support downstream order and analytics workflows.
 
 
-### API reference
+### [Customers](customers.md)
 
-Endpoint-level reference documentation covering request and response models, parameters, authentication requirements, pagination behavior, and error handling.
-
-Related documentation:
-
-- [API reference overview](api-reference.md)
-- [Feeds](feeds.md)
-- [Jobs](jobs.md)
-- [Products](products.md)
-- [Orders](orders.md)
-- [Customers](customers.md)
-- [Analytics](analytics.md)
-- [Health](health.md)
-- [Errors](errors.md)
+Create and retrieve fictional customer and shipping address records used by transactional order workflows. Customer-sensitive fields are encrypted before storage and returned as masked values in API responses.
 
 
-### SDKs and specifications
+### [Orders](orders.md)
 
-Supporting implementation resources including SDK usage guidance, customer and order workflow examples, and feed formatting specifications.
-
-Related documentation:
-
-- [Python SDK guide](sdk-python.md)
-- [CSV feed file specification](../specs/csv-feed-file-spec.md)
+Create and retrieve customer orders and associated order items. Order workflows support transactional order creation, calculated totals, and line item pricing derived from catalog products.
 
 
-### Security and compliance
+### [Health](health.md)
 
-Security-oriented documentation covering authentication, encryption, customer-sensitive data handling, operational logging, and compliance-oriented platform controls.
-
-Related documentation:
-
-- [Security and compliance overview](../security/index.md)
-- [API access control policy](../security/api-access-control-policy.md)
-- [Encryption policy](../security/encryption-policy.md)
-- [Customer data handling policy](../security/customer-data-handling-policy.md)
-- [Secrets management policy](../security/secrets-management-policy.md)
-- [Secure software development lifecycle (SSDLC) policy](../security/ssdlc-policy.md)
+Retrieve operational health status for the API and database connection. Health workflows support monitoring, automated health checks, and deployment validation.
 
 
-### Supporting materials
+### [Analytics](analytics.md)
 
-Supplementary documentation, visual references, operational recovery procedures, and supporting implementation resources.
+Retrieve aggregated metrics derived from product, order, and transactional workflow data, including sales trends, revenue share, and partner performance analytics.
 
-Related documentation:
+### [Errors](errors.md)
 
-- [Resources](resources.md)
-- [Screenshots](screenshots.md)
+Review standard error responses, HTTP status codes, validation failures, authentication errors, resource lookup failures, and operational error handling patterns used throughout the API.
+
+
+## Security and operational behavior
+
+The platform demonstrates security-oriented API behaviors including:
+
+- Authenticated API access using `x-api-key`
+- Field-level encryption for customer-sensitive fields
+- Masked API response handling
+- Structured operational identifiers
+- Transactional relational workflows
+- Operational traceability across ingestion and order processing

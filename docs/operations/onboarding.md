@@ -231,8 +231,8 @@ After successful onboarding:
 
 ## Related documentation
 
-- [API and integrations](../api/index.md)
-- [Integration guide](../api/integration-guide.md)
+<!-- [API and integrations](../api/index.md)-->
+- [Integration guide](../architecture/integration-guide.md)
 - [Products](../api/products.md)
 - [Customers](../api/customers.md)
 - [Orders](../api/orders.md)

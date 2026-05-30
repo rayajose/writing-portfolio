@@ -22,7 +22,7 @@ Cloud-native commerce integration platform demonstrating feed ingestion, ETL pro
 
 <div class="portfolio-hero-actions">
 <a class="md-button md-button--primary" href="/writing-portfolio/api/">View API documentation</a>
-<a class="md-button" href="/writing-portfolio/api/ingest-product-feed/">View ingestion workflow</a>
+<a class="md-button" href="/writing-portfolio/how-to/ingest-product-feed/">View ingestion workflow</a>
 </div>
 
 </div>
@@ -38,18 +38,19 @@ Implementation-focused onboarding and operational training documentation designe
 - Integration readiness documentation
 - Workflow validation and support guidance
 
-### [API & developer documentation](api/index.md)
 
-REST APIs, ingestion workflows, customer and order workflows, async processing, analytics services, SDK guidance, and developer enablement documentation.
-
-### [Integration & architecture documentation](architecture/index.md)
+### [Architecture and concepts](architecture/index.md)
 
 System architecture, ETL workflows, transactional workflow modeling, integration patterns, cloud-native deployment, and operational design documentation.
 
-### [SOPs & operational documentation](operations/index.md)
+### [API reference](api/index.md)
+
+Reference documentation for platform resources, authentication, request and response models, operational status codes, and API error handling patterns.
+
+### [Operations, SOPs, and runbooks](operations/index.md)
 
 Operational procedures, onboarding workflows, troubleshooting processes, replay operations, backup and recovery workflows, and operational support documentation.
 
-### [Security & compliance documentation](security/index.md)
+### [Security policies](security/index.md)
 
 Incident response planning, encryption controls, customer-sensitive data handling, secrets management, SSDLC governance, and compliance-oriented operational documentation.

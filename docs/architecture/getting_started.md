@@ -236,10 +236,10 @@ The platform uses structured identifiers for feeds, jobs, customers, products, a
 ## Next steps
 
 - Follow [Ingest a product feed](../how-to/ingest-product-feed.md)
-- Use [Feeds](feeds.md) to manage uploads
-- Use [Jobs](jobs.md) to track processing
-- Use [Products](products.md) to query catalog data
-- Use [Customers](customers.md) to create fictional customers and shipping addresses
-- Use [Orders](orders.md) to create and retrieve order data
-- Use [Analytics](analytics.md) to analyze sales and revenue
+- Use [Feeds](../api/feeds.md) to manage uploads
+- Use [Jobs](../api/jobs.md) to track processing
+- Use [Products](../api/products.md) to query catalog data
+- Use [Customers](../api/customers.md) to create fictional customers and shipping addresses
+- Use [Orders](../api/orders.md) to create and retrieve order data
+- Use [Analytics](../api/analytics.md) to analyze sales and revenue
 - See [Debug a product feed failure](../operations/debug-product-feed.md) for troubleshooting workflows

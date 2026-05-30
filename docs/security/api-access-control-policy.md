@@ -329,4 +329,4 @@ Responsible for:
 - [Operations](../operations/index.md)
 - [Architecture and deployment](../architecture/index.md)
 - [Deployment guide](../architecture/deployment.md)
-- [API and integrations](../api/index.md)
+<!-- - [API and integrations](../api/index.md)-->

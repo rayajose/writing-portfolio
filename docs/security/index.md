@@ -1,4 +1,4 @@
-# Security and compliance
+# Security policies
 
 This section contains security-focused operational documentation supporting incident response, secure processing practices, audit readiness, and compliance-oriented workflows.
 
@@ -59,6 +59,6 @@ Key priorities include:
 
 ## Related documentation
 
-- [API and integrations](../api/index.md)
+<!-- - [API and integrations](../api/index.md)-->
 - [Architecture and deployment](../architecture/index.md)
 - [Operations](../operations/index.md)
