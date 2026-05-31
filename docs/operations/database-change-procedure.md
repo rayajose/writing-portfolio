@@ -293,6 +293,30 @@ FROM information_schema.columns
 WHERE table_name = 'customers';
 ```
 
+#### Schema parity validation
+
+Before deploying application changes, compare the deployed database schema with the validated local schema.
+
+Verify:
+
+- Required tables exist
+- Required columns exist
+- Required seed data exists
+- Required identifier counters exist
+- Required lookup data exists
+- Schema versions are consistent between environments
+
+Examples:
+
+```sql
+\d partners
+\d feeds
+\d products
+\d orders
+
+select * from id_counters;
+```
+
 ### Step 6: Validate application functionality
 
 Verify:
@@ -518,6 +542,9 @@ Use this checklist before closing a database change activity.
 - Rollback plan documented
 - Backup verified
 - Schema validated locally
+- Production schema verified against local schema
+- Required seed data verified
+- Identifier counters verified
 - Tests passed
 - Documentation updated
 - Release notes updated
