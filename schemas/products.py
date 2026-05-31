@@ -1,11 +1,14 @@
 from __future__ import annotations
+
 from typing import Optional
+
 from pydantic import BaseModel
 
 
 class ProductResponse(BaseModel):
     product_id: str
     feed_id: str
+    partner_id: Optional[str] = None
     partner_name: str
     sku: Optional[str] = None
     product_name: str

@@ -13,6 +13,7 @@ router = APIRouter(
 PRODUCT_COLUMNS = """
     product_id,
     feed_id,
+    partner_id,
     partner_name,
     sku,
     product_name,
@@ -30,6 +31,7 @@ def product_row_to_dict(row) -> dict:
     return {
         "product_id": row["product_id"],
         "feed_id": row["feed_id"],
+        "partner_id": row["partner_id"],
         "partner_name": row["partner_name"],
         "sku": row["sku"],
         "product_name": row["product_name"],
@@ -56,6 +58,7 @@ def product_rows_to_dicts(rows) -> list[dict]:
         "Retrieves products from the catalog with support for filtering, "
         "sorting, and pagination.\n\n"
         "Filtering options include:\n"
+        "- partner_id\n"
         "- partner_name\n"
         "- feed_id\n"
         "- sku\n"
@@ -67,12 +70,17 @@ def product_rows_to_dicts(rows) -> list[dict]:
     ),
 )
 def list_products(
-    partner_name: str | None = Query(default=None, description="Filter by partner name"),
+    partner_id: str | None = Query(default=None, description="Filter by partner ID"),
+    partner_name: str | None = Query(
+        default=None, description="Filter by partner name"
+    ),
     feed_id: str | None = Query(default=None, description="Filter by feed ID"),
     sku: str | None = Query(default=None, description="Filter by SKU"),
     brand: str | None = Query(default=None, description="Filter by brand"),
     category: str | None = Query(default=None, description="Filter by category"),
-    availability: str | None = Query(default=None, description="Filter by availability"),
+    availability: str | None = Query(
+        default=None, description="Filter by availability"
+    ),
     limit: int = Query(
         default=10,
         ge=1,
@@ -130,6 +138,10 @@ def list_products(
         WHERE 1=1
     """
     params = []
+
+    if partner_id:
+        base_query += " AND partner_id = ?"
+        params.append(partner_id)
 
     if partner_name:
         base_query += " AND partner_name = ?"

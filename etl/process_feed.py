@@ -67,6 +67,7 @@ def get_feed(feed_id_value: str) -> dict:
             q("""
                 SELECT
                     feed_id,
+                    partner_id,
                     partner_name,
                     raw_file_s3_key,
                     raw_file_bucket
@@ -80,6 +81,9 @@ def get_feed(feed_id_value: str) -> dict:
         raise ValueError(f"Feed {feed_id_value} not found.")
 
     feed_dict = dict(feed)
+
+    if not feed_dict["partner_id"]:
+        raise ValueError(f"Feed {feed_id_value} does not have a partner_id.")
 
     if not feed_dict["raw_file_s3_key"]:
         raise ValueError(f"Feed {feed_id_value} does not have an S3 raw file key.")
@@ -160,11 +164,11 @@ def load_products(feed: dict, rows: list[dict]) -> dict:
                         currency,
                         availability
                     FROM products
-                    WHERE partner_name = ?
+                    WHERE partner_id = ?
                       AND sku = ?
                 """),
                 (
-                    feed["partner_name"],
+                    feed["partner_id"],
                     sku,
                 ),
             ).fetchone()
@@ -182,6 +186,8 @@ def load_products(feed: dict, rows: list[dict]) -> dict:
                         UPDATE products
                         SET
                             feed_id = ?,
+                            partner_id = ?,
+                            partner_name = ?,
                             product_name = ?,
                             description = ?,
                             brand = ?,
@@ -193,6 +199,8 @@ def load_products(feed: dict, rows: list[dict]) -> dict:
                     """),
                     (
                         feed["feed_id"],
+                        feed["partner_id"],
+                        feed["partner_name"],
                         incoming_product["product_name"],
                         incoming_product["description"],
                         incoming_product["brand"],
@@ -214,6 +222,7 @@ def load_products(feed: dict, rows: list[dict]) -> dict:
                         INSERT INTO products (
                             product_id,
                             feed_id,
+                            partner_id,
                             partner_name,
                             sku,
                             product_name,
@@ -225,11 +234,12 @@ def load_products(feed: dict, rows: list[dict]) -> dict:
                             availability,
                             created_at
                         )
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """),
                     (
                         product_id,
                         feed["feed_id"],
+                        feed["partner_id"],
                         feed["partner_name"],
                         sku,
                         incoming_product["product_name"],

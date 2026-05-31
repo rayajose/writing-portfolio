@@ -38,18 +38,19 @@ Supports filtering, sorting, and cursor-based pagination.
 
 ### Query parameters
 
-| Name           | Type    | Required | Description                                                             |
-| -------------- | ------- | -------- | ----------------------------------------------------------------------- |
-| `partner_name` | string  | No       | Filter by partner name                                                  |
-| `feed_id`      | string  | No       | Filter by feed identifier                                               |
-| `sku`          | string  | No       | Filter by SKU                                                           |
-| `brand`        | string  | No       | Filter by brand                                                         |
-| `category`     | string  | No       | Filter by category                                                      |
-| `availability` | string  | No       | Filter by availability                                                  |
-| `limit`        | integer | No       | Number of results to return. Default: `10`. Maximum: `100`              |
-| `cursor`       | string  | No       | Pagination cursor from the previous response                            |
-| `sort_by`      | string  | No       | Sort field (`created_at`, `price`, `product_name`, `brand`, `category`) |
-| `order`        | string  | No       | Sort direction (`asc` or `desc`). Defaults to `desc`                    |
+| Name           | Type    | Required | Description                                                                           |
+| -------------- | ------- | -------- | ------------------------------------------------------------------------------------- |
+| `partner_id`   | string  | No       | Filter by partner identifier                                                          |
+| `partner_name` | string  | No       | Filter by partner name                                                                |
+| `feed_id`      | string  | No       | Filter by feed identifier                                                             |
+| `sku`          | string  | No       | Filter by SKU                                                                         |
+| `brand`        | string  | No       | Filter by brand                                                                       |
+| `category`     | string  | No       | Filter by category                                                                    |
+| `availability` | string  | No       | Filter by availability                                                                |
+| `limit`        | integer | No       | Number of results to return. Default: `10`. Maximum: `100`                            |
+| `cursor`       | string  | No       | Pagination cursor from the previous response                                          |
+| `sort_by`      | string  | No       | Sort field (`product_id`, `created_at`, `price`, `product_name`, `brand`, `category`) |
+| `order`        | string  | No       | Sort direction (`asc` or `desc`). Defaults to `asc`                                   |
 
 
 #### Sorting examples
@@ -93,6 +94,7 @@ curl -X GET http://api.example.com/products?limit=10&order=asc \
     {
       "product_id": "PR00001",
       "feed_id": "FD00001",
+      "partner_id": "PT00001",
       "partner_name": "Tech Haven",
       "sku": "EL-3001",
       "product_name": "iPhone 15 Pro",
@@ -206,6 +208,7 @@ curl -X GET http://api.example.com/products/PR00001 \
 {
   "product_id": "PR00001",
   "feed_id": "FD00001",
+  "partner_id": "PT00001",
   "partner_name": "Tech Haven",
   "sku": "EL-3001",
   "product_name": "iPhone 15 Pro",
@@ -227,6 +230,7 @@ curl -X GET http://api.example.com/products/PR00001 \
 
 | Field          | Type   | Description                                 |
 | -------------- | ------ | ------------------------------------------- |
+| `partner_id`   | string | Filter by partner identifier                |
 | `product_id`   | string | Unique product identifier (`PRxxxxx`)       |
 | `feed_id`      | string | Feed identifier associated with the product |
 | `partner_name` | string | Name of the partner supplying the product   |
@@ -308,6 +312,7 @@ curl -X GET http://api.example.com/products/by-feed/FD00002 \
     {
       "product_id": "PR00011",
       "feed_id": "FD00002",
+      "partner_id": "PT00001",
       "partner_name": "Elite Jewelry",
       "sku": "JW-1001",
       "product_name": "Diamond Earrings",

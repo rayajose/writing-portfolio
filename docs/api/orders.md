@@ -32,17 +32,20 @@ Create an order from one or more catalog products.
 - Verifies that each requested `product_id` exists
 - Creates order items for available products
 - Calculates order totals and updates the order record
+- Determines `partner_id` from the selected catalog products
+- Ensures all order items belong to the same partner
+- Stores both `partner_id` and `partner_name` on the order
 
 
 ### Request body
 
-| Field                 | Type   | Required | Description                                   |
-| --------------------- | ------ | -------- | --------------------------------------------- |
-| `partner_name`        | string | Yes      | Name of the partner associated with the order |
-| `customer_reference`  | string | No       | External customer or order reference          |
-| `customer_id`         | string | No       | Customer identifier (`CUxxxxx`)               |
-| `shipping_address_id` | string | No       | Shipping address identifier (`ADxxxxx`)       |
-| `items`               | array  | Yes      | List of products included in the order        |
+| Field                 | Type   | Required | Description                                                                                               |
+| --------------------- | ------ | -------- | --------------------------------------------------------------------------------------------------------- |
+| `partner_name`        | string | Yes      | Partner name. Must match the selected products. Partner ownership is validated using the product catalog. |
+| `customer_reference`  | string | No       | External customer or order reference                                                                      |
+| `customer_id`         | string | No       | Customer identifier (`CUxxxxx`)                                                                           |
+| `shipping_address_id` | string | No       | Shipping address identifier (`ADxxxxx`)                                                                   |
+| `items`               | array  | Yes      | List of products included in the order                                                                    |
 
 
 ### Item fields
@@ -89,6 +92,7 @@ curl -X POST http://api.example.com/orders \
 ```json
 {
   "order_id": "OR00001",
+  "partner_id": "PT00001",
   "partner_name": "RayTech Corp.",
   "customer_reference": "CR00001",
   "status": "created",
@@ -120,6 +124,7 @@ curl -X POST http://api.example.com/orders \
 | Field                 | Type   | Description                            |
 | --------------------- | ------ | -------------------------------------- |
 | `order_id`            | string | Unique order identifier (`ORxxxxx`)    |
+| `partner_id`          | string | Partner identifier (`PTxxxxx`)         |
 | `partner_name`        | string | Partner associated with the order      |
 | `customer_reference`  | string | External customer or order reference   |
 | `customer_id`         | string | Associated customer identifier         |
@@ -179,10 +184,18 @@ Retrieve submitted orders.
 
 ### Processing behavior
 
-- Retrieves orders sorted by creation time
+- Retrieves orders sorted by order ID descending
+- Supports filtering by partner identifier
+- Supports filtering by partner name
 - Retrieves associated order items for each order
 - Returns order counts and order details
 
+### Query parameters
+
+| Name           | Type   | Required | Description                  |
+| -------------- | ------ | -------- | ---------------------------- |
+| `partner_id`   | string | No       | Filter by partner identifier |
+| `partner_name` | string | No       | Filter by partner name       |
 
 ### Request and response
 
@@ -193,7 +206,7 @@ Retrieve submitted orders.
 <h3>Request</h3>
 
 ```bash
-curl -X GET http://api.example.com/orders \
+curl -X GET "http://api.example.com/orders?partner_id=PT00001" \
   -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY"
 ```
@@ -210,6 +223,7 @@ curl -X GET http://api.example.com/orders \
   "items": [
     {
       "order_id": "OR00001",
+      "partner_id": "PT00001",
       "partner_name": "RayTech Corp.",
       "customer_reference": "CR00001",
       "status": "created",
@@ -298,6 +312,7 @@ curl -X GET http://api.example.com/orders/OR00001 \
 ```json
 {
   "order_id": "OR00001",
+  "partner_id": "PT00001",
   "partner_name": "RayTech Corp.",
   "customer_reference": "CR00001",
   "status": "created",
@@ -327,6 +342,7 @@ curl -X GET http://api.example.com/orders/OR00001 \
 | Field                | Type   | Description                          |
 | -------------------- | ------ | ------------------------------------ |
 | `order_id`           | string | Unique order identifier (`ORxxxxx`)  |
+| `partner_id`         | string | Partner identifier (`PTxxxxx`)       |
 | `partner_name`       | string | Partner associated with the order    |
 | `customer_reference` | string | External customer or order reference |
 | `status`             | string | Order status                         |
@@ -380,6 +396,9 @@ Returned when the request contains an `order_id` not currently in the system.
 - New orders are created with status `created`
 - Orders can optionally reference customer and shipping address records
 - Customer and shipping records are maintained separately from transactional order items
+- Orders store both `partner_id` and `partner_name`
+- All products in an order must belong to the same partner
+- Partner ownership is derived from catalog products during order creation
 
 
 ## Related documentation

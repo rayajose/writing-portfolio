@@ -29,8 +29,11 @@ class OrderItemResponse(BaseModel):
 
 class OrderResponse(BaseModel):
     order_id: str
+    partner_id: Optional[str] = None
     partner_name: str
     customer_reference: Optional[str] = None
+    customer_id: Optional[str] = None
+    shipping_address_id: Optional[str] = None
     status: str
     total_amount: Optional[float] = None
     currency: str = "USD"
