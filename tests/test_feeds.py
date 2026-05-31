@@ -1,10 +1,10 @@
 from fastapi.testclient import TestClient
-
+import os
 from main import app
 
 client = TestClient(app)
 
-HEADERS = {"x-api-key": "test-api-key"}
+HEADERS = {"x-api-key": "demo-secret-key"}
 
 
 def test_get_customers_returns_200():

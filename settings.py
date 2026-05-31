@@ -5,10 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     api_key: str = Field(default="demo-secret-key", alias="API_KEY")
-    pii_encryption_key: str | None = Field(
-        default=None,
-        alias="PII_ENCRYPTION_KEY"
-    )
+    pii_encryption_key: str | None = Field(default=None, alias="PII_ENCRYPTION_KEY")
 
     db_type: str | None = Field(default=None, alias="DB_TYPE")
     db_host: str | None = Field(default=None, alias="DB_HOST")
@@ -22,7 +19,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
-        populate_by_name=True
+        populate_by_name=True,
+        extra="ignore",
     )
 
 

@@ -1,4 +1,5 @@
 import sys
+import os
 from pathlib import Path
 
 from fastapi.testclient import TestClient
@@ -10,7 +11,7 @@ from main import app
 
 client = TestClient(app)
 
-HEADERS = {"x-api-key": "test-api-key"}
+HEADERS = {"x-api-key": "demo-secret-key"}
 
 
 def test_create_order():
