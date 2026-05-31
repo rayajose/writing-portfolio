@@ -61,14 +61,20 @@ tags_metadata = [
 app = FastAPI(
     title="Commerce Integration API",
     description=(
-        "A REST API for ingesting partner product feeds, validating data, "
-        "tracking processing jobs, and querying a centralized product catalog.\n\n"
-        "This project demonstrates real-world API design, including:\n"
+        "A cloud-native commerce integration platform for ingesting partner "
+        "catalog feeds, processing ETL workflows, managing customers and orders, "
+        "tracking fulfillment activities, and providing operational analytics.\n\n"
+        "This project demonstrates real-world API and platform design, including:\n"
+        "- Partner onboarding and management\n"
         "- File-based data ingestion (CSV uploads)\n"
-        "- Background job tracking\n"
+        "- ETL processing and data validation\n"
+        "- Customer and address management\n"
+        "- Order creation and fulfillment workflows\n"
+        "- Background job tracking and monitoring\n"
+        "- Analytics and reporting services\n"
         "- Structured error handling\n"
         "- Filtering, sorting, and pagination\n"
-        "- Deployment to AWS (ECS Fargate + RDS)\n\n"
+        "- Deployment to AWS (ECS Fargate, RDS PostgreSQL, and Amazon S3)\n\n"
         "Authentication is handled via an API key passed in the `x-api-key` header."
     ),
     version="0.1.0",

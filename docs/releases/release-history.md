@@ -4,6 +4,41 @@ This page documents notable platform, API, infrastructure, and documentation cha
 
 The version history reflects the evolution of the platform from an initial ingestion prototype into a cloud-native commerce integration platform supporting ETL processing, order management, analytics services, operational workflows, and security-oriented documentation.
 
+## Version 1.4.0
+
+This release introduces partner management capabilities and expands partner relationships across feed ingestion, product catalog, and order processing workflows. The release establishes partners as a first-class platform resource and improves traceability between partner onboarding, feed processing, catalog management, and transactional order data.
+
+### Added
+
+- Added partner management resource
+- Added `GET /partners`
+- Added `GET /partners/{partner_id}`
+- Added `POST /partners`
+- Added partner database table
+- Added partner identifier (`PTxxxxx`) generation
+- Added partner endpoint test coverage
+- Added partner onboarding support for feed ingestion workflows
+
+### Changed
+
+- Added `partner_id` to feed records
+- Added `partner_id` to product records
+- Added `partner_id` to order records
+- Updated feed upload processing to associate partner identifiers with ingested data
+- Updated product responses to include partner identifiers
+- Updated order responses to include partner identifiers
+- Expanded platform description and API metadata to reflect partner management, fulfillment, and analytics capabilities
+- Updated API documentation, examples, and operational procedures to include partner management workflows
+
+### Fixed
+
+- Resolved production schema mismatches discovered during deployment validation
+- Added missing partner-related database structures to deployed environments
+- Initialized partner identifier counters required for partner creation workflows
+- Improved deployment validation procedures by documenting schema parity verification and seed data validation requirements
+
+
+
 ## Version 1.3.0
 
 Version 1.3.0 introduces customer deletion capabilities, including support for bulk customer deletion, referential integrity validation, and safeguards that preserve historical order data.
