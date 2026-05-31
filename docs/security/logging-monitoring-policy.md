@@ -304,6 +304,6 @@ The platform follows these operational monitoring principles:
 - [API access control policy](api-access-control-policy.md)
 - [Incident response plan](incident-response.md)
 - [Operations](../operations/index.md)
-- [Architecture and deployment](../architecture/index.md)
+- [Architecture and concepts](../architecture/index.md)
 - [Platform architecture and operational flow](../architecture/platform-architecture.md)
 - [Debug a product feed failure](../operations/debug-product-feed.md)

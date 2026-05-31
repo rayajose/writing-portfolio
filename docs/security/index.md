@@ -28,7 +28,7 @@ Documentation supporting operational accountability, workflow consistency, trace
 Related documentation:
 
 - [Operations](../operations/index.md)
-- [Architecture and deployment](../architecture/index.md)
+- [Architecture and concepts](../architecture/index.md)
 
 
 ## Security focus areas
@@ -60,5 +60,5 @@ Key priorities include:
 ## Related documentation
 
 <!-- - [API and integrations](../api/index.md)-->
-- [Architecture and deployment](../architecture/index.md)
+- [Architecture and concepts](../architecture/index.md)
 - [Operations](../operations/index.md)

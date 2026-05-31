@@ -327,6 +327,6 @@ Responsible for:
 - [Security and compliance](index.md)
 - [Incident response plan](incident-response.md)
 - [Operations](../operations/index.md)
-- [Architecture and deployment](../architecture/index.md)
+- [Architecture and concepts](../architecture/index.md)
 - [Deployment guide](../architecture/deployment.md)
 <!-- - [API and integrations](../api/index.md)-->

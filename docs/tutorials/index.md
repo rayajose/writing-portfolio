@@ -58,4 +58,4 @@ This documentation demonstrates tutorial-oriented content patterns commonly used
 
 <!-- - [API and integrations](../api/index.md)-->
 - [How-to guides](../how-to/index.md)
-- [Architecture and deployment](../architecture/index.md)
+- [Architecture and concepts](../architecture/index.md)

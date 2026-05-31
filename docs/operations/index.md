@@ -71,5 +71,5 @@ This documentation demonstrates operational content patterns commonly used in en
 ## Related documentation
 
 <!--- [API and integrations](../api/index.md)-->
-- [Architecture and deployment](../architecture/index.md)
+- [Architecture and concepts](../architecture/index.md)
 - [Security and compliance](../security/index.md)

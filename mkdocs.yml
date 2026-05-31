@@ -80,14 +80,15 @@ nav:
       - Secrets management: security/secrets-management-policy.md
       - Secure software development lifecycle (SSDLC): security/ssdlc-policy.md
 
-  - Release notes: releases/release-history.md
-
   - Supporting materials:
+      - Overview: index-supporting-material.md
       - System Resource Model: api/resources.md
-      # - Deployment guide: architecture/deployment.md
+      - Deployment guide: architecture/deployment.md
       - Edge gateway deployment guide: operations/edge-gateway-guide.md
       - Screenshots: api/screenshots.md
       - CSV feed file specification: specs/csv-feed-file-spec.md
+
+  - Release notes: releases/release-history.md
 
   - Profile: professional-profile.md
 

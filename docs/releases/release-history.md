@@ -271,7 +271,7 @@ Major documentation additions across versions included:
 ## Related documentation
 
 <!-- - [API and integrations](../api/index.md)-->
-- [Architecture and deployment](../architecture/index.md)
+- [Architecture and concepts](../architecture/index.md)
 - [Operations](../operations/index.md)
 - [Security and compliance](../security/index.md)
 - [Deployment guide](../architecture/deployment.md)

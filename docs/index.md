@@ -28,16 +28,13 @@ Cloud-native commerce integration platform demonstrating feed ingestion, ETL pro
 </div>
 
 
-## Training and enablement
+### [Tutorials](tutorials/index.md)
 
-Implementation-focused onboarding and operational training documentation designed to support partner integrations, feed ingestion workflows, troubleshooting procedures, and production support readiness.
+Guided onboarding content demonstrating feed ingestion, customer management, order processing, and end-to-end platform workflows through hands-on learning scenarios.
 
-- Guided onboarding tutorials
-- Step-by-step implementation workflows
-- Operational troubleshooting procedures
-- Integration readiness documentation
-- Workflow validation and support guidance
+### [How-to guides](how-to/index.md)
 
+Task-oriented documentation covering implementation workflows, API operations, feed processing activities, workflow validation, and common operational procedures.
 
 ### [Architecture and concepts](architecture/index.md)
 
@@ -47,10 +44,14 @@ System architecture, ETL workflows, transactional workflow modeling, integration
 
 Reference documentation for platform resources, authentication, request and response models, operational status codes, and API error handling patterns.
 
-### [Operations, SOPs, and runbooks](operations/index.md)
+### [Operations](operations/index.md)
 
 Operational procedures, onboarding workflows, troubleshooting processes, replay operations, backup and recovery workflows, and operational support documentation.
 
 ### [Security policies](security/index.md)
 
 Incident response planning, encryption controls, customer-sensitive data handling, secrets management, SSDLC governance, and compliance-oriented operational documentation.
+
+### [Supporting materials](index-supporting-material.md)
+
+Resource models, file specifications, deployment documentation, architecture artifacts, screenshots, and supporting reference materials used throughout the Commerce Integration API platform.

@@ -58,4 +58,4 @@ This documentation demonstrates task-oriented content patterns commonly used in 
 
 * [API and integrations](../api/index.md)
 * [Operations](../operations/index.md)
-* [Architecture and deployment](../architecture/index.md)
+* [Architecture and concepts](../architecture/index.md)
