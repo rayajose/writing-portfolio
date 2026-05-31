@@ -56,8 +56,6 @@ nav:
       - Analytics: api/analytics.md     
       - Errors: api/errors.md
 
-  #- SDKs:
-      #- Python SDK guide: sdk/sdk-python.md
 
   - Operations:
       - Overview: operations/index.md

@@ -19,7 +19,6 @@ Related documentation:
 
 - [Platform architecture and operational flow](platform-architecture.md)
 - [System architecture](architecture.md)
-- [Platform overview](platform-overview.md)
 
 ### Processing workflows
 

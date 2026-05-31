@@ -31,21 +31,20 @@ Create an order from one or more catalog products.
 - Stores customer and shipping records separately from transactional order items
 - Verifies that each requested `product_id` exists
 - Creates order items for available products
-- Calculates order totals and updates the order record
-- Determines `partner_id` from the selected catalog products
+- Calculates order totals
+- Determines the partner from the selected catalog products
 - Ensures all order items belong to the same partner
-- Stores both `partner_id` and `partner_name` on the order
+- Stores both `partner_id` and `partner_name` on the order for reporting and retrieval
 
 
 ### Request body
 
-| Field                 | Type   | Required | Description                                                                                               |
-| --------------------- | ------ | -------- | --------------------------------------------------------------------------------------------------------- |
-| `partner_name`        | string | Yes      | Partner name. Must match the selected products. Partner ownership is validated using the product catalog. |
-| `customer_reference`  | string | No       | External customer or order reference                                                                      |
-| `customer_id`         | string | No       | Customer identifier (`CUxxxxx`)                                                                           |
-| `shipping_address_id` | string | No       | Shipping address identifier (`ADxxxxx`)                                                                   |
-| `items`               | array  | Yes      | List of products included in the order                                                                    |
+| Field                 | Type   | Required | Description                             |
+| --------------------- | ------ | -------- | --------------------------------------- |
+| `customer_reference`  | string | No       | External customer or order reference    |
+| `customer_id`         | string | No       | Customer identifier (`CUxxxxx`)         |
+| `shipping_address_id` | string | No       | Shipping address identifier (`ADxxxxx`) |
+| `items`               | array  | Yes      | List of products included in the order  |
 
 
 ### Item fields
@@ -70,7 +69,6 @@ curl -X POST http://api.example.com/orders \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "partner_name": "RayTech Corp.",
     "customer_reference": "CR00001",
     "customer_id": "CU00001",
     "shipping_address_id": "AD00001",

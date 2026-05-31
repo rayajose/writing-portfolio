@@ -19,7 +19,6 @@ Related documentation:
 
 - [Your first feed ingestion](first-feed.md)
 - [Integration guide](../architecture/integration-guide.md)
-- [Platform overview](../architecture/platform-overview.md)
 
 ### Customer and order tutorials
 

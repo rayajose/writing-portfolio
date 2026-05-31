@@ -39,7 +39,6 @@ Related documentation:
 
 - [Screenshots](api/screenshots.md)
 - [System architecture](architecture/architecture.md)
-- [Platform overview](architecture/platform-overview.md)
 
 ## Documentation focus areas
 

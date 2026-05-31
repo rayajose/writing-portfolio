@@ -111,7 +111,7 @@ def create_order(request: OrderCreateRequest):
         order_items = []
         pending_items = []
         order_partner_id = None
-        order_partner_name = request.partner_name
+        order_partner_name = None
 
         total_amount = 0.0
 
@@ -238,7 +238,7 @@ def create_order(request: OrderCreateRequest):
         return _get_order_with_items(conn, order_id) or {
             "order_id": order_id,
             "partner_id": order_partner_id,
-            "partner_name": order_partner_name,
+            "partner_name": request.partner_name,
             "customer_reference": request.customer_reference,
             "customer_id": request.customer_id,
             "shipping_address_id": request.shipping_address_id,

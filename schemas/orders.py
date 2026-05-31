@@ -8,7 +8,6 @@ class OrderItemCreate(BaseModel):
 
 
 class OrderCreateRequest(BaseModel):
-    partner_name: str
     customer_reference: Optional[str] = None
     customer_id: Optional[str] = None
     shipping_address_id: Optional[str] = None
