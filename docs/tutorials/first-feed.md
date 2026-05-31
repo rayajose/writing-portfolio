@@ -4,11 +4,11 @@ Upload a product feed, process it through the ingestion pipeline, and retrieve p
 
 In this tutorial, you will:
 
-1. Upload a product feed
-2. Run ETL processing
-3. Retrieve ingested products
-4. Validate ingestion results
-
+1. Create a partner
+2. Upload a product feed
+3. Monitor feed processing
+4. Retrieve ingested products
+5. Validate ingestion results
 
 ## Before you begin
 
@@ -21,18 +21,36 @@ You need the following:
 | API key          | `x-api-key: YOUR_API_KEY`                                           |
 | CSV file         | See [CSV feed file specification](../specs/csv-feed-file-spec.md)   |
 
+## Step 1: Create a partner
 
-## Step 1: Understand product feeds
+Create a partner record before submitting product feeds.
 
-A product feed is a CSV file containing product data provided by a partner.
+For endpoint details and request parameters, see the [Create partner](../api/partners.md#post-partners) endpoint documentation.
 
-Each row represents a product record. At minimum, the system requires:
+### Example request
 
-- `sku`
-- `product_name`
+```bash
+curl -X POST "http://localhost:8000/partners" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "partner_name": "Tronics",
+        "contact_email": "integrations@tronics.example"
+      }'
+```
 
-When a feed is uploaded, the system stores the raw file and creates validation jobs before product data becomes available in the catalog.
+### Example response
 
+```json
+{
+  "partner_id": "PT00001",
+  "partner_name": "Tronics",
+  "status": "active",
+  "contact_email": "integrations@tronics.example"
+}
+```
+
+Save the returned `partner_id`. It is required when uploading feeds.
 
 ## Step 2: Upload the feed
 
@@ -51,8 +69,8 @@ POST /feeds/upload
 ```bash
 curl -X POST "http://localhost:8000/feeds/upload" \
   -H "x-api-key: YOUR_API_KEY" \
-  -F "file=@electronics_catalog.csv" \
-  -F "partner_name=Tronics"
+  -F "partner_id=PT00001" \
+  -F "file=@electronics_catalog.csv"
 ```
 
 ### Example response
@@ -60,9 +78,8 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 ```json
 {
   "feed_id": "FD00001",
-  "status": "uploaded",
-  "validation_job_id": "JV00001",
-  "validation_status": "queued"
+  "job_id": "JS00001",
+  "status": "processing"
 }
 ```
 
@@ -71,27 +88,26 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 After uploading the feed:
 
 - The raw CSV file is stored in Amazon S3
-- A validation job is created
-- Feed processing is queued
-- Products are not yet available in the catalog
+- Submission and validation jobs are created
+- ETL processing starts automatically in the background
+- Feed processing status becomes available through the Jobs API
 
+## Step 3: Monitor feed processing
 
-## Step 3: Run ETL processing
+Retrieve job details to monitor feed processing status.
 
-Run the validation job to process the uploaded feed.
-
-For endpoint details, see the [Run job](../api/jobs.md#post-jobsjob_idrun) endpoint documentation.
+For endpoint details, see the [Get job](../api/jobs.md#get-jobsjob_id) endpoint documentation.
 
 ### Request
 
 ```http
-POST /jobs/{job_id}/run
+GET /jobs/{job_id}
 ```
 
 ### Example request
 
 ```bash
-curl -X POST "http://localhost:8000/jobs/JV00009/run" \
+curl -X GET "http://localhost:8000/jobs/JS00001" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -99,22 +115,14 @@ curl -X POST "http://localhost:8000/jobs/JV00009/run" \
 
 ```json
 {
-  "job_id": "JV00001",
-  "status": "completed"
+  "job_id": "JS00001",
+  "job_type": "submission",
+  "status": "completed",
+  "feed_id": "FD00001"
 }
 ```
 
-### Validate processing behavior
-
-During processing, the system:
-
-- Validates CSV structure
-- Checks required fields
-- Transforms rows into product records
-- Inserts or updates products in PostgreSQL
-
-Products become available for querying only after processing completes successfully.
-
+Processing is complete when the associated validation job reaches a `completed` status.
 
 ## Step 4: Retrieve products
 
@@ -162,7 +170,6 @@ After retrieving products:
 - Feed ingestion completed successfully
 - Product records were loaded into PostgreSQL
 
-
 ## Understand the ingestion pipeline
 
 The ingestion workflow consists of four stages:
@@ -174,8 +181,23 @@ The ingestion workflow consists of four stages:
 | Transformation | Converts CSV rows into normalized product records |
 | Load           | Inserts or updates products in PostgreSQL         |
 
-
 ## Troubleshoot common issues
+
+### Partner not found
+
+Example response:
+
+```json
+{
+  "detail": "Partner not found."
+}
+```
+
+To resolve this issue:
+
+- Verify the partner exists
+- Confirm the correct `partner_id` was supplied
+- Retrieve available partners using `GET /partners`
 
 ### Invalid CSV structure
 
@@ -193,7 +215,6 @@ To resolve this issue:
 - Confirm column headers are present
 - Validate delimiter formatting
 
-
 ### Missing required fields
 
 Example response:
@@ -209,25 +230,14 @@ To resolve this issue:
 - Ensure all required fields are included
 - Verify each product row contains valid values
 
-
 ### Feed processing failed
-
-Example response:
-
-```json
-{
-  "job_id": "JV00001",
-  "status": "failed"
-}
-```
 
 To resolve this issue:
 
 - Retrieve job details
 - Review validation errors
 - Correct the source CSV file
-- Re-upload the feed
-
+- Upload a new feed
 
 ## Next steps
 

@@ -24,24 +24,24 @@ Upload a CSV product feed and create associated processing jobs.
 
 ### Processing behavior
 
+- Validates that the supplied partner exists and is active
 - Validates file type (`.csv` only)
 - Validates CSV structure and required headers
 - Stores the raw file in object storage
 - Creates submission (`JSxxxxx`) and validation (`JVxxxxx`) job records
 - Persists feed metadata for later retrieval
+- Starts ETL processing asynchronously
 
 !!! note "Asynchronous ingestion"
 
-    Product data is not ingested during upload. Ingestion occurs during ETL processing workflows.
-
+    Product data is not ingested during upload. Validation and ETL processing occur asynchronously after the upload is accepted.
 
 ## Request body (multipart/form-data)
 
-| Field          | Type   | Required | Description                  |
-| -------------- | ------ | -------- | ---------------------------- |
-| `partner_name` | string | Yes      | Name of the partner          |
-| `file`         | file   | Yes      | CSV file containing products |
-
+| Field        | Type   | Required | Description                    |
+| ------------ | ------ | -------- | ------------------------------ |
+| `partner_id` | string | Yes      | Partner identifier (`PTxxxxx`) |
+| `file`       | file   | Yes      | CSV file containing products   |
 
 ### Request and response
 
@@ -53,7 +53,7 @@ Upload a CSV product feed and create associated processing jobs.
 ```bash
 curl -X POST http://api.example.com/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
-  -F "partner_name=Acme Corp" \
+  -F "partner_id=PT00001" \
   -F "file=@sample_catalog.csv"
 ```
 
@@ -74,7 +74,6 @@ curl -X POST http://api.example.com/feeds/upload \
 </div>
 </div>
 
-
 ### Response fields
 
 | Field     | Type   | Description                           |
@@ -82,7 +81,6 @@ curl -X POST http://api.example.com/feeds/upload \
 | `feed_id` | string | Unique feed identifier                |
 | `status`  | string | Feed upload status (`processing`)     |
 | `job_id`  | string | Submission job identifier (`JSxxxxx`) |
-
 
 ### Error responses
 
@@ -96,7 +94,25 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 }
 ```
 
+#### 404 Not Found
+
+Returned when the specified partner does not exist.
+
+```json
+{
+  "detail": "Partner not found."
+}
+```
+
 #### 400 Bad Request
+
+Returned when the partner is not active.
+
+```json
+{
+  "detail": "Partner is paused and cannot submit feeds."
+}
+```
 
 Returned when the request contains a file format other than `.csv`.
 
@@ -129,6 +145,7 @@ Returned when the request contains a `.csv` file missing the required `product_n
   "detail": "Invalid CSV file: Missing required CSV headers: product_name, sku"
 }
 ```
+
 
 
 ## <span class="api-endpoint api-endpoint--get">GET /feeds/{feed_id}</span>

@@ -2,7 +2,7 @@
 
 Use this guide to build a commerce data integration workflow using the Commerce Integration API.
 
-The platform supports ingestion-driven commerce workflows using ETL processing, asynchronous job execution, customer and order management workflows, analytics aggregation, and cloud-native infrastructure patterns.
+The platform supports ingestion-driven commerce workflows using ETL processing, asynchronous job execution, partner, customer and order management workflows, analytics aggregation, and cloud-native infrastructure patterns.
 
 <div class="doc-meta">
   <span>Partner integration</span>
@@ -16,13 +16,15 @@ The platform supports ingestion-driven commerce workflows using ETL processing, 
 
 The Commerce Integration API supports the following integration workflow:
 
-1. Prepare a partner product feed
-2. Upload the feed
-3. Monitor validation and ETL processing
-4. Query product data
-5. Create fictional customer and shipping address records
-6. Create and retrieve order data
-7. Retrieve analytics data
+1. Create a partner
+2. Prepare a partner product feed
+3. Upload the feed using the partner ID
+4. Monitor validation and ETL processing
+5. Query product data
+6. Create fictional customer and shipping address records
+7. Create and retrieve order data
+8. Retrieve analytics data
+
 
 
 ## When to use this guide
@@ -47,16 +49,20 @@ For complete endpoint details, see:
 
 The Commerce Integration API uses an asynchronous ingestion pipeline designed to support large partner product feeds and long-running processing workflows.
 
-When a partner uploads a feed:
+When a partner integration is configured:
 
-1. The raw CSV file is stored in Amazon S3
-2. A feed record is created
-3. A validation job verifies file structure and required fields
-4. ETL processing transforms and loads product data into PostgreSQL
-5. Products become available through query endpoints
-6. Fictional customer and shipping address records can be created
-7. Orders can be created from catalog products
-8. Analytics endpoints aggregate transactional data
+1. A partner record is created
+2. A unique partner ID (`PTxxxxx`) is assigned
+3. The partner uploads a feed using the partner ID
+4. The raw CSV file is stored in Amazon S3
+5. A feed record is created
+6. Submission and validation jobs are created
+7. ETL processing transforms and loads product data into PostgreSQL
+8. Products become available through query endpoints
+9. Fictional customer and shipping address records can be created
+10. Orders can be created from catalog products
+11. Analytics endpoints aggregate transactional data
+
 
 <div class="diagram-card" markdown="1">
 ![Integration architecture](../api/screenshots/integration-architecture.svg)
@@ -96,6 +102,23 @@ Key characteristics include:
 ## Integration design
 
 Before implementing a partner integration, define how product feeds will be generated, validated, monitored, and consumed by downstream systems.
+
+
+### Partner onboarding
+
+Before a partner can submit product feeds, a partner record must be created through the Partners API.
+
+Each partner is assigned a unique identifier using the `PTxxxxx` format. Feed uploads reference the partner by ID rather than partner name to provide consistent identification across ingestion, catalog, operational, and analytics workflows.
+
+Recommended onboarding activities include:
+
+* Creating the partner record
+* Verifying partner contact information
+* Defining feed format requirements
+* Validating sample feed files
+* Confirming upload and monitoring procedures
+
+Partner IDs should be treated as the system-of-record identifier for all integration workflows.
 
 
 ### Feed delivery

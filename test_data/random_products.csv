@@ -1,0 +1,21 @@
+sku,product_name,description,brand,category,price,currency,availability
+WM10001,Great Value Whole Milk 1 Gallon,Fresh whole milk in a one gallon container,Great Value,Grocery,3.98,USD,In Stock
+WM10002,Great Value Large White Eggs 12 Count,Grade A large white eggs 12 count carton,Great Value,Grocery,2.76,USD,In Stock
+WM10003,Wonder Classic White Bread,Soft sliced white sandwich bread,Wonder,Grocery,2.48,USD,In Stock
+WM10004,Coca-Cola Original 12 Pack,Carbonated soft drink 12 can pack,Coca-Cola,Beverages,8.98,USD,In Stock
+WM10005,Pepsi Cola 12 Pack,Carbonated cola beverage 12 can pack,Pepsi,Beverages,7.98,USD,Out of Stock
+WM10007,Bounty Paper Towels 6 Roll,Select-A-Size paper towel six roll pack,Bounty,Household,14.98,USD,In Stock
+WM10008,Tide Original Laundry Detergent 84 oz,High efficiency liquid laundry detergent,Tide,Household,12.97,USD,In Stock
+WM10009,Dawn Ultra Dish Soap 19.4 oz,Concentrated dishwashing liquid soap,Dawn,Household,3.94,USD,In Stock
+WM10010,Equate Extra Strength Pain Reliever 100 Count,Acetaminophen pain reliever and fever reducer,Equate,Health,4.88,USD,In Stock
+WM10011,Colgate Total Toothpaste 5.1 oz,Anticavity fluoride toothpaste,Colgate,Personal Care,4.96,USD,In Stock
+WM10012,Dove Beauty Bar Soap 8 Count,Moisturizing beauty cleansing bars,Dove,Personal Care,10.97,USD,Out of Stock
+WM10013,Mainstays 3 Shelf Bookcase,Three shelf laminated wood bookcase,Mainstays,Furniture,39.00,USD,In Stock
+WM10014,Sterilite 18 Gallon Storage Tote,Plastic storage tote with lid,Sterilite,Home Organization,8.98,USD,In Stock
+WM10015,Ozark Trail Stainless Steel Tumbler 24 oz,Double wall insulated travel tumbler,Ozark Trail,Outdoor,9.97,USD,In Stock
+WM10016,Apple AirPods Pro 2nd Generation,Wireless noise cancelling earbuds,Apple,Electronics,249.00,USD,In Stock
+WM10017,Samsung 55 Inch Crystal UHD Smart TV,4K UHD smart television with streaming apps,Samsung,Electronics,398.00,USD,In Stock
+WM10018,HP Wireless Mouse 200,Wireless optical computer mouse,HP,Electronics,14.88,USD,Out of Stock
+WM10019,LEGO Classic Medium Creative Brick Box,Building block set with assorted pieces,LEGO,Toys,29.97,USD,In Stock
+WM10020,Hot Wheels 20 Car Gift Pack,Assorted die cast toy vehicle collection,Hot Wheels,Toys,24.97,USD,Out of Stock
+WM10021,TEST PRODUCT,THIS IS A TEST PRODUCT,TEST BRAND,Toys,1000.00,USD,Out of Stock

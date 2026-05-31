@@ -113,7 +113,7 @@ def run_feed_etl(feed_id_value: str) -> None:
 )
 async def upload_feed(
     background_tasks: BackgroundTasks,
-    partner_name: str = Form(...),
+    partner_id: str = Form(...),
     file: UploadFile = File(...),
 ):
     allowed_types = {"text/csv", "text/plain", "application/vnd.ms-excel"}
@@ -162,6 +162,30 @@ async def upload_feed(
             detail=f"Invalid CSV file: {exc}",
         )
 
+    with get_connection() as conn:
+        partner = conn.execute(
+            q("""
+                SELECT partner_id, partner_name, status
+                FROM partners
+                WHERE partner_id = ?
+            """),
+            (partner_id,),
+        ).fetchone()
+
+        if not partner:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Partner not found.",
+            )
+
+        if partner["status"] != "active":
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Partner is {partner['status']} and cannot submit feeds.",
+            )
+
+        partner_name = partner["partner_name"]
+
     feed_id = next_feed_id()
     submission_job_id = next_submission_job_id()
     validation_job_id = next_validation_job_id()
@@ -191,6 +215,7 @@ async def upload_feed(
             q("""
                 INSERT INTO feeds (
                     feed_id,
+                    partner_id,
                     partner_name,
                     file_name,
                     content_type,
@@ -200,10 +225,11 @@ async def upload_feed(
                     raw_file_s3_key,
                     raw_file_bucket
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """),
             (
                 feed_id,
+                partner_id,
                 partner_name,
                 original_filename,
                 file.content_type or "text/csv",

@@ -11,9 +11,11 @@ Use this section to explore API endpoints, transactional workflows, authenticati
 </div>
 
 
-### [Feeds](feeds.md)
 
-Upload and manage partner product feeds. Feed workflows support ingestion, validation, ETL processing, and asynchronous job tracking before products become available through transactional and analytics workflows.
+### [Partners](partners.md)
+
+Create and manage partner organizations that submit product feeds to the platform. Partner workflows support onboarding, lifecycle management, feed configuration, and partner identification through unique partner IDs used throughout ingestion and catalog operations.
+
 
 
 ### [Jobs](jobs.md)

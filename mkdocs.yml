@@ -46,6 +46,7 @@ nav:
 
   - API reference:
       - Overview: api/index.md
+      - Partners: api/partners.md
       - Feeds: api/feeds.md
       - Jobs: api/jobs.md
       - Products: api/products.md
