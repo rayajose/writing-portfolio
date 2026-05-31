@@ -82,7 +82,7 @@ nav:
 
   - Supporting materials:
       - Overview: index-supporting-material.md
-      - System Resource Model: api/resources.md
+      - System resource model: api/resources.md
       - Deployment guide: architecture/deployment.md
       - Edge gateway deployment guide: operations/edge-gateway-guide.md
       - Screenshots: api/screenshots.md
