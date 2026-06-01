@@ -1,0 +1,4 @@
+sku,product_name,availability
+SKU001,Widget A,in_stock
+SKU002,Widget B,out_of_stock
+SKU003,Widget C,in_stock

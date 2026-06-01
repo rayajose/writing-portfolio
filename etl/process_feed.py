@@ -127,10 +127,12 @@ def load_products(feed: dict, rows: list[dict]) -> dict:
     now = utc_now_iso()
 
     summary = {
+        "processed": 0,
         "inserted": 0,
         "updated": 0,
         "unchanged": 0,
         "skipped": 0,
+        "deleted": 0,
     }
 
     with get_connection() as conn:
@@ -142,6 +144,8 @@ def load_products(feed: dict, rows: list[dict]) -> dict:
                 summary["skipped"] += 1
                 continue
 
+            availability = clean_value(row.get("availability"))
+
             incoming_product = {
                 "product_name": product_name,
                 "description": clean_value(row.get("description")),
@@ -149,7 +153,7 @@ def load_products(feed: dict, rows: list[dict]) -> dict:
                 "category": clean_value(row.get("category")),
                 "price": parse_price(row.get("price")),
                 "currency": clean_value(row.get("currency")),
-                "availability": clean_value(row.get("availability")),
+                "availability": availability,
             }
 
             existing_product = conn.execute(
@@ -172,6 +176,26 @@ def load_products(feed: dict, rows: list[dict]) -> dict:
                     sku,
                 ),
             ).fetchone()
+
+            if availability == "out_of_stock":
+                if existing_product:
+                    conn.execute(
+                        q("""
+                            DELETE FROM products
+                            WHERE partner_id = ?
+                              AND sku = ?
+                        """),
+                        (
+                            feed["partner_id"],
+                            sku,
+                        ),
+                    )
+
+                    summary["deleted"] += 1
+                else:
+                    summary["skipped"] += 1
+
+                continue
 
             if existing_product:
                 existing_product = dict(existing_product)
@@ -284,10 +308,10 @@ def process_feed(feed_id_value: str) -> None:
         )
 
         message = (
-            "ETL processing completed. "
-            f"Products processed: {products_processed}. "
+            f"Products processed: {summary['processed']}. "
             f"Inserted: {summary['inserted']}. "
             f"Updated: {summary['updated']}. "
+            f"Deleted: {summary['deleted']}. "
             f"Unchanged: {summary['unchanged']}. "
             f"Skipped: {summary['skipped']}."
         )

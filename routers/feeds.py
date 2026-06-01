@@ -50,6 +50,11 @@ FEED_COLUMNS = [
     "raw_file_bucket",
 ]
 
+ALLOWED_AVAILABILITY_VALUES = {
+    "in_stock",
+    "out_of_stock",
+}
+
 
 def clean_value(value: str | None) -> str | None:
     if value is None:
@@ -148,13 +153,27 @@ async def upload_feed(
 
         normalized_headers = {header.strip() for header in reader.fieldnames if header}
 
-        required_headers = {"sku", "product_name"}
+        required_headers = {
+            "sku",
+            "product_name",
+            "availability",
+        }
         missing_headers = required_headers - normalized_headers
 
         if missing_headers:
             raise ValueError(
                 f"Missing required CSV headers: {', '.join(sorted(missing_headers))}"
             )
+
+        for row_number, row in enumerate(reader, start=2):
+            availability = (row.get("availability") or "").strip().lower()
+
+            if availability not in ALLOWED_AVAILABILITY_VALUES:
+                raise ValueError(
+                    f"Invalid availability value '{availability}' "
+                    f"on row {row_number}. "
+                    "Allowed values: in_stock, out_of_stock."
+                )
 
     except Exception as exc:
         raise HTTPException(

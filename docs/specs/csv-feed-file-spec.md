@@ -24,7 +24,7 @@ CSV files must meet the following requirements:
 | Delimiter       | Comma `,`                                               |
 | File extension  | `.csv` recommended                                      |
 | Content type    | `text/csv`, `text/plain`, or `application/vnd.ms-excel` |
-| Required fields | `sku`, `product_name`                                   |
+| Required fields | `sku`, `product_name`, `availability`                   |
 
 !!! note "CSV compatibility"
 
@@ -38,22 +38,22 @@ The following columns are required for each product record:
 | -------------- | ------ | -------- | ------------------------------------------ |
 | `sku`          | string | Yes      | Partner-provided unique product identifier |
 | `product_name` | string | Yes      | Display name of the product                |
+| `availability` | string | Yes      | Product availability status                |
 
-Rows missing `sku` or `product_name` are skipped during ETL processing.
+Files missing any required column are rejected during upload validation.
 
 
 ## Recommended columns
 
 The following columns are recommended for complete product records:
 
-| Column         | Type    | Required | Description                                     |
-| -------------- | ------- | -------- | ----------------------------------------------- |
-| `brand`        | string  | No       | Product brand or manufacturer                   |
-| `category`     | string  | No       | Product category                                |
-| `price`        | decimal | No       | Product price (numeric, no currency symbol)     |
-| `currency`     | string  | No       | Three-letter currency code (for example, `USD`) |
-| `availability` | string  | No       | Product availability status                     |
-| `description`  | string  | No       | Product description                             |
+| Column        | Type    | Required | Description                                     |
+| ------------- | ------- | -------- | ----------------------------------------------- |
+| `brand`       | string  | No       | Product brand or manufacturer                   |
+| `category`    | string  | No       | Product category                                |
+| `price`       | decimal | No       | Product price (numeric, no currency symbol)     |
+| `currency`    | string  | No       | Three-letter currency code (for example, `USD`) |
+| `description` | string  | No       | Product description                             |
 
 
 ## Example feed
@@ -72,7 +72,7 @@ SKU-1003,Laptop Stand,Generic,Office Accessories,39.99,USD,out_of_stock,Adjustab
 - Store the raw file in Amazon S3  
 - Create submission and validation jobs  
 - Process data during ETL  
-- Insert, update, or skip product records  
+- Insert, update, remove, or skip product records  
 
 
 ## Validation
@@ -81,40 +81,74 @@ During ETL processing, the system validates each row.
 
 | Condition                                      | Result               |
 | ---------------------------------------------- | -------------------- |
-| Valid row with new `sku`                       | Product is inserted  |
+| Valid row with new `sku` and `in_stock`        | Product is inserted  |
 | Valid row with existing `sku` and changed data | Product is updated   |
 | Valid row with existing `sku` and no changes   | Product is unchanged |
-| Row missing `sku`                              | Row is skipped       |
-| Row missing `product_name`                     | Row is skipped       |
+| Existing product marked `out_of_stock`         | Product is removed   |
+| New product marked `out_of_stock`              | Row is skipped       |
+| Invalid `availability` value                   | Feed is rejected     |
 | Malformed CSV structure                        | Validation may fail  |
 
 !!! tip "Idempotent processing"
 
     Existing product records are updated only when incoming feed data changes, reducing unnecessary database updates during recurring feed ingestion.
 
+### Availability values
+
+The `availability` column supports the following values:
+
+| Value          | Behavior                                     |
+| -------------- | -------------------------------------------- |
+| `in_stock`     | Product is eligible for insertion or update  |
+| `out_of_stock` | Existing product is removed from the catalog |
+
+
+Example:
+
+```csv
+sku,product_name,availability
+SKU-1001,Wireless Mouse,in_stock
+SKU-1002,USB-C Cable,out_of_stock
+```
+
+#### Validation rules
+
+The `availability` column is required.
+
+Any value other than `in_stock` or `out_of_stock` causes upload validation to fail and the feed is rejected.
+
+Examples of invalid values:
+
+- available
+- instock
+- yes
+- true
+- backordered
+
 ## Product uniqueness
 
 Products are uniquely identified by the combination of:
 
 ```
-partner_name + sku
+partner_id + sku
 ```
 This constraint prevents duplicate product ingestion for the same partner while allowing different partners to use identical SKU values independently.
-This also means two different partners may use the same SKU without conflict.
+
+The same SKU may be used by multiple partners without conflict because product uniqueness is enforced per `partner_id`.
 
 
 ## Formatting guidelines
 
 Follow these guidelines when preparing a CSV file:
 
-* Include exactly one header row
-* Do not leave required fields blank
-* Use consistent column names
-* Avoid duplicate `sku` values within the same partner feed
-* Use plain numeric values for prices, such as `19.99`
-* Do not include currency symbols in the `price` field
-* Use consistent availability values, such as `in_stock` or `out_of_stock`
+- Include exactly one header row
+- Do not leave required fields blank
+- Use consistent column names
+- Avoid duplicate `sku` values within the same partner feed
+- Use plain numeric values for prices, such as `19.99`
+- Do not include currency symbols in the `price` field
+- Use only the supported availability values: `in_stock` and `out_of_stock`
 
 ## Related documentation
 
-- [Feeds API](../api/feeds.md)
+- [Feeds](../api/feeds.md)
