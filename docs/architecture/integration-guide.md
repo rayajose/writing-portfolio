@@ -112,11 +112,11 @@ Each partner is assigned a unique identifier using the `PTxxxxx` format. Feed up
 
 Recommended onboarding activities include:
 
-* Creating the partner record
-* Verifying partner contact information
-* Defining feed format requirements
-* Validating sample feed files
-* Confirming upload and monitoring procedures
+- Creating the partner record
+- Verifying partner contact information
+- Defining feed format requirements
+- Validating sample feed files
+- Confirming upload and monitoring procedures
 
 Partner IDs should be treated as the system-of-record identifier for all integration workflows.
 
@@ -224,18 +224,30 @@ Analytics endpoints aggregate data from orders, products, and transactional work
 
 After validation completes successfully, the ETL pipeline transforms and loads product data into the catalog database.
 
-During processing, each product row is evaluated independently to determine whether the product should be inserted, updated, left unchanged, or skipped.
-
+During processing, each product row is evaluated independently to determine whether the product should be inserted, updated, left unchanged, removed from the catalog, or skipped.
 
 ### ETL result definitions
 
-| Result    | Description                                                                                |
-| --------- | ------------------------------------------------------------------------------------------ |
-| Inserted  | A new product was created because the partner and SKU combination did not previously exist |
-| Updated   | An existing product was updated because one or more fields changed                         |
-| Unchanged | An existing product matched the incoming data and required no update                       |
-| Skipped   | The row failed validation or required field checks                                         |
+| Result    | Description                                                                                                                        |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Inserted  | A new product was created because the partner and SKU combination did not previously exist                                         |
+| Updated   | An existing product was updated because one or more fields changed                                                                 |
+| Unchanged | An existing product matched the incoming data and required no update                                                               |
+| Deleted   | An existing product was removed because its availability was set to `out_of_stock`                                                 |
+| Skipped   | The row was not eligible for catalog insertion, such as a new product marked `out_of_stock` or a row missing required product data |
 
+### Processing rules
+
+The ETL pipeline applies the following rules during product ingestion:
+
+- New products with `availability=in_stock` are inserted into the catalog
+- Existing products with changed data are updated
+- Existing products with no data changes remain unchanged
+- Existing products with `availability=out_of_stock` are removed from the catalog
+- New products with `availability=out_of_stock` are skipped
+- Rows missing required product data are skipped
+
+This behavior ensures that the product catalog contains only products that are currently available for ordering.
 
 ### Change detection
 
@@ -254,29 +266,27 @@ Because unchanged products are not rewritten, repeated feed submissions support 
 
 !!! note "Idempotent ETL behavior"
 
-    Existing products are updated only when incoming feed data changes.
-
+    Existing products are updated only when incoming feed data changes. Reprocessing the same feed does not create duplicate products or generate unnecessary updates.
 
 ## Error handling and resilience
 
-Integrations should account for validation failures, ETL processing issues, malformed product data, delayed processing, and order creation failures.
+Integrations should account for validation failures, ETL processing issues, malformed product data, unsupported availability values, delayed processing, and order creation failures.
 
 Because feed ingestion is asynchronous, failures may occur after a successful upload response is returned.
 
-
 ### Common failure scenarios
 
-| Scenario                  | Description                                                 |
-| ------------------------- | ----------------------------------------------------------- |
-| Invalid CSV format        | The uploaded file does not meet CSV formatting requirements |
-| Missing required headers  | Required fields such as `sku` or `product_name` are missing |
-| Invalid product data      | Product rows contain malformed or unsupported values        |
-| ETL processing failure    | An internal processing error prevents product ingestion     |
-| Product unavailable       | A requested product cannot be used to create an order       |
-| Missing order resource    | A requested order does not exist                            |
-| Missing customer resource | A referenced customer or shipping address does not exist    |
-| Authentication failure    | The request does not include a valid API key                |
-
+| Scenario                  | Description                                                                  |
+| ------------------------- | ---------------------------------------------------------------------------- |
+| Invalid CSV format        | The uploaded file does not meet CSV formatting requirements                  |
+| Missing required headers  | Required fields such as `sku`, `product_name`, or `availability` are missing |
+| Invalid availability      | A product row contains an unsupported availability value                     |
+| Invalid product data      | Product rows contain malformed or unsupported values                         |
+| ETL processing failure    | An internal processing error prevents product ingestion                      |
+| Product unavailable       | A requested product cannot be used to create an order                        |
+| Missing order resource    | A requested order does not exist                                             |
+| Missing customer resource | A referenced customer or shipping address does not exist                     |
+| Authentication failure    | The request does not include a valid API key                                 |
 
 ### Recommended practices
 
@@ -290,7 +300,6 @@ Implementations should:
 - Avoid logging raw customer-sensitive values
 - Verify product availability before creating orders
 
-
 ### Troubleshooting
 
 When troubleshooting failed processing:
@@ -303,6 +312,7 @@ When troubleshooting failed processing:
 6. Verify product availability before creating orders
 
 For troubleshooting procedures, see [Debug a product feed failure](../operations/debug-product-feed.md).
+
 
 
 ## Related documentation

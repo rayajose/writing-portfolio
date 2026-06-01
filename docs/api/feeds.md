@@ -27,6 +27,8 @@ Upload a CSV product feed and create associated processing jobs.
 - Validates that the supplied partner exists and is active
 - Validates file type (`.csv` only)
 - Validates CSV structure and required headers
+- Validates supported `availability` values
+- Rejects feeds containing invalid product availability values
 - Stores the raw file in object storage
 - Creates submission (`JSxxxxx`) and validation (`JVxxxxx`) job records
 - Persists feed metadata for later retrieval
@@ -138,15 +140,23 @@ Returned when the request contains a `.csv` file that is not UTF-8 encoded.
 }
 ```
 
-Returned when the request contains a `.csv` file missing the required `product_name` or `sku` headers.
+Returned when the request contains a `.csv` file missing one or more required headers.
 
 ```json
 {
-  "detail": "Invalid CSV file: Missing required CSV headers: product_name, sku"
+  "detail": "Invalid CSV file: Missing required CSV headers: availability, product_name"
 }
 ```
 
+Returned when the request contains an unsupported `availability` value.
 
+```json
+{
+  "detail": "Invalid CSV file: Invalid availability value 'available' on row 2. Allowed values: in_stock, out_of_stock."
+}
+```
+
+For complete CSV requirements and validation rules, see the [CSV feed file specification](../specs/csv-feed-file-spec.md).
 
 ## <span class="api-endpoint api-endpoint--get">GET /feeds/{feed_id}</span>
 

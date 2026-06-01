@@ -4,6 +4,46 @@ This page documents notable platform, API, infrastructure, and documentation cha
 
 The version history reflects the evolution of the platform from an initial ingestion prototype into a cloud-native commerce integration platform supporting ETL processing, order management, analytics services, operational workflows, and security-oriented documentation.
 
+## Version 1.5.0
+
+Release date: June 2026
+
+### Added
+
+- Added upload validation for product `availability` values
+- Added support for catalog lifecycle management using product availability status
+- Added a new ETL processing result type: `Deleted`
+- Added validation errors for unsupported availability values
+- Added documentation covering availability requirements and processing behavior
+- Added ETL summary reporting for deleted products
+
+### Changed
+
+- Made the `availability` column a required field for all product feed uploads
+- Updated feed validation to reject uploads containing unsupported availability values
+- Updated ETL processing behavior to remove existing products when `availability=out_of_stock`
+- Updated ETL processing summaries to report:
+
+    - Inserted
+    - Updated
+    - Deleted
+    - Unchanged
+    - Skipped
+  
+- Updated the CSV feed file specification to document required availability values and catalog removal behavior
+- Updated feed upload API documentation to include availability validation requirements and error responses
+- Updated ETL processing documentation to reflect product removal workflows and catalog lifecycle management
+
+### Fixed
+
+- Prevented invalid availability values from entering the ingestion pipeline
+- Improved catalog consistency by automatically removing products that are no longer available for ordering
+- Improved validation feedback by reporting unsupported availability values during upload validation
+- Reduced the risk of stale catalog data by synchronizing product availability changes during ETL processing
+
+
+
+
 ## Version 1.4.0
 
 This release introduces partner management capabilities and expands partner relationships across feed ingestion, product catalog, and order processing workflows. The release establishes partners as a first-class platform resource and improves traceability between partner onboarding, feed processing, catalog management, and transactional order data.
