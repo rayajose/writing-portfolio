@@ -91,7 +91,7 @@ curl -X POST http://api.example.com/orders \
 {
   "order_id": "OR00001",
   "partner_id": "PT00001",
-  "partner_name": "RayTech Corp.",
+  "partner_name": "Acme Corp",
   "customer_reference": "CR00001",
   "status": "created",
   "total_amount": 10.99,
@@ -101,7 +101,7 @@ curl -X POST http://api.example.com/orders \
       "order_item_id": "OI00001",
       "product_id": "PR00021",
       "sku": "BR-4001",
-      "product_name": "All Day IPA",
+      "product_name": "Acme widget 3000",
       "quantity": 1,
       "unit_price": 10.99,
       "line_total": 10.99,
@@ -222,7 +222,7 @@ curl -X GET "http://api.example.com/orders?partner_id=PT00001" \
     {
       "order_id": "OR00001",
       "partner_id": "PT00001",
-      "partner_name": "RayTech Corp.",
+      "partner_name": "Acme Corp",
       "customer_reference": "CR00001",
       "status": "created",
       "total_amount": 10.99,
@@ -232,7 +232,7 @@ curl -X GET "http://api.example.com/orders?partner_id=PT00001" \
           "order_item_id": "OI00001",
           "product_id": "PR00021",
           "sku": "BR-4001",
-          "product_name": "All Day IPA",
+          "product_name": "Acme widget 3000",
           "quantity": 1,
           "unit_price": 10.99,
           "line_total": 10.99
@@ -311,7 +311,7 @@ curl -X GET http://api.example.com/orders/OR00001 \
 {
   "order_id": "OR00001",
   "partner_id": "PT00001",
-  "partner_name": "RayTech Corp.",
+  "partner_name": "Acme Corp",
   "customer_reference": "CR00001",
   "status": "created",
   "total_amount": 10.99,
@@ -321,7 +321,7 @@ curl -X GET http://api.example.com/orders/OR00001 \
       "order_item_id": "OI00001",
       "product_id": "PR00021",
       "sku": "BR-4001",
-      "product_name": "All Day IPA",
+      "product_name": "Acme widget 3000",
       "quantity": 1,
       "unit_price": 10.99,
       "line_total": 10.99

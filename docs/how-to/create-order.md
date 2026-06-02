@@ -47,7 +47,7 @@ curl -X POST http://api.example.com/orders \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "partner_name": "Retail Store Name",
+    "partner_name": "Acme Corp",
     "customer_reference": "CR00001",
     "customer_id": "CU00001",
     "shipping_address_id": "AD00001",
@@ -65,7 +65,7 @@ curl -X POST http://api.example.com/orders \
 ```json
 {
   "order_id": "OR00001",
-  "partner_name": "Retail Store Name",
+  "partner_name": "Acme Corp",
   "customer_reference": "CR00001",
   "status": "created",
   "total_amount": 9.99,
@@ -75,7 +75,7 @@ curl -X POST http://api.example.com/orders \
       "order_item_id": "OI00002",
       "product_id": "PR00001",
       "sku": "TWXL1001",
-      "product_name": "T-Shirt, White, XL",
+      "product_name": "Acme widget 3000",
       "quantity": 1,
       "unit_price": 9.99,
       "line_total": 9.99,
@@ -104,7 +104,7 @@ curl -X GET http://api.example.com/orders/OR00001 \
 ```json
 {
   "order_id": "OR00001",
-  "partner_name": "Retail Store Name",
+  "partner_name": "Acme Corp",
   "customer_reference": "CR00001",
   "status": "created",
   "total_amount": 9.99,
@@ -114,7 +114,7 @@ curl -X GET http://api.example.com/orders/OR00001 \
       "order_item_id": "OI00002",
       "product_id": "PR00001",
       "sku": "TWXL1001",
-      "product_name": "T-Shirt, White, XL",
+      "product_name": "Acme widget 3000",
       "quantity": 1,
       "unit_price": 9.99,
       "line_total": 9.99,

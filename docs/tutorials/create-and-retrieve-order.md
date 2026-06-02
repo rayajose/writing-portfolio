@@ -52,7 +52,7 @@ GET /products
 ### Example request
 
 ```bash
-curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Shoes' \
+curl -X GET 'http://localhost:8000/products?partner_name=GoFasters&category=Running%20Shoes' \
   -H 'x-api-key: YOUR_API_KEY'
 ```
 
@@ -66,6 +66,7 @@ curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Sho
     {
       "product_id": "PR00176",
       "feed_id": "FD00001",
+      "partner_id": "PT00001",
       "partner_name": "GoFasters",
       "sku": "RS1002",
       "product_name": "Adidas Ultraboost 22",
@@ -80,6 +81,7 @@ curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Sho
     {
       "product_id": "PR00177",
       "feed_id": "FD00001",
+      "partner_id": "PT00001",
       "partner_name": "GoFasters",
       "sku": "RS1003",
       "product_name": "ASICS Gel-Nimbus 25",
@@ -94,6 +96,7 @@ curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Sho
     {
       "product_id": "PR00178",
       "feed_id": "FD00001",
+      "partner_id": "PT00001",
       "partner_name": "GoFasters",
       "sku": "RS1004",
       "product_name": "Brooks Ghost 15",
@@ -108,6 +111,7 @@ curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Sho
     {
       "product_id": "PR00179",
       "feed_id": "FD00001",
+      "partner_id": "PT00001",
       "partner_name": "GoFasters",
       "sku": "RS1005",
       "product_name": "HOKA Clifton 9",
@@ -123,6 +127,7 @@ curl -X GET 'http://localhost:8000?partner_name=GoFasters&category=Running%20Sho
     {
       "product_id": "PR00182",
       "feed_id": "FD00001",
+      "partner_id": "PT00001",
       "partner_name": "GoFasters",
       "sku": "RS1008",
       "product_name": "On Cloudrunner",

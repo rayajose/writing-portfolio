@@ -101,16 +101,17 @@ curl -H "x-api-key: YOUR_API_KEY" \
 ```json
 {
   "feed_id": "FD00001",
+  "partner_id": "PT00001"
   "partner_name": "Acme Corp",
-  "file_name": "sample_catalog.csv",
+  "file_name": "acme-product-catalog.csv",
   "content_type": "text/csv",
   "status": "uploaded",
   "uploaded_at": "YYYY-MM-DDTHH:MM:SSZ",
   "validation_job_id": "JV00001",
   "validation_status": "completed",
   "validation_message": "ETL processing completed. Products processed: 13. Inserted: 1. Updated: 0. Unchanged: 12. Skipped: 0.",
-  "raw_file_s3_key": "raw/partners/acme/feeds/FD00001/sample_catalog.csv",
-  "raw_file_bucket": "partner-catalog-raw-rayj"
+  "raw_file_s3_key": "raw/partners/acme-corp/feeds/FD00001/acme-product-catalog.csv",
+  "raw_file_bucket": "commerce-integration-raw"
 }
 ```
 
@@ -132,7 +133,7 @@ curl -H "x-api-key: YOUR_API_KEY" \
       "feed_id": "FD00001",
       "partner_name": "Acme Corp",
       "sku": "AC-1001",
-      "product_name": "Sample Product",
+      "product_name": "Acme widget 3000",
       "price": 49.99,
       "currency": "USD",
       "availability": "in_stock",
@@ -229,7 +230,7 @@ curl -H "x-api-key: YOUR_API_KEY" \
   "items": [
     {
       "product_id": "PR00001",
-      "product_name": "Sample Product",
+      "product_name": "Acme widget 3000",
       "price": 49.99,
       "availability": "in_stock"
     }
@@ -274,7 +275,7 @@ curl -X POST "http://api.example.com/orders" \
       "order_item_id": "OI00001",
       "product_id": "PR00001",
       "sku": "AC-1001",
-      "product_name": "Sample Product",
+      "product_name": "Acme widget 3000",
       "quantity": 2,
       "unit_price": 49.99,
       "line_total": 99.98

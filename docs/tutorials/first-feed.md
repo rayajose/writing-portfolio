@@ -151,6 +151,7 @@ curl -X GET "http://localhost:8000/products?partner_name=Tronics&limit=5" \
   "items": [
     {
       "product_id": "PR00001",
+      "partner_id": "PT00001",
       "partner_name": "Tronics",
       "sku": "TV-001",
       "product_name": "4K Smart TV",
