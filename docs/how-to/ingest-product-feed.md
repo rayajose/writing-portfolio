@@ -58,14 +58,12 @@ curl -X POST http://api.example.com/feeds/upload \
 
 ## 2. Review processing results
 
-Run the `GET /feeds/{feed_id}` endpoint using the `feed_id` from the previous step.
-
-In this example, the `feed_id` is `FD00021`.
+Run the `GET /feeds/{feed_id}` endpoint using the `feed_id` from the upload response.
 
 ### Example request
 
 ```bash
-curl -X GET http://api.example.com/feeds/FD00021 \
+curl -X GET http://api.example.com/feeds/FD00001 \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -104,12 +102,12 @@ Review the following values from the `validation_message` field:
 
 ## 3. Verify products
 
-Run the `GET /products` endpoint using the `feed_id` from step 1 (`FD00021`) as a query parameter.
+Run the `GET /products` endpoint using the `feed_id` from step 1 (`FD00001`) as a query parameter.
 
 ### Example request
 
 ```bash
-curl -X GET "http://api.example.com/products?feed_id=FD00021" \
+curl -X GET "http://api.example.com/products?feed_id=FD00001" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
