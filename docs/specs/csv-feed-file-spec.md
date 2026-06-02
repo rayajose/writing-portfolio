@@ -16,15 +16,15 @@ Uploaded files are stored as raw input and processed by the ETL pipeline to crea
 
 CSV files must meet the following requirements:
 
-| Requirement     | Description                                             |
-| --------------- | ------------------------------------------------------- |
-| File format     | CSV                                                     |
-| Encoding        | UTF-8 recommended                                       |
-| Header row      | Required                                                |
-| Delimiter       | Comma `,`                                               |
-| File extension  | `.csv` recommended                                      |
-| Content type    | `text/csv`, `text/plain`, or `application/vnd.ms-excel` |
-| Required fields | `sku`, `product_name`, `availability`                   |
+| Requirement     | Description                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------- |
+| File format     | CSV                                                                                            |
+| Encoding        | UTF-8 recommended                                                                              |
+| Header row      | Required                                                                                       |
+| Delimiter       | Comma `,`                                                                                      |
+| File extension  | `.csv` recommended                                                                             |
+| Content type    | `text/csv`, `text/plain`, or `application/vnd.ms-excel`                                        |
+| Required fields | `sku`, `product_name`, `description`, `brand`, `category`, `price`, `currency`, `availability` |
 
 !!! note "CSV compatibility"
 
@@ -34,26 +34,18 @@ CSV files must meet the following requirements:
 
 The following columns are required for each product record:
 
-| Column         | Type   | Required | Description                                |
-| -------------- | ------ | -------- | ------------------------------------------ |
-| `sku`          | string | Yes      | Partner-provided unique product identifier |
-| `product_name` | string | Yes      | Display name of the product                |
-| `availability` | string | Yes      | Product availability status                |
+| Column         | Type    | Required | Description                                     |
+| -------------- | ------- | -------- | ----------------------------------------------- |
+| `sku`          | string  | Yes      | Partner-provided unique product identifier      |
+| `product_name` | string  | Yes      | Display name of the product                     |
+| `description`  | string  | Yes      | Product description                             |
+| `brand`        | string  | Yes      | Product brand or manufacturer                   |
+| `category`     | string  | Yes      | Product category                                |
+| `price`        | decimal | Yes      | Product price (numeric, no currency symbol)     |
+| `currency`     | string  | Yes      | Three-letter currency code (for example, `USD`) |
+| `availability` | string  | Yes      | Product availability status                     |
 
 Files missing any required column are rejected during upload validation.
-
-
-## Recommended columns
-
-The following columns are recommended for complete product records:
-
-| Column        | Type    | Required | Description                                     |
-| ------------- | ------- | -------- | ----------------------------------------------- |
-| `brand`       | string  | No       | Product brand or manufacturer                   |
-| `category`    | string  | No       | Product category                                |
-| `price`       | decimal | No       | Product price (numeric, no currency symbol)     |
-| `currency`    | string  | No       | Three-letter currency code (for example, `USD`) |
-| `description` | string  | No       | Product description                             |
 
 
 ## Example feed
@@ -68,10 +60,14 @@ SKU-1003,Laptop Stand,Generic,Office Accessories,39.99,USD,out_of_stock,Adjustab
 
 ## Processing behavior
 
-- Validate CSV structure  
-- Store the raw file in Amazon S3  
-- Create submission and validation jobs  
-- Process data during ETL  
+- Validate CSV headers
+- Validate required field values
+- Validate price format
+- Validate currency format
+- Validate availability values
+- Store the raw file in Amazon S3
+- Create submission and validation jobs
+- Process data during ETL
 - Insert, update, remove, or skip product records  
 
 
@@ -81,49 +77,29 @@ During ETL processing, the system validates each row.
 
 | Condition                                      | Result               |
 | ---------------------------------------------- | -------------------- |
+| Missing required column                        | Feed is rejected     |
+| Missing required field value                   | Feed is rejected     |
+| Invalid price value                            | Feed is rejected     |
+| Invalid currency code                          | Feed is rejected     |
+| Invalid `availability` value                   | Feed is rejected     |
 | Valid row with new `sku` and `in_stock`        | Product is inserted  |
 | Valid row with existing `sku` and changed data | Product is updated   |
 | Valid row with existing `sku` and no changes   | Product is unchanged |
 | Existing product marked `out_of_stock`         | Product is removed   |
 | New product marked `out_of_stock`              | Row is skipped       |
-| Invalid `availability` value                   | Feed is rejected     |
 | Malformed CSV structure                        | Validation may fail  |
 
 !!! tip "Idempotent processing"
 
     Existing product records are updated only when incoming feed data changes, reducing unnecessary database updates during recurring feed ingestion.
 
-### Availability values
+### Field validation rules
 
-The `availability` column supports the following values:
-
-| Value          | Behavior                                     |
-| -------------- | -------------------------------------------- |
-| `in_stock`     | Product is eligible for insertion or update  |
-| `out_of_stock` | Existing product is removed from the catalog |
-
-
-Example:
-
-```csv
-sku,product_name,availability
-SKU-1001,Wireless Mouse,in_stock
-SKU-1002,USB-C Cable,out_of_stock
-```
-
-#### Validation rules
-
-The `availability` column is required.
-
-Any value other than `in_stock` or `out_of_stock` causes upload validation to fail and the feed is rejected.
-
-Examples of invalid values:
-
-- available
-- instock
-- yes
-- true
-- backordered
+| Field          | Validation rule                            | Allowed examples           | Invalid examples              |
+| -------------- | ------------------------------------------ | -------------------------- | ----------------------------- |
+| `price`        | Numeric value greater than or equal to `0` | `19.99`, `0`, `125`        | `-5.00`, `$19.99`, `abc`      |
+| `currency`     | Three-letter currency code                 | `USD`, `EUR`, `GBP`        | `US`, `USDD`, `123`           |
+| `availability` | Must be one of the supported values        | `in_stock`, `out_of_stock` | `available`, `instock`, `yes` |
 
 ## Product uniqueness
 

@@ -95,12 +95,12 @@ curl -X GET http://api.example.com/products?limit=10&order=asc \
       "product_id": "PR00001",
       "feed_id": "FD00001",
       "partner_id": "PT00001",
-      "partner_name": "Tech Haven",
+      "partner_name": "Acme Corp",
       "sku": "EL-3001",
-      "product_name": "iPhone 15 Pro",
-      "description": "A17 Pro chip",
-      "brand": "Apple",
-      "category": "Smartphones",
+      "product_name": "Acme widget 3000",
+      "description": "The best widget in the Acme collection.",
+      "brand": "Acme",
+      "category": "Widgets",
       "price": 999.0,
       "currency": "USD",
       "availability": "in_stock",
@@ -209,12 +209,12 @@ curl -X GET http://api.example.com/products/PR00001 \
   "product_id": "PR00001",
   "feed_id": "FD00001",
   "partner_id": "PT00001",
-  "partner_name": "Tech Haven",
+  "partner_name": "Acme Corp",
   "sku": "EL-3001",
-  "product_name": "iPhone 15 Pro",
-  "description": "A17 Pro chip",
-  "brand": "Apple",
-  "category": "Smartphones",
+  "product_name": "Acme widget 3000",
+  "description": "The best widget in the Acme collection.",
+  "brand": "Acme",
+  "category": "Widgets",
   "price": 999.0,
   "currency": "USD",
   "availability": "in_stock",
@@ -294,7 +294,7 @@ Retrieve all products associated with a specific feed.
 <h3>Request</h3>
 
 ```bash
-curl -X GET http://api.example.com/products/by-feed/FD00002 \
+curl -X GET http://api.example.com/products/by-feed/FD00001 \
   -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY"
 ```
@@ -311,15 +311,15 @@ curl -X GET http://api.example.com/products/by-feed/FD00002 \
   "items": [
     {
       "product_id": "PR00011",
-      "feed_id": "FD00002",
+      "feed_id": "FD00001",
       "partner_id": "PT00001",
-      "partner_name": "Elite Jewelry",
+      "partner_name": "Acme Corp",
       "sku": "JW-1001",
-      "product_name": "Diamond Earrings",
-      "description": "0.50ct studs",
-      "brand": "LuxeGems",
-      "category": "Earrings",
-      "price": 899.99,
+      "product_name": "Acme widget 3000",
+      "description": "The best widget in the Acme collection.",
+      "brand": "Acme",
+      "category": "Widgets",
+      "price": 999.99,
       "currency": "USD",
       "availability": "in_stock",
       "created_at": "YYYY-MM-DDTHH:MM:SSZ"

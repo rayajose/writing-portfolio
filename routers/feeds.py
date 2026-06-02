@@ -38,6 +38,7 @@ router = APIRouter(
 
 FEED_COLUMNS = [
     "feed_id",
+    "partner_id",
     "partner_name",
     "file_name",
     "content_type",
@@ -49,6 +50,17 @@ FEED_COLUMNS = [
     "raw_file_s3_key",
     "raw_file_bucket",
 ]
+
+REQUIRED_FEED_FIELDS = {
+    "sku",
+    "product_name",
+    "description",
+    "brand",
+    "category",
+    "price",
+    "currency",
+    "availability",
+}
 
 ALLOWED_AVAILABILITY_VALUES = {
     "in_stock",
@@ -153,12 +165,7 @@ async def upload_feed(
 
         normalized_headers = {header.strip() for header in reader.fieldnames if header}
 
-        required_headers = {
-            "sku",
-            "product_name",
-            "availability",
-        }
-        missing_headers = required_headers - normalized_headers
+        missing_headers = REQUIRED_FEED_FIELDS - normalized_headers
 
         if missing_headers:
             raise ValueError(
@@ -166,6 +173,30 @@ async def upload_feed(
             )
 
         for row_number, row in enumerate(reader, start=2):
+
+            for field in REQUIRED_FEED_FIELDS:
+                value = (row.get(field) or "").strip()
+
+                if not value:
+                    raise ValueError(
+                        f"Missing required value for '{field}' on row {row_number}."
+                    )
+
+            try:
+                price = float(row["price"])
+            except ValueError:
+                raise ValueError(
+                    f"Invalid price value '{row['price']}' on row {row_number}."
+                )
+
+            if price < 0:
+                raise ValueError(f"Price cannot be negative on row {row_number}.")
+
+            currency = row["currency"].strip().upper()
+
+            if not re.fullmatch(r"[A-Z]{3}", currency):
+                raise ValueError(f"Invalid currency '{currency}' on row {row_number}.")
+
             availability = (row.get("availability") or "").strip().lower()
 
             if availability not in ALLOWED_AVAILABILITY_VALUES:
@@ -332,6 +363,7 @@ async def read_feed(feed_id: str):
             q("""
                 SELECT
                     f.feed_id,
+                    f.partner_id,
                     f.partner_name,
                     f.file_name,
                     f.content_type,

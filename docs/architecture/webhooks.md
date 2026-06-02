@@ -84,7 +84,7 @@ All webhook events use a common payload structure.
   "occurred_at": "YYYY-MM-DDTHH:MM:SSZ",
   "data": {
     "feed_id": "FD00001",
-    "partner_name": "RayTech Corp.",
+    "partner_name": "Acme Corp",
     "validation_job_id": "JV00001",
     "status": "completed"
   }
@@ -106,7 +106,7 @@ Triggered when feed validation completes successfully.
   "occurred_at": "YYYY-MM-DDTHH:MM:SSZ",
   "data": {
     "feed_id": "FD00001",
-    "partner_name": "RayTech Corp.",
+    "partner_name": "Acme Corp",
     "validation_job_id": "JV00001",
     "status": "completed",
     "valid_records": 1250,
@@ -142,7 +142,7 @@ Triggered when feed validation fails.
   "occurred_at": "YYYY-MM-DDTHH:MM:SSZ",
   "data": {
     "feed_id": "FD00001",
-    "partner_name": "RayTech Corp.",
+    "partner_name": "Acme Corp",
     "validation_job_id": "JV00001",
     "status": "failed",
     "error_message": "Required column 'sku' missing from CSV file."
@@ -175,7 +175,7 @@ Triggered when a processing job fails.
   "event_type": "job.failed",
   "occurred_at": "YYYY-MM-DDTHH:MM:SSZ",
   "data": {
-    "job_id": "JS00031",
+    "job_id": "JS00001",
     "job_type": "etl_processing",
     "status": "failed",
     "message": "Database connection timeout during product update."

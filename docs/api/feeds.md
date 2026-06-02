@@ -27,8 +27,8 @@ Upload a CSV product feed and create associated processing jobs.
 - Validates that the supplied partner exists and is active
 - Validates file type (`.csv` only)
 - Validates CSV structure and required headers
-- Validates supported `availability` values
-- Rejects feeds containing invalid product availability values
+- Validates supported values
+- Rejects feeds containing invalid field values
 - Stores the raw file in object storage
 - Creates submission (`JSxxxxx`) and validation (`JVxxxxx`) job records
 - Persists feed metadata for later retrieval
@@ -148,7 +148,7 @@ Returned when the request contains a `.csv` file missing one or more required he
 }
 ```
 
-Returned when the request contains an unsupported `availability` value.
+Returned when the request contains an unsupported field value.
 
 ```json
 {
@@ -199,16 +199,17 @@ curl -X GET http://api.example.com/feeds/FD00001 \
 ```json
 {
   "feed_id": "FD00001",
+  "partner_id": "PT00001",
   "partner_name": "Acme Corp",
-  "file_name": "sample_catalog.csv",
+  "file_name": "acme-product-catalog.csv",
   "content_type": "text/csv",
   "status": "uploaded",
   "uploaded_at": "YYYY-MM-DDTHH:MM:SSZ",
   "validation_job_id": "JV00001",
   "validation_status": "completed",
-  "validation_message": "ETL processing completed. Products processed: 13. Inserted: 1. Updated: 0. Unchanged: 12. Skipped: 0.",
-  "raw_file_s3_key": "raw/partners/acme/feeds/FD00001/sample_catalog.csv",
-  "raw_file_bucket": "partner-catalog-raw-rayj"
+  "validation_message": "ETL processing completed. Products processed: 13. Inserted: 1. Updated: 0. Deleted: 1.Unchanged: 12. Skipped: 0.",
+  "raw_file_s3_key": "raw/partners/acme-corp/feeds/FD00001/acme-product-catalog.csv",
+  "raw_file_bucket": "commerce-integration-raw"
 }
 ```
 
@@ -221,6 +222,7 @@ curl -X GET http://api.example.com/feeds/FD00001 \
 | Field                | Type   | Description                                             |
 | -------------------- | ------ | ------------------------------------------------------- |
 | `feed_id`            | string | Unique feed identifier (`FDxxxxx`)                      |
+| `partner_id`         | string | Partner identifier (`PTxxxxx`)                          |
 | `partner_name`       | string | Partner that submitted the feed                         |
 | `file_name`          | string | Original uploaded file name                             |
 | `content_type`       | string | MIME type of the uploaded file                          |

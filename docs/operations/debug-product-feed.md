@@ -53,8 +53,8 @@ curl -X GET "http://localhost:8000/feeds/FD00009" \
 ```json
 {
   "feed_id": "FD00001",
-  "partner_name": "Tronics",
-  "file_name": "electronics_catalog.csv",
+  "partner_name": "Acme Corp",
+  "file_name": "acme-product-catalog.csv",
   "status": "failed",
   "validation_job_id": "JV00001",
   "validation_status": "failed",

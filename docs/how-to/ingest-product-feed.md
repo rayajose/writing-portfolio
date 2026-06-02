@@ -41,7 +41,7 @@ Record the `feed_id` value from the response for use in the next step. In this e
 curl -X POST http://api.example.com/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
   -F "file=@electronics_catalog.csv" \
-  -F "partner_name=Tronics"
+  -F "partner_id=PT00001"
 ```
 
 
@@ -75,16 +75,17 @@ curl -X GET http://api.example.com/feeds/FD00021 \
 ```json
 {
   "feed_id": "FD00001",
-  "partner_name": "Joyeria Reina",
-  "file_name": "test-only-sku-product_name.csv",
+  "partner_id": "PT00001",
+  "partner_name": "GoFasters'",
+  "file_name": "acme-product-catalog.csv",
   "content_type": "text/csv",
   "status": "processed",
   "uploaded_at": "YYYY-MM-DDTHH:MM:SSZ",
-  "validation_job_id": "JV00021",
+  "validation_job_id": "JV00001",
   "validation_status": "completed",
-  "validation_message": "ETL processing completed. Products processed: 10. Inserted: 10. Updated: 0. Unchanged: 0. Skipped: 0.",
-  "raw_file_s3_key": "raw/partners/joyeria-reina/feeds/FD00021/test-only-sku-product_name.csv",
-  "raw_file_bucket": "partner-catalog-raw-rayj"
+  "validation_message": "ETL processing completed. Products processed: 10. Inserted: 10. Updated: 0. Deleted: 1.Unchanged: 0. Skipped: 0.",
+  "raw_file_s3_key": "raw/partners/acme-corp/feeds/FD00001/acme-product-catalog.csv",
+  "raw_file_bucket": "commerce-integration-raw"
 }
 ```
 
@@ -96,6 +97,7 @@ Review the following values from the `validation_message` field:
 - **Products processed**: Total rows evaluated
 - **Inserted**: New products created
 - **Updated**: Existing products with changed data, such as price or availability
+- **Deleted**: Existing products no longer in stock
 - **Unchanged**: Existing products with no changes
 - **Skipped**: Invalid rows or rows missing required fields
 
@@ -120,8 +122,9 @@ curl -X GET "http://api.example.com/products?feed_id=FD00021" \
   "items": [
     {
       "product_id": "PR00145",
+      "partner_id": "PT00001",
       "feed_id": "FD00001",
-      "partner_name": "Test",
+      "partner_name": "GoFasters'",
       "sku": "RS1001",
       "product_name": "Nike Air Zoom Pegasus 40",
       "description": "Versatile daily trainer with responsive Zoom Air units and breathable mesh upper",
@@ -134,8 +137,9 @@ curl -X GET "http://api.example.com/products?feed_id=FD00021" \
     },
     {
       "product_id": "PR00146",
+      "partner_id": "PT00001",
       "feed_id": "FD00001",
-      "partner_name": "Test",
+      "partner_name": "GoFasters'",
       "sku": "RS1002",
       "product_name": "Adidas Ultraboost 22",
       "description": "High-cushion running shoe with Boost midsole for energy return and Primeknit upper",

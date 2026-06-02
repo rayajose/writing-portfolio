@@ -84,13 +84,14 @@ curl -X GET http://localhost:8000/products?limit=5 \
   "items": [
     {
       "product_id": "PR00001",
+      "partner_id": "PT00001",
       "feed_id": "FD00001",
       "partner_name": "Acme Corp",
       "sku": "ACM-001",
-      "product_name": "Running Shoes",
-      "description": "Lightweight running shoes designed for comfort and performance.",
+      "product_name": "Acme Widget 3000",
+      "description": "The best widget in the Acme collection.",
       "brand": "Acme",
-      "category": "Footwear",
+      "category": "Widgets",
       "price": 79.99,
       "currency": "USD",
       "availability": "in_stock",
