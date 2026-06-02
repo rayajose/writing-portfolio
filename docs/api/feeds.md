@@ -22,6 +22,10 @@ Include the API key in each request:
 
 Upload a CSV product feed and create associated processing jobs.
 
+### Feed file specification
+
+For complete CSV formatting rules, supported fields, validation requirements, and file constraints, see the [CSV feed file specification](../specs/csv-feed-file-spec.md).
+
 ### Processing behavior
 
 - Validates that the supplied partner exists and is active
