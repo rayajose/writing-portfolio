@@ -39,7 +39,7 @@ Requests without a valid API key return `401 Unauthorized` or `403 Forbidden`.
 
 ## Quickstart
 
-Use this workflow to ingest catalog data, query products, and create an order.
+Use this workflow to upload a product feed, monitor processing, query catalog data, and create an order.
 
 
 ### 1. Upload a feed
@@ -47,8 +47,8 @@ Use this workflow to ingest catalog data, query products, and create an order.
 ```bash
 curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
-  -F "file=@electronics_catalog.csv" \
-  -F "partner_name=Tronics"
+  -F "partner_name=Acme Corp" \
+  -F "file=@acme-product-catalog.csv"
 ```
 
 
@@ -57,19 +57,43 @@ curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/f
 ```json
 {
   "feed_id": "FD00001",
+  "partner_id": "PT00001",
+  "partner_name": "Acme Corp",
   "status": "uploaded",
   "job_id": "JS00001"
 }
 ```
 
 
-### 2. Run ETL processing
+
+### 2. Monitor processing status
+
+After upload validation succeeds, the platform automatically processes the feed through ETL workflows.
+
 
 ```bash
-curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/jobs/JV00001/run \
+curl -X GET http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/feeds/JV00001 \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
+### Example response
+
+```json
+{
+  "feed_id": "FD00001",
+  "partner_id": "PT00001",
+  "partner_name": "Acme Corp",
+  "file_name": "acme-product-catalog.csv",
+  "content_type": "text/csv",
+  "status": "uploaded",
+  "uploaded_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "validation_job_id": "JV00001",
+  "validation_status": "completed",
+  "validation_message": "ETL processing completed. Products processed: 13. Inserted: 1. Updated: 0. Deleted: 1.Unchanged: 12. Skipped: 0.",
+  "raw_file_s3_key": "raw/partners/acme-corp/feeds/FD00001/acme-product-catalog.csv",
+  "raw_file_bucket": "commerce-integration-raw"
+}
+```
 
 ### 3. Query products
 
@@ -112,7 +136,6 @@ curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/o
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "partner_name": "Acme Corp",
     "customer_reference": "CR00001",
     "customer_id": "CU00001",
     "shipping_address_id": "AD00001",
@@ -131,6 +154,7 @@ curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/o
 ```json
 {
   "order_id": "OR00001",
+  "partner_id": "PT00001",
   "partner_name": "Acme Corp",
   "customer_reference": "CR00001",
   "customer_id": "CU00001",
@@ -179,6 +203,7 @@ Use query parameters to filter, sort, and paginate API results.
 
 | Parameter      | Description            |
 | -------------- | ---------------------- |
+| `partner_id`   | Filter by partner ID   |
 | `partner_name` | Filter by partner      |
 | `feed_id`      | Filter by feed         |
 | `brand`        | Filter by brand        |
@@ -227,6 +252,7 @@ The platform uses structured identifiers for feeds, jobs, customers, products, a
 | Prefix    | Resource         |
 | --------- | ---------------- |
 | `FDxxxxx` | Feed             |
+| `PTxxxxx` | Partner          |
 | `JSxxxxx` | Submission job   |
 | `JVxxxxx` | Validation job   |
 | `JFxxxxx` | Fulfillment job  |
@@ -241,6 +267,7 @@ The platform uses structured identifiers for feeds, jobs, customers, products, a
 
 - Follow [Ingest a product feed](../how-to/ingest-product-feed.md)
 - Use [Feeds](../api/feeds.md) to manage uploads
+- Use [Partners](../api/partners.md) to manage partner records
 - Use [Jobs](../api/jobs.md) to track processing
 - Use [Products](../api/products.md) to query catalog data
 - Use [Customers](../api/customers.md) to create fictional customers and shipping addresses
