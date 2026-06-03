@@ -640,6 +640,7 @@ select {
 }
 
 .portfolio-hero .doc-meta {
+  font-weight: 500;
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
@@ -664,26 +665,33 @@ select {
 }
 
 .portfolio-hero-actions .md-button {
-  padding: 0.4rem 0.65rem;
-  font-size: 0.76rem;
+  padding: 0.42rem 0.7rem;
+  font-size: 0.74rem;
+  font-weight: 500;
+  border-radius: 8px;
+  border-width: 1px;
+  border-style: solid;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
 }
 
 .portfolio-hero-actions .md-button--primary {
-  background: #2b6cb0;
-  border: none;
-  color: #ffffff;
-  box-shadow: none;
+  background: #eef4fb;
+  color: #2b6cb0;
+  border: 1px solid #cbd5e1;
+  border-color: #2b6cb0;
 }
 
 .portfolio-hero-actions .md-button--primary:hover {
-  background: #1f4f82;
-  transform: none;
-  box-shadow: none;
+  background: #e6eff8;
+  border-color: #b5cae1;
+  color: #1f4f82;
 }
 
 .portfolio-hero-actions .md-button:not(.md-button--primary) {
+  background: #ffffff;
   color: #2b6cb0;
-  border-color: #b7c7dc;
+  border-color: #2b6cb0;
 }
 
 .portfolio-hero-actions .md-button:not(.md-button--primary):hover {
