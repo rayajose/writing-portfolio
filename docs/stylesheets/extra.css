@@ -231,13 +231,6 @@ select {
   padding-top: 0.025rem;
 }
 
-/* .md-nav__title {
-  font-size: 0.64rem;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  color: #94a3b8;
-  text-transform: uppercase;
-} */
 
 .md-nav__link {
   font-size: 0.68rem;
@@ -467,7 +460,7 @@ select {
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.015em;
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .md-typeset p,
@@ -975,6 +968,30 @@ select {
   overflow-wrap: normal;
   word-break: normal;
 }
+
+/* Remove the default Material tab underline */
+.md-typeset .tabbed-set>input:checked+label {
+  border-bottom: none !important;
+}
+
+.md-typeset .tabbed-set>label {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.md-typeset .tabbed-labels,
+.md-typeset .tabbed-labels--linked {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.md-typeset .tabbed-labels::before,
+.md-typeset .tabbed-labels::after,
+.md-typeset .tabbed-labels--linked::before,
+.md-typeset .tabbed-labels--linked::after {
+  display: none !important;
+}
+
 
 /* Tables */
 

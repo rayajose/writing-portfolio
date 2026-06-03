@@ -44,6 +44,8 @@ Use this workflow to upload a product feed, monitor processing, query catalog da
 
 ### 1. Upload a feed
 
+#### Example request
+
 ```bash
 curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
@@ -52,7 +54,7 @@ curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/f
 ```
 
 
-### Example response
+#### Example response
 
 ```json
 {
@@ -70,13 +72,14 @@ curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/f
 
 After upload validation succeeds, the platform automatically processes the feed through ETL workflows.
 
+#### Example request
 
 ```bash
 curl -X GET http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/feeds/JV00001 \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
-### Example response
+#### Example response
 
 ```json
 {
@@ -97,13 +100,55 @@ curl -X GET http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/fe
 
 ### 3. Query products
 
-```bash
-curl -X GET http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/products?limit=5 \
-  -H "x-api-key: YOUR_API_KEY"
-```
+#### Example request
+
+=== "curl"
+
+    ```bash
+    curl -X GET "http://<base-url>/products?limit=5" \
+      -H "x-api-key: YOUR_API_KEY"
+    ```
+
+=== "Python"
+
+    ```python
+    import requests
+
+    base_url = "http://<base-url>"
+    api_key = "YOUR_API_KEY"
+
+    response = requests.get(
+        f"{base_url}/products",
+        headers={"x-api-key": api_key},
+        params={"limit": 5},
+    )
+
+    response.raise_for_status()
+    print(response.json())
+    ```
+
+=== "JavaScript"
+
+    ```javascript
+    const baseUrl = "http://<base-url>";
+    const apiKey = "YOUR_API_KEY";
+
+    const response = await fetch(`${baseUrl}/products?limit=5`, {
+      headers: {
+        "x-api-key": apiKey,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Request failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    ```
 
 
-### Example response
+#### Example response
 
 ```json
 {
@@ -131,6 +176,8 @@ curl -X GET http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/pr
 
 ### 4. Create an order
 
+#### Example request
+
 ```bash
 curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/orders \
   -H "x-api-key: YOUR_API_KEY" \
@@ -149,7 +196,7 @@ curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/o
 ```
 
 
-### Example response
+#### Example response
 
 ```json
 {
