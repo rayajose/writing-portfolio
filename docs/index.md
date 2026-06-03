@@ -3,13 +3,13 @@
 <h1>Systems, integrations, and technical platforms</h1>
 
 <p class="hero-subtitle">
-Principal-level technical writing portfolio focused on API ecosystems, transactional workflows, operational platforms, cloud-native systems, and implementation-focused documentation.
+Documentation portfolio demonstrating how complex systems are integrated, operated, secured, and supported at scale.
 </p>
 
-<h2>Featured platform: Commerce Integration API</h2>
+<h2>Commerce Integration API</h2>
 
 <p class="hero-summary">
-Cloud-native commerce integration platform demonstrating feed ingestion, ETL processing, customer and order workflows, async job execution, analytics services, operational recovery procedures, and developer-focused documentation.
+A cloud-native commerce platform demonstrating end-to-end documentation for partner integrations, feed ingestion, ETL processing, product catalog management, order workflows, analytics services, deployment operations, and security controls.
 </p>
 
 <div class="doc-meta">
@@ -21,8 +21,8 @@ Cloud-native commerce integration platform demonstrating feed ingestion, ETL pro
 </div>
 
 <div class="portfolio-hero-actions">
-<a class="md-button md-button--primary" href="/writing-portfolio/api/">View API documentation</a>
-<a class="md-button" href="/writing-portfolio/how-to/ingest-product-feed/">View ingestion workflow</a>
+<a class="md-button md-button--primary" href="/writing-portfolio/api/">Explore the platform</a>
+<a class="md-button" href="/writing-portfolio/how-to/ingest-product-feed/">View an end-to-end workflow</a>
 </div>
 
 </div>

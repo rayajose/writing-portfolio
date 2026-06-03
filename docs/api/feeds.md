@@ -60,7 +60,7 @@ For complete CSV formatting rules, supported fields, validation requirements, an
 curl -X POST http://api.example.com/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
   -F "partner_id=PT00001" \
-  -F "file=@sample_catalog.csv"
+  -F "file=@acme-product-catalog.csv"
 ```
 
 </div>
