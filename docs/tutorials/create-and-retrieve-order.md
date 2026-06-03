@@ -52,7 +52,7 @@ GET /products
 ### Example request
 
 ```bash
-curl -X GET 'http://localhost:8000/products?partner_name=GoFasters&category=Running%20Shoes' \
+curl -X GET 'http://<base-url>/products?partner_name=GoFasters&category=Running%20Shoes' \
   -H 'x-api-key: YOUR_API_KEY'
 ```
 
@@ -191,7 +191,7 @@ POST /orders
 ### Example request
 
 ```bash
-curl -X POST "http://localhost:8000/orders" \
+curl -X POST "http://<base-url>/orders" \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY"
   -d '{
@@ -264,7 +264,7 @@ GET /orders/OR00039
 ### Example request
 
 ```bash
-curl -X GET "http://localhost:8000/orders/OR00039"
+curl -X GET "http://<base-url>/orders/OR00039"
 ```
 
 ### Example response

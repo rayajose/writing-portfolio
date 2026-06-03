@@ -12,14 +12,22 @@ Use the Commerce Integration API to upload product feeds, process them through E
 
 ## Base URLs
 
-| Target     | URL                                                                                                                                                                         |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Local      | `http://localhost:8000`                                                                                                                                                     |
-| AWS        | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com`                                                                                                         |
-| Swagger UI | <a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank">http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs</a> |
+| Target           | URL                                                                      |
+| ---------------- | ------------------------------------------------------------------------ |
+| Base URL (local) | `http://localhost:8000`                                                  |
+| Base URL (live)  | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com`      |
+| Swagger UI       | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs` |
 
 
 ## Authenticate requests
+
+!!! note "Requesting API access"
+
+    The live API is protected by API key authentication.
+
+    Recruiters, hiring managers, and reviewers interested in evaluating the platform may request a demonstration API key by contacting <a href="mailto:ray.a.jose@gmail.com">ray.a.jose@gmail.com</a>.
+
+    API keys are issued for portfolio review purposes only and provide access to sample data within the demonstration environment.
 
 Include your API key in each request:
 
@@ -29,11 +37,6 @@ x-api-key: YOUR_API_KEY
 
 Requests without a valid API key return `401 Unauthorized` or `403 Forbidden`.
 
-!!! note "Demo authentication"
-
-    The API uses a demo API key for documentation and portfolio purposes. Production-style API access and additional credentials can be discussed upon request.
-
-
 ## Quickstart
 
 Use this workflow to ingest catalog data, query products, and create an order.
@@ -42,7 +45,7 @@ Use this workflow to ingest catalog data, query products, and create an order.
 ### 1. Upload a feed
 
 ```bash
-curl -X POST http://localhost:8000/feeds/upload \
+curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
   -F "file=@electronics_catalog.csv" \
   -F "partner_name=Tronics"
@@ -63,7 +66,7 @@ curl -X POST http://localhost:8000/feeds/upload \
 ### 2. Run ETL processing
 
 ```bash
-curl -X POST http://localhost:8000/jobs/JV00001/run \
+curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/jobs/JV00001/run \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -71,7 +74,7 @@ curl -X POST http://localhost:8000/jobs/JV00001/run \
 ### 3. Query products
 
 ```bash
-curl -X GET http://localhost:8000/products?limit=5 \
+curl -X GET http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/products?limit=5 \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -105,7 +108,7 @@ curl -X GET http://localhost:8000/products?limit=5 \
 ### 4. Create an order
 
 ```bash
-curl -X POST http://localhost:8000/orders \
+curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/orders \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

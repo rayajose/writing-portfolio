@@ -38,7 +38,7 @@ Retrieve total units sold and revenue by partner.
 
 ```bash
 curl -X 'GET' \
-  'http://api.example.com/analytics/sales-by-partner' \
+  'http://<base-url>/analytics/sales-by-partner' \
   -H 'accept: application/json' \
   -H 'x-api-key: YOUR_API_KEY'
 ```
@@ -116,7 +116,7 @@ Defaults to `daily`.
 
 ```bash
 curl -X 'GET' \
-  'http://api.example.com/analytics/sales-over-time?grain=daily' \
+  'http://<base-url>/analytics/sales-over-time?grain=daily' \
   -H 'accept: application/json' \
   -H 'x-api-key: YOUR_API_KEY'
 ```
@@ -222,7 +222,7 @@ Retrieve each partner’s percentage contribution to total revenue.
 
 ```bash
 curl -X 'GET' \
-  'http://api.example.com/analytics/revenue-share' \
+  'http://<base-url>/analytics/revenue-share' \
   -H 'accept: application/json' \
   -H 'x-api-key: YOUR_API_KEY'
 ```

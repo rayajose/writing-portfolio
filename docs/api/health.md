@@ -29,7 +29,7 @@ Retrieve the current health status of the API and database connection.
 <h3>Request</h3>
 
 ```bash
-curl -X GET http://api.example.com/health \
+curl -X GET http://<base-url>/health \
   -H "accept: application/json"
 ```
 

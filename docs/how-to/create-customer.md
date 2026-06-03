@@ -17,7 +17,7 @@ In this guide, you will:
 | Requirement      | Description                                                         |
 | ---------------- | ------------------------------------------------------------------- |
 | Base URL (local) | `http://localhost:8000`                                             |
-| Base URL (AWS)   | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
+| Base URL (live)  | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
 | API key          | `x-api-key: YOUR_API_KEY`                                           |
 | JSON client      | HTTP client capable of sending JSON requests                        |
 
@@ -30,7 +30,7 @@ Record the `customer_id` value from the response for use in the next step. In th
 ### Example request
 
 ```bash
-curl -X POST http://api.example.com/customers \
+curl -X POST http://<base-url>/customers \
   -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
@@ -65,7 +65,7 @@ In this example, the `customer_id` is `CU00001`.
 ### Example request
 
 ```bash
-curl -X GET http://api.example.com/customers/CU00001 \
+curl -X GET http://<base-url>/customers/CU00001 \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -102,7 +102,7 @@ Run the `GET /customers/{customer_id}/orders` endpoint using the `customer_id` f
 ### Example request
 
 ```bash
-curl -X GET http://api.example.com/customers/CU00001/orders \
+curl -X GET http://<base-url>/customers/CU00001/orders \
   -H "x-api-key: YOUR_API_KEY"
 ```
 

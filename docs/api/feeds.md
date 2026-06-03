@@ -57,7 +57,7 @@ For complete CSV formatting rules, supported fields, validation requirements, an
 <h3>Request</h3>
 
 ```bash
-curl -X POST http://api.example.com/feeds/upload \
+curl -X POST http://<base-url>/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
   -F "partner_id=PT00001" \
   -F "file=@acme-product-catalog.csv"
@@ -189,7 +189,7 @@ Retrieve metadata for a specific feed.
 <h3>Request</h3>
 
 ```bash
-curl -X GET http://api.example.com/feeds/FD00001 \
+curl -X GET http://<base-url>/feeds/FD00001 \
   -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY"
 ```

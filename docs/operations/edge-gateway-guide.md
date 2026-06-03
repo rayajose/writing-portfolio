@@ -154,7 +154,7 @@ After configuration completes, validate operational readiness.
 Run the following validation command:
 
 ```bash
-curl -X GET https://api.example.com/health
+curl -X GET https://<base-url>/health
 ```
 
 Expected response:

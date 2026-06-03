@@ -29,7 +29,7 @@ In this guide, you will:
 | Requirement         | Description                                                         |
 | ------------------- | ------------------------------------------------------------------- |
 | Base URL (local)    | `http://localhost:8000`                                             |
-| Base URL (AWS)      | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
+| Base URL (live)     | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
 | API key             | `x-api-key: YOUR_API_KEY`                                           |
 | Completed operation | Uploaded feed (`feed_id`) or job (`job_id`)                         |
 
@@ -44,7 +44,7 @@ Retrieve the feed to confirm its status.
 ### Request
 
 ```bash
-curl -X GET "http://localhost:8000/feeds/FD00009" \
+curl -X GET "http://<base-url>/feeds/FD00009" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -76,7 +76,7 @@ Get ETL processing results for the associated job.
 ### Request
 
 ```bash
-curl -X GET "http://localhost:8000/jobs/JV00009" \
+curl -X GET "http://<base-url>/jobs/JV00009" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -215,14 +215,14 @@ After fixing the data, reprocess the feed.
 ### Re-run the existing job
 
 ```bash
-curl -X POST "http://localhost:8000/jobs/JV00009/run" \
+curl -X POST "http://<base-url>/jobs/JV00009/run" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
 ### Upload a new feed
 
 ```bash
-curl -X POST "http://localhost:8000/feeds/upload" \
+curl -X POST "http://<base-url>/feeds/upload" \
   -H "x-api-key: YOUR_API_KEY" \
   -F "file=@corrected_catalog.csv" \
   -F "partner_name=Tronics"
@@ -234,7 +234,7 @@ curl -X POST "http://localhost:8000/feeds/upload" \
 Retrieve the job again to confirm successful ETL processing.
 
 ```bash
-curl -X GET "http://localhost:8000/jobs/JV00009" \
+curl -X GET "http://<base-url>/jobs/JV00009" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 

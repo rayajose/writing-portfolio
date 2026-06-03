@@ -19,7 +19,7 @@ In this guide, you will:
 | Requirement       | Description                                                         |
 | ----------------- | ------------------------------------------------------------------- |
 | Base URL (local)  | `http://localhost:8000`                                             |
-| Base URL (AWS)    | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
+| Base URL (live)   | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
 | API key           | `x-api-key: YOUR_API_KEY`                                           |
 | Valid `.csv` file | See [CSV feed file specification](../specs/csv-feed-file-spec.md)   |
 
@@ -38,7 +38,7 @@ Record the `feed_id` value from the response for use in the next step. In this e
 ### Example request
 
 ```bash
-curl -X POST http://api.example.com/feeds/upload \
+curl -X POST http://<base-url>/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
   -F "file=@electronics_catalog.csv" \
   -F "partner_id=PT00001"
@@ -63,7 +63,7 @@ Run the `GET /feeds/{feed_id}` endpoint using the `feed_id` from the upload resp
 ### Example request
 
 ```bash
-curl -X GET http://api.example.com/feeds/FD00001 \
+curl -X GET http://<base-url>/feeds/FD00001 \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -107,7 +107,7 @@ Run the `GET /products` endpoint using the `feed_id` from step 1 (`FD00001`) as 
 ### Example request
 
 ```bash
-curl -X GET "http://api.example.com/products?feed_id=FD00001" \
+curl -X GET "http://<base-url>/products?feed_id=FD00001" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 

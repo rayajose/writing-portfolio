@@ -17,7 +17,7 @@ You need the following:
 | Requirement      | Description                                                         |
 | ---------------- | ------------------------------------------------------------------- |
 | Base URL (local) | `http://localhost:8000`                                             |
-| Base URL (AWS)   | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
+| Base URL (live)  | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
 | API key          | `x-api-key: YOUR_API_KEY`                                           |
 | CSV file         | See [CSV feed file specification](../specs/csv-feed-file-spec.md)   |
 
@@ -30,7 +30,7 @@ For endpoint details and request parameters, see the [Create partner](../api/par
 ### Example request
 
 ```bash
-curl -X POST "http://localhost:8000/partners" \
+curl -X POST "http://<base-url>/partners" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -67,7 +67,7 @@ POST /feeds/upload
 ### Example request
 
 ```bash
-curl -X POST "http://localhost:8000/feeds/upload" \
+curl -X POST "http://<base-url>/feeds/upload" \
   -H "x-api-key: YOUR_API_KEY" \
   -F "partner_id=PT00001" \
   -F "file=@electronics_catalog.csv"
@@ -107,7 +107,7 @@ GET /jobs/{job_id}
 ### Example request
 
 ```bash
-curl -X GET "http://localhost:8000/jobs/JS00001" \
+curl -X GET "http://<base-url>/jobs/JS00001" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -139,7 +139,7 @@ GET /products?partner_name=Tronics&limit=5
 ### Example request
 
 ```bash
-curl -X GET "http://localhost:8000/products?partner_name=Tronics&limit=5" \
+curl -X GET "http://<base-url>/products?partner_name=Tronics&limit=5" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 

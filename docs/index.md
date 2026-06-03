@@ -22,7 +22,7 @@ A cloud-native commerce platform demonstrating end-to-end documentation for part
 
 <div class="portfolio-hero-actions">
 <a class="md-button md-button--primary" href="/writing-portfolio/api/">Explore the platform</a>
-<a class="md-button btn-live-api"  href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank">Open live API ↗</a>
+<a class="md-button btn-get-started"  href="/writing-portfolio/architecture/getting_started/">Get started</a>
 <a class="md-button" href="/writing-portfolio/how-to/ingest-product-feed/">View an end-to-end workflow</a>
 </div>
 

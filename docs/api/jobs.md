@@ -45,7 +45,7 @@ Retrieve status and metadata for a job.
 <h3>Request</h3>
 
 ```bash
-curl -X GET http://api.example.com/jobs/JV00012 \
+curl -X GET http://<base-url>/jobs/JV00012 \
   -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY"
 ```
@@ -137,7 +137,7 @@ Run a validation job and trigger ETL processing.
 <h3>Request</h3>
 
 ```bash
-curl -X POST http://api.example.com/jobs/JV00001/run \
+curl -X POST http://<base-url>/jobs/JV00001/run \
   -H "x-api-key: YOUR_API_KEY"
 ```
 

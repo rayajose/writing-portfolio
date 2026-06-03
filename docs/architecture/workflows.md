@@ -20,7 +20,7 @@ This workflow shows the full ingestion pipeline from raw upload to queryable pro
 ### Step 1: Upload a feed
 
 ```bash
-curl -X POST "http://api.example.com/feeds/upload" \
+curl -X POST "http://<base-url>/feeds/upload" \
   -H "x-api-key: YOUR_API_KEY" \
   -F "partner_name=Acme Corp" \
   -F "file=@sample_catalog.csv"
@@ -50,14 +50,14 @@ curl -X POST "http://api.example.com/feeds/upload" \
 
 ```bash
 curl -H "x-api-key: YOUR_API_KEY" \
-  "http://api.example.com/jobs/JS00001"
+  "http://<base-url>/jobs/JS00001"
 ```
 
 ### Step 3: Check validation job
 
 ```bash
 curl -H "x-api-key: YOUR_API_KEY" \
-  "http://api.example.com/jobs/JV00001"
+  "http://<base-url>/jobs/JV00001"
 ```
 
 ### Example response
@@ -75,7 +75,7 @@ curl -H "x-api-key: YOUR_API_KEY" \
 ### Step 4: Run ETL processing
 
 ```bash
-curl -X POST "http://api.example.com/jobs/JV00001/run" \
+curl -X POST "http://<base-url>/jobs/JV00001/run" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -93,7 +93,7 @@ curl -X POST "http://api.example.com/jobs/JV00001/run" \
 
 ```bash
 curl -H "x-api-key: YOUR_API_KEY" \
-  "http://api.example.com/feeds/FD00001"
+  "http://<base-url>/feeds/FD00001"
 ```
 
 ### Example response
@@ -119,7 +119,7 @@ curl -H "x-api-key: YOUR_API_KEY" \
 
 ```bash
 curl -H "x-api-key: YOUR_API_KEY" \
-  "http://api.example.com/products?limit=5"
+  "http://<base-url>/products?limit=5"
 ```
 
 ### Example response
@@ -151,7 +151,7 @@ This workflow shows how to create fictional customer and shipping address record
 ### Step 1: Create a customer
 
 ```bash
-curl -X POST "http://api.example.com/customers" \
+curl -X POST "http://<base-url>/customers" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -183,7 +183,7 @@ curl -X POST "http://api.example.com/customers" \
 ### Step 2: Create a shipping address
 
 ```bash
-curl -X POST "http://api.example.com/customers/CU00001/addresses" \
+curl -X POST "http://<base-url>/customers/CU00001/addresses" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -219,7 +219,7 @@ This workflow shows how to create an order using products previously loaded into
 
 ```bash
 curl -H "x-api-key: YOUR_API_KEY" \
-  "http://api.example.com/products?limit=5"
+  "http://<base-url>/products?limit=5"
 ```
 
 ### Example response
@@ -241,7 +241,7 @@ curl -H "x-api-key: YOUR_API_KEY" \
 ### Step 2: Create an order
 
 ```bash
-curl -X POST "http://api.example.com/orders" \
+curl -X POST "http://<base-url>/orders" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -298,7 +298,7 @@ curl -X POST "http://api.example.com/orders" \
 
 ```bash
 curl -H "x-api-key: YOUR_API_KEY" \
-  "http://api.example.com/orders/OR00001"
+  "http://<base-url>/orders/OR00001"
 ```
 
 ### Related APIs

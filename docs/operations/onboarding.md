@@ -45,7 +45,7 @@ Create a partner record before uploading product feeds.
 For endpoint details, request parameters, response fields, and error handling information, see [POST /partners](../api/partners.md#post-partners).
 
 ```bash
-curl -X POST http://api.example.com/partners \
+curl -X POST http://<base-url>/partners \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{
@@ -77,7 +77,7 @@ Submit the product feed using the upload endpoint.
 For endpoint details, request parameters, response fields, and error handling information, see [POST /feeds/upload](../api/feeds.md#post-feedsupload).
 
 ```bash
-curl -X POST http://api.example.com/feeds/upload \
+curl -X POST http://<base-url>/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
   -F "partner_id=PT00001" \
   -F "file=@sample_catalog.csv"
@@ -107,7 +107,7 @@ Retrieve the feed to confirm successful registration.
 For endpoint details, request parameters, response fields, and error handling information, see [GET /feeds/{feed_id}](../api/feeds.md#get-feedsfeed_id).
 
 ```bash
-curl -X GET http://api.example.com/feeds/FD00010 \
+curl -X GET http://<base-url>/feeds/FD00010 \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -127,7 +127,7 @@ Retrieve the validation job status.
 For endpoint details, request parameters, response fields, and error handling information, see [GET /jobs/{job_id}](../api/jobs.md#get-jobsjob_id).
 
 ```bash
-curl -X GET http://api.example.com/jobs/JV00010 \
+curl -X GET http://<base-url>/jobs/JV00010 \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -175,7 +175,7 @@ For endpoint details, request parameters, response fields, and error handling in
 
 ```bash
 curl -X GET \
-  "http://api.example.com/products?partner_name=Acme%20Corp" \
+  "http://<base-url>/products?partner_name=Acme%20Corp" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 

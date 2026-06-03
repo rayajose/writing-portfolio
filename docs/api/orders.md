@@ -64,7 +64,7 @@ Create an order from one or more catalog products.
 <h3>Request</h3>
 
 ```bash
-curl -X POST http://api.example.com/orders \
+curl -X POST http://<base-url>/orders \
   -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
@@ -204,7 +204,7 @@ Retrieve submitted orders.
 <h3>Request</h3>
 
 ```bash
-curl -X GET "http://api.example.com/orders?partner_id=PT00001" \
+curl -X GET "http://<base-url>/orders?partner_id=PT00001" \
   -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY"
 ```
@@ -296,7 +296,7 @@ Retrieve a specific order and its line items.
 <h3>Request</h3>
 
 ```bash
-curl -X GET http://api.example.com/orders/OR00001 \
+curl -X GET http://<base-url>/orders/OR00001 \
   -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY"
 ```

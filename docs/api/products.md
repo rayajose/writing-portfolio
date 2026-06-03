@@ -76,7 +76,7 @@ GET /products?limit=5&cursor=PR00010
 <h3>Request</h3>
 
 ```bash
-curl -X GET http://api.example.com/products?limit=10&order=asc \
+curl -X GET http://<base-url>/products?limit=10&order=asc \
   -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY"
 ```
@@ -193,7 +193,7 @@ Retrieve a single product record by `product_id`.
 <h3>Request</h3>
 
 ```bash
-curl -X GET http://api.example.com/products/PR00001 \
+curl -X GET http://<base-url>/products/PR00001 \
   -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY"
 ```
@@ -294,7 +294,7 @@ Retrieve all products associated with a specific feed.
 <h3>Request</h3>
 
 ```bash
-curl -X GET http://api.example.com/products/by-feed/FD00001 \
+curl -X GET http://<base-url>/products/by-feed/FD00001 \
   -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY"
 ```
