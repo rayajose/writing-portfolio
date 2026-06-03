@@ -65,8 +65,8 @@ Create an order from one or more catalog products.
 
 ```bash
 curl -X POST http://<base-url>/orders \
-  -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json" \
   -H "Content-Type: application/json" \
   -d '{
     "customer_reference": "CR00001",
@@ -205,8 +205,8 @@ Retrieve submitted orders.
 
 ```bash
 curl -X GET "http://<base-url>/orders?partner_id=PT00001" \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json" 
 ```
 
 </div>
@@ -297,8 +297,8 @@ Retrieve a specific order and its line items.
 
 ```bash
 curl -X GET http://<base-url>/orders/OR00001 \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json"
 ```
 
 </div>

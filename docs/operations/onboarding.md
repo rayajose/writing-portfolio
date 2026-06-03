@@ -46,8 +46,8 @@ For endpoint details, request parameters, response fields, and error handling in
 
 ```bash
 curl -X POST http://<base-url>/partners \
-  -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
   -d '{
     "partner_name": "Acme Corp",
     "contact_email": "integrations@acme.example"
@@ -174,8 +174,7 @@ Confirm that products are accessible through the API and associated with the exp
 For endpoint details, request parameters, response fields, and error handling information, see [GET /products](../api/products.md#get-products).
 
 ```bash
-curl -X GET \
-  "http://<base-url>/products?partner_name=Acme%20Corp" \
+curl -X GET "http://<base-url>/products?partner_name=Acme%20Corp" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 

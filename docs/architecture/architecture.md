@@ -401,7 +401,6 @@ Potential architecture enhancements include:
 ## Related documentation
 
 - [Platform architecture and operational flow](../architecture/platform-architecture.md)
-- [Workflows](../architecture/workflows.md)
 - [Deployment guide](../architecture/deployment.md)
 - [Feeds](../api/feeds.md)
 - [Jobs](../api/jobs.md)

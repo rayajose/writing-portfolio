@@ -190,8 +190,8 @@ Retrieve metadata for a specific feed.
 
 ```bash
 curl -X GET http://<base-url>/feeds/FD00001 \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
 ```
 
 </div>
@@ -273,7 +273,6 @@ Returned when the request contains a `feed_id` not currently in the system.
 
 ## Related documentation
 
-- [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)
 - [Products](products.md)
 - [Jobs](jobs.md)

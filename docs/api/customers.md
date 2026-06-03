@@ -53,8 +53,8 @@ Create a fictional customer record.
 
 ```bash
 curl -X POST http://<base-url>/customers \
-  -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json" \
   -H "Content-Type: application/json" \
   -d '{
     "first_name": "Alex",
@@ -135,8 +135,8 @@ Retrieve all fictional customer records.
 
 ```bash
 curl -X GET http://<base-url>/customers \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json"
 ```
 
 </div>
@@ -219,8 +219,8 @@ Delete multiple fictional customer records.
 
 ```bash
 curl -X DELETE http://<base-url>/customers \
-  -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json" \
   -H "Content-Type: application/json" \
   -d '{
     "customer_ids": [
@@ -314,8 +314,8 @@ Returns a confirmation message when deletion succeeds
 
 ```bash
 curl -X DELETE http://<base-url>/customers/CU00001 \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json" 
 ```
 </div> 
 
@@ -398,8 +398,8 @@ Retrieve all orders associated with a fictional customer record.
 
 ```bash
 curl -X GET http://<base-url>/customers/CU00001/orders \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json"
 ```
 
 </div>
@@ -496,8 +496,8 @@ Retrieve a specific fictional customer record.
 
 ```bash
 curl -X GET http://<base-url>/customers/CU00001 \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json"
 ```
 
 </div>
@@ -600,8 +600,8 @@ Create a shipping address for a fictional customer.
 
 ```bash
 curl -X POST http://<base-url>/customers/CU00001/addresses \
-  -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json" \
   -H "Content-Type: application/json" \
   -d '{
     "address_line1": "123 Example Street",
@@ -703,8 +703,8 @@ Retrieve a specific customer shipping address.
 
 ```bash
 curl -X GET http://<base-url>/customers/addresses/AD00001 \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json"
 ```
 
 </div>

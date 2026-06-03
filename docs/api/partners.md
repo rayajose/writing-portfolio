@@ -46,8 +46,8 @@ Create a partner record.
 
 ```bash
 curl -X POST http://<base-url>/partners \
-  -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json"
   -d '{
     "partner_name": "Acme Corp",
     "contact_email": "integrations@acme.example",
@@ -138,8 +138,8 @@ Retrieve partner records.
 
 ```bash
 curl -X GET http://<base-url>/partners \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json"
 ```
 
 </div>
@@ -216,8 +216,8 @@ Retrieve a specific partner by partner ID.
 
 ```bash
 curl -X GET http://<base-url>/partners/PT00001 \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json"
 ```
 
 </div>

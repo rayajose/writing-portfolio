@@ -9,7 +9,6 @@ Use this API to retrieve product data from partner catalog feeds.
 - Retrieve individual product records by ID
 
 > Product data becomes available only after ETL processing completes.
-> See [Workflows](../architecture/workflows.md) for the full ingestion workflow.
 
 
 ## Authentication
@@ -77,8 +76,8 @@ GET /products?limit=5&cursor=PR00010
 
 ```bash
 curl -X GET http://<base-url>/products?limit=10&order=asc \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json"
 ```
 
 </div>
@@ -194,8 +193,8 @@ Retrieve a single product record by `product_id`.
 
 ```bash
 curl -X GET http://<base-url>/products/PR00001 \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json"
 ```
 
 </div>
@@ -295,8 +294,8 @@ Retrieve all products associated with a specific feed.
 
 ```bash
 curl -X GET http://<base-url>/products/by-feed/FD00001 \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json"
 ```
 
 </div>
@@ -375,7 +374,6 @@ Returned when the request is missing or includes an invalid `x-api-key` header.
 
 ## Related documentation
 
-- [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)
 - [Feeds](feeds.md)
 - [Jobs](jobs.md)

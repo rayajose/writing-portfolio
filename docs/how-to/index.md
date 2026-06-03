@@ -17,9 +17,8 @@ Documentation covering product feed submission, ingestion validation, ETL proces
 
 Related documentation:
 
-* [Ingest a product feed](../how-to/ingest-product-feed.md)
-* [CSV feed file specification](../specs/csv-feed-file-spec.md)
-* [Workflows](../architecture/workflows.md)
+- [Ingest a product feed](../how-to/ingest-product-feed.md)
+- [CSV feed file specification](../specs/csv-feed-file-spec.md)
 
 ### Customer and order workflows
 
@@ -27,9 +26,9 @@ Documentation covering customer creation workflows, customer validation activiti
 
 Related documentation:
 
-* [Create a customer](create-customer.md)
-* [Create and retrieve an order](../tutorials/create-and-retrieve-order.md)
-* [Orders](../api/orders.md)
+- [Create a customer](create-customer.md)
+- [Create and retrieve an order](../tutorials/create-and-retrieve-order.md)
+- [Orders](../api/orders.md)
 
 ### API implementation workflows
 
@@ -37,25 +36,25 @@ Documentation supporting common API interaction patterns, request validation wor
 
 Related documentation:
 
-* [Integration guide](../architecture/integration-guide.md)
-* [Webhook integration guide](../architecture/webhooks.md)
-* [API reference](../api/index.md)
+- [Integration guide](../architecture/integration-guide.md)
+- [Webhook integration guide](../architecture/webhooks.md)
+- [API reference](../api/index.md)
 
 ## Documentation focus areas
 
 This documentation demonstrates task-oriented content patterns commonly used in enterprise API and platform environments:
 
-* Step-by-step implementation guidance
-* API request and response workflows
-* Integration validation procedures
-* Customer and order management workflows
-* Feed ingestion and processing tasks
-* Workflow verification and response validation
-* Task-focused troubleshooting guidance
-* Developer onboarding support
+- Step-by-step implementation guidance
+- API request and response workflows
+- Integration validation procedures
+- Customer and order management workflows
+- Feed ingestion and processing tasks
+- Workflow verification and response validation
+- Task-focused troubleshooting guidance
+- Developer onboarding support
 
 ## Related documentation
 
-* [API and integrations](../api/index.md)
-* [Operations](../operations/index.md)
-* [Architecture and concepts](../architecture/index.md)
+- [API and integrations](../api/index.md)
+- [Operations](../operations/index.md)
+- [Architecture and concepts](../architecture/index.md)

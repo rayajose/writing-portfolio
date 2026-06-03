@@ -86,5 +86,4 @@ Instead, failures are reflected in the response body:
 
 ## Related documentation
 
-- [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)

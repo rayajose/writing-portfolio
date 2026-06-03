@@ -31,8 +31,8 @@ Record the `customer_id` value from the response for use in the next step. In th
 
 ```bash
 curl -X POST http://<base-url>/customers \
-  -H "accept: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json" \
   -H "Content-Type: application/json" \
   -d '{
     "first_name": "Jordan",

@@ -192,8 +192,8 @@ POST /orders
 
 ```bash
 curl -X POST "http://<base-url>/orders" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
   -d '{
         "partner_name": "GoFasters",
         "customer_reference": "CR00001",
@@ -375,7 +375,6 @@ Example query:
 ```http
 GET /products?partner_name=GoFasters&category=Running%20Shoes&availability=in_stock
 ```
-
 
 ### Invalid quantity
 

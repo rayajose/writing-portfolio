@@ -284,7 +284,6 @@ This supports:
 ## Related documentation
 
 - [System architecture](architecture.md)
-- [Workflows](workflows.md)
 - [Deployment guide](deployment.md)
 - [Integration guide](integration-guide.md)
 - [Ingest a product feed](../how-to/ingest-product-feed.md)

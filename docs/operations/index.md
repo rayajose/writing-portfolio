@@ -29,7 +29,6 @@ Operational workflows covering feed submission, validation processing, ETL execu
 Related documentation:
 
 - [Ingest a product feed](../how-to/ingest-product-feed.md)
-- [Workflows](../architecture/workflows.md)
 
 
 ### Deployment and infrastructure operations

@@ -46,8 +46,8 @@ Retrieve status and metadata for a job.
 
 ```bash
 curl -X GET http://<base-url>/jobs/JV00012 \
-  -H "accept: application/json" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json"
 ```
 
 </div>
@@ -214,5 +214,4 @@ Returned when the request contains a `job_id` not currently in the system.
 
 - [Feeds](feeds.md)
 - [Products](products.md)
-- [Workflows](../architecture/workflows.md)
 - [Errors](errors.md)

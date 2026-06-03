@@ -26,7 +26,6 @@ Documentation describing ingestion workflows, job execution behavior, ETL proces
 
 Related documentation:
 
-- [Workflows](workflows.md)
 - [Integration guide](integration-guide.md)
 - [Ingest a product feed](../how-to/ingest-product-feed.md)
 

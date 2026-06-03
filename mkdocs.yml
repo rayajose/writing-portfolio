@@ -42,7 +42,6 @@ nav:
       - Webhook integration guide: architecture/webhooks.md
       - Platform architecture and operational flow: architecture/platform-architecture.md
       - System architecture: architecture/architecture.md
-      - Workflows: architecture/workflows.md
 
   - API reference:
       - Overview: api/index.md
