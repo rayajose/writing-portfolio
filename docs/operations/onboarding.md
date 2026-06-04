@@ -154,7 +154,7 @@ For response field descriptions, see [GET /feeds/{feed_id}, Response fields](../
 ```json
 {
   "status": "completed",
-  "message": "Products processed: 100. Inserted: 80. Updated: 10. Unchanged: 5. Skipped: 5."
+  "message": "Products processed: 100. Inserted: 80. Deleted: 9. Updated: 10. Unchanged: 5. Skipped: 5."
 }
 ```
 

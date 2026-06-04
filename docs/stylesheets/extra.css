@@ -516,7 +516,7 @@ select {
 /* Links */
 .md-typeset a {
   color: #2b6cb0;
-  font-weight: 500;
+  font-weight: 450;
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.12em;
   transition:

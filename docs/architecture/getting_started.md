@@ -12,11 +12,11 @@ Use the Commerce Integration API to upload product feeds, process them through E
 
 ## Base URLs
 
-| Target           | URL                                                                      |
-| ---------------- | ------------------------------------------------------------------------ |
-| Base URL (local) | `http://localhost:8000`                                                  |
-| Base URL (live)  | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com`      |
-| Swagger UI       | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs` |
+| Target           | URL                                                                                                                                 |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Base URL (local) | `http://localhost:8000`                                                                                                             |
+| Base URL (live)  | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com`                                                                 |
+| Swagger UI       | <a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank" rel="noopener">Open Swagger UI</a> |
 
 
 ## Authenticate requests

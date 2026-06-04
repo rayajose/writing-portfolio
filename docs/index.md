@@ -21,7 +21,7 @@ A cloud-native commerce platform demonstrating end-to-end documentation for part
 </div>
 
 <div class="portfolio-hero-actions">
-<a class="md-button md-button--primary" href="/writing-portfolio/api/">Explore the platform</a>
+<a class="md-button md-button--primary" href="/writing-portfolio/architecture/">Explore the platform</a>
 <a class="md-button btn-get-started"  href="/writing-portfolio/architecture/getting_started/">Get started</a>
 <a class="md-button" href="/writing-portfolio/how-to/ingest-product-feed/">View an end-to-end workflow</a>
 </div>
