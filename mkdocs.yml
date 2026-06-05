@@ -52,7 +52,8 @@ nav:
       - Customers: api/customers.md
       - Orders: api/orders.md
       - Health: api/health.md      
-      - Analytics: api/analytics.md     
+      - Analytics: api/analytics.md
+      - Webhooks: api/webhooks.md     
       - Errors: api/errors.md
 
 

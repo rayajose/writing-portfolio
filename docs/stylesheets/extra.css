@@ -394,6 +394,14 @@ select {
   border-color: #fecaca;
 }
 
+/* PATCH */
+
+.api-endpoint--patch {
+  color: #0c4a6e;
+  background-color: #f0f9ff;
+  border-color: #bae6fd;
+}
+
 .md-typeset h2 code:hover,
 .md-typeset h3 code:hover {
   background: #e0e7ff;

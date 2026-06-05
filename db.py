@@ -76,14 +76,31 @@ def init_db() -> None:
             """))
 
             cur.execute(q("""
+                CREATE TABLE IF NOT EXISTS partners (
+                    partner_id TEXT PRIMARY KEY,
+                    partner_name TEXT NOT NULL UNIQUE,
+                    status TEXT NOT NULL DEFAULT 'active',
+                    contact_email TEXT,
+                    feed_type TEXT NOT NULL DEFAULT 'product_catalog',
+                    default_file_format TEXT NOT NULL DEFAULT 'csv',
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+                )
+            """))
+
+            cur.execute(q("""
                 CREATE TABLE IF NOT EXISTS feeds (
                     feed_id TEXT PRIMARY KEY,
+                    partner_id TEXT,
                     partner_name TEXT NOT NULL,
                     file_name TEXT NOT NULL,
                     content_type TEXT NOT NULL,
                     status TEXT NOT NULL,
                     uploaded_at TEXT NOT NULL,
-                    validation_job_id TEXT
+                    validation_job_id TEXT,
+                    raw_file_s3_key TEXT,
+                    raw_file_bucket TEXT,
+                    FOREIGN KEY (partner_id) REFERENCES partners(partner_id)
                 )
             """))
 
@@ -105,6 +122,7 @@ def init_db() -> None:
                 CREATE TABLE IF NOT EXISTS products (
                     product_id TEXT PRIMARY KEY,
                     feed_id TEXT NOT NULL,
+                    partner_id TEXT,
                     partner_name TEXT NOT NULL,
                     sku TEXT,
                     product_name TEXT NOT NULL,
@@ -115,7 +133,8 @@ def init_db() -> None:
                     currency TEXT,
                     availability TEXT,
                     created_at TEXT NOT NULL,
-                    FOREIGN KEY (feed_id) REFERENCES feeds(feed_id)
+                    FOREIGN KEY (feed_id) REFERENCES feeds(feed_id),
+                    FOREIGN KEY (partner_id) REFERENCES partners(partner_id)
                 )
             """))
 
@@ -125,23 +144,6 @@ def init_db() -> None:
             """))
 
             amount_type = "DOUBLE PRECISION" if DB_TYPE == "postgres" else "REAL"
-
-            cur.execute(q(f"""
-                CREATE TABLE IF NOT EXISTS orders (
-                    order_id TEXT PRIMARY KEY,
-                    partner_name TEXT NOT NULL,
-                    customer_reference TEXT,
-                    customer_id TEXT,
-                    shipping_address_id TEXT,
-                    status TEXT NOT NULL DEFAULT 'created',
-                    total_amount {amount_type},
-                    currency TEXT DEFAULT 'USD',
-                    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-                    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
-                    FOREIGN KEY (shipping_address_id) REFERENCES customer_addresses(address_id)
-            )
-            """))
 
             cur.execute(q("""
                 CREATE TABLE IF NOT EXISTS customers (
@@ -166,8 +168,26 @@ def init_db() -> None:
                     postal_code_encrypted TEXT NOT NULL,
                     country TEXT NOT NULL DEFAULT 'US',
                     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (customer_id)
-                        REFERENCES customers(customer_id)
+                    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+                )
+            """))
+
+            cur.execute(q(f"""
+                CREATE TABLE IF NOT EXISTS orders (
+                    order_id TEXT PRIMARY KEY,
+                    partner_id TEXT,
+                    partner_name TEXT NOT NULL,
+                    customer_reference TEXT,
+                    customer_id TEXT,
+                    shipping_address_id TEXT,
+                    status TEXT NOT NULL DEFAULT 'created',
+                    total_amount {amount_type},
+                    currency TEXT DEFAULT 'USD',
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (partner_id) REFERENCES partners(partner_id),
+                    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+                    FOREIGN KEY (shipping_address_id) REFERENCES customer_addresses(address_id)
                 )
             """))
 
@@ -214,6 +234,20 @@ def init_db() -> None:
                 )
             """))
 
+            cur.execute(q("""
+                CREATE TABLE IF NOT EXISTS webhook_subscriptions (
+                    webhook_id TEXT PRIMARY KEY,
+                    partner_id TEXT NOT NULL,
+                    url TEXT NOT NULL,
+                    events TEXT NOT NULL,
+                    secret TEXT NOT NULL,
+                    status TEXT NOT NULL DEFAULT 'active',
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (partner_id) REFERENCES partners(partner_id)
+                )
+            """))
+
             conn.commit()
 
         finally:
@@ -233,6 +267,7 @@ def _next_id_with_conn(conn, prefix: str) -> str:
         OI00001
         JF00001
         SH00001
+        WH00001
     """
     cur = conn.cursor()
 
@@ -315,3 +350,11 @@ def next_fulfillment_job_id_with_conn(conn) -> str:
 
 def next_shipment_id_with_conn(conn) -> str:
     return _next_id_with_conn(conn, "SH")
+
+
+def next_webhook_id() -> str:
+    return _next_id("WH")
+
+
+def next_webhook_id_with_conn(conn) -> str:
+    return _next_id_with_conn(conn, "WH")
