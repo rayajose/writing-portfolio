@@ -1,7 +1,7 @@
 import json
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
 from db import get_connection, next_webhook_id_with_conn, q
 from schemas.webhooks import (
@@ -13,7 +13,13 @@ from schemas.webhooks import (
 from webhooks.security import generate_webhook_secret
 from webhooks.validation import validate_webhook_events
 
-router = APIRouter(prefix="/webhooks", tags=["Webhooks"])
+from security import require_api_key
+
+router = APIRouter(
+    prefix="/webhooks",
+    tags=["Webhooks"],
+    dependencies=[Depends(require_api_key)],
+)
 
 
 @router.post("", response_model=WebhookCreateResponse, status_code=201)
