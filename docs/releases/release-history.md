@@ -4,6 +4,42 @@ This page documents notable platform, API, infrastructure, and documentation cha
 
 The version history reflects the evolution of the platform from an initial ingestion prototype into a cloud-native commerce integration platform supporting ETL processing, order management, analytics services, operational workflows, and security-oriented documentation.
 
+
+## Version 1.6.0
+
+Release date: June 2026
+
+### Added
+
+* Added webhook subscription management for partner integrations
+* Added webhook registration endpoint: `POST /webhooks`
+* Added webhook listing endpoint: `GET /webhooks`
+* Added webhook retrieval endpoint: `GET /webhooks/{webhook_id}`
+* Added webhook update endpoint: `PATCH /webhooks/{webhook_id}`
+* Added webhook subscription persistence using the `webhook_subscriptions` database table
+* Added webhook signing secret generation for subscription authentication
+* Added support for partner-specific webhook subscriptions
+* Added validation for supported webhook event types
+* Added webhook identifier generation using the `WHxxxxx` format
+* Added webhook API documentation and integration guidance
+
+### Changed
+
+* Extended the platform architecture to support event-driven partner integrations
+* Added webhook subscription configuration workflows for partner onboarding
+* Added webhook subscription status management using `active` and `disabled` states
+* Updated API navigation and documentation structure to include webhook resources
+* Updated database initialization logic to support webhook subscription management
+
+### Fixed
+
+* Prevented subscriptions from being created for non-existent partners
+* Prevented unsupported webhook event types from being registered
+* Improved webhook configuration validation by returning detailed validation errors for invalid event subscriptions
+* Improved partner integration readiness by supporting secure webhook secret generation and management
+* Improved extensibility for future event-driven features including webhook delivery, retry processing, and delivery tracking
+
+
 ## Version 1.5.0
 
 Release date: June 2026
