@@ -348,6 +348,79 @@ async def upload_feed(
 
 
 @router.get(
+    "",
+    summary="List feeds",
+    description=(
+        "Retrieves feed metadata with optional filtering by partner ID and status. "
+        "Results are returned in reverse upload order."
+    ),
+)
+async def list_feeds(
+    partner_id: str | None = None,
+    status_filter: str | None = None,
+    limit: int = 50,
+    offset: int = 0,
+):
+    filters = []
+    params = []
+
+    if partner_id:
+        filters.append("f.partner_id = ?")
+        params.append(partner_id)
+
+    if status_filter:
+        filters.append("f.status = ?")
+        params.append(status_filter)
+
+    where_clause = ""
+    if filters:
+        where_clause = "WHERE " + " AND ".join(filters)
+
+    count_query = f"""
+        SELECT COUNT(*) AS total
+        FROM feeds f
+        {where_clause}
+    """
+
+    list_query = f"""
+        SELECT
+            f.feed_id,
+            f.partner_id,
+            f.partner_name,
+            f.file_name,
+            f.content_type,
+            f.status,
+            f.uploaded_at,
+            f.validation_job_id,
+            j.status AS validation_status,
+            j.message AS validation_message,
+            f.raw_file_s3_key,
+            f.raw_file_bucket
+        FROM feeds f
+        LEFT JOIN jobs j
+            ON f.validation_job_id = j.job_id
+        {where_clause}
+        ORDER BY f.uploaded_at DESC
+        LIMIT ? OFFSET ?
+    """
+
+    with get_connection() as conn:
+        total_row = conn.execute(q(count_query), tuple(params)).fetchone()
+
+        feeds = conn.execute(
+            q(list_query),
+            tuple(params + [limit, offset]),
+        ).fetchall()
+
+    return {
+        "total": total_row["total"],
+        "limit": limit,
+        "offset": offset,
+        "items": [feed_row_to_dict(feed) for feed in feeds],
+    }
+
+
+@router.get(
     "/{feed_id}",
     response_model=FeedResponse,
     responses={404: {"model": ErrorResponse, "description": "Feed not found"}},
