@@ -5,9 +5,8 @@ from datetime import datetime
 
 
 class FeedStatus(str, Enum):
-    uploaded = "uploaded"
-    validating = "validating"
-    validated = "validated"
+    processing = "processing"
+    processed = "processed"
     failed = "failed"
 
 

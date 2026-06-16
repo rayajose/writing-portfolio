@@ -21,6 +21,29 @@ def job_row_to_dict(row):
 
 
 @router.get(
+    "",
+    response_model=list[JobResponse],
+    summary="List jobs",
+    description="Retrieves background jobs created during feed ingestion and ETL processing.",
+)
+def list_jobs():
+    with get_connection() as conn:
+        jobs = conn.execute(q("""
+                SELECT
+                    job_id,
+                    job_type,
+                    status,
+                    created_at,
+                    feed_id,
+                    message
+                FROM jobs
+                ORDER BY created_at DESC
+            """)).fetchall()
+
+    return [job_row_to_dict(job) for job in jobs]
+
+
+@router.get(
     "/{job_id}",
     response_model=JobResponse,
     responses={404: {"model": ErrorResponse, "description": "Job not found"}},
