@@ -197,6 +197,12 @@ def update_webhook_subscription(
                     detail=f"Webhook subscription not found: {webhook_id}",
                 )
 
+            if existing["status"] == "deleted":
+                raise HTTPException(
+                    status_code=400,
+                    detail="Deleted webhook subscriptions cannot be updated",
+                )
+
             if request.events is not None:
                 validate_webhook_events(request.events)
 
@@ -247,6 +253,72 @@ def update_webhook_subscription(
                 "url": updated_url,
                 "events": updated_events,
                 "status": updated_status,
+                "created_at": str(existing["created_at"]),
+                "updated_at": updated_at,
+            }
+
+        finally:
+            cur.close()
+
+
+@router.delete("/{webhook_id}", response_model=WebhookResponse)
+def delete_webhook_subscription(webhook_id: str):
+    with get_connection() as conn:
+        cur = conn.cursor()
+
+        try:
+            cur.execute(
+                q("""
+                    SELECT
+                        webhook_id,
+                        partner_id,
+                        url,
+                        events,
+                        status,
+                        created_at,
+                        updated_at
+                    FROM webhook_subscriptions
+                    WHERE webhook_id = ?
+                """),
+                (webhook_id,),
+            )
+            existing = cur.fetchone()
+
+            if existing is None:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"Webhook subscription not found: {webhook_id}",
+                )
+
+            updated_at = datetime.now(timezone.utc).isoformat()
+
+            cur.execute(
+                q("""
+                    UPDATE webhook_subscriptions
+                    SET
+                        status = ?,
+                        updated_at = ?
+                    WHERE webhook_id = ?
+                """),
+                (
+                    "deleted",
+                    updated_at,
+                    webhook_id,
+                ),
+            )
+
+            conn.commit()
+
+            return {
+                "webhook_id": existing["webhook_id"],
+                "partner_id": existing["partner_id"],
+                "url": existing["url"],
+                "events": (
+                    existing["events"]
+                    if isinstance(existing["events"], list)
+                    else json.loads(existing["events"])
+                ),
+                "status": "deleted",
                 "created_at": str(existing["created_at"]),
                 "updated_at": updated_at,
             }

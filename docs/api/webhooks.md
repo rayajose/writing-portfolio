@@ -6,7 +6,8 @@ Use this API to create and manage webhook subscriptions for receiving asynchrono
 - Subscribe to supported event types
 - Retrieve webhook subscriptions
 - Update webhook endpoint configuration
-- Enable or disable webhook deliveries
+- Update webhook endpoint configuration
+- Disable webhook subscriptions
 
 > Webhook event delivery, payload formats, retry behavior, and signature validation are documented in the Webhook Integration Guide.
 
@@ -365,6 +366,80 @@ Update a webhook subscription.
 }
 ```
 
+## <span class="api-endpoint api-endpoint--delete">DELETE /webhooks/{webhook_id}</span>
+
+Disable a webhook subscription.
+
+### Processing behavior
+
+- Retrieves the existing subscription
+- Sets the subscription status to `disabled`
+- Updates the subscription timestamp
+- Retains the subscription record for audit and history purposes
+- Returns the disabled subscription
+
+### Path parameters
+
+| Name         | Type   | Required | Description                           |
+| ------------ | ------ | -------- | ------------------------------------- |
+| `webhook_id` | string | Yes      | Unique webhook identifier (`WHxxxxx`) |
+
+### Request and response
+
+<div class="api-example-grid">
+<div>
+
+<h3>Request</h3>
+
+```bash
+curl -X DELETE http://<base-url>/webhooks/WH00001 \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "accept: application/json"
+```
+
+</div>
+
+<div>
+
+<h3>Response</h3>
+
+```json
+{
+  "webhook_id": "WH00001",
+  "partner_id": "PT00001",
+  "url": "https://<base-url>/webhooks/commerce",
+  "events": [
+    "feed.validation.completed",
+    "order.created"
+  ],
+  "status": "disabled",
+  "created_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "updated_at": "YYYY-MM-DDTHH:MM:SSZ"
+}
+```
+
+</div>
+</div>
+
+### Error responses
+
+#### 401 Unauthorized
+
+```json
+{
+  "detail": "Invalid or missing API key"
+}
+```
+
+#### 404 Not Found
+
+```json
+{
+  "detail": "Webhook subscription not found: WH99999"
+}
+```
+
+
 ## Additional details
 
 - Webhook subscriptions are associated with a single partner
@@ -373,6 +448,7 @@ Update a webhook subscription.
 - Disabled subscriptions do not receive event deliveries
 - Multiple subscriptions may be configured for the same partner
 - Supported event types are documented in the Webhook Integration Guide
+- Deleting a webhook subscription disables it instead of removing the record
 
 ## Related documentation
 
