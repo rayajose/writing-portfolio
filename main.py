@@ -10,6 +10,7 @@ from routers import (
     customers,
     partners,
     webhooks,
+    webhook_deliveries,
 )
 from db import init_db
 
@@ -120,3 +121,4 @@ app.include_router(orders.router, tags=["Orders"])
 app.include_router(customers.router, tags=["Customers"])
 app.include_router(partners.router, tags=["Partners"])
 app.include_router(webhooks.router, tags=["Webhooks"])
+app.include_router(webhook_deliveries.router, tags=["Webhook Deliveries"])

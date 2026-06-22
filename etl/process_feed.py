@@ -308,7 +308,7 @@ def process_feed(feed_id_value: str) -> None:
         )
 
         message = (
-            f"Products processed: {summary['processed']}. "
+            f"Products processed: {products_processed}. "
             f"Inserted: {summary['inserted']}. "
             f"Updated: {summary['updated']}. "
             f"Deleted: {summary['deleted']}. "
@@ -321,6 +321,40 @@ def process_feed(feed_id_value: str) -> None:
             status="completed",
             message=message,
         )
+
+        from services.webhook_delivery import deliver_webhook
+        import json
+
+        with get_connection() as conn:
+            webhooks = conn.execute(q("""
+                    SELECT
+                        webhook_id,
+                        partner_id,
+                        partner_name,
+                        url,
+                        events
+                    FROM webhook_subscriptions
+                    WHERE status = 'active'
+                """)).fetchall()
+
+            for webhook in webhooks:
+                events = webhook["events"]
+
+                if isinstance(events, str):
+                    events = json.loads(events)
+
+                if "feed.validation.completed" in events:
+                    deliver_webhook(
+                        webhook=dict(webhook),
+                        event_type="feed.validation.completed",
+                        payload={
+                            "event_type": "feed.validation.completed",
+                            "feed_id": feed["feed_id"],
+                            "partner_id": feed["partner_id"],
+                            "status": "completed",
+                            "summary": summary,
+                        },
+                    )
 
         print(f"Processed feed {feed_id_value}")
         print(f"Products processed: {products_processed}")

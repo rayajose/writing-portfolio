@@ -15,6 +15,10 @@ from schemas.orders import (
 )
 from security import require_api_key
 
+from services.webhook_delivery import deliver_webhook
+
+import json
+
 router = APIRouter(
     prefix="/orders",
     tags=["Orders"],
@@ -235,10 +239,10 @@ def create_order(request: OrderCreateRequest):
 
         conn.commit()
 
-        return _get_order_with_items(conn, order_id) or {
+        created_order = _get_order_with_items(conn, order_id) or {
             "order_id": order_id,
             "partner_id": order_partner_id,
-            "partner_name": request.partner_name,
+            "partner_name": order_partner_name,
             "customer_reference": request.customer_reference,
             "customer_id": request.customer_id,
             "shipping_address_id": request.shipping_address_id,
@@ -247,6 +251,35 @@ def create_order(request: OrderCreateRequest):
             "currency": currency,
             "items": order_items,
         }
+
+        webhooks = cur.execute(q("""
+                SELECT
+                    webhook_id,
+                        partner_id,
+                        partner_name,
+                        url,
+                        events
+                FROM webhook_subscriptions
+                WHERE status = 'active'
+            """)).fetchall()
+
+        for webhook in webhooks:
+            events = webhook["events"]
+
+            if isinstance(events, str):
+                events = json.loads(events)
+
+            if "order.created" in events:
+                deliver_webhook(
+                    webhook=dict(webhook),
+                    event_type="order.created",
+                    payload={
+                        "event_type": "order.created",
+                        "order": created_order,
+                    },
+                )
+
+        return created_order
 
     except HTTPException:
         conn.rollback()
