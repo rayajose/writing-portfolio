@@ -254,13 +254,15 @@ def create_order(request: OrderCreateRequest):
 
         webhooks = cur.execute(q("""
                 SELECT
-                    webhook_id,
-                        partner_id,
-                        partner_name,
-                        url,
-                        events
-                FROM webhook_subscriptions
-                WHERE status = 'active'
+                    w.webhook_id,
+                    w.partner_id,
+                    p.partner_name,
+                    w.url,
+                    w.events
+                FROM webhook_subscriptions w
+                LEFT JOIN partners p
+                ON p.partner_id = w.partner_id
+                WHERE w.status = 'active'
             """)).fetchall()
 
         for webhook in webhooks:
