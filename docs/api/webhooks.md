@@ -1,6 +1,6 @@
 # Webhooks
 
-Use this API to create and manage webhook subscriptions for receiving asynchronous event notifications.
+Use this API to create and manage webhook subscriptions for receiving asynchronous event notifications. Delivery attempts are recorded automatically and can be reviewed through the Webhook Deliveries API.
 
 - Register webhook endpoints
 - Subscribe to supported event types
@@ -21,6 +21,19 @@ Include the API key in each request:
 -H "x-api-key: YOUR_API_KEY"
 ```
 
+## Supported event types
+
+The platform currently publishes the following webhook events:
+
+| Event Type                  | Description                                                         |
+| --------------------------- | ------------------------------------------------------------------- |
+| `feed.validation.completed` | Published after a feed has completed validation and ETL processing. |
+| `order.created`             | Published after an order is successfully created.                   |
+
+Webhook subscriptions may subscribe to one or more supported event types.
+
+Webhook delivery history is available through the Webhook Deliveries API.
+
 ## <span class="api-endpoint api-endpoint--post">POST /webhooks</span>
 
 Create a webhook subscription.
@@ -33,6 +46,8 @@ Create a webhook subscription.
 - Generates a webhook signing secret
 - Stores the webhook subscription
 - Returns the created subscription
+- Creates a webhook subscription
+- Future matching events automatically generate webhook delivery records
 
 ### Request body
 
@@ -84,6 +99,12 @@ Create a webhook subscription.
 
 </div>
 </div>
+
+!!! info "Webhook delivery"
+
+    Creating a webhook subscription does not immediately send a webhook.
+
+    Webhook notifications are generated automatically when subscribed events occur. Delivery attempts, response codes, payloads, and receiver responses are available through the Webhook Deliveries API.
 
 ### Response fields
 
@@ -439,6 +460,28 @@ curl -X DELETE http://<base-url>/webhooks/WH00001 \
 }
 ```
 
+## Event delivery
+
+When a subscribed event occurs, the platform:
+
+1. Identifies active webhook subscriptions for the event.
+2. Sends an HTTP POST request to the configured endpoint.
+3. Records the delivery attempt.
+4. Stores the request payload, HTTP response code, and response body.
+
+A delivery is considered successful when the receiving endpoint returns a 2xx HTTP status code.
+
+Non-2xx responses and network failures are recorded as failed deliveries.
+
+
+## Typical workflow
+
+1. Create a webhook subscription.
+2. Configure one or more supported event types.
+3. Trigger a supported platform event.
+4. Receive the webhook notification.
+5. Review delivery history using the Webhook Deliveries API.
+
 
 ## Additional details
 
@@ -449,9 +492,13 @@ curl -X DELETE http://<base-url>/webhooks/WH00001 \
 - Multiple subscriptions may be configured for the same partner
 - Supported event types are documented in the Webhook Integration Guide
 - Deleting a webhook subscription disables it instead of removing the record
+- -Webhook deliveries are recorded automatically for audit and troubleshooting.
+- Delivery history includes the request payload, response code, and response body.
+- Delivery history is available through the Webhook Deliveries API.
 
 ## Related documentation
 
+- [Webhook Deliveries](webhookdeliveries.md)
 - [Webhook integration guide](../architecture/webhooks.md)
 - [Partners](partners.md)
 - [Feeds](feeds.md)

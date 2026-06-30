@@ -53,7 +53,8 @@ nav:
       - Orders: api/orders.md
       - Health: api/health.md      
       - Analytics: api/analytics.md
-      - Webhooks: api/webhooks.md     
+      - Webhooks: api/webhooks.md
+      - Webhook Deliveries: api/webhookdeliveries.md     
       - Errors: api/errors.md
 
 
