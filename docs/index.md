@@ -9,15 +9,15 @@ Documentation portfolio demonstrating how complex systems are integrated, operat
 <h2>Commerce Integration API</h2>
 
 <p class="hero-summary">
-A cloud-native commerce platform demonstrating end-to-end documentation for partner integrations, feed ingestion, ETL processing, product catalog management, order workflows, analytics services, deployment operations, and security controls.
+A cloud-native commerce integration platform demonstrating end-to-end technical documentation for APIs, partner integrations, operational workflows, administration, ETL processing, analytics, deployment, and security.
 </p>
 
 <div class="doc-meta">
   <span>Cloud-native platform</span>
-  <span>API documentation</span>
+  <span>API & platform documentation</span>
   <span>Systems integration</span>
-  <span>Transactional workflows</span>
-  <span>Operations and security</span>
+  <span>Operations console</span>
+  <span>Security & compliance</span>
 </div>
 
 <div class="portfolio-hero-actions">
