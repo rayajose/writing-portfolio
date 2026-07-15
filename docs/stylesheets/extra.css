@@ -1232,9 +1232,27 @@ select {
 }
 
 .console-screenshot {
+  margin: 1.75rem auto 2.25rem;
+  max-width: 1100px;
+}
+
+.console-screenshot {
+  display: block;
+  margin: 1.75rem auto 0.5rem;
   border: 1px solid var(--md-default-fg-color--lightest);
   border-radius: 0.6rem;
   box-shadow: var(--md-shadow-z1);
-  margin: 1rem auto 2rem;
-  overflow: hidden;
+}
+
+.console-caption {
+  margin: 0 auto 2.25rem;
+  max-width: 1100px;
+
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--md-default-fg-color--light);
+}
+
+.console-caption strong {
+  color: var(--md-default-fg-color);
 }
