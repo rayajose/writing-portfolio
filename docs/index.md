@@ -21,12 +21,32 @@ This documentation describes the Commerce Integration Platform, including its ar
 </div>
 
 <div class="portfolio-hero-actions">
-<a class="md-button md-button--primary" href="/writing-portfolio/platform/">Explore the platform</a>
-<a class="md-button btn-get-started" href="/writing-portfolio/architecture/getting_started/">Get started</a>
-<a class="md-button" href="/writing-portfolio/how-to/ingest-product-feed/">View an end-to-end workflow</a>
+    <a class="md-button md-button--primary" href="/writing-portfolio/platform/">
+        Platform guide
+    </a>
+
+    <a class="md-button btn-get-started" href="/writing-portfolio/architecture/getting_started/">
+        Get started
+    </a>
+
+    <a class="md-button" href="/writing-portfolio/how-to/ingest-product-feed/">
+        Workflow tutorial
+    </a>
+
+    <!--<a class="md-button" href="https://d2mg19x9fth17i.cloudfront.net" target="_blank" rel="noopener">
+        Operations console ↗
+    </a>-->
 </div>
 
+
 </div>
+
+!!! tip "Try the live application"
+
+    The Operations Console is a fully functional administrative application connected to the same platform documented throughout this portfolio.
+
+    **Launch the Operations Console:** [Open live demo ↗](https://d2mg19x9fth17i.cloudfront.net){ target="_blank" }
+
 
 ## Platform at a glance
 
