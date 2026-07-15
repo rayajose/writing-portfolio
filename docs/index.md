@@ -9,7 +9,7 @@ Cloud-native commerce integration platform supporting partner onboarding, produc
 <h2>Overview</h2>
 
 <p class="hero-summary">
-This documentation describes the Commerce Integration Platform, including its architecture, REST APIs, administrator workflows, operational procedures, security controls, cloud deployment, and supporting technical reference material.
+Explore a cloud-native commerce integration platform through comprehensive documentation, a live Operations Console, and an interactive REST API. The portfolio demonstrates platform architecture, systems integration, cloud deployment, operational workflows, and developer documentation.
 </p>
 
 <div class="doc-meta">
@@ -47,6 +47,12 @@ This documentation describes the Commerce Integration Platform, including its ar
 
     **Launch the Operations Console:** [Open live demo ↗](https://d2mg19x9fth17i.cloudfront.net){ target="_blank" }
 
+
+!!! info "Explore the API"
+
+    The platform includes a fully documented REST API with interactive OpenAPI (Swagger) documentation for exploring endpoints, request models, and responses.
+
+    **Open the API Explorer:** [Swagger UI ↗](http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs){ target="_blank" }
 
 ## Platform at a glance
 
