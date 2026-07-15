@@ -1,5 +1,5 @@
-site_name: "Ray Jose – Systems Documentation Portfolio"
-site_description: "Technical documentation for APIs, integration platforms, operational workflows, cloud systems, and engineering-driven environments."
+site_name: "Commerce Integration Platform"
+site_description: "Documentation for a cloud-native commerce integration platform, including APIs, operational workflows, architecture, security, and administration."
 site_url: "https://rayajose.github.io/writing-portfolio/"
 use_directory_urls: true
 
@@ -23,6 +23,11 @@ extra_css:
 
 nav:
   - Home: index.md
+
+  - Platform guide:
+      - Overview: platform/index.md
+      - Technology stack: platform/technology-stack.md
+      - Operations console: platform/operations-console.md
 
   - Tutorials:
       - Overview: tutorials/index.md
@@ -117,9 +122,9 @@ extra:
       link: https://github.com/rayajose
   meta:
     - property: og:title
-      content: Ray Jose – Developer Documentation Portfolio
+      content: Commerce Integration Platform
     - property: og:description
-      content: API, integration, and data platform documentation portfolio.
+      content: Explore a deployed cloud application with API, architecture, operations, security, and administrator documentation.
     - property: og:image
       content: https://rayajose.github.io/writing-portfolio/assets/preview.png
     - property: og:type

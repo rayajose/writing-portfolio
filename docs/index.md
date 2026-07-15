@@ -1,15 +1,15 @@
 <div class="portfolio-hero">
 
-<h1>Systems, integrations, and technical platforms</h1>
+<h1>Commerce Integration Platform</h1>
 
 <p class="hero-subtitle">
-Documentation portfolio demonstrating how complex systems are integrated, operated, secured, and supported at scale.
+Cloud-native commerce integration platform supporting partner onboarding, product catalog ingestion, transactional order processing, webhook delivery, operational monitoring, and analytics.
 </p>
 
-<h2>Commerce Integration API</h2>
+<h2>Overview</h2>
 
 <p class="hero-summary">
-A cloud-native commerce integration platform demonstrating end-to-end technical documentation for APIs, partner integrations, operational workflows, administration, ETL processing, analytics, deployment, and security.
+This documentation describes the Commerce Integration Platform, including its architecture, REST APIs, administrator workflows, operational procedures, security controls, cloud deployment, and supporting technical reference material.
 </p>
 
 <div class="doc-meta">
@@ -21,17 +21,35 @@ A cloud-native commerce integration platform demonstrating end-to-end technical 
 </div>
 
 <div class="portfolio-hero-actions">
-<a class="md-button md-button--primary" href="/writing-portfolio/architecture/">Explore the platform</a>
-<a class="md-button btn-get-started"  href="/writing-portfolio/architecture/getting_started/">Get started</a>
+<a class="md-button md-button--primary" href="/writing-portfolio/platform/">Explore the platform</a>
+<a class="md-button btn-get-started" href="/writing-portfolio/architecture/getting_started/">Get started</a>
 <a class="md-button" href="/writing-portfolio/how-to/ingest-product-feed/">View an end-to-end workflow</a>
 </div>
 
 </div>
 
+## Platform at a glance
+
+The Commerce Integration Platform provides end-to-end workflows for partner integrations, catalog management, order processing, and operational support.
+
+Core capabilities include:
+
+- Browser-based operations console
+- REST API for partner integrations
+- Product feed ingestion and ETL processing
+- Partner, product, customer, and order management
+- Webhook subscription and delivery tracking
+- Operational dashboards and analytics
+- AWS cloud infrastructure
+- Comprehensive technical documentation
+
+### [Platform guide](platform/index.md)
+
+Introduces the platform, its major components, technology stack, and operations console. This section provides the recommended starting point for understanding the system and navigating the documentation.
 
 ### [Tutorials](tutorials/index.md)
 
-Guided onboarding content demonstrating feed ingestion, customer management, order processing, and end-to-end platform workflows through hands-on learning scenarios.
+Guided onboarding content covering feed ingestion, customer management, order processing, and end-to-end platform workflows through hands-on learning scenarios.
 
 ### [How-to guides](how-to/index.md)
 
@@ -39,20 +57,20 @@ Task-oriented documentation covering implementation workflows, API operations, f
 
 ### [Architecture and concepts](architecture/index.md)
 
-System architecture, ETL workflows, transactional workflow modeling, integration patterns, cloud-native deployment, and operational design documentation.
+System architecture, service interactions, integration patterns, ETL workflows, cloud deployment, and operational design documentation.
 
 ### [API reference](api/index.md)
 
-Reference documentation for platform resources, authentication, request and response models, operational status codes, and API error handling patterns.
+Reference documentation for platform resources, authentication, request and response models, operational status codes, and API error handling.
 
 ### [Operations](operations/index.md)
 
-Operational procedures, onboarding workflows, troubleshooting processes, replay operations, backup and recovery workflows, and operational support documentation.
+Operational procedures, onboarding workflows, troubleshooting processes, deployment guidance, backup and recovery workflows, and operational support documentation.
 
 ### [Security policies](security/index.md)
 
-Incident response planning, encryption controls, customer-sensitive data handling, secrets management, SSDLC governance, and compliance-oriented operational documentation.
+Incident response planning, encryption controls, customer data handling, secrets management, secure development practices, and operational security documentation.
 
 ### [Supporting materials](index-supporting-material.md)
 
-Resource models, file specifications, deployment documentation, architecture artifacts, screenshots, and supporting reference materials used throughout the Commerce Integration API platform.
+Resource models, file specifications, deployment documentation, architecture artifacts, screenshots, and supporting technical reference material used throughout the platform.

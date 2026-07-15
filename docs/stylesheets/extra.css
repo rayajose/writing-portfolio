@@ -1230,3 +1230,11 @@ select {
 .md-footer {
   display: none;
 }
+
+.console-screenshot {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.6rem;
+  box-shadow: var(--md-shadow-z1);
+  margin: 1rem auto 2rem;
+  overflow: hidden;
+}

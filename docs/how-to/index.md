@@ -1,8 +1,8 @@
 # How-to guides
 
-This section contains task-oriented documentation supporting API workflows, customer management activities, feed ingestion procedures, operational validation tasks, and common implementation workflows used throughout the Commerce Integration API platform.
+This section contains task-oriented documentation supporting API workflows, customer management, product feed ingestion, operational validation, and common implementation tasks used throughout the Commerce Integration Platform.
 
-The documentation emphasizes step-by-step guidance, implementation clarity, workflow validation, and practical integration patterns commonly required in SaaS, API, and commerce integration environments.
+The documentation provides step-by-step guidance for completing common administrative, operational, and integration activities.
 
 <div class="doc-meta">
   <span>How-to guides</span>
@@ -13,7 +13,7 @@ The documentation emphasizes step-by-step guidance, implementation clarity, work
 
 ### Feed ingestion workflows
 
-Documentation covering product feed submission, ingestion validation, ETL processing workflows, and catalog verification procedures.
+Documentation covering product feed submission, ingestion validation, ETL processing, and catalog verification procedures.
 
 Related documentation:
 
@@ -22,7 +22,7 @@ Related documentation:
 
 ### Customer and order workflows
 
-Documentation covering customer creation workflows, customer validation activities, order management operations, and customer order history retrieval.
+Documentation covering customer creation, customer validation, order management, and customer order history retrieval.
 
 Related documentation:
 
@@ -32,7 +32,7 @@ Related documentation:
 
 ### API implementation workflows
 
-Documentation supporting common API interaction patterns, request validation workflows, response verification procedures, and implementation-focused integration activities.
+Documentation supporting common API interaction patterns, request validation, response verification, and implementation guidance for platform integrations.
 
 Related documentation:
 
@@ -42,19 +42,20 @@ Related documentation:
 
 ## Documentation focus areas
 
-This documentation demonstrates task-oriented content patterns commonly used in enterprise API and platform environments:
+This documentation supports common implementation activities throughout the platform, including:
 
 - Step-by-step implementation guidance
 - API request and response workflows
 - Integration validation procedures
-- Customer and order management workflows
-- Feed ingestion and processing tasks
+- Customer and order management
+- Product feed ingestion and processing
 - Workflow verification and response validation
-- Task-focused troubleshooting guidance
-- Developer onboarding support
+- Task-focused troubleshooting
+- Developer and administrator onboarding
 
 ## Related documentation
 
-- [API and integrations](../api/index.md)
+- [Platform guide](../platform/index.md)
+- [API reference](../api/index.md)
 - [Operations](../operations/index.md)
 - [Architecture and concepts](../architecture/index.md)

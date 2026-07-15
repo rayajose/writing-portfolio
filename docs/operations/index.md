@@ -1,8 +1,8 @@
 # Operations
 
-This section contains operational documentation supporting onboarding workflows, ingestion procedures, troubleshooting activities, deployment operations, recovery workflows, and repeatable operational processes used throughout the Commerce Integration API platform.
+This section contains operational documentation supporting onboarding workflows, ingestion procedures, troubleshooting activities, deployment operations, recovery workflows, and repeatable operational processes used throughout the Commerce Integration Platform.
 
-The documentation emphasizes operational clarity, workflow consistency, troubleshooting guidance, and recovery procedures commonly required in production SaaS, infrastructure, and integration environments.
+The documentation provides guidance for operating, maintaining, troubleshooting, and supporting the platform in production environments.
 
 <div class="doc-meta">
   <span>Operations</span>
@@ -10,7 +10,6 @@ The documentation emphasizes operational clarity, workflow consistency, troubles
   <span>Platform support</span>
   <span>Operational workflows</span>
 </div>
-
 
 ### Onboarding and integration operations
 
@@ -21,7 +20,6 @@ Related documentation:
 - [Partner feed onboarding](onboarding.md)
 - [Integration guide](../architecture/integration-guide.md)
 
-
 ### Ingestion and processing operations
 
 Operational workflows covering feed submission, validation processing, ETL execution, and ingestion lifecycle management.
@@ -29,7 +27,6 @@ Operational workflows covering feed submission, validation processing, ETL execu
 Related documentation:
 
 - [Ingest a product feed](../how-to/ingest-product-feed.md)
-
 
 ### Deployment and infrastructure operations
 
@@ -41,7 +38,6 @@ Related documentation:
 - [Edge gateway deployment and service guide](edge-gateway-guide.md)
 - [Deployment guide](../architecture/deployment.md)
 
-
 ### Troubleshooting and recovery
 
 Documentation supporting validation failure analysis, ETL troubleshooting, failed job recovery, operational replay workflows, and service restoration procedures.
@@ -50,12 +46,11 @@ Related documentation:
 
 - [Debug a product feed failure](debug-product-feed.md)
 - [Backup and recovery procedure](backup-recovery-procedure.md)
-- [Incident response plan](../security/incident-response.md)
-
+- [Incident response](../security/incident-response.md)
 
 ## Operational focus areas
 
-This documentation demonstrates operational content patterns commonly used in enterprise integration and platform environments:
+This documentation supports day-to-day platform operations, including:
 
 - Repeatable operational procedures
 - Deployment and infrastructure workflows
@@ -64,11 +59,11 @@ This documentation demonstrates operational content patterns commonly used in en
 - Operational visibility and traceability
 - Cross-functional onboarding support
 - ETL and ingestion operations
-- Field service and hardware support procedures
-
+- Platform administration and operational support
 
 ## Related documentation
 
-<!--- [API and integrations](../api/index.md)-->
+- [Platform guide](../platform/index.md)
 - [Architecture and concepts](../architecture/index.md)
-- [Security and compliance](../security/index.md)
+- [API reference](../api/index.md)
+- [Security](../security/index.md)

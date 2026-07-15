@@ -1,8 +1,8 @@
 # Architecture and concepts
 
-The Commerce Integration API is a cloud-native platform that supports partner catalog ingestion, ETL processing, customer and order management, analytics services, and operational recovery workflows.
+The Commerce Integration Platform is a cloud-native application that supports partner catalog ingestion, ETL processing, customer and order management, analytics, and operational workflows.
 
-This section explains how the platform is designed, how data moves through the system, and how services interact across API, processing, storage, and infrastructure layers. The documentation demonstrates architecture-focused content commonly used in enterprise integration, SaaS, and cloud platform environments.
+This section explains how the platform is designed, how data moves through the system, and how services interact across the API, processing, storage, and infrastructure layers.
 
 <div class="doc-meta">
   <span>System architecture</span>
@@ -13,10 +13,11 @@ This section explains how the platform is designed, how data moves through the s
 
 ## Explore the platform
 
-The architecture documentation explains how the system is designed and how services interact.
+The architecture documentation describes how the platform is designed and how its services interact.
 
-To explore the platform implementation, see:
+To explore related platform documentation, see:
 
+- [Platform guide](../platform/index.md)
 - [API reference](../api/index.md)
 - [Tutorials](../tutorials/index.md)
 - [How-to guides](../how-to/index.md)
@@ -28,15 +29,15 @@ This documentation includes:
 - System architecture and service relationships
 - Data flow and processing pipelines
 - Partner integration and ingestion workflows
-- ETL processing and change-detection behavior
+- ETL processing and change detection
 - AWS deployment architecture
 - Operational recovery and troubleshooting workflows
-- Observability, traceability, and job tracking patterns
+- Observability, traceability, and job processing
 - Architecture diagrams and workflow models
 
 ## System architecture
 
-Documentation covering platform architecture, service interactions, storage layers, deployment topology, and end-to-end data flow throughout the platform.
+Documentation describing platform architecture, service interactions, storage layers, deployment topology, and end-to-end data flow throughout the platform.
 
 Related documentation:
 
@@ -47,7 +48,7 @@ Related documentation:
 
 Documentation describing how product data moves through ingestion, validation, ETL processing, and catalog update workflows.
 
-Topics include asynchronous job execution, feed processing, data transformation, and integration lifecycle management.
+Topics include asynchronous job execution, feed processing, data transformation, and partner integration lifecycle management.
 
 Related documentation:
 
@@ -63,11 +64,11 @@ Topics include job monitoring, replay workflows, auditability, traceability, and
 Related documentation:
 
 - [Debug a product feed failure](../operations/debug-product-feed.md)
-- [Incident response plan](../security/incident-response.md)
+- [Incident response](../security/incident-response.md)
 
-## Documentation focus areas
+## Architecture focus areas
 
-This section demonstrates architecture-oriented documentation patterns commonly used in enterprise API, integration, and cloud platform environments:
+This section documents the architectural concepts and design patterns that support the platform, including:
 
 - System architecture and service relationships
 - Cloud-native application design
@@ -81,8 +82,9 @@ This section demonstrates architecture-oriented documentation patterns commonly 
 
 ## Related documentation
 
+- [Platform guide](../platform/index.md)
 - [API reference](../api/index.md)
 - [Tutorials](../tutorials/index.md)
 - [How-to guides](../how-to/index.md)
 - [Operations](../operations/index.md)
-- [Security and compliance](../security/index.md)
+- [Security](../security/index.md)

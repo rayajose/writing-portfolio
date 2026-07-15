@@ -1,8 +1,8 @@
 # Security policies
 
-This section contains security-focused operational documentation supporting incident response, secure processing practices, audit readiness, and compliance-oriented workflows.
+This section contains security documentation supporting incident response, secure operational practices, governance, audit readiness, and compliance-oriented workflows used throughout the Commerce Integration Platform.
 
-The documentation reflects practices commonly used in regulated enterprise environments requiring operational accountability, risk reduction, and procedural clarity.
+The documentation defines the policies, standards, and operational controls that support secure platform operation, consistent decision-making, and organizational accountability.
 
 <div class="doc-meta">
   <span>Security program</span>
@@ -17,31 +17,30 @@ Documentation covering security incident handling, escalation procedures, contai
 
 Related documentation:
 
-- [Incident response plan](incident-response.md)
+- [Incident response](incident-response.md)
 - [Debug a product feed failure](../operations/debug-product-feed.md)
-
 
 ### Secure operational practices
 
-Documentation supporting operational accountability, workflow consistency, traceability, and recovery-oriented processing procedures.
+Documentation supporting operational accountability, workflow consistency, traceability, security governance, and recovery-oriented operational procedures.
 
 Related documentation:
 
 - [Operations](../operations/index.md)
 - [Architecture and concepts](../architecture/index.md)
 
-
 ## Security focus areas
 
-This documentation demonstrates security and compliance documentation patterns commonly used in enterprise SaaS and regulated operational environments:
+This documentation supports the platform security program through:
 
 - Incident response planning
 - Security workflow documentation
 - Operational escalation procedures
-- Audit-oriented documentation practices
+- Audit readiness
 - Risk reduction and operational controls
 - Structured recovery and response workflows
-
+- Security governance
+- Operational accountability
 
 ## Documentation principles
 
@@ -56,9 +55,9 @@ Key priorities include:
 - Reduced ambiguity during incidents
 - Consistent operational communication
 
-
 ## Related documentation
 
-<!-- - [API and integrations](../api/index.md)-->
+- [Platform guide](../platform/index.md)
 - [Architecture and concepts](../architecture/index.md)
 - [Operations](../operations/index.md)
+- [API reference](../api/index.md)

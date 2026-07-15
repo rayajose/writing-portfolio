@@ -1,8 +1,8 @@
 # Tutorials
 
-This section contains guided learning content designed to help new users understand core platform workflows through hands-on exercises and end-to-end scenarios.
+This section contains guided learning content that introduces the core workflows of the Commerce Integration Platform through hands-on exercises and end-to-end scenarios.
 
-The documentation emphasizes progressive learning, practical implementation experience, workflow comprehension, and foundational concepts commonly required when onboarding to SaaS platforms, APIs, and commerce integration environments.
+The tutorials provide a structured learning path for understanding partner integrations, product feed processing, customer and order workflows, and common API interaction patterns.
 
 <div class="doc-meta">
   <span>Tutorials</span>
@@ -22,7 +22,7 @@ Related documentation:
 
 ### Customer and order tutorials
 
-Tutorials demonstrating customer creation, order processing workflows, and retrieval of transactional data using realistic business scenarios.
+Tutorials covering customer creation, order processing workflows, and retrieval of transactional data using realistic business scenarios.
 
 Related documentation:
 
@@ -32,7 +32,7 @@ Related documentation:
 
 ### API learning workflows
 
-Guided exercises that help developers understand request structures, response formats, resource relationships, and common implementation patterns used throughout the platform.
+Guided exercises that introduce request structures, response formats, resource relationships, and common implementation patterns used throughout the platform.
 
 Related documentation:
 
@@ -42,19 +42,20 @@ Related documentation:
 
 ## Documentation focus areas
 
-This documentation demonstrates tutorial-oriented content patterns commonly used in enterprise API and platform environments:
+This documentation supports platform onboarding through:
 
-- Guided onboarding experiences
-- End-to-end workflow demonstrations
+- Guided learning experiences
+- End-to-end workflow exercises
 - API request and response examples
-- Progressive learning exercises
-- Customer and order lifecycle scenarios
-- Feed ingestion and processing workflows
+- Progressive implementation scenarios
+- Customer and order lifecycle workflows
+- Product feed ingestion and processing
 - Resource relationship exploration
-- Developer enablement and training
+- Developer enablement and onboarding
 
 ## Related documentation
 
-<!-- - [API and integrations](../api/index.md)-->
+- [Platform guide](../platform/index.md)
 - [How-to guides](../how-to/index.md)
 - [Architecture and concepts](../architecture/index.md)
+- [API reference](../api/index.md)
