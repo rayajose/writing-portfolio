@@ -1,233 +1,208 @@
-# Partner Catalog API
+# Commerce Integration Platform API
 
-> Production-style API, data platform, and documentation portfolio demonstrating ETL, analytics, and developer enablement
+> FastAPI backend for a cloud-native commerce integration platform demonstrating REST APIs, ETL processing, systems integration, cloud deployment, and technical documentation.
 
-A production-style system that simulates how multi-partner platforms ingest, process, analyze, and serve product catalog data.
+This repository contains the backend services that power the **Commerce Integration Platform**. The API provides REST endpoints for partner onboarding, product catalog ingestion, transactional order processing, analytics, and webhook delivery while modeling production-style integration workflows.
 
-This project goes beyond a typical API implementation by combining:
-
-* Backend system design
-* Data pipeline modeling (ETL + analytics)
-* Real-world documentation use cases (SOPs, how-to guides, security docs)
+The backend is part of a broader portfolio that demonstrates modern technical writing through a complete cloud-native platform.
 
 ---
 
-## Purpose
+# Explore the Platform
 
-This project demonstrates how technical documentation supports real systems, including:
+### 📖 Technical Writing Portfolio
 
-* REST API design and developer documentation
-* Data ingestion and ETL workflows
-* Analytical querying and reporting
-* Operational procedures and troubleshooting
-* Security and incident response documentation
-
----
-
-## Live API
-
-Swagger UI:
-http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
-
-> Note: The API may be temporarily offline outside of demonstration periods to control cloud costs.
-
----
-
-## Documentation (Docs-as-Code)
-
-All documentation is managed using a **docs-as-code approach**:
-
-* Written in Markdown
-* Version-controlled alongside code
-* Structured for developer and operational use
-* Published via MkDocs
-
-### Live Documentation
+Comprehensive documentation covering platform architecture, tutorials, implementation guides, operations, security, and API reference.
 
 https://rayajose.github.io/writing-portfolio/
 
----
+### 🖥️ Operations Console
 
-## Documentation Scope
+Browser-based administrative application for monitoring platform activity.
 
-This repository is supported by a broader documentation set that reflects real-world use cases:
+https://d2mg19x9fth17i.cloudfront.net/
 
-### API & Developer Documentation
+### 🔌 Interactive API (Swagger)
 
-* REST API reference
-* SDK usage examples
-* Request/response patterns
+Explore and test REST endpoints through the OpenAPI interface.
 
-### SOP (Operational Documentation)
+http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
 
-* Partner feed onboarding process
-* System initialization and validation workflows
-* Repeatable operational procedures
-
-### How-To Guides
-
-* End-to-end feed ingestion workflow
-* Debugging failed feeds
-* ETL execution and validation
-
-### Security Documentation
-
-* Incident response plan
-* System recovery considerations
-* Operational risk awareness
-
-All documentation is tied to the same system and data model, demonstrating consistency across content types.
+> **Note:** The API may be temporarily offline outside of demonstration periods to control cloud costs.
 
 ---
 
-## System Overview
+# Purpose
 
-The Partner Catalog API simulates a real-world ingestion platform where external partners submit product data feeds that are processed and made available for querying and analytics.
+This project demonstrates how backend services support a modern commerce integration platform while showcasing technical documentation across an entire software ecosystem.
 
----
+The platform models real-world workflows including:
 
-## Project Evolution
-
-### Phase 1–2 — API + Ingestion
-
-* Feed upload and processing
-* Job-based workflows
-* Product retrieval
-
-### Phase 3 — ETL Pipeline
-
-* Change detection (insert/update/unchanged/skip)
-* Idempotent processing
-* Data validation and transformation
-
-### Phase 4 — Analytics Layer
-
-* Orders fact table
-* Aggregated queries (product, partner, time)
-* Revenue distribution analysis
-* API endpoints for analytics delivery
+- Partner onboarding
+- Product catalog ingestion
+- ETL processing
+- Background job execution
+- Customer and order management
+- Webhook delivery
+- Business analytics
+- Operational monitoring
+- Developer enablement
 
 ---
 
-## Analytics Layer
+# Platform Overview
 
-The system includes a business intelligence layer built on top of operational data.
+External partners submit product catalog feeds that are validated, processed, transformed, and made available for transactional and analytical workloads.
 
-### Data Model
+The API provides services for:
 
-* `products` (dimension)
-* `orders` (fact table)
-* `partner_name` (dimension)
-* `order_date` (time dimension)
+- Partner management
+- Feed ingestion
+- Processing jobs
+- Product catalog
+- Customers
+- Orders
+- Analytics
+- Webhook subscriptions
+- Webhook delivery tracking
 
-### Analytics Use Cases
-
-* Sales by partner
-* Sales over time (daily / monthly)
-* Top-performing products
-* Revenue share by partner
-
-### Example Query (Revenue Share)
-
-```sql
-SELECT
-    partner_name,
-    SUM(total_amount) AS total_revenue,
-    ROUND(
-        100.0 * SUM(total_amount) / SUM(SUM(total_amount)) OVER (),
-        2
-    ) AS revenue_pct
-FROM orders
-GROUP BY partner_name;
-```
-
-### Analytics API Endpoints
-
-* `GET /analytics/sales-by-partner`
-* `GET /analytics/sales-over-time`
-* `GET /analytics/top-products`
-* `GET /analytics/revenue-share`
+These services support both external integrations and the browser-based Operations Console.
 
 ---
 
-## ETL Behavior (Core Design Feature)
+# API Resources
 
-The ETL pipeline uses change detection:
+REST endpoints are organized around the following resources:
 
-* Inserted → New product
-* Updated → Data changed
-* Unchanged → No change
-* Skipped → Invalid rows
+- Partners
+- Feeds
+- Jobs
+- Products
+- Customers
+- Orders
+- Analytics
+- Webhooks
 
-This ensures:
-
-* Idempotent reprocessing
-* No unnecessary database writes
-* Accurate change tracking
+Interactive endpoint documentation is available through OpenAPI (Swagger).
 
 ---
 
-## Architecture
+# ETL Processing
 
-```
+A primary objective of the platform is modeling realistic ingestion and processing behavior.
+
+Features include:
+
+- Feed validation
+- Change detection
+- Data transformation
+- Background job execution
+- Idempotent processing
+- Processing statistics
+
+Processing outcomes include:
+
+- Inserted
+- Updated
+- Unchanged
+- Skipped
+
+This approach minimizes unnecessary database writes while providing accurate operational reporting.
+
+---
+
+# Analytics
+
+The platform includes reporting endpoints supporting both operational monitoring and business analysis.
+
+Available reporting includes:
+
+- Sales by partner
+- Sales over time
+- Revenue distribution
+- Top-performing products
+
+Analytics operate directly on transactional platform data.
+
+---
+
+# Documentation
+
+Documentation is maintained using a docs-as-code workflow and published with **MkDocs Material**.
+
+The Technical Writing Portfolio includes:
+
+- Platform Guide
+- Tutorials
+- How-to Guides
+- Architecture
+- API Reference
+- Operations
+- Security
+- Supporting Materials
+
+Rather than documenting isolated endpoints, the portfolio demonstrates how documentation supports an entire cloud-native platform throughout its lifecycle.
+
+---
+
+# Technology Stack
+
+## Backend
+
+- FastAPI
+- Python
+
+## Database
+
+- PostgreSQL (Amazon RDS)
+
+## Cloud
+
+- Amazon ECS Fargate
+- Application Load Balancer
+- Amazon S3
+- Amazon ECR
+- Amazon CloudFront
+- Docker
+
+## Documentation
+
+- Markdown
+- MkDocs Material
+- OpenAPI / Swagger
+
+---
+
+# Repository Structure
+
+```text
 app/
-├── main.py
 ├── routers/
-│   ├── feeds.py
-│   ├── jobs.py
-│   ├── products.py
-│   └── analytics.py
 ├── schemas/
-│   ├── feeds.py
-│   ├── jobs.py
-│   ├── products.py
-│   └── analytics.py
+├── models/
+├── services/
+├── utils/
 ├── db.py
+└── main.py
 ```
 
 ---
 
-## Data Domains
+# Running Locally
 
-The dataset spans multiple partner types:
-
-* Craft beer (Microbrews Brothers)
-* Consumer electronics (RayTech, Tronics)
-* Vinyl records (Cid's Vintage Records)
-* Jewelry (Joyeria Reina)
-
-This enables realistic analytics scenarios such as:
-
-* High-volume vs high-value comparisons
-* Revenue concentration
-* Product mix analysis
-
----
-
-## Tech Stack
-
-* FastAPI (Python)
-* PostgreSQL (Amazon RDS)
-* Docker
-* Amazon ECS (Fargate)
-* Application Load Balancer
-* Amazon ECR
-* MkDocs
-
----
-
-## Run Locally
-
-### Python
+## Python
 
 ```bash
 python -m venv .venv
+
 .\.venv\Scripts\activate
+
 pip install -r requirements.txt
+
 uvicorn main:app --reload
 ```
 
-Open:
+Swagger UI:
 
 ```
 http://127.0.0.1:8000/docs
@@ -235,10 +210,10 @@ http://127.0.0.1:8000/docs
 
 ---
 
-### Docker
+## Docker
 
 ```bash
-docker build -t partner-catalog-api .
+docker build -t commerce-platform-api .
 
 docker run -p 8000:8000 ^
   -e DB_TYPE=postgres ^
@@ -247,37 +222,54 @@ docker run -p 8000:8000 ^
   -e DB_NAME=partner_catalog ^
   -e DB_USER=postgres ^
   -e DB_PASSWORD=your_password ^
-  partner-catalog-api
+  commerce-platform-api
 ```
 
 ---
 
-## Authentication
+# Authentication
 
-All endpoints require:
+Protected endpoints require:
 
-```
+```text
 x-api-key: demo-secret-key
 ```
 
 ---
 
-## What This Project Demonstrates
+# What This Repository Demonstrates
 
-* API and backend system design
-* ETL pipeline architecture with change detection
-* Analytical querying and data modeling
-* API-driven analytics delivery
-* Documentation across multiple content types
-* Docs-as-code workflows using Markdown and MkDocs
-
-This project reflects a **production-style system with supporting documentation**, not just a standalone API.
+- FastAPI application development
+- REST API design
+- Production-style ETL workflows
+- Background job processing
+- Partner integration patterns
+- Transactional commerce services
+- Analytics services
+- Webhook delivery
+- PostgreSQL data modeling
+- AWS cloud deployment
+- OpenAPI documentation
+- Docs-as-code practices
 
 ---
 
-## Author
+# Related Projects
 
-Ray Jose
+- **Technical Writing Portfolio** — Comprehensive platform documentation built with MkDocs
+- **Operations Console** — React administrative application for monitoring and managing the platform
 
-* Portfolio: https://rayajose.github.io/writing-portfolio/
-* GitHub: https://github.com/rayajose
+---
+
+# Author
+
+**Ray Jose**
+
+📖 Technical Writing Portfolio  
+https://rayajose.github.io/writing-portfolio/
+
+🖥️ Operations Console  
+https://d2mg19x9fth17i.cloudfront.net/
+
+💻 GitHub  
+https://github.com/rayajose
