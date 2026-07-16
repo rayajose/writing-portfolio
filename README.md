@@ -1,42 +1,65 @@
-# Commerce Integration Platform API
+# Commerce Integration Platform
 
-> FastAPI backend for a cloud-native commerce integration platform demonstrating REST APIs, ETL processing, systems integration, cloud deployment, and technical documentation.
+> Cloud-native commerce integration platform demonstrating REST APIs, systems integration, ETL processing, cloud deployment, and modern technical documentation.
 
-This repository contains the backend services that power the **Commerce Integration Platform**. The API provides REST endpoints for partner onboarding, product catalog ingestion, transactional order processing, analytics, and webhook delivery while modeling production-style integration workflows.
+The Commerce Integration Platform is a production-style application that models how modern commerce systems onboard partners, ingest product catalogs, process transactional data, deliver webhook notifications, and expose operational insights through a browser-based administration console.
 
-The backend is part of a broader portfolio that demonstrates modern technical writing through a complete cloud-native platform.
+This repository contains the **FastAPI backend** and the **Technical Writing Portfolio** that documents the platform. Together they demonstrate backend development, cloud architecture, developer documentation, operational procedures, and docs-as-code practices.
 
 ---
 
 # Explore the Platform
 
-### 📖 Technical Writing Portfolio
+## 📖 Technical Writing Portfolio
 
 Comprehensive documentation covering platform architecture, tutorials, implementation guides, operations, security, and API reference.
 
 https://rayajose.github.io/writing-portfolio/
 
-### 🖥️ Operations Console
+---
 
-Browser-based administrative application for monitoring platform activity.
+## 🖥️ Operations Console
+
+A browser-based administrative application for monitoring and managing the platform.
 
 https://d2mg19x9fth17i.cloudfront.net/
 
-### 🔌 Interactive API (Swagger)
+> The Operations Console is maintained in a separate repository.
+
+---
+
+## 🔌 Interactive API (Swagger)
 
 Explore and test REST endpoints through the OpenAPI interface.
 
 http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
 
-> **Note:** The API may be temporarily offline outside of demonstration periods to control cloud costs.
+> **Note:** The API may be temporarily offline outside demonstration periods to control cloud costs.
+
+---
+
+# Repository Contents
+
+This repository includes:
+
+- FastAPI backend
+- REST API
+- OpenAPI (Swagger)
+- MkDocs documentation
+- Platform architecture documentation
+- Tutorials
+- How-to guides
+- Operations documentation
+- Security documentation
+- AWS deployment configuration
 
 ---
 
 # Purpose
 
-This project demonstrates how backend services support a modern commerce integration platform while showcasing technical documentation across an entire software ecosystem.
+This project demonstrates how technical documentation supports an entire cloud-native platform rather than a standalone API.
 
-The platform models real-world workflows including:
+The platform models production-style workflows including:
 
 - Partner onboarding
 - Product catalog ingestion
@@ -48,13 +71,15 @@ The platform models real-world workflows including:
 - Operational monitoring
 - Developer enablement
 
+Rather than documenting isolated endpoints, the portfolio demonstrates how documentation supports every stage of a modern software platform.
+
 ---
 
 # Platform Overview
 
-External partners submit product catalog feeds that are validated, processed, transformed, and made available for transactional and analytical workloads.
+External partners submit product catalog feeds that are validated, processed, transformed, and made available for downstream commerce operations.
 
-The API provides services for:
+The backend provides services for:
 
 - Partner management
 - Feed ingestion
@@ -66,11 +91,30 @@ The API provides services for:
 - Webhook subscriptions
 - Webhook delivery tracking
 
-These services support both external integrations and the browser-based Operations Console.
+These services are consumed by external integrations, the browser-based Operations Console, and the interactive Swagger interface.
 
 ---
 
-# API Resources
+# Documentation
+
+Documentation is maintained using a docs-as-code workflow and published with **MkDocs Material**.
+
+The Technical Writing Portfolio includes:
+
+- Platform Guide
+- Tutorials
+- How-to Guides
+- Architecture & Concepts
+- API Reference
+- Operations
+- Security
+- Supporting Materials
+
+The documentation demonstrates multiple content types commonly produced by senior technical writers, including developer documentation, operational procedures, implementation guidance, architecture documentation, and security documentation.
+
+---
+
+# REST API
 
 REST endpoints are organized around the following resources:
 
@@ -89,7 +133,7 @@ Interactive endpoint documentation is available through OpenAPI (Swagger).
 
 # ETL Processing
 
-A primary objective of the platform is modeling realistic ingestion and processing behavior.
+The ingestion pipeline models production-style data processing.
 
 Features include:
 
@@ -100,20 +144,20 @@ Features include:
 - Idempotent processing
 - Processing statistics
 
-Processing outcomes include:
+Rows are classified as:
 
 - Inserted
 - Updated
 - Unchanged
 - Skipped
 
-This approach minimizes unnecessary database writes while providing accurate operational reporting.
+This minimizes unnecessary database writes while providing accurate operational reporting.
 
 ---
 
 # Analytics
 
-The platform includes reporting endpoints supporting both operational monitoring and business analysis.
+The analytics layer provides operational and business reporting.
 
 Available reporting includes:
 
@@ -123,25 +167,6 @@ Available reporting includes:
 - Top-performing products
 
 Analytics operate directly on transactional platform data.
-
----
-
-# Documentation
-
-Documentation is maintained using a docs-as-code workflow and published with **MkDocs Material**.
-
-The Technical Writing Portfolio includes:
-
-- Platform Guide
-- Tutorials
-- How-to Guides
-- Architecture
-- API Reference
-- Operations
-- Security
-- Supporting Materials
-
-Rather than documenting isolated endpoints, the portfolio demonstrates how documentation supports an entire cloud-native platform throughout its lifecycle.
 
 ---
 
@@ -156,19 +181,20 @@ Rather than documenting isolated endpoints, the portfolio demonstrates how docum
 
 - PostgreSQL (Amazon RDS)
 
-## Cloud
+## Cloud Infrastructure
 
 - Amazon ECS Fargate
-- Application Load Balancer
+- Amazon RDS
 - Amazon S3
 - Amazon ECR
 - Amazon CloudFront
+- Application Load Balancer
 - Docker
 
 ## Documentation
 
-- Markdown
 - MkDocs Material
+- Markdown
 - OpenAPI / Swagger
 
 ---
@@ -184,6 +210,16 @@ app/
 ├── utils/
 ├── db.py
 └── main.py
+
+docs/
+├── platform/
+├── tutorials/
+├── how-to/
+├── architecture/
+├── api/
+├── operations/
+├── security/
+└── supporting-materials/
 ```
 
 ---
@@ -204,7 +240,7 @@ uvicorn main:app --reload
 
 Swagger UI:
 
-```
+```text
 http://127.0.0.1:8000/docs
 ```
 
@@ -213,7 +249,7 @@ http://127.0.0.1:8000/docs
 ## Docker
 
 ```bash
-docker build -t commerce-platform-api .
+docker build -t commerce-platform .
 
 docker run -p 8000:8000 ^
   -e DB_TYPE=postgres ^
@@ -222,7 +258,7 @@ docker run -p 8000:8000 ^
   -e DB_NAME=partner_catalog ^
   -e DB_USER=postgres ^
   -e DB_PASSWORD=your_password ^
-  commerce-platform-api
+  commerce-platform
 ```
 
 ---
@@ -237,27 +273,49 @@ x-api-key: demo-secret-key
 
 ---
 
-# What This Repository Demonstrates
+# Related Project
 
-- FastAPI application development
-- REST API design
-- Production-style ETL workflows
-- Background job processing
-- Partner integration patterns
-- Transactional commerce services
-- Analytics services
-- Webhook delivery
-- PostgreSQL data modeling
-- AWS cloud deployment
-- OpenAPI documentation
-- Docs-as-code practices
+## Operations Console
+
+The Operations Console is a React application that provides operational visibility into the Commerce Integration Platform.
+
+Features include:
+
+- Dashboard
+- Feed management
+- Product catalog
+- Orders
+- Partners
+- Webhooks
+- Analytics
+- Global search
+
+Repository:
+https://github.com/rayajose/<operations-console-repo>
+
+Live application:
+https://d2mg19x9fth17i.cloudfront.net/
 
 ---
 
-# Related Projects
+# What This Project Demonstrates
 
-- **Technical Writing Portfolio** — Comprehensive platform documentation built with MkDocs
-- **Operations Console** — React administrative application for monitoring and managing the platform
+- FastAPI application development
+- REST API design
+- Cloud-native architecture
+- PostgreSQL data modeling
+- ETL processing
+- Background job orchestration
+- Partner integration workflows
+- Transactional commerce services
+- Webhook delivery
+- Business analytics
+- AWS deployment
+- Docs-as-code
+- Platform architecture documentation
+- Developer documentation
+- Operational procedures
+- Security documentation
 
 ---
 
