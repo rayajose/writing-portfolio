@@ -1,9 +1,66 @@
 # Release notes
 
-This page documents notable platform, API, infrastructure, and documentation changes for the Commerce Integration API project.
+This page documents notable platform, API, Operations Console, infrastructure, and documentation changes for the Commerce Integration Platform.
 
-The version history reflects the evolution of the platform from an initial ingestion prototype into a cloud-native commerce integration platform supporting ETL processing, order management, analytics services, operational workflows, and security-oriented documentation.
+The version history reflects the evolution of the platform from an initial product feed ingestion prototype into a cloud-native commerce integration platform supporting partner onboarding, ETL processing, order management, webhook integrations, analytics, operational monitoring, and comprehensive developer documentation.
 
+
+!!! note
+
+    Releases prior to Version 1.7.0 reflect changes to the Commerce Integration API and supporting backend services only. Beginning with Version 1.7.0, release notes also include updates to the Operations Console and other platform components.
+
+## Version 1.7.0
+
+Release date: July 2026
+
+### API
+
+#### Added
+
+- Added webhook delivery tracking for outbound partner notifications
+- Added webhook delivery listing endpoint: `GET /webhook-deliveries`
+- Added webhook delivery retrieval endpoint: `GET /webhook-deliveries/{delivery_id}`
+- Added webhook delivery persistence using the `webhook_deliveries` database table
+- Added webhook delivery identifier generation using the `WDxxxxx` format
+- Added webhook delivery metadata including response status, payload, timestamps, and delivery status
+- Added webhook delivery API documentation and operational guidance
+
+#### Changed
+
+- Extended the event-driven architecture to support webhook delivery auditing and operational monitoring
+- Updated webhook processing workflows to persist delivery history for each outbound notification
+- Updated API documentation and navigation to include webhook delivery resources
+
+#### Fixed
+
+- Improved webhook observability by recording delivery outcomes for successful and failed notifications
+- Improved troubleshooting by exposing delivery history through the API
+- Improved platform readiness for future retry processing and delivery analytics
+
+
+### Operations Console
+
+#### Added
+
+- Initial production release of the Operations Console
+- Added dashboard providing platform health, operational metrics, and recent activity
+- Added feed upload workflow for submitting product catalog files
+- Added management pages for partners, feeds, jobs, products, orders, webhook subscriptions, and webhook deliveries
+- Added analytics dashboards for sales and partner reporting
+- Added global search supporting navigation across platform resources
+- Added detail pages for operational resources including feeds, jobs, orders, partners, and webhook deliveries
+- Added responsive interface for monitoring end-to-end platform operations
+
+#### Changed
+
+- Deployed the Operations Console as a cloud-hosted React application
+- Integrated the console with the production Commerce Integration API through the CloudFront endpoint
+- Aligned the console with the platform documentation to provide a complete end-to-end demonstration environment
+
+#### Fixed
+
+- Improved operational visibility by surfacing platform activity through a unified management interface
+- Improved usability through consistent navigation, filtering, pagination, and status reporting across platform resources
 
 ## Version 1.6.0
 
@@ -11,33 +68,33 @@ Release date: June 2026
 
 ### Added
 
-* Added webhook subscription management for partner integrations
-* Added webhook registration endpoint: `POST /webhooks`
-* Added webhook listing endpoint: `GET /webhooks`
-* Added webhook retrieval endpoint: `GET /webhooks/{webhook_id}`
-* Added webhook update endpoint: `PATCH /webhooks/{webhook_id}`
-* Added webhook subscription persistence using the `webhook_subscriptions` database table
-* Added webhook signing secret generation for subscription authentication
-* Added support for partner-specific webhook subscriptions
-* Added validation for supported webhook event types
-* Added webhook identifier generation using the `WHxxxxx` format
-* Added webhook API documentation and integration guidance
+- Added webhook subscription management for partner integrations
+- Added webhook registration endpoint: `POST /webhooks`
+- Added webhook listing endpoint: `GET /webhooks`
+- Added webhook retrieval endpoint: `GET /webhooks/{webhook_id}`
+- Added webhook update endpoint: `PATCH /webhooks/{webhook_id}`
+- Added webhook subscription persistence using the `webhook_subscriptions` database table
+- Added webhook signing secret generation for subscription authentication
+- Added support for partner-specific webhook subscriptions
+- Added validation for supported webhook event types
+- Added webhook identifier generation using the `WHxxxxx` format
+- Added webhook API documentation and integration guidance
 
 ### Changed
 
-* Extended the platform architecture to support event-driven partner integrations
-* Added webhook subscription configuration workflows for partner onboarding
-* Added webhook subscription status management using `active` and `disabled` states
-* Updated API navigation and documentation structure to include webhook resources
-* Updated database initialization logic to support webhook subscription management
+- Extended the platform architecture to support event-driven partner integrations
+- Added webhook subscription configuration workflows for partner onboarding
+- Added webhook subscription status management using `active` and `disabled` states
+- Updated API navigation and documentation structure to include webhook resources
+- Updated database initialization logic to support webhook subscription management
 
 ### Fixed
 
-* Prevented subscriptions from being created for non-existent partners
-* Prevented unsupported webhook event types from being registered
-* Improved webhook configuration validation by returning detailed validation errors for invalid event subscriptions
-* Improved partner integration readiness by supporting secure webhook secret generation and management
-* Improved extensibility for future event-driven features including webhook delivery, retry processing, and delivery tracking
+- Prevented subscriptions from being created for non-existent partners
+- Prevented unsupported webhook event types from being registered
+- Improved webhook configuration validation by returning detailed validation errors for invalid event subscriptions
+- Improved partner integration readiness by supporting secure webhook secret generation and management
+- Improved extensibility for future event-driven features including webhook delivery, retry processing, and delivery tracking
 
 
 ## Version 1.5.0
