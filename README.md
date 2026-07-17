@@ -22,7 +22,7 @@ https://rayajose.github.io/writing-portfolio/
 
 A browser-based administrative application for monitoring and managing the platform.
 
-https://d2mg19x9fth17i.cloudfront.net/
+https://d2mg19x9fth17i.cloudfront.net
 
 > The Operations Console is maintained in a separate repository.
 
@@ -32,7 +32,7 @@ https://d2mg19x9fth17i.cloudfront.net/
 
 Explore and test REST endpoints through the OpenAPI interface.
 
-http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs
+https://d2nbg35whekpke.cloudfront.net/docs
 
 > **Note:** The API may be temporarily offline outside demonstration periods to control cloud costs.
 
