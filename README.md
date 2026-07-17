@@ -14,7 +14,7 @@ This repository contains the **FastAPI backend** and the **Technical Writing Por
 
 Comprehensive documentation covering platform architecture, tutorials, implementation guides, operations, security, and API reference.
 
-https://rayajose.github.io/writing-portfolio/
+https://rayajose.github.io/writing-portfolio
 
 ---
 
