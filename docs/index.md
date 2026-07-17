@@ -52,7 +52,7 @@ Explore a cloud-native commerce integration platform through comprehensive docum
 
     The platform includes a fully documented REST API with interactive OpenAPI (Swagger) documentation for exploring endpoints, request models, and responses.
 
-    **Open the API Explorer:** [Swagger UI ↗](http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs){ target="_blank" }
+    **Open the API Explorer:** [Swagger UI ↗](https://d2nbg35whekpke.cloudfront.net/docs){ target="_blank" }
 
 ## Platform at a glance
 

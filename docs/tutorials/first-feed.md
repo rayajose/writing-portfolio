@@ -10,16 +10,17 @@ In this tutorial, you will:
 4. Retrieve ingested products
 5. Validate ingestion results
 
-## Before you begin
+## Prerequisites
 
-You need the following:
+| Requirement       | Description                                                                                                                              |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| API base URL      | Replace `<base-url>` with the base URL of your Commerce Integration API deployment. For example: `https://d2nbg35whekpke.cloudfront.net` |
+| API key           | `x-api-key: YOUR_API_KEY`                                                                                                                |
+| Valid `.csv` file | See [CSV feed file specification](../specs/csv-feed-file-spec.md)                                                                        |
 
-| Requirement      | Description                                                         |
-| ---------------- | ------------------------------------------------------------------- |
-| Base URL (local) | `http://localhost:8000`                                             |
-| Base URL (live)  | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com` |
-| API key          | `x-api-key: YOUR_API_KEY`                                           |
-| CSV file         | See [CSV feed file specification](../specs/csv-feed-file-spec.md)   |
+!!! note
+
+    Request examples in this guide use the `<base-url>` placeholder so they can be used with local, staging, or production deployments.
 
 ## Step 1: Create a partner
 

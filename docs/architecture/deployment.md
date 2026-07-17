@@ -13,6 +13,15 @@ For visual confirmation of the deployed environment, see [Screenshots](../api/sc
   <span>Infrastructure workflows</span>
 </div>
 
+
+
+## Deployed endpoints
+
+- API base URL: `https://d2nbg35whekpke.cloudfront.net`
+- Swagger UI: `https://d2nbg35whekpke.cloudfront.net/docs`
+- OpenAPI schema: `https://d2nbg35whekpke.cloudfront.net/openapi.json`
+- Health endpoint: `https://d2nbg35whekpke.cloudfront.net/health`
+
 ## Architecture overview
 
 The Commerce Integration API is deployed using the following AWS services:
@@ -20,7 +29,8 @@ The Commerce Integration API is deployed using the following AWS services:
 - FastAPI application runtime packaged as a Docker container
 - Amazon ECR container image registry (`<ecr-repository>`)
 - Amazon ECS (Fargate) serverless container orchestration
-- Application Load Balancer (ALB) for public HTTP access and traffic routing
+- Amazon CloudFront for public HTTPS access to the API
+- Application Load Balancer (ALB) as the origin for routing traffic to ECS
 - Amazon RDS (PostgreSQL) for product catalog, customer, order, fulfillment, and analytics data
 - Amazon S3 for raw uploaded feed storage
 
@@ -89,13 +99,25 @@ sg-00778f0b6fabbf1af
 - Allows outbound traffic to RDS and external services
 - Serves as the trusted source for database access
 
-## Load balancer (ALB)
+## Public API access
 
-### DNS name
+### CloudFront distribution
 
 ```text
-http://<application-load-balancer-dns-name>-1398338240.<aws-region>.elb.amazonaws.com
+https://d2nbg35whekpke.cloudfront.net
 ```
+
+The Commerce Integration API is publicly exposed through Amazon CloudFront. CloudFront provides:
+
+- HTTPS access to the API
+- A stable public endpoint
+- Access to Swagger UI (`/docs`)
+- Access to the OpenAPI schema (`/openapi.json`)
+- Request forwarding to the Application Load Balancer
+
+### Application Load Balancer (origin)
+
+The Application Load Balancer is used as the CloudFront origin and routes traffic to the ECS service.
 
 ### Listener
 
@@ -385,13 +407,30 @@ RuntimeError: PII_ENCRYPTION_KEY environment variable is not set.
 - Redeploy ECS tasks
 - Verify application startup completes successfully
 
+
+
+### API accessible through ALB but not CloudFront
+
+#### Cause
+
+- CloudFront behavior or origin request configuration is incomplete
+- FastAPI CORS configuration does not include the frontend origin
+
+#### Resolution
+
+- Verify CloudFront forwards the required HTTP methods
+- Use an appropriate cache policy for API traffic
+- Confirm FastAPI CORS allows the deployed Operations Console origin
+
 ## Cost considerations
 
 This deployment incurs cost from the following AWS services:
 
+- Amazon CloudFront
 - ECS Fargate
 - Amazon RDS
 - Application Load Balancer
+- Amazon S3
 
 ### Cost reduction strategies
 

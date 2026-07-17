@@ -10,13 +10,18 @@ Use the Commerce Integration API to upload product feeds, process them through E
 </div>
 
 
-## Base URLs
+## API endpoint
 
-| Target           | URL                                                                                                                                 |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| Base URL (local) | `http://localhost:8000`                                                                                                             |
-| Base URL (live)  | `http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com`                                                                 |
-| Swagger UI       | <a href="http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/docs" target="_blank" rel="noopener">Open Swagger UI</a> |
+Use the following production endpoint to access the live Commerce Integration API.
+
+| Resource     | URL                                                                                                     |
+| ------------ | ------------------------------------------------------------------------------------------------------- |
+| API base URL | `https://d2nbg35whekpke.cloudfront.net`                                                                 |
+| Swagger UI   | <a href="https://d2nbg35whekpke.cloudfront.net/docs" target="_blank" rel="noopener">Open Swagger UI</a> |
+
+!!! note
+
+    Request examples throughout the documentation use the `<base-url>` placeholder. Replace it with the base URL of your deployment. For the live demonstration environment, use `https://d2nbg35whekpke.cloudfront.net`.
 
 
 ## Authenticate requests
@@ -47,7 +52,7 @@ Use this workflow to upload a product feed, monitor processing, query catalog da
 #### Example request
 
 ```bash
-curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/feeds/upload \
+curl -X POST <base-url>/feeds/upload \
   -H "x-api-key: YOUR_API_KEY" \
   -F "partner_name=Acme Corp" \
   -F "file=@acme-product-catalog.csv"
@@ -75,7 +80,7 @@ After upload validation succeeds, the platform automatically processes the feed 
 #### Example request
 
 ```bash
-curl -X GET http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/feeds/JV00001 \
+curl -X GET <base-url>/feeds/JV00001 \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -179,7 +184,7 @@ curl -X GET http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/fe
 #### Example request
 
 ```bash
-curl -X POST http://partner-catalog-alb-1398338240.us-east-2.elb.amazonaws.com/orders \
+curl -X POST <base-url>/orders \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
